@@ -58,7 +58,7 @@ static void GenerateTraffic (Ptr<Socket> socket, uint32_t pktSize,
 
 int main (int argc, char *argv[])
 {
-  LogComponentEnableAll(LOG_ALL);
+  //LogComponentEnableAll(LOG_ALL);
   std::string phyMode ("DsssRate1Mbps");
   double rss = -80;  // -dBm
   double Prss = -80;
@@ -133,10 +133,47 @@ int main (int argc, char *argv[])
 
   NetDeviceContainer devices;
   
-  for ( int j = 0; j < 3; j++ ) {
-    wifiPhy.Set ("EnergyDetectionThreshold", DoubleValue (0.0) );
-    wifiPhy.Set ("TxGain", DoubleValue (offset + Prss) ); 
-    devices.Add (wifi_helper.Install (wifiPhy, wifiMac, c.Get (j)));
+  Ptr<YansWifiChannel> p_yans_wifi_channel = wifiChannel.Create();
+
+  for (unsigned j = 0; j < 3; j++) {
+    Ptr<Node> node =  c.Get(j);
+    Ptr<WifiNetDevice> device = CreateObject<WifiNetDevice>();
+
+    ObjectFactory nqos_wifi_mac_factory = ObjectFactory();
+    nqos_wifi_mac_factory.SetTypeId("ns3::AdhocWifiMac");
+    nqos_wifi_mac_factory.Set("QosSupported", BooleanValue(false));
+    Ptr<WifiMac> p_wifi_mac = nqos_wifi_mac_factory.Create<WifiMac>();
+    p_wifi_mac->ConfigureStandard(WIFI_PHY_STANDARD_80211b);
+    
+    ObjectFactory error_rate_model_factory = ObjectFactory();
+    error_rate_model_factory.SetTypeId("ns3::NistErrorRateModel");
+    Ptr<ErrorRateModel> p_error_rate_model = error_rate_model_factory.Create<ErrorRateModel>();
+
+    ObjectFactory yans_wifi_phy_factory = ObjectFactory();
+    yans_wifi_phy_factory.SetTypeId("ns3::YansWifiPhy");
+    yans_wifi_phy_factory.Set ("RxGain", DoubleValue (0) );
+    yans_wifi_phy_factory.Set ("CcaMode1Threshold", DoubleValue (0.0) );
+    yans_wifi_phy_factory.Set ("EnergyDetectionThreshold", DoubleValue (0.0) );
+    yans_wifi_phy_factory.Set ("TxGain", DoubleValue (offset + Prss) ); 
+    Ptr<YansWifiPhy> p_yans_wifi_phy = yans_wifi_phy_factory.Create<YansWifiPhy>();
+    p_yans_wifi_phy->SetErrorRateModel(p_error_rate_model);
+    p_yans_wifi_phy->SetChannel(p_yans_wifi_channel);
+    p_yans_wifi_phy->SetMobility(node);   
+    p_yans_wifi_phy->SetDevice(device);
+    p_yans_wifi_phy->ConfigureStandard(WIFI_PHY_STANDARD_80211b);
+     
+    ObjectFactory station_manager = ObjectFactory();
+    station_manager.SetTypeId("ns3::ConstantRateWifiManager");
+    station_manager.Set("DataMode", StringValue(phyMode));
+    station_manager.Set("ControlMode", StringValue(phyMode));
+    Ptr<WifiRemoteStationManager> manager = station_manager.Create<WifiRemoteStationManager>();
+
+    device->SetMac(p_wifi_mac);
+    device->SetPhy(p_yans_wifi_phy);
+    device->SetRemoteStationManager(manager);
+
+    node->AddDevice(device);
+    devices.Add(device);
   }
     
   // Note that with FixedRssLossModel, the positions below are not 
