@@ -58,6 +58,7 @@ static void GenerateTraffic (Ptr<Socket> socket, uint32_t pktSize,
 
 int main (int argc, char *argv[])
 {
+  LogComponentEnableAll(LOG_ALL);
   std::string phyMode ("DsssRate1Mbps");
   double rss = -80;  // -dBm
   double Prss = -80;
