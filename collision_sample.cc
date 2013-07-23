@@ -26,11 +26,6 @@
 #include "ns3/propagation-module.h"
 #include "ns3/olsr-helper.h"
 
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <string>
-
 NS_LOG_COMPONENT_DEFINE ("CollisionSample");
 
 using namespace ns3;
