@@ -33,6 +33,7 @@
 #include "ns3/nstime.h"
 #include "ns3/command-line.h"
 #include "ns3/flow-id-tag.h"
+#include "ns3/log.h"
 
 using namespace ns3;
 
@@ -107,6 +108,10 @@ CollisionExperiment::Receive (Ptr<Packet> p, double snr, WifiMode mode, enum Wif
     }
 }
 
+void myRxErrorCallback(Ptr<const Packet> packet, double snr) {
+  NS_LOG_UNCOND("myRxErrorCallback");
+}
+
 CollisionExperiment::CollisionExperiment ()
 {
 }
@@ -164,6 +169,7 @@ CollisionExperiment::Run (struct CollisionExperiment::Input input)
 
 
   rx->SetReceiveOkCallback (MakeCallback (&CollisionExperiment::Receive, this));
+  rx->SetReceiveErrorCallback (MakeCallback (&myRxErrorCallback));
 
   for (uint32_t i = 0; i < m_input.nPackets; ++i)
     {
