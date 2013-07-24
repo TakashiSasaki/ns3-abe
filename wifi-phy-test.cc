@@ -110,11 +110,11 @@ CollisionExperiment::Receive (Ptr<Packet> p, double snr, WifiMode mode, enum Wif
 }
 
 void myRxOkCallback(Ptr<Packet> p, double snr, WifiMode mode, enum WifiPreamble preamble){
-  NS_LOG_UNCOND("myRxOkCallback");
+  NS_LOG_UNCOND("myRxOkCallback, snr=" << snr);
 }
 
 void myRxErrorCallback(Ptr<const Packet> packet, double snr) {
-  NS_LOG_UNCOND("myRxErrorCallback");
+  NS_LOG_UNCOND("myRxErrorCallback, snr="<< snr);
 }
 
 CollisionExperiment::CollisionExperiment ()
@@ -193,8 +193,8 @@ CollisionExperiment::Run (struct CollisionExperiment::Input input)
   rx->SetMobility (posRx);
 
 
-  rx->SetReceiveOkCallback (MakeCallback (&myRxOkCallback));
-  rx->SetReceiveErrorCallback (MakeCallback (&myRxErrorCallback));
+  rx->SetReceiveOkCallback (MakeCallback (&CollisionExperiment::Receive, this));
+  //rx->SetReceiveErrorCallback (MakeCallback (&myRxErrorCallback));
 
   for (uint32_t i = 0; i < m_input.nPackets; ++i)
     {
