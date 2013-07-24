@@ -34,6 +34,7 @@
 #include "ns3/command-line.h"
 #include "ns3/flow-id-tag.h"
 #include "ns3/log.h"
+#include "ns3/core-module.h"
 
 using namespace ns3;
 
@@ -158,7 +159,27 @@ CollisionExperiment::Run (struct CollisionExperiment::Input input)
 
   Ptr<YansWifiPhy> txA = CreateObject<YansWifiPhy> ();
   Ptr<YansWifiPhy> txB = CreateObject<YansWifiPhy> ();
-  Ptr<YansWifiPhy> rx = CreateObject<YansWifiPhy> ();
+
+
+#if 1
+  //create rx using ObjectFactory
+  ObjectFactory yans_wifi_phy_factory = ObjectFactory();
+  yans_wifi_phy_factory.SetTypeId("ns3::YansWifiPhy");
+  yans_wifi_phy_factory.Set ("RxGain", DoubleValue (0) );
+  yans_wifi_phy_factory.Set ("CcaMode1Threshold", DoubleValue (0.0) );
+  //yans_wifi_phy_factory.Set ("EnergyDetectionThreshold", DoubleValue (0.0) );
+  yans_wifi_phy_factory.Set ("TxGain", DoubleValue (11) ); 
+  Ptr<YansWifiPhy> p_yans_wifi_phy = yans_wifi_phy_factory.Create<YansWifiPhy>();
+  //p_yans_wifi_phy->SetErrorRateModel(p_error_rate_model);
+  //p_yans_wifi_phy->SetChannel(p_yans_wifi_hannel);
+  //p_yans_wifi_phy->SetMobility(node);   
+  //p_yans_wifi_phy->SetDevice(device);
+  p_yans_wifi_phy->ConfigureStandard(WIFI_PHY_STANDARD_80211b);
+  Ptr<YansWifiPhy> rx = p_yans_wifi_phy;
+#else
+  //create rx using CreateObject
+  Ptr<YansWifiPhy> rx = CreateObject<YansWifiPhy>();
+#endif
 
   Ptr<ErrorRateModel> error = CreateObject<YansErrorRateModel> ();
   txA->SetErrorRateModel (error);
