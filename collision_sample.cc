@@ -50,6 +50,14 @@ static void GenerateTraffic (Ptr<Socket> socket, uint32_t pktSize,
     }
 }
 
+void myRxOkCallback(Ptr<Packet> p, double snr, WifiMode mode, enum WifiPreamble preamble){
+  NS_LOG_UNCOND("myRxOkCallback, snr=" << snr);
+}
+
+void myRxErrorCallback(Ptr<const Packet> packet, double snr) {
+  NS_LOG_UNCOND("myRxErrorCallback, snr=" << snr);
+}
+
 
 int main (int argc, char *argv[])
 {
@@ -148,7 +156,9 @@ int main (int argc, char *argv[])
     yans_wifi_phy_factory.SetTypeId("ns3::YansWifiPhy");
     yans_wifi_phy_factory.Set ("RxGain", DoubleValue (0) );
     yans_wifi_phy_factory.Set ("CcaMode1Threshold", DoubleValue (0.0) );
+#if 0
     yans_wifi_phy_factory.Set ("EnergyDetectionThreshold", DoubleValue (0.0) );
+#endif
     yans_wifi_phy_factory.Set ("TxGain", DoubleValue (offset + Prss) ); 
     Ptr<YansWifiPhy> p_yans_wifi_phy = yans_wifi_phy_factory.Create<YansWifiPhy>();
     p_yans_wifi_phy->SetErrorRateModel(p_error_rate_model);
@@ -156,6 +166,8 @@ int main (int argc, char *argv[])
     p_yans_wifi_phy->SetMobility(node);   
     p_yans_wifi_phy->SetDevice(device);
     p_yans_wifi_phy->ConfigureStandard(WIFI_PHY_STANDARD_80211b);
+    p_yans_wifi_phy->SetReceiveOkCallback(MakeCallback (&myRxOkCallback));
+    p_yans_wifi_phy->SetReceiveErrorCallback(MakeCallback (&myRxErrorCallback));
      
     ObjectFactory station_manager = ObjectFactory();
     station_manager.SetTypeId("ns3::ConstantRateWifiManager");
