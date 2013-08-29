@@ -134,15 +134,15 @@ int main (int argc, char *argv[])
   mobility.Install (node_container);
 
     // Enable OLSR
-  OlsrHelper olsr;
-  Ipv4StaticRoutingHelper staticRouting;
+  //OlsrHelper olsr;
+  //Ipv4StaticRoutingHelper staticRouting;
 
-  Ipv4ListRoutingHelper list;
-  list.Add (staticRouting, 0);
-  list.Add (olsr, 10);
+  Ipv4ListRoutingHelper ipv4_list_routing_helper;
+  ipv4_list_routing_helper.Add (Ipv4StaticRoutingHelper(), 0);
+  ipv4_list_routing_helper.Add (OlsrHelper(), 10);
 
   InternetStackHelper internet;
-  internet.SetRoutingHelper (list); // has effect on the next Install ()
+  internet.SetRoutingHelper (ipv4_list_routing_helper); // has effect on the next Install ()
   internet.Install (node_container);
   
   Ipv4AddressHelper ipv4;
