@@ -194,7 +194,7 @@ CollisionExperiment::Run (struct CollisionExperiment::Input input)
 
 
   rx->SetReceiveOkCallback (MakeCallback (&CollisionExperiment::Receive, this));
-  //rx->SetReceiveErrorCallback (MakeCallback (&myRxErrorCallback));
+  rx->SetReceiveErrorCallback (MakeCallback (&myRxErrorCallback));
 
   for (uint32_t i = 0; i < m_input.nPackets; ++i)
     {
