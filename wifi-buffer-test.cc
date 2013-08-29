@@ -132,6 +132,7 @@ int main (int argc, char *argv[])
     net_device_container.Add (wifi_helper.Install (wifiPhy, wifiMac, node_container.Get (j)));
   }
     
+  {
   MobilityHelper mobility;
   Ptr<ListPositionAllocator> positionAlloc = CreateObject<ListPositionAllocator> ();
   positionAlloc->Add (Vector (0.0, 0.0, 0.0));
@@ -141,11 +142,12 @@ int main (int argc, char *argv[])
   mobility.SetPositionAllocator (positionAlloc);
   mobility.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
   mobility.Install (node_container);
+  }
 
     // Enable OLSR
   //OlsrHelper olsr;
   //Ipv4StaticRoutingHelper staticRouting;
-
+  {
   Ipv4ListRoutingHelper ipv4_list_routing_helper;
   ipv4_list_routing_helper.Add (Ipv4StaticRoutingHelper(), 0);
   ipv4_list_routing_helper.Add (OlsrHelper(), 10);
@@ -153,11 +155,14 @@ int main (int argc, char *argv[])
   InternetStackHelper internet_stack_helper;
   internet_stack_helper.SetRoutingHelper (ipv4_list_routing_helper); // has effect on the next Install ()
   internet_stack_helper.Install (node_container);
+  }
   
+  {
   Ipv4AddressHelper ipv4_address_helper;
   NS_LOG_INFO ("Assign IP Addresses.");
   ipv4_address_helper.SetBase ("10.1.1.0", "255.255.255.0");
   Ipv4InterfaceContainer i = ipv4_address_helper.Assign (net_device_container);
+  }
 
   TypeId tid = TypeId::LookupByName ("ns3::UdpSocketFactory");
   Ptr<Socket> recvSink = Socket::CreateSocket (node_container.Get (1), tid);
