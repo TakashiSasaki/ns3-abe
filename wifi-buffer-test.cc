@@ -81,12 +81,12 @@ int main (int argc, char *argv[])
   c.Create (4);
 
   // The below set of helpers will help us to put together the wifi NICs we want
-  WifiHelper wifi;
+  WifiHelper wifi_helper;
   if (verbose)
     {
-      wifi.EnableLogComponents ();  // Turn on all Wifi logging
+      wifi_helper.EnableLogComponents ();  // Turn on all Wifi logging
     }
-  wifi.SetStandard (WIFI_PHY_STANDARD_80211b);
+  wifi_helper.SetStandard (WIFI_PHY_STANDARD_80211b);
 
 
   // 2. Place nodes somehow, this is required by every wireless simulation
@@ -110,8 +110,8 @@ int main (int argc, char *argv[])
   NqosWifiMacHelper wifiMac = NqosWifiMacHelper::Default ();
   wifiMac.SetType ("ns3::AdhocWifiMac"); // use ad-hoc MAC
   //NetDeviceContainer devices = wifi.Install (wifiPhy, wifiMac, c);
-  wifi.SetStandard (WIFI_PHY_STANDARD_80211b);
-  wifi.SetRemoteStationManager ("ns3::ConstantRateWifiManager",
+  wifi_helper.SetStandard (WIFI_PHY_STANDARD_80211b);
+  wifi_helper.SetRemoteStationManager ("ns3::ConstantRateWifiManager",
                                 "DataMode",StringValue (phyMode),
                                 "ControlMode",StringValue (phyMode));
 
@@ -120,7 +120,7 @@ int main (int argc, char *argv[])
   for ( int j = 0; j < 4; j++ ) {
     wifiPhy.Set ("EnergyDetectionThreshold", DoubleValue (0.0) );
     wifiPhy.Set ("TxGain", DoubleValue (offset + Prss) ); 
-    devices.Add (wifi.Install (wifiPhy, wifiMac, c.Get (j)));
+    devices.Add (wifi_helper.Install (wifiPhy, wifiMac, c.Get (j)));
   }
     
   MobilityHelper mobility;

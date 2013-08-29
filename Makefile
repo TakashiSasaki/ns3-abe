@@ -1,7 +1,15 @@
+build: build-wifi-buffer-test
+
 help:
 	@echo To run all scripts, just type "'make run'".
 
-run: run-wifi-phy-test
+build-wifi-buffer-test:
+	../waf build wifi-buffer-test
+
+run: run-wifi-buffer-test
+
+run-wifi-buffer-test:
+	../waf --run wifi-buffer-test
 
 run-wifi-phy-test:
 	../waf --run wifi-phy-test
