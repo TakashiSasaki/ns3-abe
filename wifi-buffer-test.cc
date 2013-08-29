@@ -115,12 +115,12 @@ int main (int argc, char *argv[])
                                 "DataMode",StringValue (phyMode),
                                 "ControlMode",StringValue (phyMode));
 
-  NetDeviceContainer devices;
+  NetDeviceContainer net_device_container;
   
   for ( int j = 0; j < 4; j++ ) {
     wifiPhy.Set ("EnergyDetectionThreshold", DoubleValue (0.0) );
     wifiPhy.Set ("TxGain", DoubleValue (offset + Prss) ); 
-    devices.Add (wifi_helper.Install (wifiPhy, wifiMac, node_container.Get (j)));
+    net_device_container.Add (wifi_helper.Install (wifiPhy, wifiMac, node_container.Get (j)));
   }
     
   MobilityHelper mobility;
@@ -148,7 +148,7 @@ int main (int argc, char *argv[])
   Ipv4AddressHelper ipv4;
   NS_LOG_INFO ("Assign IP Addresses.");
   ipv4.SetBase ("10.1.1.0", "255.255.255.0");
-  Ipv4InterfaceContainer i = ipv4.Assign (devices);
+  Ipv4InterfaceContainer i = ipv4.Assign (net_device_container);
 
   TypeId tid = TypeId::LookupByName ("ns3::UdpSocketFactory");
   Ptr<Socket> recvSink = Socket::CreateSocket (node_container.Get (1), tid);
@@ -183,7 +183,7 @@ int main (int argc, char *argv[])
   
 
   // Tracing
-  wifiPhy.EnablePcap ("wifi-buffer-test", devices);
+  wifiPhy.EnablePcap ("wifi-buffer-test", net_device_container);
 
   // Output what we are doing
   NS_LOG_UNCOND ("Testing " << numPackets  << " packets sent with receiver rss " << rss );
