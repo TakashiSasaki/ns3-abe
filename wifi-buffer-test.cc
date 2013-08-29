@@ -77,8 +77,8 @@ int main (int argc, char *argv[])
   //キューが保持できる最大パケット数を1に制限
   Config::SetDefault ("ns3::DropTailQueue::MaxPackets", UintegerValue (1));
     
-  NodeContainer c;
-  c.Create (4);
+  NodeContainer node_container;
+  node_container.Create (4);
 
   // The below set of helpers will help us to put together the wifi NICs we want
   WifiHelper wifi_helper;
@@ -92,7 +92,7 @@ int main (int argc, char *argv[])
   // 2. Place nodes somehow, this is required by every wireless simulation
   for (size_t i = 0; i < 4; ++i)
     {
-      c.Get (i)->AggregateObject (CreateObject<ConstantPositionMobilityModel> ());
+      node_container.Get (i)->AggregateObject (CreateObject<ConstantPositionMobilityModel> ());
     }
   
   YansWifiPhyHelper wifiPhy =  YansWifiPhyHelper::Default ();
@@ -109,7 +109,7 @@ int main (int argc, char *argv[])
   // 5. Install wireless devices
   NqosWifiMacHelper wifiMac = NqosWifiMacHelper::Default ();
   wifiMac.SetType ("ns3::AdhocWifiMac"); // use ad-hoc MAC
-  //NetDeviceContainer devices = wifi.Install (wifiPhy, wifiMac, c);
+  //NetDeviceContainer devices = wifi.Install (wifiPhy, wifiMac, node_container);
   wifi_helper.SetStandard (WIFI_PHY_STANDARD_80211b);
   wifi_helper.SetRemoteStationManager ("ns3::ConstantRateWifiManager",
                                 "DataMode",StringValue (phyMode),
@@ -120,7 +120,7 @@ int main (int argc, char *argv[])
   for ( int j = 0; j < 4; j++ ) {
     wifiPhy.Set ("EnergyDetectionThreshold", DoubleValue (0.0) );
     wifiPhy.Set ("TxGain", DoubleValue (offset + Prss) ); 
-    devices.Add (wifi_helper.Install (wifiPhy, wifiMac, c.Get (j)));
+    devices.Add (wifi_helper.Install (wifiPhy, wifiMac, node_container.Get (j)));
   }
     
   MobilityHelper mobility;
@@ -131,7 +131,7 @@ int main (int argc, char *argv[])
   positionAlloc->Add (Vector (3.0, 0.0, 0.0));
   mobility.SetPositionAllocator (positionAlloc);
   mobility.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
-  mobility.Install (c);
+  mobility.Install (node_container);
 
     // Enable OLSR
   OlsrHelper olsr;
@@ -143,7 +143,7 @@ int main (int argc, char *argv[])
 
   InternetStackHelper internet;
   internet.SetRoutingHelper (list); // has effect on the next Install ()
-  internet.Install (c);
+  internet.Install (node_container);
   
   Ipv4AddressHelper ipv4;
   NS_LOG_INFO ("Assign IP Addresses.");
@@ -151,32 +151,32 @@ int main (int argc, char *argv[])
   Ipv4InterfaceContainer i = ipv4.Assign (devices);
 
   TypeId tid = TypeId::LookupByName ("ns3::UdpSocketFactory");
-  Ptr<Socket> recvSink = Socket::CreateSocket (c.Get (1), tid);
+  Ptr<Socket> recvSink = Socket::CreateSocket (node_container.Get (1), tid);
   InetSocketAddress local = InetSocketAddress (Ipv4Address::GetAny (), 80);
   recvSink->Bind (local);
   //recvSink->SetRecvCallback (MakeCallback (&ReceivePacket));
 
-  Ptr<Socket> recvSink2 = Socket::CreateSocket (c.Get (2), tid);
+  Ptr<Socket> recvSink2 = Socket::CreateSocket (node_container.Get (2), tid);
   InetSocketAddress local2 = InetSocketAddress (Ipv4Address::GetAny (), 80);
   recvSink2->Bind (local2);
   //recvSink2->SetRecvCallback (MakeCallback (&ReceivePacket));
 
-  Ptr<Socket> recvSink3 = Socket::CreateSocket (c.Get (3), tid);
+  Ptr<Socket> recvSink3 = Socket::CreateSocket (node_container.Get (3), tid);
   InetSocketAddress local3 = InetSocketAddress (Ipv4Address::GetAny (), 80);
   recvSink3->Bind (local3);
   recvSink3->SetRecvCallback (MakeCallback (&ReceivePacket));
 
-  Ptr<Socket> source = Socket::CreateSocket (c.Get (0), tid);
+  Ptr<Socket> source = Socket::CreateSocket (node_container.Get (0), tid);
   InetSocketAddress remote = InetSocketAddress (Ipv4Address ("10.1.1.4"), 80);
   source->SetAllowBroadcast (true);
   source->Connect (remote);
 
-  Ptr<Socket> source2 = Socket::CreateSocket (c.Get (1), tid);
+  Ptr<Socket> source2 = Socket::CreateSocket (node_container.Get (1), tid);
   InetSocketAddress remote2 = InetSocketAddress (Ipv4Address ("10.1.1.4"), 80);
   source2->SetAllowBroadcast (true);
   source2->Connect (remote2);
 
-  Ptr<Socket> source3 = Socket::CreateSocket (c.Get (2), tid);
+  Ptr<Socket> source3 = Socket::CreateSocket (node_container.Get (2), tid);
   InetSocketAddress remote3 = InetSocketAddress (Ipv4Address ("10.1.1.4"), 80);
   source3->SetAllowBroadcast (true);
   source3->Connect (remote3);
