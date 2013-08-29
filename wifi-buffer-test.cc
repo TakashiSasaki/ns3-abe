@@ -150,14 +150,14 @@ int main (int argc, char *argv[])
   ipv4_list_routing_helper.Add (Ipv4StaticRoutingHelper(), 0);
   ipv4_list_routing_helper.Add (OlsrHelper(), 10);
 
-  InternetStackHelper internet;
-  internet.SetRoutingHelper (ipv4_list_routing_helper); // has effect on the next Install ()
-  internet.Install (node_container);
+  InternetStackHelper internet_stack_helper;
+  internet_stack_helper.SetRoutingHelper (ipv4_list_routing_helper); // has effect on the next Install ()
+  internet_stack_helper.Install (node_container);
   
-  Ipv4AddressHelper ipv4;
+  Ipv4AddressHelper ipv4_address_helper;
   NS_LOG_INFO ("Assign IP Addresses.");
-  ipv4.SetBase ("10.1.1.0", "255.255.255.0");
-  Ipv4InterfaceContainer i = ipv4.Assign (net_device_container);
+  ipv4_address_helper.SetBase ("10.1.1.0", "255.255.255.0");
+  Ipv4InterfaceContainer i = ipv4_address_helper.Assign (net_device_container);
 
   TypeId tid = TypeId::LookupByName ("ns3::UdpSocketFactory");
   Ptr<Socket> recvSink = Socket::CreateSocket (node_container.Get (1), tid);
