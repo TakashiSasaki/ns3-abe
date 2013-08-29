@@ -166,10 +166,10 @@ int main (int argc, char *argv[])
   recvSink3->Bind (local3);
   recvSink3->SetRecvCallback (MakeCallback (&ReceivePacket));
 
-  Ptr<Socket> source = Socket::CreateSocket (node_container.Get (0), tid);
+  Ptr<Socket> p_source_socket = Socket::CreateSocket (node_container.Get (0), tid);
   InetSocketAddress remote = InetSocketAddress (Ipv4Address ("10.1.1.4"), 80);
-  source->SetAllowBroadcast (true);
-  source->Connect (remote);
+  p_source_socket->SetAllowBroadcast (true);
+  p_source_socket->Connect (remote);
 
   Ptr<Socket> source2 = Socket::CreateSocket (node_container.Get (1), tid);
   InetSocketAddress remote2 = InetSocketAddress (Ipv4Address ("10.1.1.4"), 80);
@@ -190,9 +190,9 @@ int main (int argc, char *argv[])
 
   double t = 32.0;
   while (numPackets != 0) {
-    Simulator::ScheduleWithContext (source->GetNode ()->GetId (),
+    Simulator::ScheduleWithContext (p_source_socket->GetNode ()->GetId (),
                                     Seconds (t += interval), &GenerateTraffic, 
-                                    source, packetSize);
+                                    p_source_socket, packetSize);
     
     numPackets -= 1;
   }
