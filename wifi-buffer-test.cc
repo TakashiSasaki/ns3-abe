@@ -166,34 +166,39 @@ int main (int argc, char *argv[])
   Ipv4InterfaceContainer i = ipv4_address_helper.Assign (net_device_container);
   }
 
-  TypeId tid = TypeId::LookupByName ("ns3::UdpSocketFactory");
-  Ptr<Socket> recvSink = Socket::CreateSocket (node_container.Get (1), tid);
+  TypeId udp_socket_factory_type_id = TypeId::LookupByName ("ns3::UdpSocketFactory");
+  Ptr<Socket> recvSink = Socket::CreateSocket (node_container.Get (1), udp_socket_factory_type_id);
   InetSocketAddress local = InetSocketAddress (Ipv4Address::GetAny (), 80);
   recvSink->Bind (local);
   //recvSink->SetRecvCallback (MakeCallback (&ReceivePacket));
 
-  Ptr<Socket> recvSink2 = Socket::CreateSocket (node_container.Get (2), tid);
+  Ptr<Socket> recvSink2 = Socket::CreateSocket (node_container.Get (2), udp_socket_factory_type_id);
   InetSocketAddress local2 = InetSocketAddress (Ipv4Address::GetAny (), 80);
   recvSink2->Bind (local2);
   //recvSink2->SetRecvCallback (MakeCallback (&ReceivePacket));
 
-  Ptr<Socket> recvSink3 = Socket::CreateSocket (node_container.Get (3), tid);
+  Ptr<Socket> recvSink3 = Socket::CreateSocket (node_container.Get (3), udp_socket_factory_type_id);
   InetSocketAddress local3 = InetSocketAddress (Ipv4Address::GetAny (), 80);
   recvSink3->Bind (local3);
   recvSink3->SetAttribute("RcvBufSize", UintegerValue (1000));
   recvSink3->SetRecvCallback (MakeCallback (&ReceivePacket));
+  Ptr<DropTailQueue> p_drop_tail_queue = node_container.Get(3)->GetObject<DropTailQueue>();
+  
+  //StringValue string_value;
+  //p_drop_tail_queue->GetAttribute("Mode", string_value);
+  //NS_LOG_INFO(string_value.Get());
 
-  Ptr<Socket> p_source_socket = Socket::CreateSocket (node_container.Get (0), tid);
+  Ptr<Socket> p_source_socket = Socket::CreateSocket (node_container.Get (0), udp_socket_factory_type_id);
   InetSocketAddress remote = InetSocketAddress (Ipv4Address ("10.1.1.4"), 80);
   p_source_socket->SetAllowBroadcast (true);
   p_source_socket->Connect (remote);
 
-  Ptr<Socket> source2 = Socket::CreateSocket (node_container.Get (1), tid);
+  Ptr<Socket> source2 = Socket::CreateSocket (node_container.Get (1), udp_socket_factory_type_id);
   InetSocketAddress remote2 = InetSocketAddress (Ipv4Address ("10.1.1.4"), 80);
   source2->SetAllowBroadcast (true);
   source2->Connect (remote2);
 
-  Ptr<Socket> source3 = Socket::CreateSocket (node_container.Get (2), tid);
+  Ptr<Socket> source3 = Socket::CreateSocket (node_container.Get (2), udp_socket_factory_type_id);
   InetSocketAddress remote3 = InetSocketAddress (Ipv4Address ("10.1.1.4"), 80);
   source3->SetAllowBroadcast (true);
   source3->Connect (remote3);
