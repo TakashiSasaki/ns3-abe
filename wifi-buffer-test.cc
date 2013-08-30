@@ -110,10 +110,12 @@ int main (int argc, char *argv[])
   wifiPhy.Set ("CcaMode1Threshold", DoubleValue (0.0) );
   
   // 4. Create & setup wifi channel
+  {
   YansWifiChannelHelper wifiChannel;
   wifiChannel.SetPropagationDelay ("ns3::ConstantSpeedPropagationDelayModel");
   wifiChannel.AddPropagationLoss ("ns3::LogDistancePropagationLossModel");
   wifiPhy.SetChannel (wifiChannel.Create ());
+  }
 
   // 5. Install wireless devices
   NqosWifiMacHelper wifiMac = NqosWifiMacHelper::Default ();
@@ -178,6 +180,7 @@ int main (int argc, char *argv[])
   Ptr<Socket> recvSink3 = Socket::CreateSocket (node_container.Get (3), tid);
   InetSocketAddress local3 = InetSocketAddress (Ipv4Address::GetAny (), 80);
   recvSink3->Bind (local3);
+  recvSink3->SetAttribute("RcvBufSize", UintegerValue (1000));
   recvSink3->SetRecvCallback (MakeCallback (&ReceivePacket));
 
   Ptr<Socket> p_source_socket = Socket::CreateSocket (node_container.Get (0), tid);
