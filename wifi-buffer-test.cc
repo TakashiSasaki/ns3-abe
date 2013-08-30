@@ -74,7 +74,7 @@ int main (int argc, char *argv[])
   double Prss = -80;
   uint32_t packetSize = 1000; // bytes
   uint32_t numPackets = 10;
-  double interval = 0.0; // seconds
+  double interval = 0.001; // seconds
   bool verbose = false;
   double offset = 91;
   
@@ -98,6 +98,7 @@ int main (int argc, char *argv[])
                       StringValue (phyMode));
   //キューが保持できる最大パケット数を1に制限
   Config::SetDefault ("ns3::DropTailQueue::MaxPackets", UintegerValue (1));
+  Config::SetDefault ("ns3::WifiMacQueue::MaxPacketNumber", UintegerValue (1));
     
   NodeContainer node_container;
   node_container.Create (4);
@@ -186,7 +187,7 @@ int main (int argc, char *argv[])
   Ptr<Socket> p_source_raw_socket = p_source_ipv4_l3_protocol->CreateRawSocket();
   Ptr<Socket> p_destination_raw_socket = p_destination_ipv4_l3_protocol->CreateRawSocket();
   Address source_address = InetSocketAddress(Ipv4Address("10.1.1.1"), 0);
-  Address destination_address = InetSocketAddress(Ipv4Address("10.1.1.1"), 0);
+  Address destination_address = InetSocketAddress(Ipv4Address("10.1.1.4"), 0);
   p_source_raw_socket->SetRecvCallback (MakeCallback (&ReceivePacket));
   p_destination_raw_socket->SetRecvCallback (MakeCallback (&ReceivePacket));
 
@@ -213,17 +214,17 @@ int main (int argc, char *argv[])
   //NS_LOG_INFO(string_value.Get());
 
   Ptr<Socket> p_source_socket = Socket::CreateSocket (node_container.Get (0), udp_socket_factory_type_id);
-  InetSocketAddress remote = InetSocketAddress (Ipv4Address ("10.1.1.4"), 80);
+  InetSocketAddress remote = InetSocketAddress (Ipv4Address ("10.1.1.3"), 80);
   p_source_socket->SetAllowBroadcast (true);
   p_source_socket->Connect (remote);
 
   Ptr<Socket> source2 = Socket::CreateSocket (node_container.Get (1), udp_socket_factory_type_id);
-  InetSocketAddress remote2 = InetSocketAddress (Ipv4Address ("10.1.1.4"), 80);
+  InetSocketAddress remote2 = InetSocketAddress (Ipv4Address ("10.1.1.3"), 80);
   source2->SetAllowBroadcast (true);
   source2->Connect (remote2);
 
   Ptr<Socket> source3 = Socket::CreateSocket (node_container.Get (2), udp_socket_factory_type_id);
-  InetSocketAddress remote3 = InetSocketAddress (Ipv4Address ("10.1.1.4"), 80);
+  InetSocketAddress remote3 = InetSocketAddress (Ipv4Address ("10.1.1.3"), 80);
   source3->SetAllowBroadcast (true);
   source3->Connect (remote3);
   
