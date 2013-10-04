@@ -1,4 +1,4 @@
-build: build-wifi-buffer-test
+build: run-wifi-multihop-test
 
 help:
 	@echo To run all scripts, just type "'make run'".
@@ -17,4 +17,6 @@ run-wifi-phy-test:
 run-collision_sample:
 	../waf --run collision_sample
 
+run-wifi-multihop-test:
+	../waf --run "wifi-multihop-test --lambda=1 --sim_count=1"
 
