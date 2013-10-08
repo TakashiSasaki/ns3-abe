@@ -267,10 +267,14 @@ static void Run(int argc, char *argv[])
   CollisionExperiment::Input input;
   
   CommandLine cmd;
+  //if no value is parsed, this variable is not modified
   cmd.AddValue ("phyMode", "Wifi Phy mode", input.phyMode);
   cmd.AddValue ("lambda", "packet arrival rate", input.lambda);
   cmd.AddValue ("sim_count", "counter for simulation", input.sim_count);
   cmd.Parse (argc, argv);
+  std::cerr << "phyMode = " << input.phyMode << std::endl;
+  std::cerr << "lambda = " << input.lambda << std::endl; 
+  std::cerr << "sim_count= " << input.sim_count << std::endl; 
     
   Config::SetDefault ("ns3::WifiRemoteStationManager::NonUnicastMode", StringValue (input.phyMode));
   Config::SetDefault ("ns3::WifiMacQueue::MaxPacketNumber", UintegerValue (1));  //Mac層のキューの大きさ
