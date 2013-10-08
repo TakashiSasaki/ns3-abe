@@ -185,7 +185,13 @@ CollisionExperiment::Run (struct CollisionExperiment::Input input)
   
   for ( int n = 0; n < nNodes; n++ )
     {      
-      net_device_container.Add (wifi_helper.Install (wifiPhy, wifiMac, node_container.Get (n)));
+      //WifiHelper.Install calles WifiMacHelper.Create to create WifiMac instance x.
+      //x is configured by WifiMac.ConfigureStandard method.
+      //WifiMac.Configure80211b is called for WIFI_PHY_STANDARD_80211b.
+      //In Configure80211b, SetSifs, SetSlot, SetEifsNoDifs, SetPifs, SetCtsTimeout 
+      //and SetAckTimeout are called. SetEifsNoDifs is called with 314 microseconds.
+      NetDeviceContainer ndc = wifi_helper.Install (wifiPhy, wifiMac, node_container.Get (n));
+      net_device_container.Add (ndc);
     }
   
   MobilityHelper mobility;
