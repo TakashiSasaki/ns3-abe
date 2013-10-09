@@ -18,6 +18,7 @@ run-collision_sample:
 	../waf --run collision_sample
 
 run-wifi-multihop-test:
+	rm -rf Debug/
 	../waf --run "wifi-multihop-test --lambda=1 --sim_count=1"
 
 
