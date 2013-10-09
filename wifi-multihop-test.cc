@@ -13,11 +13,12 @@
 #include <vector>
 #include <string>
 #include <math.h>
-#include<time.h>
+#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sstream>
 #include <string>
+#include "difs-wifi-mac-helper.h"
 NS_LOG_COMPONENT_DEFINE ("WifiMutihopTest");
 
 using namespace ns3;
@@ -140,8 +141,10 @@ struct CollisionExperiment::Output CollisionExperiment::Run(
 	wifiPhy.Set("CcaMode1Threshold", DoubleValue(0.0));
 	wifiPhy.Set("EnergyDetectionThreshold", DoubleValue(0.0));
 
-	NqosWifiMacHelper wifiMac = NqosWifiMacHelper::Default();
-	wifiMac.SetType("ns3::AdhocWifiMac");
+	//NqosWifiMacHelper wifiMac = NqosWifiMacHelper::Default();
+	DifsWifiMacHelper wifiMac(2,31,1023);
+
+	//wifiMac.SetType("ns3::AdhocWifiMac");
 
 	WifiHelper wifi_helper;
 	wifi_helper.SetStandard(WIFI_PHY_STANDARD_80211b);
@@ -157,6 +160,7 @@ struct CollisionExperiment::Output CollisionExperiment::Run(
 		//WifiMac.Configure80211b is called for WIFI_PHY_STANDARD_80211b.
 		//In Configure80211b, SetSifs, SetSlot, SetEifsNoDifs, SetPifs, SetCtsTimeout
 		//and SetAckTimeout are called. SetEifsNoDifs is called with 314 microseconds.
+
 		NetDeviceContainer ndc = wifi_helper.Install(wifiPhy, wifiMac,
 				node_container.Get(n));
 		net_device_container.Add(ndc);
