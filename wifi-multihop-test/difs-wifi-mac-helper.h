@@ -21,13 +21,13 @@ class DifsWifiMacHelper: public ns3::NqosWifiMacHelper {
 
 
 public:
-	static DifsWifiMacHelper Default(void){
+	static DifsWifiMacHelper Default(uint32_t aifsn=2, 
+			uint32_t cwmin=31, uint32_t cwmax=1023){
   		DifsWifiMacHelper difs_wifi_mac_helper;
-		difs_wifi_mac_helper.SetType ("abe::DifsWifiMac");
-		//difs_wifi_mac_helper.SetType ("abe::DifsWifiMac";
-                //		"Aifsn", ns3::UintegerValue (2),
-		//		"cwmin", ns3::UintegerValue(31),
-		//		"cwmax", ns3::UintegerValue(1023));
+		difs_wifi_mac_helper.SetType ("abe::DifsWifiMac",
+                		"Aifsn", ns3::UintegerValue (aifsn),
+				"cwmin", ns3::UintegerValue(cwmin),
+				"cwmax", ns3::UintegerValue(cwmax));
 
         	return difs_wifi_mac_helper;
 	}
