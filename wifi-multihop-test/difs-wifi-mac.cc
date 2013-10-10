@@ -17,8 +17,12 @@ DifsWifiMac::~DifsWifiMac() {
 }//destructor
 
 ns3::TypeId DifsWifiMac::GetTypeId(void) {
-	static ns3::TypeId type_id = ns3::TypeId("abe::DifsWifiMac").SetParent<
-			ns3::AdhocWifiMac> ().AddConstructor<DifsWifiMac> ();
+	static ns3::TypeId type_id = ns3::TypeId("abe::DifsWifiMac")
+		.SetParent<ns3::AdhocWifiMac> ()
+		.AddConstructor<DifsWifiMac> ()
+		.AddAttribute("Aifsn","Aifsn",ns3::UintegerValue(2),
+			ns3::MakeUintegerAccessor(&DifsWifiMac::aifsn),
+			ns3::MakeUintegerChecker<uint32_t>());
 	return type_id;
 }//GetTypeId
 
