@@ -22,6 +22,12 @@ ns3::TypeId DifsWifiMac::GetTypeId(void) {
 		.AddConstructor<DifsWifiMac> ()
 		.AddAttribute("Aifsn","Aifsn",ns3::UintegerValue(2),
 			ns3::MakeUintegerAccessor(&DifsWifiMac::aifsn),
+			ns3::MakeUintegerChecker<uint32_t>())
+		.AddAttribute("cwmin", "cwmin", ns3::UintegerValue(31),
+			ns3::MakeUintegerAccessor(&DifsWifiMac::cwmin),
+			ns3::MakeUintegerChecker<uint32_t>())
+		.AddAttribute("cwmax", "cwmax", ns3::UintegerValue(1023),
+			ns3::MakeUintegerAccessor(&DifsWifiMac::cwmax),
 			ns3::MakeUintegerChecker<uint32_t>());
 	return type_id;
 }//GetTypeId
