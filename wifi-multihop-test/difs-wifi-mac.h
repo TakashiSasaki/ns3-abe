@@ -13,7 +13,7 @@
 #include "ns3/regular-wifi-mac.h"
 #include "ns3/qos-utils.h"
 #include "ns3/wifi-phy-standard.h"
-
+namespace abe{
 class DifsWifiMac: public ns3::AdhocWifiMac {
 	ns3::AdhocWifiMac* pAdhocWifiMac;
 	ns3::RegularWifiMac* pRegularWifiMac;
@@ -31,5 +31,6 @@ protected:
 	virtual void FinishConfigureStandard(enum ns3::WifiPhyStandard standard);
 
 };//DifsWifiMac
+};//abe
 
 #endif /* DIFS_WIFI_MAC_H_ */

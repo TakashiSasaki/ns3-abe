@@ -12,6 +12,7 @@
 #include "ns3/boolean.h"
 #include "difs-wifi-mac.h"
 
+namespace abe{
 class DifsWifiMacHelper: public ns3::NqosWifiMacHelper {
 	uint32_t aifsn;
 	uint32_t cwmin;
@@ -19,13 +20,22 @@ class DifsWifiMacHelper: public ns3::NqosWifiMacHelper {
 	ns3::ObjectFactory objectFactory;
 
 
-	static DifsWifiMacHelper Default(void);
-
 public:
+	static DifsWifiMacHelper Default(void){
+  		DifsWifiMacHelper difs_wifi_mac_helper;
+		difs_wifi_mac_helper.SetType ("abe::DifsWifiMac");
+		//difs_wifi_mac_helper.SetType ("abe::DifsWifiMac";
+                //		"Aifsn", ns3::UintegerValue (2),
+		//		"cwmin", ns3::UintegerValue(31),
+		//		"cwmax", ns3::UintegerValue(1023));
+
+        	return difs_wifi_mac_helper;
+	}
+
 	DifsWifiMacHelper(uint32_t aifsn = 2, uint32_t cwmin = 31, uint32_t cwmax =
 			1023) :
 		aifsn(aifsn), cwmin(cwmin), cwmax(cwmax) {
-		objectFactory.SetTypeId("DifsWifiMac");
+		objectFactory.SetTypeId("abe::DifsWifiMac");
 		objectFactory.Set("QosSupported", ns3::BooleanValue(false));
 	}// constructor
 
@@ -37,5 +47,5 @@ public:
 	virtual ~DifsWifiMacHelper() {
 	}// destructor
 };//DifsWifiMacHelper
-
+};//abe
 #endif /* DIFS_WIFI_MAC_HELPER_H_ */

@@ -142,7 +142,8 @@ struct CollisionExperiment::Output CollisionExperiment::Run(
 	wifiPhy.Set("EnergyDetectionThreshold", DoubleValue(0.0));
 
 	//NqosWifiMacHelper wifiMac = NqosWifiMacHelper::Default();
-	DifsWifiMacHelper wifiMac(2,31,1023);
+	//abe::DifsWifiMacHelper wifiMac(2,31,1023);
+	abe::DifsWifiMacHelper wifiMac = abe::DifsWifiMacHelper::Default();
 
 	//wifiMac.SetType("ns3::AdhocWifiMac");
 
