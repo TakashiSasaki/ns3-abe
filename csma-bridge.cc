@@ -41,35 +41,37 @@
 
 using namespace ns3;
 
-NS_LOG_COMPONENT_DEFINE ("CsmaBridgeExample");
+NS_LOG_COMPONENT_DEFINE ("CsmaBridgeforEUNET");
 
-int 
-main (int argc, char *argv[])
+int main (int argc, char *argv[])
 {
   //
   // Users may find it convenient to turn on explicit debugging
   // for selected modules; the below lines suggest how to do this
   //
 #if 0 
-  LogComponentEnable ("CsmaBridgeExample", LOG_LEVEL_INFO);
+  LogComponentEnable ("CsmaBridgeforEUNET", LOG_LEVEL_INFO);
 #endif
 
   //
   // Allow the user to override any of the defaults and the above Bind() at
   // run-time, via command-line arguments
   //
-  CommandLine cmd;
-  cmd.Parse (argc, argv);
+  CommandLine commandLine;
+  commandLine.Parse (argc, argv);
+
+  int terminalNumber = 4;
+  int switchNumber = 1;
 
   //
   // Explicitly create the nodes required by the topology (shown above).
   //
   NS_LOG_INFO ("Create nodes.");
   NodeContainer terminals;
-  terminals.Create (4);
+  terminals.Create (terminalNumber);
 
   NodeContainer csmaSwitch;
-  csmaSwitch.Create (1);
+  csmaSwitch.Create (switchNumber);
 
   NS_LOG_INFO ("Build Topology");
   CsmaHelper csma;
@@ -162,4 +164,6 @@ main (int argc, char *argv[])
   Simulator::Run ();
   Simulator::Destroy ();
   NS_LOG_INFO ("Done.");
+
+  return 0;
 }
