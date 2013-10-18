@@ -31,7 +31,6 @@
 
 #include <iostream>
 #include <fstream>
-
 #include "ns3/core-module.h"
 #include "ns3/network-module.h"
 #include "ns3/applications-module.h"
@@ -60,8 +59,13 @@ int main (int argc, char *argv[])
   CommandLine commandLine;
   commandLine.Parse (argc, argv);
 
-  int terminalNumber = 4;
+  int terminalNumber;
+  puts("terminalNumber >");
+  scanf("%d",&terminalNumber);
+
   int switchNumber = 1;
+  puts("switchNumber >");
+  scanf("%d",&switchNumber);
 
   //
   // Explicitly create the nodes required by the topology (shown above).
@@ -83,7 +87,7 @@ int main (int argc, char *argv[])
   NetDeviceContainer terminalDevices;
   NetDeviceContainer switchDevices;
 
-  for (int i = 0; i < 4; i++)
+  for (int i = 0; i <terminalNumber; i++)
     {
       NetDeviceContainer link = csma.Install (NodeContainer (terminals.Get (i), csmaSwitch));
       terminalDevices.Add (link.Get (0));
