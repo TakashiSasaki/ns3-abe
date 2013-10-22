@@ -63,7 +63,7 @@ int main (int argc, char *argv[])
   puts("terminalNumber >");
   scanf("%d",&terminalNumber);
 
-  int switchNumber = 1;
+  int switchNumber;
   puts("switchNumber >");
   scanf("%d",&switchNumber);
 
