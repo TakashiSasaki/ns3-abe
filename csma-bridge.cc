@@ -37,137 +37,108 @@
 #include "ns3/bridge-module.h"
 #include "ns3/csma-module.h"
 #include "ns3/internet-module.h"
+#include "EunetSwitch.h"
 
 using namespace ns3;
-
 NS_LOG_COMPONENT_DEFINE ("CsmaBridgeforEUNET");
 
-int main (int argc, char *argv[])
-{
-  //
-  // Users may find it convenient to turn on explicit debugging
-  // for selected modules; the below lines suggest how to do this
-  //
-#if 0 
-  LogComponentEnable ("CsmaBridgeforEUNET", LOG_LEVEL_INFO);
-#endif
+int main(int argc, char *argv[]) {
+	//
+	// Users may find it convenient to turn on explicit debugging
+	// for selected modules; the below lines suggest how to do this
+	//
+	LogComponentEnable ("CsmaBridgeforEUNET", LOG_LEVEL_INFO);
 
-  //
-  // Allow the user to override any of the defaults and the above Bind() at
-  // run-time, via command-line arguments
-  //
-  CommandLine commandLine;
-  commandLine.Parse (argc, argv);
+	//
+	// Allow the user to override any of the defaults and the above Bind() at
+	// run-time, via command-line arguments
+	//
+	//int nDownlinkPorts;
+	int nSwitches = 2;
+	CommandLine command_line;
+	//command_line.AddValue("nDownlinkPorts", "number of downlink ports on a switch", nDownlinkPorts);
+	//command_line.AddValue("nSwitches", "number of switches", nSwitches);
+	//command_line.Parse(argc, argv);
 
-  int terminalNumber;
-  puts("terminalNumber >");
-  scanf("%d",&terminalNumber);
 
-  int switchNumber;
-  puts("switchNumber >");
-  scanf("%d",&switchNumber);
+	EunetSwitch root_switch;
+	NS_LOG_INFO("Creating switches");
+	EunetSwitch distribution_switches[nSwitches];
 
-  //
-  // Explicitly create the nodes required by the topology (shown above).
-  //
-  NS_LOG_INFO ("Create nodes.");
-  NodeContainer terminals;
-  terminals.Create (terminalNumber);
+	for (int i = 0; i < nSwitches; ++i) {
+		NS_LOG_INFO("Connecting distribution switches to the root switch.");
+		distribution_switches[i].connectUpTo(0, root_switch, i);
+	}//for
 
-  NodeContainer csmaSwitch;
-  csmaSwitch.Create (switchNumber);
+	NS_LOG_INFO ("Assign IP Addresses.");
+	Ipv4AddressHelper ipv4_address_helper;
+	ipv4_address_helper.SetBase("10.1.1.0", "255.255.255.0");
+	for (int i = 0; i < nSwitches; ++i) {
+		ipv4_address_helper.Assign(
+				distribution_switches[i].getTerminalDevices());
+	}//for
 
-  NS_LOG_INFO ("Build Topology");
-  CsmaHelper csma;
-  csma.SetChannelAttribute ("DataRate", DataRateValue (5000000));
-  csma.SetChannelAttribute ("Delay", TimeValue (MilliSeconds (2)));
+	//
+	// Create an OnOff application to send UDP datagrams from node zero to node 1.
+	//
+	NS_LOG_INFO ("Create Applications.");
+	uint16_t port = 9; // Discard port (RFC 863)
 
-  // Create the csma links, from each terminal to the switch
+	OnOffHelper on_off_helper("ns3::UdpSocketFactory", Address(
+			InetSocketAddress(Ipv4Address("10.1.1.2"), port)));
+	on_off_helper.SetConstantRate(DataRate("500kb/s"));
+	on_off_helper.SetAttribute("Remote", AddressValue(InetSocketAddress(Ipv4Address(
+			"10.1.1.1"), port)));
 
-  NetDeviceContainer terminalDevices;
-  NetDeviceContainer switchDevices;
+	ApplicationContainer on_off_applications;
+	for (int i = 0; i < nSwitches; ++i) {
+		ApplicationContainer ac = on_off_helper.Install(
+				distribution_switches[i].getTerminals());
+		on_off_applications.Add(ac);
+	}//for
 
-  for (int i = 0; i <terminalNumber; i++)
-    {
-      NetDeviceContainer link = csma.Install (NodeContainer (terminals.Get (i), csmaSwitch));
-      terminalDevices.Add (link.Get (0));
-      switchDevices.Add (link.Get (1));
-    }
+	// Start the application
+	on_off_applications.Start(Seconds(1.0));
+	on_off_applications.Stop(Seconds(10.0));
 
-  // Create the bridge netdevice, which will do the packet switching
-  Ptr<Node> switchNode = csmaSwitch.Get (0);
-  BridgeHelper bridge;
-  bridge.Install (switchNode, switchDevices);
+	// Create an optional packet sink to receive these packets
+	PacketSinkHelper packet_sink_helper("ns3::UdpSocketFactory", Address(
+			InetSocketAddress(Ipv4Address::GetAny(), port)));
+	ApplicationContainer packet_sink_applications;
+	for (int i = 0; i < nSwitches; ++i) {
+		ApplicationContainer ac = packet_sink_helper.Install(
+				distribution_switches[i].getTerminals());
+		packet_sink_applications.Add(ac);
+	}//for
+	packet_sink_applications.Start(Seconds(0.0));
 
-  // Add internet stack to the terminals
-  InternetStackHelper internet;
-  internet.Install (terminals);
 
-  // We've got the "hardware" in place.  Now we need to add IP addresses.
-  //
-  NS_LOG_INFO ("Assign IP Addresses.");
-  Ipv4AddressHelper ipv4;
-  ipv4.SetBase ("10.1.1.0", "255.255.255.0");
-  ipv4.Assign (terminalDevices);
+	NS_LOG_INFO ("Configure Tracing.");
 
-  //
-  // Create an OnOff application to send UDP datagrams from node zero to node 1.
-  //
-  NS_LOG_INFO ("Create Applications.");
-  uint16_t port = 9;   // Discard port (RFC 863)
+	//
+	// Configure tracing of all enqueue, dequeue, and NetDevice receive events.
+	// Trace output will be sent to the file "csma-bridge.tr"
+	//
+	AsciiTraceHelper ascii;
+	CsmaHelper csma_helper;
+	csma_helper.EnableAsciiAll(ascii.CreateFileStream("csma-bridge.tr"));
 
-  OnOffHelper onoff ("ns3::UdpSocketFactory", 
-                     Address (InetSocketAddress (Ipv4Address ("10.1.1.2"), port)));
-  onoff.SetConstantRate (DataRate ("500kb/s"));
+	//
+	// Also configure some tcpdump traces; each interface will be traced.
+	// The output files will be named:
+	//     csma-bridge-<nodeId>-<interfaceId>.pcap
+	// and can be read by the "tcpdump -r" command (use "-tt" option to
+	// display timestamps correctly)
+	//
+	csma_helper.EnablePcapAll("csma-bridge", false);
 
-  ApplicationContainer app = onoff.Install (terminals.Get (0));
-  // Start the application
-  app.Start (Seconds (1.0));
-  app.Stop (Seconds (10.0));
+	//
+	// Now, do the actual simulation.
+	//
+	NS_LOG_INFO ("Run Simulation.");
+	Simulator::Run();
+	Simulator::Destroy();
+	NS_LOG_INFO ("Done.");
 
-  // Create an optional packet sink to receive these packets
-  PacketSinkHelper sink ("ns3::UdpSocketFactory",
-                         Address (InetSocketAddress (Ipv4Address::GetAny (), port)));
-  app = sink.Install (terminals.Get (1));
-  app.Start (Seconds (0.0));
-
-  // 
-  // Create a similar flow from n3 to n0, starting at time 1.1 seconds
-  //
-  onoff.SetAttribute ("Remote", 
-                      AddressValue (InetSocketAddress (Ipv4Address ("10.1.1.1"), port)));
-  app = onoff.Install (terminals.Get (3));
-  app.Start (Seconds (1.1));
-  app.Stop (Seconds (10.0));
-
-  app = sink.Install (terminals.Get (0));
-  app.Start (Seconds (0.0));
-
-  NS_LOG_INFO ("Configure Tracing.");
-
-  //
-  // Configure tracing of all enqueue, dequeue, and NetDevice receive events.
-  // Trace output will be sent to the file "csma-bridge.tr"
-  //
-  AsciiTraceHelper ascii;
-  csma.EnableAsciiAll (ascii.CreateFileStream ("csma-bridge.tr"));
-
-  //
-  // Also configure some tcpdump traces; each interface will be traced.
-  // The output files will be named:
-  //     csma-bridge-<nodeId>-<interfaceId>.pcap
-  // and can be read by the "tcpdump -r" command (use "-tt" option to
-  // display timestamps correctly)
-  //
-  csma.EnablePcapAll ("csma-bridge", false);
-
-  //
-  // Now, do the actual simulation.
-  //
-  NS_LOG_INFO ("Run Simulation.");
-  Simulator::Run ();
-  Simulator::Destroy ();
-  NS_LOG_INFO ("Done.");
-
-  return 0;
+	return 0;
 }
