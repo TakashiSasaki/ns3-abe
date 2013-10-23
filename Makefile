@@ -3,6 +3,8 @@ main:
 	../waf --run csma-bridge 
 
 hello-gprof:
-	g++ -o hello hello.cc -pg -O0
+	rm gmon.out
+	g++ -o hello -pg -g -O0 hello.cc
+	./hello
 	gprof hello -p
 
