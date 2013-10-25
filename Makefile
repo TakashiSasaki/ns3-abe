@@ -21,4 +21,9 @@ run-wifi-multihop-test:
 	rm -rf Debug/
 	../waf --run "wifi-multihop-test --lambda=1 --sim_count=1"
 
+hello-gprof:
+	rm gmon.out
+	g++ -o hello -pg -g -O0 hello.cc
+	./hello
+	gprof hello -p
 
