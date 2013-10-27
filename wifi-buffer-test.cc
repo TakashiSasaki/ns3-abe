@@ -186,7 +186,7 @@ int main (int argc, char *argv[])
   const Ptr<Ipv4L3Protocol> p_destination_ipv4_l3_protocol = p_destination_node->GetObject<Ipv4L3Protocol>();
   Ptr<Socket> p_source_raw_socket = p_source_ipv4_l3_protocol->CreateRawSocket();
   Ptr<Socket> p_destination_raw_socket = p_destination_ipv4_l3_protocol->CreateRawSocket();
-  Address source_address = InetSocketAddress(Ipv4Address("10.1.1.1"), 0);
+  //Address source_address = InetSocketAddress(Ipv4Address("10.1.1.1"), 0);
   Address destination_address = InetSocketAddress(Ipv4Address("10.1.1.4"), 0);
   p_source_raw_socket->SetRecvCallback (MakeCallback (&ReceivePacket));
   p_destination_raw_socket->SetRecvCallback (MakeCallback (&ReceivePacket));
