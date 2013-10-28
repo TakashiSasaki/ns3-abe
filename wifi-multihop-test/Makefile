@@ -8,13 +8,16 @@ current: difs-wifi-mac-test
 OutputFileStream.o : OutputFileStream.cc OutputFileStream.h
 	g++ $(CPPFLAGS) -c $<
 
+ConstantMobilityNodeContainer.o : ConstantMobilityNodeContainer.cc ConstantMobilityNodeContainer.h
+	g++ $(CPPFLAGS) -c $<
+
 difs-wifi-mac.o : difs-wifi-mac.cc difs-wifi-mac.h
 	g++ $(CPPFLAGS) -c $<
 	
 difs-wifi-mac-test.o: difs-wifi-mac-test.cc difs-wifi-mac.h difs-wifi-mac-helper.h
 	g++ $(CPPFLAGS) -c $<
 
-difs-wifi-mac-test: difs-wifi-mac-test.o difs-wifi-mac.o
+difs-wifi-mac-test: difs-wifi-mac-test.o difs-wifi-mac.o ConstantMobilityNodeContainer.o
 	g++ $(CPPFLAGS) -o $@  $^
 
 all: difs-wifi-mac-test

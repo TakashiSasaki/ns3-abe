@@ -1,7 +1,7 @@
 //lambda, sim_countをコマンドライン引数として与える必要あり
 #include "ns3/core-module.h"
 #include "ns3/network-module.h"
-#include "ns3/mobility-module.h"
+//#include "ns3/mobility-module.h"
 #include "ns3/config-store-module.h"
 #include "ns3/wifi-module.h"
 #include "ns3/internet-module.h"
@@ -20,6 +20,7 @@
 #include <string>
 #include "difs-wifi-mac-helper.h"
 #include "OutputFileStream.h"
+#include "ConstantMobilityNodeContainer.h"
 NS_LOG_COMPONENT_DEFINE ("WifiMutihopTest");
 
 //using namespace ns3;
@@ -40,7 +41,7 @@ class DifsWifiMacTest {
 	//void ReceivePacket(ns3::Ptr<ns3::Socket> socket);
 	//void ReceivePacketAtPhy(ns3::Ptr<ns3::Packet> p, double snr, ns3::WifiMode mode,
 	//		enum ns3::WifiPreamble preamble);
-	ns3::NodeContainer nodeContainer;
+	abe::ConstantMobilityNodeContainer nodeContainer;
 	//Ptr<Node> m_node[nNodes];
 	//Ptr<WifiNetDevice> m_wifi_net_device[nNodes];
 	//std::vector<ns3::Ptr<ns3::YansWifiPhy>> yans_wifi_phy;
@@ -74,23 +75,6 @@ class DifsWifiMacTest {
 		this->outputFileStream << ns3::Simulator::Now() << " " << p_socket->GetNode()->GetId() << " send "
 				<< flowId << std::endl;
 	}//sendPacket
-
-	void initMobility(){
-		for (int i = 0; i < this->nodeContainer.GetN(); ++i) {
-			this->nodeContainer.Get(i)->AggregateObject(ns3::CreateObject<ns3::ConstantPositionMobilityModel> ());
-		}//for
-		ns3::MobilityHelper mobility_helper;
-		ns3::Ptr<ns3::ListPositionAllocator> positionAlloc = ns3::CreateObject<ns3::ListPositionAllocator> ();
-		double x = 0;
-		for (int n = 0; n < this->nodeContainer.GetN(); n++) {
-			positionAlloc->Add(ns3::Vector(x, 0.0, 0.0));
-			x += 5.0;
-		}//for
-		mobility_helper.SetPositionAllocator(positionAlloc);
-		mobility_helper.SetMobilityModel("ns3::ConstantPositionMobilityModel");
-		mobility_helper.Install(this->nodeContainer);
-	}//initMobility
-
 
 	ns3::YansWifiChannelHelper yansWifiChannelHelper;
 	void initYansWifiChannelHelper(){
@@ -198,7 +182,6 @@ public:
 		this->installWifi();
 		this->installWifiPhyCallback();
 		this->initIpv4Interface();
-		this->initMobility();
 	}// a constructor
 
 	void scheduleSendPacket(const ns3::Time& t, const int i_node) {
