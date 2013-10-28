@@ -4,5 +4,5 @@ EunetSwitch/*.tr
 EunetSwitch/EunetSwitchTest
 gmon.out
 HelloGprof/hello
-
+*.stackdump
 
