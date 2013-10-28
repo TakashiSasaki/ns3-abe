@@ -47,7 +47,7 @@ public:
 		//internet_stack_helper.Install(ncTerminals.getTerminals());
 	}//a constructor
 
-	std::shared_ptr<ns3::CsmaHelper> getDownlinkCsmaHelper() {
+	std::shared_ptr<ns3::CsmaHelper> getDownlinkCsmaHelper() const {
 		std::shared_ptr<ns3::CsmaHelper> csma_helper(new ns3::CsmaHelper());
 		csma_helper->SetChannelAttribute("DataRate", ns3::DataRateValue(
 				this->nDownlinkBps));
@@ -60,7 +60,7 @@ public:
 		return csma_helper;
 	}//getDownlinkCsmaHelper
 
-	std::shared_ptr<ns3::CsmaHelper> getUplinkCsmaHelper() {
+	std::shared_ptr<ns3::CsmaHelper> getUplinkCsmaHelper() const {
 		std::shared_ptr<ns3::CsmaHelper> csma_helper(new ns3::CsmaHelper());
 		csma_helper->SetChannelAttribute("DataRate", ns3::DataRateValue(
 				this->nUplinkBps));
@@ -73,15 +73,15 @@ public:
 		return csma_helper;
 	}//getUplinkCsmaHelper
 
-	ns3::Ptr<ns3::NetDevice> getUplinkPort(const int i_uplink_port) {
+	ns3::Ptr<ns3::NetDevice> getUplinkPort(const int i_uplink_port) const {
 		return this->GetDevice(this->uplinkPortIndices[i_uplink_port]);
 	}//getUplinkPort
 
-	ns3::Ptr<ns3::NetDevice> getDownlinkPort(const int i_downlink_port) {
+	ns3::Ptr<ns3::NetDevice> getDownlinkPort(const int i_downlink_port) const {
 		return this->GetDevice(this->downlinkPortIndices[i_downlink_port]);
 	}//getDownlinkPort
 
-	ns3::NetDeviceContainer getUplinkDevices() {
+	ns3::NetDeviceContainer getUplinkDevices() const {
 		ns3::NetDeviceContainer ndc;
 		for (int i = 0; i < this->nUplinkPorts; ++i) {
 			ndc.Add(this->getUplinkPort(i));
@@ -89,7 +89,7 @@ public:
 		return ndc;
 	}//getUplinkDevices
 
-	ns3::NetDeviceContainer getDownlinkDevices() {
+	ns3::NetDeviceContainer getDownlinkDevices() const {
 		ns3::NetDeviceContainer ndc;
 		for (int i = 0; i < this->nDownlinkPorts; ++i) {
 			ndc.Add(this->getDownlinkPort(i));
@@ -168,11 +168,11 @@ public:
 	virtual ~EunetSwitch() {
 	}//the destructor
 
-	ns3::NodeContainer getTerminals() {
+	const ns3::NodeContainer& getTerminals() const {
 		return this->ncTerminals;
 	}//getTerminals
 
-	ns3::NetDeviceContainer getTerminalDevices() {
+	ns3::NetDeviceContainer getTerminalDevices() const {
 		ns3::NetDeviceContainer ndc;
 		for (unsigned i = 0; i < ncTerminals.GetN(); ++i) {
 			ndc.Add(ncTerminals.Get(i)->GetDevice(0));

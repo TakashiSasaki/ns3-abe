@@ -9,7 +9,7 @@ all: gmon.out
 EunetSwitchTest.cc: EunetSwitch.h
 
 EunetSwitchTest: EunetSwitchTest.cc $(NS3LIBS)
-	g++ -g -pg -O0 -std=c++0x -o EunetSwitchTest $(CPPFLAGS) $^
+	g++ -g -pg -O2 -std=c++0x -o EunetSwitchTest $(CPPFLAGS) $^
 
 gmon.out: EunetSwitchTest
 	LD_LIBRARY_PATH=../../build ./EunetSwitchTest 
