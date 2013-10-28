@@ -12,7 +12,7 @@ EunetSwitchTest: EunetSwitchTest.cc $(NS3LIBS)
 	g++ -g -pg -O2 -std=c++0x -o EunetSwitchTest $(CPPFLAGS) $^
 
 gmon.out: EunetSwitchTest
-	LD_LIBRARY_PATH=../../build ./EunetSwitchTest 
+	LD_LIBRARY_PATH=../../build time ./EunetSwitchTest 
 
 clean:
 	-rm -f gmon.out
