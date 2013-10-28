@@ -40,42 +40,33 @@
 #include "EunetSwitch.h"
 
 using namespace ns3;
-NS_LOG_COMPONENT_DEFINE ("CsmaBridgeforEUNET");
+NS_LOG_COMPONENT_DEFINE ("EunetSwitchTest");
 
 int main(int argc, char *argv[]) {
-	//
-	// Users may find it convenient to turn on explicit debugging
-	// for selected modules; the below lines suggest how to do this
-	//
-	LogComponentEnable ("CsmaBridgeforEUNET", LOG_LEVEL_INFO);
-
-	//
-	// Allow the user to override any of the defaults and the above Bind() at
-	// run-time, via command-line arguments
-	//
-	//int nDownlinkPorts;
-	int nSwitches = 2;
+	LogComponentEnable ("EunetSwitchTest", LOG_LEVEL_INFO);
+	int nSwitches = 9;
 	CommandLine command_line;
 	//command_line.AddValue("nDownlinkPorts", "number of downlink ports on a switch", nDownlinkPorts);
 	//command_line.AddValue("nSwitches", "number of switches", nSwitches);
 	//command_line.Parse(argc, argv);
 
-
-	EunetSwitch root_switch;
-	NS_LOG_INFO("Creating switches");
-	EunetSwitch distribution_switches[nSwitches];
+	Ptr<EunetSwitch> ptr_root_switch(new EunetSwitch());
+	Ptr<EunetSwitch> ptr_distribution_switches[nSwitches];
+	for(int i=0; i<nSwitches; ++i){
+		ptr_distribution_switches[i] = new EunetSwitch();
+	}//for
 
 	for (int i = 0; i < nSwitches; ++i) {
 		NS_LOG_INFO("Connecting distribution switches to the root switch.");
-		distribution_switches[i].connectUpTo(0, root_switch, i);
+		ptr_distribution_switches[i]->connectUpTo(0, ptr_root_switch, i);
 	}//for
 
-	NS_LOG_INFO ("Assign IP Addresses.");
+	NS_LOG_INFO ("Assigning IP Addresses.");
 	Ipv4AddressHelper ipv4_address_helper;
-	ipv4_address_helper.SetBase("10.1.1.0", "255.255.255.0");
+	ipv4_address_helper.SetBase("10.1.0.0", "255.255.0.0");
 	for (int i = 0; i < nSwitches; ++i) {
 		ipv4_address_helper.Assign(
-				distribution_switches[i].getTerminalDevices());
+				ptr_distribution_switches[i]->getTerminalDevices());
 	}//for
 
 	//
@@ -93,7 +84,7 @@ int main(int argc, char *argv[]) {
 	ApplicationContainer on_off_applications;
 	for (int i = 0; i < nSwitches; ++i) {
 		ApplicationContainer ac = on_off_helper.Install(
-				distribution_switches[i].getTerminals());
+				ptr_distribution_switches[i]->getTerminals());
 		on_off_applications.Add(ac);
 	}//for
 
@@ -107,14 +98,13 @@ int main(int argc, char *argv[]) {
 	ApplicationContainer packet_sink_applications;
 	for (int i = 0; i < nSwitches; ++i) {
 		ApplicationContainer ac = packet_sink_helper.Install(
-				distribution_switches[i].getTerminals());
+				ptr_distribution_switches[i]->getTerminals());
 		packet_sink_applications.Add(ac);
 	}//for
 	packet_sink_applications.Start(Seconds(0.0));
 
 
 	NS_LOG_INFO ("Configure Tracing.");
-
 	//
 	// Configure tracing of all enqueue, dequeue, and NetDevice receive events.
 	// Trace output will be sent to the file "csma-bridge.tr"
@@ -132,13 +122,24 @@ int main(int argc, char *argv[]) {
 	//
 	csma_helper.EnablePcapAll("csma-bridge", false);
 
-	//
-	// Now, do the actual simulation.
-	//
+	Ptr<Node> ptr_node1(new EunetSwitch());
+	Ptr<Node> ptr_node2(new EunetSwitch());
+	{
+		CsmaHelper csma_helper;
+		NetDeviceContainer ndc = csma_helper.Install(NodeContainer(ptr_node1, ptr_node2));
+		BridgeHelper bridge_helper1;
+		bridge_helper1.Install(ptr_node1 ,NetDeviceContainer(ndc.Get(1)));
+		BridgeHelper bridge_helper2;
+		bridge_helper2.Install(ptr_node2 ,NetDeviceContainer(ndc.Get(0)));
+	}
+
+#if 0
 	NS_LOG_INFO ("Run Simulation.");
 	Simulator::Run();
 	Simulator::Destroy();
 	NS_LOG_INFO ("Done.");
+#endif
 
-	return 0;
-}
+	return EXIT_SUCCESS;
+}//main
+
