@@ -14,7 +14,7 @@ abe::WifiNodeContainer::WifiNodeContainer(const double txGain) :
 	wifiHelper.SetRemoteStationManager("ns3::ConstantRateWifiManager",
 			"DataMode", ns3::StringValue(std::string("DsssRate11Mbps")),
 			"ControlMode", ns3::StringValue(std::string("DsssRate11Mbps")));
-	for (int i = 0; i < this->GetN(); ++i) {
+	for (uint32_t i = 0; i < this->GetN(); ++i) {
 		//WifiHelper.Install calles WifiMacHelper.Create to create WifiMac instance x.
 		//x is configured by WifiMac.ConfigureStandard method.
 		//WifiMac.Configure80211b is called for WIFI_PHY_STANDARD_80211b.

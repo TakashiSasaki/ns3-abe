@@ -13,7 +13,7 @@ abe::ConstantMobilityNodeContainer::ConstantMobilityNodeContainer(
 	ns3::Ptr<ns3::ListPositionAllocator> positionAlloc = ns3::CreateObject<
 			ns3::ListPositionAllocator>();
 	double x = 0;
-	for (int n = 0; n < this->GetN(); n++) {
+	for (uint32_t n = 0; n < this->GetN(); n++) {
 		positionAlloc->Add(ns3::Vector(x, 0.0, 0.0));
 		x += 5.0;
 	}//for
@@ -24,7 +24,7 @@ abe::ConstantMobilityNodeContainer::ConstantMobilityNodeContainer(
 
 ns3::NetDeviceContainer abe::ConstantMobilityNodeContainer::getNetDeviceContainer() {
 	ns3::NetDeviceContainer ndc;
-	for (int i = 0; i < this->GetN(); ++i) {
+	for (uint32_t i = 0; i < this->GetN(); ++i) {
 		ndc.Add(this->Get(i)->GetDevice(0));
 	}//for
 	return ndc;

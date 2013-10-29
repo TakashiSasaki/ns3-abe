@@ -79,7 +79,7 @@ public:
 
 		//パケットの送信をスケジューリング
 		double send_time = 35.0;
-		for (int n = 0; n < this->nodeContainer.GetN() - 1; n++) {
+		for (uint32_t n = 0; n < this->nodeContainer.GetN() - 1; n++) {
 			do {
 				this->nodeContainer.scheduleSendPacket(ns3::Seconds(send_time
 						+= this->getExponentialRandomValue()), n);

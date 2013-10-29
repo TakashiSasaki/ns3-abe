@@ -1,4 +1,4 @@
-CPPFLAGS = -g -pg -O2 -std=c++0x -I ../../build
+CPPFLAGS = -g -pg -O2 -std=c++0x -Wall -Werror -I ../../build
 VPATH=../../build
 NS3LIBS=libns3.17-core-debug.so libns3.17-network-debug.so libns3.17-bridge-debug.so libns3.17-csma-debug.so \
 libns3.17-internet-debug.so libns3.17-mpi-debug.so libns3.17-applications-debug.so libns3.17-stats-debug.so \
