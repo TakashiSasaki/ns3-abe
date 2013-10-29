@@ -6,5 +6,7 @@ gmon.out
 HelloGprof/hello
 *.o
 wifi-multihop-test/difs-wifi-mac-test
+factorial/fact
+factorial/*.s
 
 
