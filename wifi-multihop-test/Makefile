@@ -17,6 +17,9 @@ ConstantMobilityNodeContainer.o : ConstantMobilityNodeContainer.cc ConstantMobil
 
 WifiNodeContainer.o : WifiNodeContainer.cc WifiNodeContainer.h
 	g++ $(CPPFLAGS) -c $<
+	
+Ipv4NodeContainer.o : Ipv4NodeContainer.cc Ipv4NodeContainer.h
+	g++ $(CPPFLAGS) -c $<
 
 difs-wifi-mac.o : difs-wifi-mac.cc difs-wifi-mac.h
 	g++ $(CPPFLAGS) -c $<
@@ -24,7 +27,7 @@ difs-wifi-mac.o : difs-wifi-mac.cc difs-wifi-mac.h
 difs-wifi-mac-test.o: difs-wifi-mac-test.cc difs-wifi-mac.h difs-wifi-mac-helper.h
 	g++ $(CPPFLAGS) -c $<
 
-difs-wifi-mac-test: difs-wifi-mac-test.o difs-wifi-mac.o ConstantMobilityNodeContainer.o WifiNodeContainer.o OutputFileStream.o $(NS3LIBS)
+difs-wifi-mac-test: difs-wifi-mac-test.o difs-wifi-mac.o ConstantMobilityNodeContainer.o WifiNodeContainer.o OutputFileStream.o Ipv4NodeContainer.o $(NS3LIBS)
 	g++ $(CPPFLAGS) -o $@  $^
 
 all: difs-wifi-mac-test
