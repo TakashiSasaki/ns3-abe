@@ -22,15 +22,16 @@ abe::ConstantMobilityNodeContainer::ConstantMobilityNodeContainer(
 	mobility_helper.Install(*this);
 }// a constructor
 
-ns3::NetDeviceContainer abe::ConstantMobilityNodeContainer::getNetDeviceContainer(){
+ns3::NetDeviceContainer abe::ConstantMobilityNodeContainer::getNetDeviceContainer() {
 	ns3::NetDeviceContainer ndc;
-	for(int i=0; i<this->GetN(); ++i){
+	for (int i = 0; i < this->GetN(); ++i) {
 		ndc.Add(this->Get(i)->GetDevice(0));
 	}//for
 	return ndc;
 }//getNetDevices
 
-ns3::Ptr<ns3::NetDevice> abe::ConstantMobilityNodeContainer::getNetDevice(const int i_node) {
+ns3::Ptr<ns3::NetDevice> abe::ConstantMobilityNodeContainer::getNetDevice(
+		const int i_node) {
 	return this->getNetDeviceContainer().Get(i_node);
 }//getNetDevice
 
