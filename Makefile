@@ -27,3 +27,5 @@ hello-gprof:
 	./hello
 	gprof hello -p
 
+difs-wifi-mac-test:
+	make -C wifi-multihop-test $@

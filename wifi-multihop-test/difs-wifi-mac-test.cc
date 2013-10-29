@@ -21,6 +21,7 @@
 #include "difs-wifi-mac-helper.h"
 #include "OutputFileStream.h"
 #include "ConstantMobilityNodeContainer.h"
+#include "WifiNodeContainer.h"
 NS_LOG_COMPONENT_DEFINE ("WifiMutihopTest");
 
 //using namespace ns3;
@@ -28,7 +29,7 @@ NS_LOG_COMPONENT_DEFINE ("WifiMutihopTest");
 namespace abe{
 class DifsWifiMacTest {
 	std::string phyMode;
-	double txGain;
+	//double txGain;
 	uint32_t packetSize;
 	double lambda;
 	ns3::Address destinationAddress;
@@ -41,7 +42,7 @@ class DifsWifiMacTest {
 	//void ReceivePacket(ns3::Ptr<ns3::Socket> socket);
 	//void ReceivePacketAtPhy(ns3::Ptr<ns3::Packet> p, double snr, ns3::WifiMode mode,
 	//		enum ns3::WifiPreamble preamble);
-	abe::ConstantMobilityNodeContainer nodeContainer;
+	abe::WifiNodeContainer nodeContainer;
 	//Ptr<Node> m_node[nNodes];
 	//Ptr<WifiNetDevice> m_wifi_net_device[nNodes];
 	//std::vector<ns3::Ptr<ns3::YansWifiPhy>> yans_wifi_phy;
@@ -76,52 +77,6 @@ class DifsWifiMacTest {
 				<< flowId << std::endl;
 	}//sendPacket
 
-	ns3::YansWifiChannelHelper yansWifiChannelHelper;
-	void initYansWifiChannelHelper(){
-		this->yansWifiChannelHelper.SetPropagationDelay("ns3::ConstantSpeedPropagationDelayModel");
-		this->yansWifiChannelHelper.AddPropagationLoss("ns3::LogDistancePropagationLossModel");
-	}//initYansWifiChannelHelper
-
-	ns3::YansWifiPhyHelper yansWifiPhyHelper;
-	void initYansWifiPhyHelper(){
-		this->yansWifiPhyHelper = ns3::YansWifiPhyHelper::Default();
-		this->yansWifiPhyHelper.SetChannel(this->yansWifiChannelHelper.Create());
-		this->yansWifiPhyHelper.Set("TxGain", ns3::DoubleValue(this->txGain));
-		this->yansWifiPhyHelper.Set("RxGain", ns3::DoubleValue(0));
-		this->yansWifiPhyHelper.Set("CcaMode1Threshold", ns3::DoubleValue(0.0));
-		this->yansWifiPhyHelper.Set("EnergyDetectionThreshold", ns3::DoubleValue(0.0));
-	}//initYansWifiPhyHelper
-
-	abe::DifsWifiMacHelper difsWifiMacHelper;
-	void initDifsWifiMacHelper(){
-		//NqosWifiMacHelper wifiMac = NqosWifiMacHelper::Default();
-		//abe::DifsWifiMacHelper wifiMac(2,31,1023);
-		this->difsWifiMacHelper = abe::DifsWifiMacHelper::Default();
-		//wifiMac.SetType("ns3::AdhocWifiMac");
-	}//initDifsWifiMacHelper
-
-	ns3::WifiHelper wifiHelper;
-	void initWifiHelper(){
-		this->wifiHelper.SetStandard(ns3::WIFI_PHY_STANDARD_80211b);
-		this->wifiHelper.SetRemoteStationManager("ns3::ConstantRateWifiManager",
-				"DataMode", ns3::StringValue(this->phyMode), "ControlMode", ns3::StringValue(
-						phyMode));
-	}//initWifiHelper
-
-	ns3::NetDeviceContainer netDeviceContainer;
-	void installWifi(){
-		for(int i=0; i<this->nodeContainer.GetN();++i){
-			//WifiHelper.Install calles WifiMacHelper.Create to create WifiMac instance x.
-			//x is configured by WifiMac.ConfigureStandard method.
-			//WifiMac.Configure80211b is called for WIFI_PHY_STANDARD_80211b.
-			//In Configure80211b, SetSifs, SetSlot, SetEifsNoDifs, SetPifs, SetCtsTimeout
-			//and SetAckTimeout are called. SetEifsNoDifs is called with 314 microseconds.
-
-			ns3::NetDeviceContainer ndc = this->wifiHelper.Install(this->yansWifiPhyHelper, this->difsWifiMacHelper,
-					this->nodeContainer.Get(i));
-			this->netDeviceContainer.Add(ndc);
-		}//for
-	}//installWifi
 
 	ns3::Ipv4InterfaceContainer ipv4InterfaceContainer;
 	void initIpv4Interface(){
@@ -136,7 +91,7 @@ class DifsWifiMacTest {
 		ns3::Ipv4AddressHelper ipv4_address_helper;
 		NS_LOG_INFO ("Assign IP Addresses.");
 		ipv4_address_helper.SetBase("10.1.1.0", "255.255.255.0");
-		ns3::Ipv4InterfaceContainer i = ipv4_address_helper.Assign(this->netDeviceContainer);
+		ns3::Ipv4InterfaceContainer i = ipv4_address_helper.Assign(this->nodeContainer.getNetDeviceContainer());
 	}//initIpv4Interface
 
 
@@ -150,37 +105,13 @@ class DifsWifiMacTest {
 		return ipv4_raw_socket;
 	}//getIpv4RawSocket
 
-	ns3::Ptr<ns3::WifiNetDevice> getWifiNetDevice(const int i_node) const {
-		return ns3::DynamicCast<ns3::WifiNetDevice> (this->netDeviceContainer.Get(i_node));
-	}//getWifiNetDevice
-
-	ns3::Ptr<ns3::YansWifiPhy> getYansWifiPhy(const int i_node) const {
-		return ns3::DynamicCast<ns3::YansWifiPhy> (this->getWifiNetDevice(i_node)->GetPhy());
-	}//getYansWifiPhy
-
-	void installWifiPhyCallback(){
-		for(int i=0; i<this->nodeContainer.GetN(); ++i){
-			this->getYansWifiPhy(i)->SetReceiveOkCallback (ns3::MakeCallback (&abe::DifsWifiMacTest::receivePacketAtPhy, this));
-		}//for
-	}//installWifiPhyCallback
-
-	void receivePacketAtPhy(ns3::Ptr<ns3::Packet> ptr_packet, double snr, ns3::WifiMode wifi_mode, enum ns3::WifiPreamble wifi_preamble) {
-		NS_LOG_UNCOND ("receive packet at phy");
-	}//receivePacketAtPhy
-
 public:
 	DifsWifiMacTest(const std::string phyMode = std::string("DsssRate11Mbps"), const double txGain=56, const uint32_t packetSize=500, const double lambda=1, const ns3::Address destinationAddress = ns3::InetSocketAddress(ns3::Ipv4Address("10.1.1.4"), 0), const int sim_count=0, const int nNodes=4):
-		phyMode(phyMode), txGain(txGain), packetSize(packetSize), lambda(lambda), destinationAddress(destinationAddress), outputFileStream(lambda, sim_count)
+		phyMode(phyMode), packetSize(packetSize), lambda(lambda), destinationAddress(destinationAddress), outputFileStream(lambda, sim_count)
 	{
 		srand((static_cast<unsigned int> (sim_count)) + (unsigned) time(NULL)); //並列処理のため、sim_countで乱数を初期化
-		DifsWifiMacTest::setDefault();
-		this->nodeContainer.Create(nNodes);
-		this->initYansWifiChannelHelper();
-		this->initYansWifiPhyHelper();
-		this->initDifsWifiMacHelper();
-		this->initWifiHelper();
-		this->installWifi();
-		this->installWifiPhyCallback();
+		//this->nodeContainer.Create(nNodes);
+		//this->installWifiPhyCallback();
 		this->initIpv4Interface();
 	}// a constructor
 
@@ -189,7 +120,6 @@ public:
 	}//scheduleSendPacket
 
 	void schedule(){
-		DifsWifiMacTest::setDefault();
 		//ルーティング情報を交換するためのパケット送信
 		this->scheduleSendPacket(ns3::Seconds(32.0), 0);
 		this->scheduleSendPacket(ns3::Seconds(33.0), 1);
@@ -205,15 +135,6 @@ public:
 		}//for
 	}//run
 
-	void setDefault(){
-		ns3::Config::SetDefault("ns3::WifiRemoteStationManager::NonUnicastMode",
-				ns3::StringValue(this->phyMode));
-		ns3::Config::SetDefault("ns3::WifiMacQueue::MaxPacketNumber", ns3::UintegerValue(1)); //Mac層のキューの大きさ
-		ns3::Config::SetDefault("ns3::ConstantSpeedPropagationDelayModel::Speed",
-				ns3::DoubleValue(5.0 * 1000000.0 / 2.0));
-		ns3::Config::SetDefault("ns3::WifiRemoteStationManager::MaxSlrc", ns3::UintegerValue(
-				5)); //csma/caによる再送回数の上限
-	}//setDefault
 };//DifsWifiMacTest
 
 
