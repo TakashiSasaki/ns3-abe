@@ -1,3 +1,4 @@
+#include <cassert>
 #include "ns3/core-module.h"
 #include "ns3/wifi-helper.h"
 #include "ns3/wifi-net-device.h"
@@ -5,8 +6,9 @@
 #include "ns3/string.h"
 #include "WifiNodeContainer.h"
 
-abe::WifiNodeContainer::WifiNodeContainer(const double txGain) :
-	txGain(txGain) {
+abe::WifiNodeContainer::WifiNodeContainer(const uint32_t n_nodes,
+		const double txGain) :
+	ConstantMobilityNodeContainer(n_nodes), txGain(txGain) {
 	ns3::Config::SetDefault("ns3::WifiRemoteStationManager::NonUnicastMode",
 			ns3::StringValue(std::string("DsssRate11Mbps")));
 	ns3::WifiHelper wifiHelper;
@@ -24,6 +26,8 @@ abe::WifiNodeContainer::WifiNodeContainer(const double txGain) :
 		ns3::NetDeviceContainer ndc = wifiHelper.Install(
 				this->getYansWifiPhyHelper(), this->getDifsWifiMacHelper(),
 				this->Get(i));
+		assert(ndc.GetN() == 1);
+		assert(this->Get(i)->GetNDevices() == 1);
 		this->getYansWifiPhy(i)->SetReceiveOkCallback(ns3::MakeCallback(
 				&abe::WifiNodeContainer::receiveOkCallback, this));
 		this->getYansWifiPhy(i)->SetReceiveErrorCallback(ns3::MakeCallback(

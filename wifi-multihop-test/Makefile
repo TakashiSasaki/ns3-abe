@@ -7,7 +7,7 @@ libns3.17-wifi-debug.so libns3.17-propagation-debug.so libns3.17-mobility-debug.
 
 .PHONY: all build
 
-current: difs-wifi-mac-test
+current: gmon.out
 
 OutputFileStream.o : OutputFileStream.cc OutputFileStream.h
 	g++ $(CPPFLAGS) -c $<
@@ -37,3 +37,6 @@ clean:
 
 gmon.out: difs-wifi-mac-test
 	LD_LIBRARY_PATH=../../build time ./difs-wifi-mac-test 
+
+gdb: difs-wifi-mac-test
+	LD_LIBRARY_PATH=../../build NS_LOG=DifsWifiMacTest=all gdb ./difs-wifi-mac-test 

@@ -17,7 +17,7 @@ namespace abe {
 class Ipv4NodeContainer: public abe::WifiNodeContainer {
 	uint32_t packetSize;
 public:
-	Ipv4NodeContainer(const int packetSize = 500);
+	Ipv4NodeContainer(const uint32_t n_nodes, const int packetSize = 500);
 	virtual ~Ipv4NodeContainer();
 	void scheduleSendPacket(const ns3::Time& t, const int i_source_node, const int i_destination_node);
 private:

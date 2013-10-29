@@ -6,6 +6,7 @@ gmon.out
 HelloGprof/hello
 *.o
 wifi-multihop-test/difs-wifi-mac-test
+wifi-multihop-test/sim_out*.txt
 factorial/fact
 factorial/*.s
 

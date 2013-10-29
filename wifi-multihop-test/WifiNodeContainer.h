@@ -14,7 +14,7 @@
 namespace abe {
 class WifiNodeContainer: public ConstantMobilityNodeContainer {
 public:
-	WifiNodeContainer(const double txGain = 56);
+	WifiNodeContainer(const uint32_t n_nodes, const double txGain = 56);
 	virtual ~WifiNodeContainer();
 private:
 	double txGain;

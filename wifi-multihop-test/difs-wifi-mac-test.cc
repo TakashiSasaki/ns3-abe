@@ -14,11 +14,12 @@
 #include <cstdlib>
 #include <sstream>
 #include <string>
+#include <cassert>
 #include "difs-wifi-mac-helper.h"
 #include "OutputFileStream.h"
 #include "ConstantMobilityNodeContainer.h"
 #include "Ipv4NodeContainer.h"
-NS_LOG_COMPONENT_DEFINE ("WifiMutihopTest");
+NS_LOG_COMPONENT_DEFINE ("DifsWifiMacTest");
 
 namespace abe {
 class DifsWifiMacTest {
@@ -43,6 +44,7 @@ public:
 		lambda(lambda), destinationAddress(destinationAddress),
 				outputFileStream(lambda, sim_count), nodeContainer(n_nodes) {
 		srand((static_cast<unsigned int> (sim_count)) + (unsigned) time(NULL)); //並列処理のため、sim_countで乱数を初期化
+
 		this->nodeContainer.scheduleSendPacket(ns3::Seconds(32.0), 0, 3);
 		this->nodeContainer.scheduleSendPacket(ns3::Seconds(33.0), 1, 3);
 		this->nodeContainer.scheduleSendPacket(ns3::Seconds(34.0), 2, 3);
@@ -59,6 +61,8 @@ public:
 
 }
 int main(int argc, char *argv[]) {
+	ns3::LogComponentEnable("DifsWifiMacTest", ns3::LOG_LEVEL_INFO);
+	NS_LOG_UNCOND("hello 123");
 	//if no value is parsed, this variable is not modified
 	//cmd.AddValue("phyMode", "Wifi Phy mode", input.phyMode);
 	int n_nodes = 4;

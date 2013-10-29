@@ -5,7 +5,7 @@
 namespace abe {
 class ConstantMobilityNodeContainer: public ns3::NodeContainer {
 public:
-	ConstantMobilityNodeContainer(const int n_nodes = 4);
+	ConstantMobilityNodeContainer(const int n_nodes);
 	ns3::NetDeviceContainer getNetDeviceContainer();
 	ns3::Ptr<ns3::NetDevice> getNetDevice(const int i_node);
 	virtual ~ConstantMobilityNodeContainer();

@@ -1,9 +1,4 @@
-/*
- * Ipv4NodeContainer.cc
- *
- *  Created on: 2013/10/29
- *      Author: sasaki
- */
+#include <cassert>
 #include "ns3/ipv4-list-routing-helper.h"
 #include "ns3/ipv4-static-routing-helper.h"
 #include "ns3/olsr-helper.h"
@@ -15,8 +10,14 @@
 
 namespace abe {
 
-Ipv4NodeContainer::Ipv4NodeContainer(const int packetSize) :
-	packetSize(packetSize) {
+Ipv4NodeContainer::Ipv4NodeContainer(const uint32_t n_nodes,
+		const int packetSize) :
+	WifiNodeContainer(n_nodes), packetSize(packetSize) {
+
+	for (uint32_t i = 0; i < this->GetN(); ++i) {
+		assert(this->Get(i)->GetNDevices() == 1);
+	}//for
+
 	ns3::Ipv4ListRoutingHelper ipv4_list_routing_helper;
 	ipv4_list_routing_helper.Add(ns3::Ipv4StaticRoutingHelper(), 0);
 	ipv4_list_routing_helper.Add(ns3::OlsrHelper(), 10);
@@ -25,16 +26,25 @@ Ipv4NodeContainer::Ipv4NodeContainer(const int packetSize) :
 	internet_stack_helper.SetRoutingHelper(ipv4_list_routing_helper);
 	internet_stack_helper.Install(*this);
 
+	for (uint32_t i = 0; i < this->GetN(); ++i) {
+		assert(this->Get(i)->GetNDevices() == 2);
+	}//for
+
 	ns3::Ipv4AddressHelper ipv4_address_helper;
 	NS_LOG_INFO ("Assign IP Addresses.");
 	ipv4_address_helper.SetBase("10.1.1.0", "255.255.255.0");
 	ns3::Ipv4InterfaceContainer i = ipv4_address_helper.Assign(
 			this->getNetDeviceContainer());
-}
+
+	for (uint32_t i = 0; i < this->GetN(); ++i) {
+		assert(this->Get(i)->GetNDevices() == 2);
+	}//for
+
+}// a constructor
 
 Ipv4NodeContainer::~Ipv4NodeContainer() {
 	// TODO !CodeTemplates.destructorstub.tododesc!
-}
+}// the destructor
 
 ns3::Ptr<ns3::Ipv4L3Protocol> Ipv4NodeContainer::getIpv4L3Protocol(
 		const int i_node) const {
