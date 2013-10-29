@@ -24,13 +24,17 @@ abe::WifiNodeContainer::WifiNodeContainer(const double txGain) :
 		ns3::NetDeviceContainer ndc = wifiHelper.Install(
 				this->getYansWifiPhyHelper(), this->getDifsWifiMacHelper(),
 				this->Get(i));
-		this->getYansWifiPhy(i)->SetReceiveOkCallback (ns3::MakeCallback (&abe::WifiNodeContainer::receivePacketAtPhy, this));
-
+		this->getYansWifiPhy(i)->SetReceiveOkCallback (ns3::MakeCallback (&abe::WifiNodeContainer::receiveOkCallback, this));
+		this->getYansWifiPhy(i)->SetReceiveErrorCallback(ns3::MakeCallback(&abe::WifiNodeContainer::receiveErrorCallback, this));
 	}//for
 }// a constructor
 
-void abe::WifiNodeContainer::receivePacketAtPhy(ns3::Ptr<ns3::Packet> ptr_packet, double snr, ns3::WifiMode wifi_mode, enum ns3::WifiPreamble wifi_preamble) {
-	NS_LOG_UNCOND ("receive packet at phy");
+void abe::WifiNodeContainer::receiveOkCallback(ns3::Ptr<ns3::Packet> ptr_packet, double snr, ns3::WifiMode wifi_mode, enum ns3::WifiPreamble wifi_preamble) {
+	NS_LOG_UNCOND ("receiveOkCallback");
+}//receivePacketAtPhy
+
+void abe::WifiNodeContainer::receiveErrorCallback(ns3::Ptr<const ns3::Packet> ptr_packet, double snr) {
+	NS_LOG_UNCOND ("receiveErrorCallback");
 }//receivePacketAtPhy
 
 abe::WifiNodeContainer::~WifiNodeContainer() {
