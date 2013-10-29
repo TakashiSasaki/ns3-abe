@@ -24,10 +24,14 @@ abe::WifiNodeContainer::WifiNodeContainer(const double txGain) :
 		ns3::NetDeviceContainer ndc = wifiHelper.Install(
 				this->getYansWifiPhyHelper(), this->getDifsWifiMacHelper(),
 				this->Get(i));
+		this->getYansWifiPhy(i)->SetReceiveOkCallback (ns3::MakeCallback (&abe::WifiNodeContainer::receivePacketAtPhy, this));
 
-		//this->netDeviceContainer.Add(ndc);
 	}//for
 }// a constructor
+
+void abe::WifiNodeContainer::receivePacketAtPhy(ns3::Ptr<ns3::Packet> ptr_packet, double snr, ns3::WifiMode wifi_mode, enum ns3::WifiPreamble wifi_preamble) {
+	NS_LOG_UNCOND ("receive packet at phy");
+}//receivePacketAtPhy
 
 abe::WifiNodeContainer::~WifiNodeContainer() {
 	// TODO !CodeTemplates.destructorstub.tododesc!
