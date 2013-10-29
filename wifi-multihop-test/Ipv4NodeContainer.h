@@ -9,6 +9,7 @@
 #define IPV4NODECONTAINER_H_
 
 #include "ns3/address.h"
+#include "ns3/ipv4-l3-protocol.h"
 #include "WifiNodeContainer.h"
 
 namespace abe {
@@ -18,7 +19,7 @@ class Ipv4NodeContainer: public abe::WifiNodeContainer {
 public:
 	Ipv4NodeContainer(const int packetSize = 500);
 	virtual ~Ipv4NodeContainer();
-	void scheduleSendPacket(const ns3::Time& t, const int i_node);
+	void scheduleSendPacket(const ns3::Time& t, const int i_source_node, const int i_destination_node);
 private:
 	ns3::Address getAddress(const int i_node);
 	ns3::Ptr<ns3::Ipv4L3Protocol> getIpv4L3Protocol(const int i_node) const;

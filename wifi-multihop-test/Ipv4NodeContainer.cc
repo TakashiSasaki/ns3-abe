@@ -49,9 +49,11 @@ ns3::Ptr<ns3::Socket> Ipv4NodeContainer::getIpv4RawSocket(const int i_node) {
 	return ipv4_raw_socket;
 }//getIpv4RawSocket
 
-void Ipv4NodeContainer::scheduleSendPacket(const ns3::Time& t, const int i_node) {
+void Ipv4NodeContainer::scheduleSendPacket(const ns3::Time& t,
+		const int i_source_node, const int i_destination_node) {
 	ns3::Simulator::Schedule(t, &abe::Ipv4NodeContainer::sendPacket, this,
-			this->getIpv4RawSocket(0), this->getAddress(i_node));
+			this->getIpv4RawSocket(i_source_node), this->getAddress(
+					i_destination_node));
 }//scheduleSendPacket
 
 void Ipv4NodeContainer::receiveCallback(ns3::Ptr<ns3::Socket> p_socket) {
