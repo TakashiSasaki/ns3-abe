@@ -12,24 +12,22 @@
 #include "ns3/boolean.h"
 #include "difs-wifi-mac.h"
 
-namespace abe{
+namespace abe {
 class DifsWifiMacHelper: public ns3::NqosWifiMacHelper {
 	uint32_t aifsn;
 	uint32_t cwmin;
 	uint32_t cwmax;
 	ns3::ObjectFactory objectFactory;
 
-
 public:
-	static DifsWifiMacHelper Default(uint32_t aifsn=2, 
-			uint32_t cwmin=31, uint32_t cwmax=1023){
-  		DifsWifiMacHelper difs_wifi_mac_helper;
-		difs_wifi_mac_helper.SetType ("abe::DifsWifiMac",
-                		"Aifsn", ns3::UintegerValue (aifsn),
-				"cwmin", ns3::UintegerValue(cwmin),
+	static DifsWifiMacHelper Default(uint32_t aifsn = 2, uint32_t cwmin = 31,
+			uint32_t cwmax = 1023) {
+		DifsWifiMacHelper difs_wifi_mac_helper;
+		difs_wifi_mac_helper.SetType("abe::DifsWifiMac", "Aifsn",
+				ns3::UintegerValue(aifsn), "cwmin", ns3::UintegerValue(cwmin),
 				"cwmax", ns3::UintegerValue(cwmax));
 
-        	return difs_wifi_mac_helper;
+		return difs_wifi_mac_helper;
 	}
 
 	DifsWifiMacHelper(uint32_t aifsn = 2, uint32_t cwmin = 31, uint32_t cwmax =
@@ -40,12 +38,14 @@ public:
 	}// constructor
 
 	virtual ns3::Ptr<DifsWifiMac> Create(void) {
-		ns3::Ptr<DifsWifiMac> ptr_difs_wifi_mac = objectFactory.Create<DifsWifiMac> ();
+		ns3::Ptr<DifsWifiMac> ptr_difs_wifi_mac = objectFactory.Create<
+				DifsWifiMac> ();
 		return ptr_difs_wifi_mac;
 	}// Create
 
 	virtual ~DifsWifiMacHelper() {
 	}// destructor
 };//DifsWifiMacHelper
-};//abe
+}
+;//abe
 #endif /* DIFS_WIFI_MAC_HELPER_H_ */

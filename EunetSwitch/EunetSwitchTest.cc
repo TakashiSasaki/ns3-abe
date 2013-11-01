@@ -48,6 +48,7 @@ int main(int argc, char *argv[]) {
 	CommandLine command_line;
 	//command_line.AddValue("nDownlinkPorts", "number of downlink ports on a switch", nDownlinkPorts);
 	//command_line.AddValue("nSwitches", "number of switches", nSwitches);
+	NS_LOG_INFO("nSwitches = " << nSwitches);
 	//command_line.Parse(argc, argv);
 
 	Ptr<EunetSwitch> ptr_root_switch(new EunetSwitch());

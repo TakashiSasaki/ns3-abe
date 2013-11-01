@@ -1,5 +1,7 @@
 #include "ns3/log.h"
+#include "ns3/uinteger.h"
 #include "difs-wifi-mac.h"
+
 NS_LOG_COMPONENT_DEFINE("DifsWifiMac");
 namespace abe{
 NS_OBJECT_ENSURE_REGISTERED(DifsWifiMac);
@@ -39,5 +41,5 @@ void DifsWifiMac::FinishConfigureStandard(enum ns3::WifiPhyStandard standard) {
 			ns3::AC_BE_NQOS);
 	ns3::AdhocWifiMac::m_dca->SetAifsn(aifsn);
 }//FinishConfigureStandard
-}
+}//abe
 
