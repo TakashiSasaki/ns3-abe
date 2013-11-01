@@ -2,6 +2,8 @@
 #include "ns3/core-module.h"
 #include "ns3/network-module.h"
 #include "ns3/config-store-module.h"
+#include "ns3/log.h"
+NS_LOG_COMPONENT_DEFINE ("DifsWifiMacTest");
 //#include "ns3/internet-module.h"
 //#include "ns3/object.h"
 #include <iostream>
@@ -19,7 +21,6 @@
 #include "OutputFileStream.h"
 #include "ConstantMobilityNodeContainer.h"
 #include "Ipv4NodeContainer.h"
-NS_LOG_COMPONENT_DEFINE ("DifsWifiMacTest");
 
 namespace abe {
 class DifsWifiMacTest {
@@ -43,6 +44,7 @@ public:
 					ns3::InetSocketAddress(ns3::Ipv4Address("10.1.1.4"), 0)) :
 		lambda(lambda), destinationAddress(destinationAddress),
 				outputFileStream(lambda, sim_count), nodeContainer(n_nodes) {
+		NS_LOG_UNCOND("DifsWifiMacTest::DifsWifiMacTest");
 		srand((static_cast<unsigned int> (sim_count)) + (unsigned) time(NULL)); //並列処理のため、sim_countで乱数を初期化
 
 		this->nodeContainer.scheduleSendPacket(ns3::Seconds(32.0), 0, 3);
@@ -61,8 +63,9 @@ public:
 
 }
 int main(int argc, char *argv[]) {
-	ns3::LogComponentEnable("DifsWifiMacTest", ns3::LOG_LEVEL_INFO);
-	NS_LOG_UNCOND("hello 123");
+	ns3::LogComponentEnableAll(ns3::LOG_LEVEL_ALL);
+	NS_LOG_INFO("main");
+	return EXIT_SUCCESS;
 	//if no value is parsed, this variable is not modified
 	//cmd.AddValue("phyMode", "Wifi Phy mode", input.phyMode);
 	int n_nodes = 4;
