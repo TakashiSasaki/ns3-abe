@@ -1,0 +1,22 @@
+ifeq ($(OS),Windows_NT)
+        SOSUFFIX=dll.a
+	EXECENV=PATH="$(PATH):../../build"
+else
+        SOSUFFIX=so
+	EXECENV=LD_LIBRARY_PATH=../../build
+endif
+
+CPPFLAGS = -g -pg -O0 -std=c++0x -Wall -Werror -I ../../build
+
+NS3LIBS=libns3.17-core-debug.$(SOSUFFIX) libns3.17-network-debug.$(SOSUFFIX) libns3.17-bridge-debug.$(SOSUFFIX) \
+libns3.17-csma-debug.$(SOSUFFIX) \
+libns3.17-internet-debug.$(SOSUFFIX) libns3.17-mpi-debug.$(SOSUFFIX) libns3.17-applications-debug.$(SOSUFFIX) \
+libns3.17-stats-debug.$(SOSUFFIX) \
+libns3.17-config-store-debug.$(SOSUFFIX) libns3.17-tools-debug.$(SOSUFFIX) libns3.17-olsr-debug.$(SOSUFFIX) \
+libns3.17-point-to-point-debug.$(SOSUFFIX) \
+libns3.17-wifi-debug.$(SOSUFFIX) libns3.17-propagation-debug.$(SOSUFFIX) libns3.17-mobility-debug.$(SOSUFFIX)
+
+VPATH=../build:../../build
+
+.PHONY: all build run clean
+
