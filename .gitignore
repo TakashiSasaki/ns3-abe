@@ -9,6 +9,7 @@ HelloGprof/hello
 wifi-multihop-test/difs-wifi-mac-test
 wifi-multihop-test/sim_out*.txt
 wifi-multihop-test/HelloNsLog
+wifi-multihop-test/*.exe
 factorial/fact
 factorial/*.s
 .*.swp
