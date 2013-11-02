@@ -28,12 +28,6 @@ difs-wifi-mac.o : difs-wifi-mac.cc difs-wifi-mac.h
 difs-wifi-mac-test.o: difs-wifi-mac-test.cc difs-wifi-mac.h difs-wifi-mac-helper.h
 	g++ $(CPPFLAGS) -c $<
 
-wifi-multihop-test.o: wifi-multihop-test.cc
-	g++ $(CPPFLAGS) -c $<
-
-wifi-multihop-test: wifi-multihop-test.o difs-wifi-mac.o $(NS3LIBS)
-	g++ $(CPPFLAGS) -o $@  $^
-
 difs-wifi-mac-test: difs-wifi-mac-test.o difs-wifi-mac.o ConstantMobilityNodeContainer.o WifiNodeContainer.o OutputFileStream.o Ipv4NodeContainer.o $(NS3LIBS)
 	g++ $(CPPFLAGS) -o $@  $^
 
