@@ -19,4 +19,9 @@ gmon.out
 hello
 EunetSwitchTest/EunetSwitchTest
 *.tr
+HelloNsLog.exe
+DifsWifiMac/*.exe
+EunetSwitch/html
+EunetSwitch/latex
+*.pcap
 
