@@ -1,7 +1,4 @@
 Debug
-EunetSwitch/*.pcap
-EunetSwitch/*.tr
-EunetSwitch/*.exe
 EunetSwitch/EunetSwitchTest
 gmon.out
 HelloGprof/hello
@@ -10,20 +7,20 @@ HelloGprof/hello
 wifi-multihop-test/difs-wifi-mac-test
 wifi-multihop-test/sim_out*.txt
 wifi-multihop-test/HelloNsLog
-wifi-multihop-test/*.exe
 factorial/fact
 factorial/*.s
 .*.swp
 *.E.cc
 *.ccc
 a.out
-gmon.out
 hello
 EunetSwitchTest/EunetSwitchTest
 *.tr
-HelloNsLog.exe
-DifsWifiMac/*.exe
 EunetSwitch/html
 EunetSwitch/latex
 *.pcap
+.cproject
+.project
+.settings
+*.exe
 
