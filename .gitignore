@@ -20,7 +20,7 @@ EunetSwitchTest/EunetSwitchTest
 .cproject
 .project
 .settings
-".exe
+*.exe
 EunetSwitch/html
 EunetSwitch/latex
 
