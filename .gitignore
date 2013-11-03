@@ -1,6 +1,7 @@
 Debug
 EunetSwitch/*.pcap
 EunetSwitch/*.tr
+EunetSwitch/*.exe
 EunetSwitch/EunetSwitchTest
 gmon.out
 HelloGprof/hello
