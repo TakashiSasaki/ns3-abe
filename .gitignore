@@ -18,4 +18,7 @@ factorial/*.s
 *.ccc
 HelloNsLog.exe
 DifsWifiMac/*.exe
+.cproject
+.project
+.settings
 
