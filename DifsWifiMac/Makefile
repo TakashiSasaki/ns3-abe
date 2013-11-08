@@ -1,5 +1,7 @@
 include ../CommonMakefile
 
+all: difs-wifi-mac-test
+
 gmon.out: difs-wifi-mac-test
 	$(EXECENV) ./difs-wifi-mac-test 
 
@@ -25,7 +27,7 @@ difs-wifi-mac-test: difs-wifi-mac-test.o difs-wifi-mac.o ConstantMobilityNodeCon
 	g++ $(CPPFLAGS) -o $@  $^
 
 clean:
-	git clean -x -f -d
+	rm -f *.o
 
 gdb: difs-wifi-mac-test
 	$(EXECENV) gdb ./difs-wifi-mac-test 
