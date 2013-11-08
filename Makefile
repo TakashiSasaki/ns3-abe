@@ -1,3 +1,21 @@
+.PHONY: build help clean all
+
+all:
+	make -C DifsWifiMac $@
+	make -C EunetSwitch $@
+	make -C factorial $@
+	make -C HelloGprof $@
+	make -C HelloNsLog $@
+	make -C wifi-multihop-test $@
+
+clean:
+	make -C DifsWifiMac $@
+	make -C EunetSwitch $@
+	make -C factorial $@
+	make -C HelloGprof $@
+	make -C HelloNsLog $@
+	make -C wifi-multihop-test $@
+
 build: run-wifi-multihop-test
 
 help:
@@ -29,3 +47,4 @@ hello-gprof:
 
 difs-wifi-mac-test:
 	make -C wifi-multihop-test $@
+

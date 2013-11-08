@@ -1,6 +1,5 @@
 Debug
 EunetSwitch/EunetSwitchTest
-gmon.out
 HelloGprof/hello
 *.stackdump
 *.o
@@ -12,7 +11,6 @@ factorial/*.s
 .*.swp
 *.E.cc
 *.ccc
-a.out
 hello
 EunetSwitchTest/EunetSwitchTest
 *.tr
@@ -23,4 +21,5 @@ EunetSwitch/latex
 .project
 .settings
 *.exe
+*.out
 
