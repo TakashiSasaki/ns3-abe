@@ -2,6 +2,12 @@ include ../CommonMakefile
 
 all: difs-wifi-mac-test
 
+run: difs-wifi-mac-test 
+	@$(EXECENV) NS_LOG="*=all|prefix_func|prefix_time:*=error:Buffer=error:Object=error:ObjectBase=error" ./difs-wifi-mac-test 2>&1 | cat
+	
+print-list: difs-wifi-mac-test
+	@$(EXECENV) ./difs-wifi-mac-test --print-list=1 2>&1 | cat
+
 gmon.out: difs-wifi-mac-test
 	$(EXECENV) ./difs-wifi-mac-test 
 
@@ -28,6 +34,9 @@ difs-wifi-mac-test: difs-wifi-mac-test.o difs-wifi-mac.o ConstantMobilityNodeCon
 
 clean:
 	rm -f *.o
+	rm -f difs-wifi-mac-test
+	rm -f gmon.out
+	rm -f sim_out*.txt
 
 gdb: difs-wifi-mac-test
 	$(EXECENV) gdb ./difs-wifi-mac-test 
