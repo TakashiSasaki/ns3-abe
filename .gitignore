@@ -4,7 +4,7 @@ HelloGprof/hello
 *.stackdump
 *.o
 wifi-multihop-test/difs-wifi-mac-test
-wifi-multihop-test/sim_out*.txt
+sim_out*.txt
 wifi-multihop-test/HelloNsLog
 factorial/fact
 factorial/*.s

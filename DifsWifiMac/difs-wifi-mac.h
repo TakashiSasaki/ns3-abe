@@ -27,6 +27,9 @@ public:
 	virtual ~DifsWifiMac();
 	static ns3::TypeId GetTypeId(void);
 
+	//When sending data, Enqueue method in MAC layer is called by upper layer
+	virtual void Enqueue (ns3::Ptr<const ns3::Packet> packet, ns3::Mac48Address to);
+
 protected:
 	virtual void FinishConfigureStandard(enum ns3::WifiPhyStandard standard);
 
