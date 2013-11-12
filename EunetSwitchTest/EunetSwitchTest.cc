@@ -20,7 +20,7 @@ NS_LOG_COMPONENT_DEFINE ("EunetSwitchTest");
 
 int main(int argc, char *argv[]) {
         LogComponentEnable ("EunetSwitchTest", LOG_LEVEL_INFO);
-        int nSwitches = 9;
+        int nSwitches = 1;
         CommandLine command_line;
         //command_line.AddValue("nDownlinkPorts", "number of downlink ports on a switch", nDownlinkPorts);
         //command_line.AddValue("nSwitches", "number of switches", nSwitches);
@@ -96,7 +96,13 @@ int main(int argc, char *argv[]) {
         // and can be read by the "tcpdump -r" command (use "-tt" option to
         // display timestamps correctly)
         //
-        csma_helper.EnablePcapAll("csma-bridge", false);
+        //csma_helper.EnablePcapAll("csma-bridge",false);
+
+        /*for(int i=0; i < nSwitches; i++){
+        csma_helper.EnablePcap("csma-bridge", ns3::NodeContainer(ptr_distribution_switches[i]) ,false);
+        }//for
+         */
+        csma_helper.EnablePcap("csma-bridge", ns3::NodeContainer(ptr_root_switch) ,false);
 
         Ptr<Node> ptr_node1(new EunetSwitch());
         Ptr<Node> ptr_node2(new EunetSwitch());

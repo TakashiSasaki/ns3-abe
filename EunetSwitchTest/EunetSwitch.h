@@ -1,10 +1,3 @@
-/*
- * EunetSwitch.h
- *
- *  Created on: 2013/10/22
- *      Author: w535070h
- */
-
 #ifndef EUNETSWITCH_H_
 #define EUNETSWITCH_H_
 #include <cassert>
@@ -19,6 +12,7 @@ class EunetSwitch: public ns3::Node {
         std::vector<int> uplinkPortIndices;
         std::vector<int> downlinkPortIndices;
         ns3::NodeContainer ncTerminals;
+        ns3::BridgeHelper bridge_helper;
         const int nDownlinkPorts;
         const int nDownlinkBps;
         const int nDownlinkDelayMilliseconds;
@@ -31,15 +25,12 @@ class EunetSwitch: public ns3::Node {
 
 public:
         EunetSwitch(const int n_downlink_ports = 48, const int n_downlink_bps =
-                        1000000000, const int n_downlink_delay_milliseconds = 1,
-                        const int n_uplink_ports = 4, const int n_uplink_bps = 1000000000,
-                        const int n_uplink_delay_milliseconds = 1) :
-                uplinkPortIndices(n_uplink_ports),
-                                downlinkPortIndices(n_downlink_ports), nDownlinkPorts(
-                                                n_downlink_ports), nDownlinkBps(n_downlink_bps),
-                                nDownlinkDelayMilliseconds(n_downlink_delay_milliseconds),
-                                nUplinkPorts(n_uplink_ports), nUplinkBps(n_uplink_bps),
-                                nUplinkDelayMilliseconds(n_uplink_delay_milliseconds) {
+        		1000000000, const int n_downlink_delay_milliseconds = 1,
+        		const int n_uplink_ports = 4, const int n_uplink_bps = 1000000000,
+        		const int n_uplink_delay_milliseconds = 1) :
+                uplinkPortIndices(n_uplink_ports),downlinkPortIndices(n_downlink_ports),
+                nDownlinkPorts(n_downlink_ports), nDownlinkBps(n_downlink_bps),nDownlinkDelayMilliseconds(n_downlink_delay_milliseconds),
+                nUplinkPorts(n_uplink_ports), nUplinkBps(n_uplink_bps),nUplinkDelayMilliseconds(n_uplink_delay_milliseconds) {
                 this->ncTerminals.Create(n_downlink_ports);
                 this->deployTerminals();
                 ns3::InternetStackHelper internet_stack_helper;
@@ -48,7 +39,7 @@ public:
         }//a constructor
 
         std::shared_ptr<ns3::CsmaHelper> getDownlinkCsmaHelper() const {
-                std::shared_ptr<ns3::CsmaHelper> csma_helper(new ns3::CsmaHelper());
+        	std::shared_ptr<ns3::CsmaHelper> csma_helper(new ns3::CsmaHelper());
                 csma_helper->SetChannelAttribute("DataRate", ns3::DataRateValue(
                                 this->nDownlinkBps));
                 csma_helper->SetChannelAttribute("Delay", ns3::TimeValue(
@@ -199,7 +190,6 @@ private:
                 ns3::NetDeviceContainer all_devices;
                 all_devices.Add(this->getUplinkDevices());
                 all_devices.Add(this->getDownlinkDevices());
-                ns3::BridgeHelper bridge_helper;
                 bridge_helper.Install(this, all_devices);
         }//bridgeAllPorts
 
