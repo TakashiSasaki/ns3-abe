@@ -15,12 +15,14 @@
 #include "ns3/internet-module.h"
 #include "EunetSwitch.h"
 
+int runsimulation();
+
 using namespace ns3;
 NS_LOG_COMPONENT_DEFINE ("EunetSwitchTest");
 
 int main(int argc, char *argv[]) {
         LogComponentEnable ("EunetSwitchTest", LOG_LEVEL_INFO);
-        int nSwitches = 1;
+        int nSwitches = 9;
         CommandLine command_line;
         //command_line.AddValue("nDownlinkPorts", "number of downlink ports on a switch", nDownlinkPorts);
         //command_line.AddValue("nSwitches", "number of switches", nSwitches);
@@ -115,12 +117,14 @@ int main(int argc, char *argv[]) {
                 bridge_helper2.Install(ptr_node2 ,NetDeviceContainer(ndc.Get(0)));
         }
 
-#if 0
         NS_LOG_INFO ("Run Simulation.");
-        Simulator::Run();
-        Simulator::Destroy();
-        NS_LOG_INFO ("Done.");
-#endif
-
+	runsimulation();
+	NS_LOG_INFO ("Done.");
         return EXIT_SUCCESS;
 }//main
+
+int runsimulation(){
+        Simulator::Run();
+        Simulator::Destroy();
+	return 0;
+}
