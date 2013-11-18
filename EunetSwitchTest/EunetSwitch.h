@@ -36,36 +36,26 @@ public:
                 ns3::InternetStackHelper internet_stack_helper;
                 internet_stack_helper.Install(ncTerminals);
                 //internet_stack_helper.Install(ncTerminals.getTerminals());
+                //ns3::Simulator::Schedule(ns3::Seconds(0.0), ns3::MakeCallback(&bridgeAllPorts, this));
         }//a constructor
 
         std::shared_ptr<ns3::CsmaHelper> getDownlinkCsmaHelper() const {
         	std::shared_ptr<ns3::CsmaHelper> csma_helper(new ns3::CsmaHelper());
-                csma_helper->SetChannelAttribute("DataRate", ns3::DataRateValue(
-                                this->nDownlinkBps));
-                csma_helper->SetChannelAttribute("Delay", ns3::TimeValue(
-                                ns3::MilliSeconds(this->nDownlinkDelayMilliseconds)));
-                csma_helper->SetChannelAttribute("DataRate", ns3::DataRateValue(
-                                this->nDownlinkBps));
-                csma_helper->SetChannelAttribute("Delay", ns3::TimeValue(
-                                ns3::MilliSeconds(this->nDownlinkDelayMilliseconds)));
+                csma_helper->SetChannelAttribute("DataRate", ns3::DataRateValue(this->nDownlinkBps));
+                csma_helper->SetChannelAttribute("Delay", ns3::TimeValue(ns3::MilliSeconds(this->nDownlinkDelayMilliseconds)));
                 return csma_helper;
-        }//getDownlinkCsmaHelper
+        }//getDownlinkCsmaHelpersche
 
         std::shared_ptr<ns3::CsmaHelper> getUplinkCsmaHelper() const {
                 std::shared_ptr<ns3::CsmaHelper> csma_helper(new ns3::CsmaHelper());
-                csma_helper->SetChannelAttribute("DataRate", ns3::DataRateValue(
-                                this->nUplinkBps));
-                csma_helper->SetChannelAttribute("Delay", ns3::TimeValue(
-                                ns3::MilliSeconds(this->nUplinkDelayMilliseconds)));
-                csma_helper->SetChannelAttribute("DataRate", ns3::DataRateValue(
-                                this->nUplinkBps));
-                csma_helper->SetChannelAttribute("Delay", ns3::TimeValue(
-                                ns3::MilliSeconds(this->nUplinkDelayMilliseconds)));
+                csma_helper->SetChannelAttribute("DataRate", ns3::DataRateValue(this->nUplinkBps));
+                csma_helper->SetChannelAttribute("Delay", ns3::TimeValue(ns3::MilliSeconds(this->nUplinkDelayMilliseconds)));
                 return csma_helper;
         }//getUplinkCsmaHelper
 
         ns3::Ptr<ns3::NetDevice> getUplinkPort(const int i_uplink_port) const {
-                return this->GetDevice(this->uplinkPortIndices[i_uplink_port]);
+        	return this->GetDevice(this->uplinkPortIndices[i_uplink_port]);
+
         }//getUplinkPort
 
         ns3::Ptr<ns3::NetDevice> getDownlinkPort(const int i_downlink_port) const {
@@ -126,71 +116,60 @@ public:
                 this->downlinkPortIndices[i_downlink_port] = i_net_device;
         }//setUplinkPortIndex
 
-        void connectUpTo(const int i_uplink_port,
-                        ns3::Ptr<EunetSwitch> upstream_switch, const int i_downlink_port) {
-                ns3::NetDeviceContainer link = this->getUplinkCsmaHelper()->Install(
-                                ns3::NodeContainer(ns3::NodeContainer(this),
-                                                ns3::NodeContainer(upstream_switch)));
-                this->setUplinkPortIndex(i_uplink_port);
-                upstream_switch->setDownlinkPortIndex(i_downlink_port);
-                this->bridgeAllPorts();
+        void connectUpTo(const int i_uplink_port,ns3::Ptr<EunetSwitch> upstream_switch, const int i_downlink_port) {
+        	ns3::NetDeviceContainer link = this->getUplinkCsmaHelper()->Install(ns3::NodeContainer(ns3::NodeContainer(this),ns3::NodeContainer(upstream_switch)));
+        	this->setUplinkPortIndex(i_uplink_port);
+        	upstream_switch->setDownlinkPortIndex(i_downlink_port);
+        	this->bridgeAllPorts();
         }//connectUpTo
 
-        void connectDownTo(const int i_downlink_port,
-                        ns3::Ptr<EunetSwitch> downstream_switch, const int i_uplink_port) {
-                ns3::NetDeviceContainer link = this->getDownlinkCsmaHelper()->Install(
-                                ns3::NodeContainer(ns3::NodeContainer(this),
-                                                ns3::NodeContainer(downstream_switch)));
-                this->setDownlinkPortIndex(i_downlink_port);
-                downstream_switch->setUplinkPortIndex(i_uplink_port);
-                this->bridgeAllPorts();
+        void connectDownTo(const int i_downlink_port,ns3::Ptr<EunetSwitch> downstream_switch, const int i_uplink_port) {
+        	ns3::NetDeviceContainer link = this->getDownlinkCsmaHelper()->Install(ns3::NodeContainer(ns3::NodeContainer(this),ns3::NodeContainer(downstream_switch)));
+        	this->setDownlinkPortIndex(i_downlink_port);
+        	downstream_switch->setUplinkPortIndex(i_uplink_port);
+        	this->bridgeAllPorts();
         }//connectDownTo
 
-        void connectSibling(const int i_uplink_port, EunetSwitch& sibling_switch,
-                        const int i_sibling_uplink_port) {
-                ns3::NetDeviceContainer link = this->getUplinkCsmaHelper()->Install(
-                                ns3::NodeContainer(ns3::NodeContainer(this),
-                                                ns3::NodeContainer(&sibling_switch)));
-                this->uplinkPortIndices[i_uplink_port] = this->GetNDevices() - 1;
-                sibling_switch.downlinkPortIndices[i_sibling_uplink_port]
-                                = sibling_switch.GetNDevices() - 1;
+        void connectSibling(const int i_uplink_port, EunetSwitch& sibling_switch,const int i_sibling_uplink_port) {
+        	ns3::NetDeviceContainer link = this->getUplinkCsmaHelper()->Install(ns3::NodeContainer(ns3::NodeContainer(this),ns3::NodeContainer(&sibling_switch)));
+        	this->uplinkPortIndices[i_uplink_port] = this->GetNDevices() - 1;
+        	sibling_switch.downlinkPortIndices[i_sibling_uplink_port] = sibling_switch.GetNDevices() - 1;
         }//connectSibling
 
         virtual ~EunetSwitch() {
         }//the destructor
 
         const ns3::NodeContainer& getTerminals() const {
-                return this->ncTerminals;
+        	return this->ncTerminals;
         }//getTerminals
 
         ns3::NetDeviceContainer getTerminalDevices() const {
-                ns3::NetDeviceContainer ndc;
-                for (unsigned i = 0; i < ncTerminals.GetN(); ++i) {
-                        ndc.Add(ncTerminals.Get(i)->GetDevice(0));
-                }//for
-                return ndc;
+        	ns3::NetDeviceContainer ndc;
+        	for (unsigned i = 0; i < ncTerminals.GetN(); ++i) {
+        		ndc.Add(ncTerminals.Get(i)->GetDevice(0));
+        	}//for
+        	return ndc;
         }//getTerminalDevices
 
 private:
 
         void deployTerminals() {
-                for (int i = 0; i < nDownlinkPorts; ++i) {
-                        ns3::NetDeviceContainer link =
-                                        this->getDownlinkCsmaHelper()->Install(ns3::NodeContainer(
-                                                        ns3::NodeContainer(this->ncTerminals.Get(i)),
-                                                        ns3::NodeContainer(this)));
-                        assert(this->ncTerminals.Get(i)->GetNDevices()==1);
-                        //this->ncTerminals.Get(0)->AddDevice(link.Get(0));
-                        this->downlinkPortIndices[i] = this->GetNDevices() - 1;
-                }//for
-                //this->bridgeAllPorts();
+        	for (int i = 0; i < nDownlinkPorts; ++i) {
+        		ns3::NetDeviceContainer link =
+        				this->getDownlinkCsmaHelper()->Install(ns3::NodeContainer(
+        						ns3::NodeContainer(this->ncTerminals.Get(i)),ns3::NodeContainer(this)));
+        		assert(this->ncTerminals.Get(i)->GetNDevices()==1);
+        		//this->ncTerminals.Get(0)->AddDevice(link.Get(0));
+        		this->downlinkPortIndices[i] = this->GetNDevices() - 1;
+        	}//for
+        	//this->bridgeAllPorts();
         }//deployTerminals
 
         void bridgeAllPorts() {
-                ns3::NetDeviceContainer all_devices;
-                all_devices.Add(this->getUplinkDevices());
-                all_devices.Add(this->getDownlinkDevices());
-                bridge_helper.Install(this, all_devices);
+        	ns3::NetDeviceContainer all_devices;
+        	all_devices.Add(this->getUplinkDevices());
+        	all_devices.Add(this->getDownlinkDevices());
+        	bridge_helper.Install(this, all_devices);
         }//bridgeAllPorts
 
 };//class EunetSwitch

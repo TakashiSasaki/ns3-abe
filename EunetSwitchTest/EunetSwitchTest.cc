@@ -15,7 +15,7 @@
 #include "ns3/internet-module.h"
 #include "EunetSwitch.h"
 
-int pripersimulation(int argc,char *argv[]);
+int preparesimulation(int argc,char *argv[]);
 int runSimulation();
 
 using namespace ns3;
@@ -23,14 +23,14 @@ NS_LOG_COMPONENT_DEFINE ("EunetSwitchTest");
 
 int main(int argc, char *argv[]) {
 
-	pripersimulation(argc,argv);
+	preparesimulation(argc,argv);
 
 	runSimulation();
 
 	return EXIT_SUCCESS;
 }//main
 
-int pripersimulation(int argc,char *argv[]){
+int preparesimulation(int argc,char *argv[]){
     LogComponentEnable ("EunetSwitchTest", LOG_LEVEL_INFO);
     int nSwitches = 9;
     CommandLine command_line;
