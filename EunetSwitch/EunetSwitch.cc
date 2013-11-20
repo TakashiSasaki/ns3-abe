@@ -73,3 +73,4 @@ void EunetSwitch::installApplications() {
 		this->installApplication(i);
 	}//for
 }
+
