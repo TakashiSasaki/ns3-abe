@@ -1,10 +1,3 @@
-/*
- * EunetSwitchTest.cc
- *
- *  Created on: 2013/10/28
- *      Author: w535070h
- */
-
 #include <iostream>
 #include <fstream>
 #define NS3_LOG_ENABLE 1

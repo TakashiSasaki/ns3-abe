@@ -26,27 +26,13 @@ class EunetSwitch: public ns3::Node {
 	//ns3::CsmaHelper downlinkCsmaHelper;
 	//ns3::CsmaHelper uplinkCsmaHelper;
 	//ns3::CsmaHelper siblingCsmaHelper;
+	static int nCreated;
 
 public:
 	EunetSwitch(const int n_downlink_ports = 48, const int n_downlink_bps =
 			1000000000, const int n_downlink_delay_milliseconds = 1,
 			const int n_uplink_ports = 4, const int n_uplink_bps = 1000000000,
-			const int n_uplink_delay_milliseconds = 1) :
-		uplinkPortIndices(n_uplink_ports),
-				downlinkPortIndices(n_downlink_ports), nDownlinkPorts(
-						n_downlink_ports), nDownlinkBps(n_downlink_bps),
-				nDownlinkDelayMilliseconds(n_downlink_delay_milliseconds),
-				nUplinkPorts(n_uplink_ports), nUplinkBps(n_uplink_bps),
-				nUplinkDelayMilliseconds(n_uplink_delay_milliseconds) {
-		NS_LOG_UNCOND("constructing EunetSwitch");
-		this->ncTerminals.Create(n_downlink_ports);
-		this->deployTerminals();
-		ns3::InternetStackHelper internet_stack_helper;
-		internet_stack_helper.Install(ncTerminals);
-		//internet_stack_helper.Install(ncTerminals.getTerminals());
-		//ns3::Simulator::Schedule(ns3::Seconds(0.0), ns3::MakeCallback(&bridgeAllPorts, this));
-	}//a constructor
-
+			const int n_uplink_delay_milliseconds = 1);
 	virtual ~EunetSwitch();
 
 	std::shared_ptr<ns3::CsmaHelper> getDownlinkCsmaHelper() const {
