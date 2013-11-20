@@ -8,6 +8,7 @@
 #include "ns3/bridge-module.h"
 #include "ns3/csma-module.h"
 #include "ns3/internet-module.h"
+#include "ns3/output-stream-wrapper.h"
 #include "EunetSwitch.h"
 
 int preparesimulation(int argc, char *argv[]);
@@ -147,16 +148,19 @@ int preparesimulation(int argc, char *argv[]) {
 	// Configure tracing of all enqueue, dequeue, and NetDevice receive events.
 	// Trace output will be sent to the file "csma-bridge.tr"
 	//
-	AsciiTraceHelper ascii;
+	AsciiTraceHelper ascii_trace_helper;
+	NS_LOG_INFO("creating OutputStreamHelper");
+	Ptr<OutputStreamWrapper> ptr_output_stream_wrapper =
+			ascii_trace_helper.CreateFileStream("csma-bridge.tr");
+	NS_LOG_INFO("OutputStreamWrapper created"); NS_LOG_INFO("calling CsmaHelper::EnableAsciiAll");
 	CsmaHelper csma_helper;
-	NS_LOG_UNCOND("CsmaHelper::EnableAsciiAll starts");
-	csma_helper.EnableAsciiAll(ascii.CreateFileStream("csma-bridge.tr"));
-	NS_LOG_UNCOND("CsmaHelper::EnableAsciiAll finished");
+	csma_helper.EnableAsciiAll(ptr_output_stream_wrapper);
+	NS_LOG_INFO("returned from CsmaHelper::EnableAsciiAll");
 
-	NS_LOG_UNCOND("CsmaHelper::EnablePcap starts");
+	NS_LOG_INFO("calling CsmaHelper::EnablePcap");
 	csma_helper.EnablePcap("csma-bridge", ns3::NodeContainer(ptr_root_switch),
 			false);
-	NS_LOG_UNCOND("CsmaHelper::EnablePcap finished");
+	NS_LOG_INFO("returned from CsmaHelper::EnablePcap");
 
 	Ptr<Node> ptr_node1(new EunetSwitch());
 	Ptr<Node> ptr_node2(new EunetSwitch());
