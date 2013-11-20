@@ -14,4 +14,7 @@ factorial/*.s
 .*.swp
 *.E.cc
 *.ccc
+a.out
+gmon.out
+hello
 
