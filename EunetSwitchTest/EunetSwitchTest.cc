@@ -25,37 +25,65 @@ int main(int argc, char *argv[]) {
 
 	preparesimulation(argc,argv);
 
-	runSimulation();
+	//runSimulation();
 
 	return EXIT_SUCCESS;
 }//main
 
 int preparesimulation(int argc,char *argv[]){
     LogComponentEnable ("EunetSwitchTest", LOG_LEVEL_INFO);
-    int nSwitches = 9;
+    int nSwitches = 4;
     CommandLine command_line;
     //command_line.AddValue("nDownlinkPorts", "number of downlink ports on a switch", nDownlinkPorts);
     //command_line.AddValue("nSwitches", "number of switches", nSwitches);
     //command_line.Parse(argc, argv);
 
     Ptr<EunetSwitch> ptr_root_switch(new EunetSwitch());
-    Ptr<EunetSwitch> ptr_distribution_switches[nSwitches];
+    Ptr<EunetSwitch> ptr_distribution_switches_1[nSwitches];
+    Ptr<EunetSwitch> ptr_distribution_switches_2[nSwitches * nSwitches];
+    Ptr<EunetSwitch> ptr_distribution_switches_3[nSwitches * nSwitches  * nSwitches];
+
     for(int i=0; i<nSwitches; ++i){
-            ptr_distribution_switches[i] = new EunetSwitch();
+    	ptr_distribution_switches_1[i] = new EunetSwitch();
+    }//for
+
+    for(int i=0; i<nSwitches * nSwitches; ++i){
+    	ptr_distribution_switches_2[i] = new EunetSwitch();
+    }//for
+
+    for(int i=0; i<nSwitches * nSwitches * nSwitches; ++i){
+    	ptr_distribution_switches_3[i] = new EunetSwitch();
     }//for
 
     for (int i = 0; i < nSwitches; ++i) {
-            NS_LOG_INFO("Connecting distribution switches to the root switch.");
-            ptr_distribution_switches[i]->connectUpTo(0, ptr_root_switch, i);
+    	NS_LOG_INFO("Connecting distribution switches to the root switch.");
+    	ptr_distribution_switches_1[i]->connectUpTo(0, ptr_root_switch, nSwitches);
+
+    	for (int j = 0; j < nSwitches * nSwitches; ++j) {
+    		NS_LOG_INFO("Connecting distribution_2 switches to the distribution switches.");
+    		ptr_distribution_switches_2[j]->connectUpTo(1, ptr_distribution_switches_1[i], nSwitches);
+
+    		for (int k = 0; k < nSwitches * nSwitches * nSwitches; ++k){
+    			NS_LOG_INFO("Connecting distribution_2 switches to the distribution switches.");
+    			ptr_distribution_switches_2[j]->connectUpTo(1, ptr_distribution_switches_2[j], nSwitches);
+    		}//for
+
+    	}//for
+
     }//for
 
     NS_LOG_INFO ("Assigning IP Addresses.");
     Ipv4AddressHelper ipv4_address_helper;
     ipv4_address_helper.SetBase("10.1.0.0", "255.255.0.0");
     for (int i = 0; i < nSwitches; ++i) {
-            ipv4_address_helper.Assign(ptr_distribution_switches[i]->getTerminalDevices());
+    	ipv4_address_helper.Assign(ptr_distribution_switches_1[i]->getTerminalDevices());
     }//for
-
+    for (int i = 0; i < nSwitches * nSwitches; ++i) {
+        	ipv4_address_helper.Assign(ptr_distribution_switches_2[i]->getTerminalDevices());
+        }//for
+    for (int i = 0; i < nSwitches * nSwitches * nSwitches; ++i) {
+        	ipv4_address_helper.Assign(ptr_distribution_switches_3[i]->getTerminalDevices());
+        }//for
     //
     // Create an OnOff application to send UDP datagrams from node zero to node 1.
     //
@@ -68,9 +96,19 @@ int preparesimulation(int argc,char *argv[]){
 
     ApplicationContainer on_off_applications;
     for (int i = 0; i < nSwitches; ++i) {
-            ApplicationContainer ac = on_off_helper.Install(ptr_distribution_switches[i]->getTerminals());
-            on_off_applications.Add(ac);
+    	ApplicationContainer ac = on_off_helper.Install(ptr_distribution_switches_1[i]->getTerminals());
+    	on_off_applications.Add(ac);
     }//for
+    for (int i = 0; i < nSwitches * nSwitches; ++i) {
+    	ApplicationContainer ac = on_off_helper.Install(ptr_distribution_switches_2[i]->getTerminals());
+    	on_off_applications.Add(ac);
+    }//for
+    for (int i = 0; i < nSwitches * nSwitches * nSwitches; ++i) {
+    	ApplicationContainer ac = on_off_helper.Install(ptr_distribution_switches_3[i]->getTerminals());
+    	on_off_applications.Add(ac);
+    }//for
+
+
 
     // Start the application
     on_off_applications.Start(Seconds(1.0));
@@ -80,9 +118,17 @@ int preparesimulation(int argc,char *argv[]){
     PacketSinkHelper packet_sink_helper("ns3::UdpSocketFactory", Address(InetSocketAddress(Ipv4Address::GetAny(), port)));
     ApplicationContainer packet_sink_applications;
     for (int i = 0; i < nSwitches; ++i) {
-            ApplicationContainer ac = packet_sink_helper.Install(ptr_distribution_switches[i]->getTerminals());
-            packet_sink_applications.Add(ac);
+    	ApplicationContainer ac = packet_sink_helper.Install(ptr_distribution_switches_1[i]->getTerminals());
+    	packet_sink_applications.Add(ac);
     }//for
+    for (int i = 0; i < nSwitches * nSwitches; ++i) {
+    	ApplicationContainer ac = packet_sink_helper.Install(ptr_distribution_switches_2[i]->getTerminals());
+    	    	packet_sink_applications.Add(ac);
+    	    }//for
+    for (int i = 0; i < nSwitches * nSwitches * nSwitches; ++i) {
+    	ApplicationContainer ac = packet_sink_helper.Install(ptr_distribution_switches_3[i]->getTerminals());
+    	    	packet_sink_applications.Add(ac);
+    	   }//for
     packet_sink_applications.Start(Seconds(0.0));
 
 
