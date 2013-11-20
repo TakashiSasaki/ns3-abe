@@ -1,17 +1,8 @@
-/*
- * EunetSwitch.cpp
- *
- *  Created on: 2013/10/28
- *      Author: w535070h
- */
-
+#define NS3_LOG_ENABLE 1
+#include "ns3/log.h"
 #include "EunetSwitch.h"
+NS_LOG_COMPONENT_DEFINE("EunetSwitch");
 
-EunetSwitch::EunetSwitch() {
-	// TODO 自動生成されたコンストラクター・スタブ
-
+EunetSwitch::~EunetSwitch(){
 }
 
-EunetSwitch::~EunetSwitch() {
-	// TODO !CodeTemplates.destructorstub.tododesc!
-}

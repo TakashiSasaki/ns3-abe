@@ -17,4 +17,6 @@ factorial/*.s
 a.out
 gmon.out
 hello
+EunetSwitchTest/EunetSwitchTest
+*.tr
 
