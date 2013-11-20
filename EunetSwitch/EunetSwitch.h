@@ -1,18 +1,16 @@
-/*
- * EunetSwitch.h
- *
- *  Created on: 2013/10/22
- *      Author: w535070h
- */
-
 #ifndef EUNETSWITCH_H_
 #define EUNETSWITCH_H_
 #include <cassert>
 #include <stdexcept>
 #include <memory>
-#include <strstream>
+#include <sstream>
+#define NS3_LOG_ENABLE 1
+#include "ns3/log.h"
 #include "ns3/node.h"
+#include "ns3/csma-helper.h"
 #include "ns3/csma-channel.h"
+#include "ns3/internet-stack-helper.h"
+#include "ns3/bridge-helper.h"
 
 class EunetSwitch: public ns3::Node {
 
@@ -40,19 +38,19 @@ public:
 				nDownlinkDelayMilliseconds(n_downlink_delay_milliseconds),
 				nUplinkPorts(n_uplink_ports), nUplinkBps(n_uplink_bps),
 				nUplinkDelayMilliseconds(n_uplink_delay_milliseconds) {
+		NS_LOG_UNCOND("constructing EunetSwitch");
 		this->ncTerminals.Create(n_downlink_ports);
 		this->deployTerminals();
 		ns3::InternetStackHelper internet_stack_helper;
 		internet_stack_helper.Install(ncTerminals);
 		//internet_stack_helper.Install(ncTerminals.getTerminals());
+		//ns3::Simulator::Schedule(ns3::Seconds(0.0), ns3::MakeCallback(&bridgeAllPorts, this));
 	}//a constructor
+
+	virtual ~EunetSwitch();
 
 	std::shared_ptr<ns3::CsmaHelper> getDownlinkCsmaHelper() const {
 		std::shared_ptr<ns3::CsmaHelper> csma_helper(new ns3::CsmaHelper());
-		csma_helper->SetChannelAttribute("DataRate", ns3::DataRateValue(
-				this->nDownlinkBps));
-		csma_helper->SetChannelAttribute("Delay", ns3::TimeValue(
-				ns3::MilliSeconds(this->nDownlinkDelayMilliseconds)));
 		csma_helper->SetChannelAttribute("DataRate", ns3::DataRateValue(
 				this->nDownlinkBps));
 		csma_helper->SetChannelAttribute("Delay", ns3::TimeValue(
@@ -62,10 +60,6 @@ public:
 
 	std::shared_ptr<ns3::CsmaHelper> getUplinkCsmaHelper() const {
 		std::shared_ptr<ns3::CsmaHelper> csma_helper(new ns3::CsmaHelper());
-		csma_helper->SetChannelAttribute("DataRate", ns3::DataRateValue(
-				this->nUplinkBps));
-		csma_helper->SetChannelAttribute("Delay", ns3::TimeValue(
-				ns3::MilliSeconds(this->nUplinkDelayMilliseconds)));
 		csma_helper->SetChannelAttribute("DataRate", ns3::DataRateValue(
 				this->nUplinkBps));
 		csma_helper->SetChannelAttribute("Delay", ns3::TimeValue(
@@ -165,9 +159,6 @@ public:
 				= sibling_switch.GetNDevices() - 1;
 	}//connectSibling
 
-	virtual ~EunetSwitch() {
-	}//the destructor
-
 	const ns3::NodeContainer& getTerminals() const {
 		return this->ncTerminals;
 	}//getTerminals
@@ -206,3 +197,4 @@ private:
 };//class EunetSwitch
 
 #endif /* EUNETSWITCH_H_ */
+
