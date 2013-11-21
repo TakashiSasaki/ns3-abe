@@ -27,6 +27,8 @@ class EunetSwitch: public ns3::Node {
 	//ns3::CsmaHelper uplinkCsmaHelper;
 	//ns3::CsmaHelper siblingCsmaHelper;
 	static int nCreated;
+	ns3::Ptr<ns3::OutputStreamWrapper> oswAsciiTrace;
+	static const char* const pcapPrefix;
 
 public:
 	EunetSwitch(const int n_downlink_ports = 48, const int n_downlink_bps =
@@ -34,6 +36,37 @@ public:
 			const int n_uplink_ports = 4, const int n_uplink_bps = 1000000000,
 			const int n_uplink_delay_milliseconds = 1);
 	virtual ~EunetSwitch();
+
+	void setAsciiTraceFilename(const std::string& file_name) {
+		ns3::AsciiTraceHelper ascii_trace_helper;
+		this->oswAsciiTrace = ascii_trace_helper.CreateFileStream(file_name);
+	}//createFileStream
+
+	void enableAsciiTraceDownlink(const int i_downlink_port) {
+		ns3::CsmaHelper csma_helper;
+		csma_helper.EnableAscii(this->oswAsciiTrace, this->getDownlinkPort(
+				i_downlink_port));
+	}
+
+	void enableAsciiTraceUplink(const int i_uplink_port) {
+		ns3::CsmaHelper csma_helper;
+		csma_helper.EnableAscii(this->oswAsciiTrace, this->getUplinkPort(
+				i_uplink_port));
+	}
+
+	void enablePcapDownlink(const int i_downlink_port, const bool promiscuous =
+			false) {
+		ns3::CsmaHelper csma_helper;
+		csma_helper.EnablePcap(EunetSwitch::pcapPrefix, this->getDownlinkPort(
+				i_downlink_port), promiscuous);
+	}
+
+	void enablePcapUplink(const int i_uplink_port, const bool promiscuous =
+			false) {
+		ns3::CsmaHelper csma_helper;
+		csma_helper.EnablePcap(EunetSwitch::pcapPrefix, this->getUplinkPort(
+				i_uplink_port), promiscuous);
+	}
 
 	std::shared_ptr<ns3::CsmaHelper> getDownlinkCsmaHelper() const {
 		std::shared_ptr<ns3::CsmaHelper> csma_helper(new ns3::CsmaHelper());

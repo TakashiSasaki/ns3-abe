@@ -17,7 +17,7 @@ EunetSwitchTest: EunetSwitchTest.o EunetSwitch.o $(NS3LIBS)
 	g++ -g -pg -O0 -std=c++0x -o $@ $(CPPFLAGS) $^
 
 gmon.out: EunetSwitchTest
-	NS_LOG="EunetSwitchTest=**:EunetSwitch=**:CsmaHelper=**:TraceHelper=**:OutputStreamWrapper=**:FatalImpl=**" LD_LIBRARY_PATH=../../build ./EunetSwitchTest
+	NS_LOG="EunetSwitchTest=**:EunetSwitch=**:CsmaHelper=**:TraceHelper=**:OutputStreamWrapper=**:FatalImpl=**:Packet=**:PacketMetadata=**:Queue=**" LD_LIBRARY_PATH=../../build ./EunetSwitchTest
 
 clean:
 	-rm -f gmon.out

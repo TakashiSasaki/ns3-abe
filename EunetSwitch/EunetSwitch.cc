@@ -3,6 +3,8 @@
 #include "EunetSwitch.h"
 NS_LOG_COMPONENT_DEFINE("EunetSwitch");
 
+const char* const EunetSwitch::pcapPrefix = "EunetSwitch";
+
 EunetSwitch::~EunetSwitch() {
 }
 
