@@ -195,15 +195,10 @@ public:
 
 private:
 
+	void deployTerminal(const int i_downlink_port);
 	void deployTerminals() {
 		for (uint32_t i = 0; i < nDownlinkPorts; ++i) {
-			ns3::NetDeviceContainer link =
-					this->getDownlinkCsmaHelper()->Install(ns3::NodeContainer(
-							ns3::NodeContainer(this->ncTerminals.Get(i)),
-							ns3::NodeContainer(this)));
-			assert(this->ncTerminals.Get(i)->GetNDevices()==1);
-			//this->ncTerminals.Get(0)->AddDevice(link.Get(0));
-			this->downlinkPortIndices[i] = this->GetNDevices() - 1;
+			deployTerminal(i);
 		}//for
 		//this->bridgeAllPorts();
 	}//deployTerminals
