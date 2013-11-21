@@ -2,17 +2,16 @@
 #define EUNETSWITCH_H_
 #include <cassert>
 #include <stdexcept>
-#include <memory>
+#if 100000L < __cplusplus && __cplusplus <= 199711L
 #include <strstream>
-#if __cplusplus > 100000L && __cplusplus <= 199711L
 #include <boost/shared_ptr.hpp>
 namespace std {
 	using boost::shared_ptr;
 }
 #else
 #include <memory>
-#endif
 #include <sstream>
+#endif
 #define NS3_LOG_ENABLE 1
 #include "ns3/node.h"
 #include "ns3/csma-helper.h"

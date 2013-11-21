@@ -1,34 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
-/*
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation;
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
-
-// Network topology
-//
-//        n0     n1
-//        |      | 
-//       ----------
-//       | Switch |
-//       ----------
-//        |      | 
-//        n2     n3
-//
-//
-// - CBR/UDP flows from n0 to n1 and from n3 to n0
-// - DropTail queues 
-// - Tracing of queues and packet receptions to file "csma-bridge.tr"
-
 #include <iostream>
 #include <fstream>
 #include "ns3/core-module.h"
@@ -37,13 +6,14 @@
 #include "ns3/bridge-module.h"
 #include "ns3/csma-module.h"
 #include "ns3/internet-module.h"
-#include "EunetSwitch.h"
+#include "EunetSwitches.h"
 
 using namespace ns3;
 NS_LOG_COMPONENT_DEFINE ("EunetSwitchTest");
 
 int main(int argc, char *argv[]) {
-	LogComponentEnable ("EunetSwitchTest", LOG_LEVEL_INFO);
+	EunetSwitches eunet_switches(3, 2);
+	//LogComponentEnable ("EunetSwitchTest", LOG_LEVEL_INFO);
 	int nSwitches = 9;
 	CommandLine command_line;
 	//command_line.AddValue("nDownlinkPorts", "number of downlink ports on a switch", nDownlinkPorts);
@@ -53,7 +23,7 @@ int main(int argc, char *argv[]) {
 
 	Ptr<EunetSwitch> ptr_root_switch(new EunetSwitch());
 	Ptr<EunetSwitch> ptr_distribution_switches[nSwitches];
-	for(int i=0; i<nSwitches; ++i){
+	for (int i = 0; i < nSwitches; ++i) {
 		ptr_distribution_switches[i] = new EunetSwitch();
 	}//for
 
@@ -79,8 +49,8 @@ int main(int argc, char *argv[]) {
 	OnOffHelper on_off_helper("ns3::UdpSocketFactory", Address(
 			InetSocketAddress(Ipv4Address("10.1.1.2"), port)));
 	on_off_helper.SetConstantRate(DataRate("500kb/s"));
-	on_off_helper.SetAttribute("Remote", AddressValue(InetSocketAddress(Ipv4Address(
-			"10.1.1.1"), port)));
+	on_off_helper.SetAttribute("Remote", AddressValue(InetSocketAddress(
+			Ipv4Address("10.1.1.1"), port)));
 
 	ApplicationContainer on_off_applications;
 	for (int i = 0; i < nSwitches; ++i) {
@@ -104,7 +74,6 @@ int main(int argc, char *argv[]) {
 	}//for
 	packet_sink_applications.Start(Seconds(0.0));
 
-
 	NS_LOG_INFO ("Configure Tracing.");
 	//
 	// Configure tracing of all enqueue, dequeue, and NetDevice receive events.
@@ -127,11 +96,12 @@ int main(int argc, char *argv[]) {
 	Ptr<Node> ptr_node2(new EunetSwitch());
 	{
 		CsmaHelper csma_helper;
-		NetDeviceContainer ndc = csma_helper.Install(NodeContainer(ptr_node1, ptr_node2));
+		NetDeviceContainer ndc = csma_helper.Install(NodeContainer(ptr_node1,
+				ptr_node2));
 		BridgeHelper bridge_helper1;
-		bridge_helper1.Install(ptr_node1 ,NetDeviceContainer(ndc.Get(1)));
+		bridge_helper1.Install(ptr_node1, NetDeviceContainer(ndc.Get(1)));
 		BridgeHelper bridge_helper2;
-		bridge_helper2.Install(ptr_node2 ,NetDeviceContainer(ndc.Get(0)));
+		bridge_helper2.Install(ptr_node2, NetDeviceContainer(ndc.Get(0)));
 	}
 
 #if 0
