@@ -1,5 +1,6 @@
 #define NS3_LOG_ENABLE 1
 #include "ns3/log.h"
+#include "ns3/ipv4-address-helper.h"
 NS_LOG_COMPONENT_DEFINE("EunetSwitches");
 #include <cmath>
 #include "EunetSwitches.h"
@@ -29,8 +30,27 @@ EunetSwitches::EunetSwitches(const int depth, const int width) :
 					switches[i - 1][j / width]), j % width);
 		}//for
 	}//for
+
+	this->assignAddresses();
 }// a constructor
 
 EunetSwitches::~EunetSwitches() {
 	// TODO !CodeTemplates.destructorstub.tododesc!
+}
+
+ns3::NetDeviceContainer EunetSwitches::getTerminalDevices() {
+	ns3::NetDeviceContainer ndc;
+	for (auto i = switches.begin(); i != switches.end(); ++i) {
+		for (auto j = i->begin(); j != i->end(); ++j) {
+			ndc.Add((**j).getTerminalDevices());
+		}
+	}//for
+	return ndc;
+}
+
+void EunetSwitches::assignAddresses() {
+	NS_LOG_INFO ("assigning IP addresses.");
+	ns3::Ipv4AddressHelper ipv4_address_helper;
+	ipv4_address_helper.SetBase("10.0.0.0", "255.0.0.0");
+	ipv4_address_helper.Assign(this->getTerminalDevices());
 }

@@ -11,6 +11,9 @@ class EunetSwitches {
 public:
 	EunetSwitches(const int depth = 1, const int width = 1);
 	virtual ~EunetSwitches();
+private:
+	void assignAddresses();
+	ns3::NetDeviceContainer getTerminalDevices();
 };
 
 #endif /* EUNETSWITCHES_H_ */
