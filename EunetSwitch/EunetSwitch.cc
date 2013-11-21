@@ -29,6 +29,7 @@ EunetSwitch::EunetSwitch(const int n_downlink_ports, const int n_downlink_bps,
 	NS_LOG_INFO("constructing EunetSwitch " << this->nCreated);
 	{
 		ns3::AsciiTraceHelper ascii_trace_helper;
-		this->oswAsciiTrace = ascii_trace_helper.CreateFileStream(this->asciiTraceFileName);
+		this->oswAsciiTrace = ascii_trace_helper.CreateFileStream(
+				this->asciiTraceFileName);
 	}
 }//a constructor

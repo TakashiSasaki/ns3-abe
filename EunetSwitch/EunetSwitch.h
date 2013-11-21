@@ -4,12 +4,12 @@
 #include <stdexcept>
 #include <sstream>
 #if 100000 < __cplusplus && __cplusplus <= 199711L 
-	#include <boost/shared_ptr.hpp>
-	namespace std{
-    		using boost::shared_ptr;
-	}
+#include <boost/shared_ptr.hpp>
+namespace std {
+	using boost::shared_ptr;
+}
 #else
-	#include <memory>
+#include <memory>
 #endif
 #define NS3_LOG_ENABLE 1
 #include "ns3/log.h"
