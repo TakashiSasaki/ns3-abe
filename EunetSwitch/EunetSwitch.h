@@ -18,6 +18,7 @@ namespace std {
 #include "ns3/csma-channel.h"
 #include "ns3/internet-stack-helper.h"
 #include "ns3/bridge-helper.h"
+#include "EunetTerminal.h"
 
 class EunetSwitch: public ns3::Node {
 
@@ -192,6 +193,10 @@ public:
 		}//for
 		return ndc;
 	}//getTerminalDevices
+
+	ns3::Ptr<EunetTerminal> getTerminal(const int i_downlink_port) {
+		return this->ncTerminals.Get(i_downlink_port)->GetObject<EunetTerminal> ();
+	}//getTerminal
 
 private:
 

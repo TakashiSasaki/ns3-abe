@@ -1,0 +1,59 @@
+#define NS3_LOG_ENABLE 1
+#include "ns3/log.h"
+#include "ns3/applications-module.h"
+#include "ns3/ipv4.h"
+#include "EunetTerminal.h"
+NS_LOG_COMPONENT_DEFINE("EunetTerminal");
+NS_OBJECT_ENSURE_REGISTERED(EunetTerminal);
+
+ns3::TypeId EunetTerminal::GetTypeId(void) {
+	static ns3::TypeId type_id = ns3::TypeId("EunetTerminal").SetParent<
+			ns3::Node> ().AddConstructor<EunetTerminal> ();
+	return type_id;
+}//GetTypeId
+
+EunetTerminal::EunetTerminal() {
+	this->installPacketSync();
+}
+
+EunetTerminal::~EunetTerminal() {
+	// TODO !CodeTemplates.destructorstub.tododesc!
+}
+
+void EunetTerminal::installPacketSync() {
+	NS_LOG_INFO("installing packet sync on node " << this->GetId());
+	ns3::PacketSinkHelper packet_sink_helper("ns3::UdpSocketFactory",
+			ns3::Address(ns3::InetSocketAddress(ns3::Ipv4Address::GetAny(),
+					PACKET_SYNC_UDP_PORT)));
+	this->packetSync = packet_sink_helper.Install(this);
+	this->packetSync.Start(ns3::Seconds(0.0));
+}
+
+void EunetTerminal::installOnOffApplication() {
+	NS_LOG_INFO("installing on-off application on node " << this->GetId());
+	ns3::OnOffHelper on_off_helper("ns3::UdpSocketFactory", ns3::Address(
+			ns3::InetSocketAddress(this->getAddress(),
+					ON_OFF_APPLICATION_UDP_PORT)));
+	on_off_helper.SetConstantRate(ns3::DataRate("500kb/s"));
+	on_off_helper.SetAttribute("Remote", ns3::AddressValue(
+			ns3::InetSocketAddress(this->getAddress(), PACKET_SYNC_UDP_PORT)));
+	this->onOffApplication = on_off_helper.Install(this);
+}//installOnOffApplication
+
+void EunetTerminal::startOnOffApplication(ns3::Time start_seconds) {
+	this->onOffApplication.Start(start_seconds);
+}//startOnOffApplication
+
+void EunetTerminal::stopOnOffApplication(ns3::Time stop_seconds) {
+	this->onOffApplication.Stop(stop_seconds);
+}//stopOnOffApplication
+
+ns3::Ipv4Address EunetTerminal::getAddress() {
+	ns3::Ptr<ns3::Ipv4> ptr_ipv4 = this->GetObject<ns3::Ipv4> ();
+	ns3::Ptr<ns3::NetDevice> ptr_net_device = this->GetDevice(0);
+	const int i_interface = ptr_ipv4->GetInterfaceForDevice(ptr_net_device);
+	ns3::Ipv4InterfaceAddress ipv4_interface_address = ptr_ipv4->GetAddress(
+			i_interface, 0);
+	ns3::Ipv4Address ipv4_address = ipv4_interface_address.GetLocal();
+	return ipv4_address;
+}//getAddress
