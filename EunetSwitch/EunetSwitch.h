@@ -211,6 +211,9 @@ private:
 		bridge_helper.Install(this, all_devices);
 	}//bridgeAllPorts
 
+	static void installApplication(ns3::Ptr<ns3::Node> ptr_node);
+	void installApplication(const int i_downlink_port);
+	void installApplications();
 };//class EunetSwitch
 
 #endif /* EUNETSWITCH_H_ */

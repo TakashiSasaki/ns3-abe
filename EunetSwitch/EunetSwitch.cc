@@ -1,5 +1,10 @@
 #define NS3_LOG_ENABLE 1
 #include "ns3/log.h"
+#include "ns3/applications-module.h"
+#include "ns3/internet-module.h"
+#include "ns3/network-module.h"
+#include "ns3/ipv4-address.h"
+#include "ns3/inet-socket-address.h"
 #include "EunetSwitch.h"
 NS_LOG_COMPONENT_DEFINE("EunetSwitch");
 
@@ -44,5 +49,27 @@ void EunetSwitch::deployTerminal(const int i_downlink_port) {
 	const int n_devices_after = this->GetNDevices();
 	NS_LOG_INFO("# of devices " << "on switch " << this->GetId() << " was changed from " << n_devices_before << " to " << n_devices_after);
 	this->downlinkPortIndices[i_downlink_port] = this->GetNDevices() - 1;
+	this->installApplication(i_downlink_port);
 }//deployTerminal
 
+void EunetSwitch::installApplication(const int i_downlink_port) {
+	this->installApplication(this->ncTerminals.Get(i_downlink_port));
+}
+
+void EunetSwitch::installApplication(ns3::Ptr<ns3::Node> ptr_node) {
+	NS_LOG_INFO("installing packet sync on node " << ptr_node->GetId());
+	const int UDP_PORT = 9; // Discard port (RFC 863)
+	ns3::PacketSinkHelper packet_sink_helper("ns3::UdpSocketFactory",
+			ns3::Address(ns3::InetSocketAddress(ns3::Ipv4Address::GetAny(),
+					UDP_PORT)));
+	ns3::ApplicationContainer packet_sink_applications;
+	ns3::ApplicationContainer ac = packet_sink_helper.Install(ptr_node);
+	packet_sink_applications.Add(ac);
+	packet_sink_applications.Start(ns3::Seconds(0.0));
+}
+
+void EunetSwitch::installApplications() {
+	for (unsigned i = 0; i < nDownlinkPorts; ++i) {
+		this->installApplication(i);
+	}//for
+}
