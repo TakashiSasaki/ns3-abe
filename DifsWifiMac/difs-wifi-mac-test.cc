@@ -1,3 +1,4 @@
+#define NS3_LOG_ENABLE 1
 //lambda, sim_countをコマンドライン引数として与える必要あり
 #include "ns3/core-module.h"
 #include "ns3/network-module.h"
@@ -44,7 +45,7 @@ public:
 					ns3::InetSocketAddress(ns3::Ipv4Address("10.1.1.4"), 0)) :
 		lambda(lambda), destinationAddress(destinationAddress),
 				outputFileStream(lambda, sim_count), nodeContainer(n_nodes) {
-		NS_LOG_UNCOND("DifsWifiMacTest::DifsWifiMacTest");
+		NS_LOG_FUNCTION(this);
 		srand((static_cast<unsigned int> (sim_count)) + (unsigned) time(NULL)); //並列処理のため、sim_countで乱数を初期化
 
 		this->nodeContainer.scheduleSendPacket(ns3::Seconds(32.0), 0, 3);
@@ -63,27 +64,53 @@ public:
 
 }
 int main(int argc, char *argv[]) {
-	ns3::LogComponentEnableAll(ns3::LOG_LEVEL_ALL);
-	NS_LOG_INFO("main");
-	return EXIT_SUCCESS;
+//	ns3::LogComponentDisable("Object", ns3::LogLevel::LOG_LEVEL_ALL);
+//	ns3::LogComponentDisable("ObjectBase", ns3::LogLevel::LOG_LEVEL_ALL);
+//	ns3::LogComponentDisable("TypeID", ns3::LogLevel::LOG_LEVEL_ALL);
+//	ns3::LogComponentDisable("EventId", ns3::LogLevel::LOG_LEVEL_ALL);
+//	ns3::LogComponentDisable("EventImpl", ns3::LogLevel::LOG_LEVEL_ALL);
+//	ns3::LogComponentDisable("Timer", ns3::LogLevel::LOG_LEVEL_ALL);
+//	ns3::LogComponentDisable("CommandLine", ns3::LogLevel::LOG_LEVEL_ALL);
+//	ns3::LogComponentDisable("MapScheduler", ns3::LogLevel::LOG_LEVEL_ALL);
+//	ns3::LogComponentDisable("PacketMetadata", ns3::LogLevel::LOG_LEVEL_ALL);
+//	ns3::LogComponentDisable("Integer", ns3::LogLevel::LOG_LEVEL_ALL);
+//	ns3::LogComponentDisable("Uinteger", ns3::LogLevel::LOG_LEVEL_ALL);
+//	ns3::LogComponentDisable("Double", ns3::LogLevel::LOG_LEVEL_ALL);
+//	ns3::LogComponentDisable("Double", ns3::LogLevel::LOG_FUNCTION);
+//	ns3::LogComponentDisable("Boolean", ns3::LogLevel::LOG_LEVEL_ALL);
+//	ns3::LogComponentDisable("Time", ns3::LogLevel::LOG_LEVEL_ALL);
+//	ns3::LogComponentDisable("Mac48Address", ns3::LogLevel::LOG_LEVEL_ALL);
+//	ns3::LogComponentDisable("DefaultSimulatorImpl", ns3::LogLevel::LOG_LEVEL_ALL);
+//	ns3::LogComponentDisable("ByteTagList", ns3::LogLevel::LOG_LEVEL_ALL);
+//	ns3::LogComponentDisable("Buffer", ns3::LogLevel::LOG_LEVEL_ALL);
+//	ns3::LogComponentDisable("Callback", ns3::LogLevel::LOG_LEVEL_ALL);
+//	ns3::LogComponentDisable("Enum", ns3::LogLevel::LOG_LEVEL_ALL);
+	//NS_LOG_FUNCTION_NOARGS();
+	NS_LOG_INFO("entered into main function");
 	//if no value is parsed, this variable is not modified
 	//cmd.AddValue("phyMode", "Wifi Phy mode", input.phyMode);
 	int n_nodes = 4;
 	double lambda = 1.0;
 	int sim_count = 1;
+	bool print_list = false;
 	ns3::CommandLine cmd;
 	cmd.AddValue("n_nodes", "number of nodes", n_nodes);
 	cmd.AddValue("lambda", "packet arrival rate", lambda);
 	cmd.AddValue("sim_count", "counter for simulation", sim_count);
+	cmd.AddValue("print-list", "print all log components", print_list);
 	cmd.Parse(argc, argv);
 	//std::cerr << "phyMode = " << input.phyMode << std::endl;
 	//std::cerr << "lambda = " << input.lambda << std::endl;
 	//std::cerr << "sim_count= " << input.sim_count << std::endl;
-
+	if(print_list){
+		ns3::LogComponentPrintList();
+		return EXIT_SUCCESS;
+	}
 
 	abe::DifsWifiMacTest difs_wifi_mac_test(n_nodes, lambda, sim_count);
 
 	ns3::Simulator::Run();
 	ns3::Simulator::Destroy();
+	NS_LOG_INFO("existing from main function");
 	return EXIT_SUCCESS;
 }//main

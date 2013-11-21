@@ -2,8 +2,15 @@
 #define EUNETSWITCH_H_
 #include <cassert>
 #include <stdexcept>
-#include <memory>
 #include <sstream>
+#if 100000 < __cplusplus && __cplusplus <= 199711L 
+	#include <boost/shared_ptr.hpp>
+	namespace std{
+    		using boost::shared_ptr;
+	}
+#else
+	#include <memory>
+#endif
 #define NS3_LOG_ENABLE 1
 #include "ns3/log.h"
 #include "ns3/node.h"
@@ -17,7 +24,7 @@ class EunetSwitch: public ns3::Node {
 	std::vector<int> uplinkPortIndices;
 	std::vector<int> downlinkPortIndices;
 	ns3::NodeContainer ncTerminals;
-	const int nDownlinkPorts;
+	const uint32_t nDownlinkPorts;
 	const int nDownlinkBps;
 	const int nDownlinkDelayMilliseconds;
 	const int nUplinkPorts;
@@ -100,7 +107,7 @@ public:
 
 	ns3::NetDeviceContainer getDownlinkDevices() const {
 		ns3::NetDeviceContainer ndc;
-		for (int i = 0; i < this->nDownlinkPorts; ++i) {
+		for (uint32_t i = 0; i < this->nDownlinkPorts; ++i) {
 			ndc.Add(this->getDownlinkPort(i));
 		}//for
 		return ndc;
@@ -110,7 +117,7 @@ public:
 		this->setUplinkPortIndex(i_uplink_port, this->GetNDevices() - 1);
 	}//setUplinkPortIndex
 
-	void setUplinkPortIndex(const int i_uplink_port,
+	void setUplinkPortIndex(const uint32_t i_uplink_port,
 			const uint32_t i_net_device) {
 		if (0 > i_uplink_port || this->uplinkPortIndices.size()
 				<= i_uplink_port) {
@@ -125,11 +132,11 @@ public:
 		this->uplinkPortIndices[i_uplink_port] = i_net_device;
 	}//setUplinkPortIndex
 
-	void setDownlinkPortIndex(const int i_downlink_port) {
+	void setDownlinkPortIndex(const uint32_t i_downlink_port) {
 		this->setDownlinkPortIndex(i_downlink_port, this->GetNDevices() - 1);
 	}//setUplinkPortIndex
 
-	void setDownlinkPortIndex(const int i_downlink_port,
+	void setDownlinkPortIndex(const uint32_t i_downlink_port,
 			const uint32_t i_net_device) {
 		if (0 > i_downlink_port || this->downlinkPortIndices.size()
 				<= i_downlink_port) {
@@ -189,7 +196,7 @@ public:
 private:
 
 	void deployTerminals() {
-		for (int i = 0; i < nDownlinkPorts; ++i) {
+		for (uint32_t i = 0; i < nDownlinkPorts; ++i) {
 			ns3::NetDeviceContainer link =
 					this->getDownlinkCsmaHelper()->Install(ns3::NodeContainer(
 							ns3::NodeContainer(this->ncTerminals.Get(i)),

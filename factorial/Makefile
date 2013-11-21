@@ -1,15 +1,15 @@
 .PHONY: all clean
 
-all: prof
+all: fact
 
 clean:
-	-rm fact fact.o
+	rm -f fact fact.o
 
 fact: fact.cc
 	g++ -g -pg -O2 -o fact $^ 
 
 gmon.out: fact
-	time ./fact
+	./fact
 
 prof: gmon.out
 	gprof fact -p -q

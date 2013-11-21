@@ -11,6 +11,7 @@
 #include "difs-wifi-mac.h"
 #include "difs-wifi-mac-helper.h"
 #include "ConstantMobilityNodeContainer.h"
+#include "WifiPhyTraces.h"
 namespace abe {
 class WifiNodeContainer: public ConstantMobilityNodeContainer {
 public:
@@ -18,6 +19,7 @@ public:
 	virtual ~WifiNodeContainer();
 private:
 	double txGain;
+	WifiPhyTraces wifiPhyTraces;
 private:
 	ns3::YansWifiChannelHelper& getYansWifiChannelHelper();
 	ns3::YansWifiPhyHelper& getYansWifiPhyHelper();

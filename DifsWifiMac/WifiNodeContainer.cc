@@ -5,6 +5,8 @@
 #include "ns3/yans-wifi-phy.h"
 #include "ns3/string.h"
 #include "WifiNodeContainer.h"
+#include "WifiPhyTraces.h"
+NS_LOG_COMPONENT_DEFINE("WifiNodeContainer");
 
 abe::WifiNodeContainer::WifiNodeContainer(const uint32_t n_nodes,
 		const double txGain) :
@@ -32,6 +34,7 @@ abe::WifiNodeContainer::WifiNodeContainer(const uint32_t n_nodes,
 				&abe::WifiNodeContainer::receiveOkCallback, this));
 		this->getYansWifiPhy(i)->SetReceiveErrorCallback(ns3::MakeCallback(
 				&abe::WifiNodeContainer::receiveErrorCallback, this));
+		this->wifiPhyTraces.install(this->getYansWifiPhy(i));
 	}//for
 }// a constructor
 
