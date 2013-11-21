@@ -6,6 +6,9 @@ gmon.out: EunetSwitchTest
 gprof: gmon.out
 	$(EXECENV) gprof ./EunetSwitchTest -p -q
 
+gdb: EunetSwitchTest
+	$(EXECENV) gdb ./EunetSwitchTest 
+
 EunetSwitchTest.cc: EunetSwitch.h
 
 EunetSwitches.o: EunetSwitches.cc EunetSwitches.h EunetSwitch.h
@@ -14,7 +17,10 @@ EunetSwitches.o: EunetSwitches.cc EunetSwitches.h EunetSwitch.h
 EunetSwitch.o: EunetSwitch.cc EunetSwitch.h
 	g++ -g -pg -O2 -std=c++0x -c -o EunetSwitch.o $(CPPFLAGS) EunetSwitch.cc
 
-EunetSwitchTest: EunetSwitchTest.cc EunetSwitch.o EunetSwitches.o $(NS3LIBS)
+EunetTerminal.o: EunetTerminal.cc EunetTerminal.h
+	g++ -g -pg -O2 -std=c++0x -c -o EunetTerminal.o $(CPPFLAGS) EunetTerminal.cc
+
+EunetSwitchTest: EunetSwitchTest.cc EunetSwitch.o EunetSwitches.o EunetTerminal.o $(NS3LIBS)
 	g++ -g -pg -O2 -std=c++0x -o EunetSwitchTest $(CPPFLAGS) $^
 
 clean:

@@ -6,6 +6,7 @@
 #include "ns3/ipv4-address.h"
 #include "ns3/inet-socket-address.h"
 #include "EunetSwitch.h"
+#include "EunetTerminal.h"
 NS_LOG_COMPONENT_DEFINE("EunetSwitch");
 
 const char* const EunetSwitch::pcapPrefix = "EunetSwitch";
@@ -24,7 +25,10 @@ EunetSwitch::EunetSwitch(const int n_downlink_ports, const int n_downlink_bps,
 			nDownlinkDelayMilliseconds(n_downlink_delay_milliseconds),
 			nUplinkPorts(n_uplink_ports), nUplinkBps(n_uplink_bps),
 			nUplinkDelayMilliseconds(n_uplink_delay_milliseconds) {
-	this->ncTerminals.Create(n_downlink_ports);
+	for (int i = 0; i < n_downlink_ports; ++i) {
+		this->ncTerminals.Add(ns3::CreateObject<EunetTerminal>());
+	}
+	//this->ncTerminals.Create(n_downlink_ports);
 	this->deployTerminals();
 	ns3::InternetStackHelper internet_stack_helper;
 	internet_stack_helper.Install(ncTerminals);
@@ -49,7 +53,6 @@ void EunetSwitch::deployTerminal(const int i_downlink_port) {
 	const int n_devices_after = this->GetNDevices();
 	NS_LOG_INFO("# of devices " << "on switch " << this->GetId() << " was changed from " << n_devices_before << " to " << n_devices_after);
 	this->downlinkPortIndices[i_downlink_port] = this->GetNDevices() - 1;
-	this->installApplication(i_downlink_port);
 }//deployTerminal
 
 void EunetSwitch::installApplication(const int i_downlink_port) {
