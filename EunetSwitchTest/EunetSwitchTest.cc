@@ -18,8 +18,8 @@ using namespace ns3;
 NS_LOG_COMPONENT_DEFINE ("EunetSwitchTest");
 
 int main(int argc, char *argv[]) {
-	NS_LOG_UNCOND("main");
-	std::clog << "main via std::log" << std::endl;
+	NS_LOG_INFO("main");
+	//std::clog << "main via std::log" << std::endl;
 	preparesimulation(argc, argv);
 
 	runSimulation();
@@ -143,24 +143,11 @@ int preparesimulation(int argc, char *argv[]) {
 	}//for
 	packet_sink_applications.Start(Seconds(0.0));
 
-	NS_LOG_INFO ("Configure Tracing.");
-	//
-	// Configure tracing of all enqueue, dequeue, and NetDevice receive events.
-	// Trace output will be sent to the file "csma-bridge.tr"
-	//
-	AsciiTraceHelper ascii_trace_helper;
-	NS_LOG_INFO("creating OutputStreamHelper");
-	Ptr<OutputStreamWrapper> ptr_output_stream_wrapper =
-			ascii_trace_helper.CreateFileStream("csma-bridge.tr");
-	NS_LOG_INFO("OutputStreamWrapper created"); NS_LOG_INFO("calling CsmaHelper::EnableAsciiAll");
-	CsmaHelper csma_helper;
-	csma_helper.EnableAsciiAll(ptr_output_stream_wrapper);
-	NS_LOG_INFO("returned from CsmaHelper::EnableAsciiAll");
-
-	NS_LOG_INFO("calling CsmaHelper::EnablePcap");
-	csma_helper.EnablePcap("csma-bridge", ns3::NodeContainer(ptr_root_switch),
-			false);
-	NS_LOG_INFO("returned from CsmaHelper::EnablePcap");
+	ptr_root_switch->enableAsciiTraceDownlink(0);
+	ptr_root_switch->enableAsciiTraceDownlink(1);
+	ptr_root_switch->enableAsciiTraceDownlink(2);
+	ptr_root_switch->enableAsciiTraceDownlink(3);
+	ptr_root_switch->enablePcapDownlink(0);
 
 	Ptr<Node> ptr_node1(new EunetSwitch());
 	Ptr<Node> ptr_node2(new EunetSwitch());
