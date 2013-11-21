@@ -46,6 +46,11 @@ public:
 			const int n_uplink_delay_milliseconds = 1);
 	virtual ~EunetSwitch();
 
+	void setAsciiTraceFilename(const std::string& file_name) {
+		ns3::AsciiTraceHelper ascii_trace_helper;
+		this->oswAsciiTrace = ascii_trace_helper.CreateFileStream(file_name);
+	}//createFileStream
+
 	void enableAsciiTraceDownlink(const int i_downlink_port) {
 		ns3::CsmaHelper csma_helper;
 		csma_helper.EnableAscii(this->oswAsciiTrace, this->getDownlinkPort(
