@@ -33,3 +33,16 @@ EunetSwitch::EunetSwitch(const int n_downlink_ports, const int n_downlink_bps,
 				this->asciiTraceFileName);
 	}
 }//a constructor
+
+void EunetSwitch::deployTerminal(const int i_downlink_port) {
+	const int n_devices_before = this->GetNDevices();
+	ns3::NetDeviceContainer link = this->getDownlinkCsmaHelper()->Install(
+			ns3::NodeContainer(ns3::NodeContainer(this->ncTerminals.Get(
+					i_downlink_port)), ns3::NodeContainer(this)));
+	assert(this->ncTerminals.Get(i_downlink_port)->GetNDevices()==1);
+	//this->ncTerminals.Get(0)->AddDevice(link.Get(0));
+	const int n_devices_after = this->GetNDevices();
+	NS_LOG_INFO("# of devices " << "on switch " << this->GetId() << " was changed from " << n_devices_before << " to " << n_devices_after);
+	this->downlinkPortIndices[i_downlink_port] = this->GetNDevices() - 1;
+}//deployTerminal
+
