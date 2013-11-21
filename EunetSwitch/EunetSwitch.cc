@@ -4,6 +4,7 @@
 NS_LOG_COMPONENT_DEFINE("EunetSwitch");
 
 const char* const EunetSwitch::pcapPrefix = "EunetSwitch";
+const char* const EunetSwitch::asciiTraceFileName = "EunetSwitch.tr";
 
 EunetSwitch::~EunetSwitch() {
 }
@@ -26,4 +27,8 @@ EunetSwitch::EunetSwitch(const int n_downlink_ports, const int n_downlink_bps,
 	//ns3::Simulator::Schedule(ns3::Seconds(0.0), ns3::MakeCallback(&bridgeAllPorts, this));
 	this->nCreated += 1;
 	NS_LOG_INFO("constructing EunetSwitch " << this->nCreated);
+	{
+		ns3::AsciiTraceHelper ascii_trace_helper;
+		this->oswAsciiTrace = ascii_trace_helper.CreateFileStream(this->asciiTraceFileName);
+	}
 }//a constructor

@@ -37,6 +37,7 @@ class EunetSwitch: public ns3::Node {
 	static int nCreated;
 	ns3::Ptr<ns3::OutputStreamWrapper> oswAsciiTrace;
 	static const char* const pcapPrefix;
+	static const char* const asciiTraceFileName;
 
 public:
 	EunetSwitch(const int n_downlink_ports = 48, const int n_downlink_bps =
@@ -44,11 +45,6 @@ public:
 			const int n_uplink_ports = 4, const int n_uplink_bps = 1000000000,
 			const int n_uplink_delay_milliseconds = 1);
 	virtual ~EunetSwitch();
-
-	void setAsciiTraceFilename(const std::string& file_name) {
-		ns3::AsciiTraceHelper ascii_trace_helper;
-		this->oswAsciiTrace = ascii_trace_helper.CreateFileStream(file_name);
-	}//createFileStream
 
 	void enableAsciiTraceDownlink(const int i_downlink_port) {
 		ns3::CsmaHelper csma_helper;
