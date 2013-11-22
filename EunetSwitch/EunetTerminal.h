@@ -18,6 +18,7 @@ public:
 	void startOnOffApplication(ns3::Time start_seconds = ns3::Seconds(0.0));
 	void stopOnOffApplication(ns3::Time stop_seconds = ns3::Seconds(10.0));
 	uint32_t getTotalRx();
+	void assignAddress(ns3::Ipv4AddressHelper&);
 protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();
