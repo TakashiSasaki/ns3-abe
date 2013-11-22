@@ -10,10 +10,12 @@ NS_LOG_COMPONENT_DEFINE("EunetTerminals");
 #include "EunetTerminals.h"
 
 EunetTerminals::EunetTerminals(const int n_terminals) {
+	NS_LOG_INFO("constructing EunetTerminals");
 	ns3::Ipv4AddressHelper ipv4_address_helper;
 	ns3::ObjectFactory object_factory;
 	object_factory.SetTypeId("EunetTerminal");
 	for (int i = 0; i < n_terminals; ++i) {
+		NS_LOG_INFO("creating EunetTerminal node " << i);
 		ns3::Ptr<EunetTerminal> ptr_eunet_terminal = object_factory.Create<
 				EunetTerminal> ();
 		NS_LOG_INFO(ptr_eunet_terminal->GetNDevices() << " device(s)");
