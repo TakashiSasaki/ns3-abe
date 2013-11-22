@@ -19,22 +19,19 @@ int main(int argc, char *argv[]) {
 
 	object_factory.SetTypeId("ns3::Node");
 	//ns3::Ptr<ns3::Node> ptr_node (object_factory.Create<ns3::Node>());
-	ns3::Ptr<ns3::Node> ptr_node (new ns3::Node());
+	ns3::Ptr<ns3::Node> ptr_node(object_factory.Create<ns3::Node> ());
 
 	ns3::InternetStackHelper internet_stack_helper;
 	internet_stack_helper.Install(ptr_node);
 
-#if 0
 	object_factory.SetTypeId("CsmaNode");
-	ns3::Ptr<CsmaNode> ptr_csma_node(object_factory.Create<
-			CsmaNode> ());
+	ns3::Ptr<CsmaNode> ptr_csma_node(object_factory.Create<CsmaNode> ());
 	internet_stack_helper.Install(ptr_csma_node);
 
 	object_factory.SetTypeId("EunetTerminal");
 	ns3::Ptr<EunetTerminal> ptr_eunet_terminal(object_factory.Create<
 			EunetTerminal> ());
-	internet_stack_helper.Install(ptr_eunet_terminal);
-#endif
+
 	//EunetTerminals eunet_terminals;
 	//EunetSwitch eunet_switch;
 	//EunetSwitches eunet_switches(3, 2);
@@ -49,6 +46,7 @@ int main(int argc, char *argv[]) {
 
 
 	NS_LOG_INFO ("Run Simulation.");
+	ns3::Simulator::Stop(ns3::Seconds(10.0));
 	ns3::Simulator::Run();
 	ns3::Simulator::Destroy();
 	NS_LOG_INFO ("Done.");

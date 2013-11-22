@@ -20,6 +20,7 @@ public:
 	uint32_t getTotalRx();
 protected:
 	virtual void DoInitialize();
+	virtual void NotifyConstructionCompleted();
 private:
 	static const int PACKET_SINK_UDP_PORT = 9; // Discard port (RFC 863)
 	static const int ON_OFF_APPLICATION_UDP_PORT = 10009;
