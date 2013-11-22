@@ -4,6 +4,7 @@
 #include "ns3/node.h"
 #include "ns3/application-container.h"
 #include "ns3/nstime.h"
+#include "ns3/ipv4-address-helper.h"
 #include "CsmaNode.h"
 
 class EunetTerminal: public CsmaNode {
