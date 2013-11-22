@@ -1,7 +1,7 @@
 include ../CommonMakefile
 
 gmon.out: EunetSwitchTest
-	$(EXECENV) NS_LOG="EunetSwitch=**:EunetSwitches=**" ./EunetSwitchTest 
+	$(EXECENV) NS_LOG="EunetSwitch=**:EunetSwitches=**:EunetSwitchTest=**" ./EunetSwitchTest 
 
 gprof: gmon.out
 	$(EXECENV) gprof ./EunetSwitchTest -p -q
@@ -20,7 +20,10 @@ EunetSwitch.o: EunetSwitch.cc EunetSwitch.h
 EunetTerminal.o: EunetTerminal.cc EunetTerminal.h
 	g++ -g -pg -O2 -std=c++0x -c -o EunetTerminal.o $(CPPFLAGS) EunetTerminal.cc
 
-EunetSwitchTest: EunetSwitchTest.cc EunetSwitch.o EunetSwitches.o EunetTerminal.o $(NS3LIBS)
+EunetTerminals.o: EunetTerminals.cc EunetTerminals.h
+	g++ -g -pg -O2 -std=c++0x -c -o EunetTerminals.o $(CPPFLAGS) EunetTerminals.cc
+
+EunetSwitchTest: EunetSwitchTest.cc EunetSwitch.o EunetSwitches.o EunetTerminal.o EunetTerminals.o $(NS3LIBS)
 	g++ -g -pg -O2 -std=c++0x -o EunetSwitchTest $(CPPFLAGS) $^
 
 clean:

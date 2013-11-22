@@ -2,6 +2,7 @@
 #include "ns3/log.h"
 #include "ns3/applications-module.h"
 #include "ns3/ipv4.h"
+#include "ns3/internet-module.h"
 #include "EunetTerminal.h"
 NS_LOG_COMPONENT_DEFINE("EunetTerminal");
 NS_OBJECT_ENSURE_REGISTERED(EunetTerminal);
@@ -13,20 +14,30 @@ ns3::TypeId EunetTerminal::GetTypeId(void) {
 }//GetTypeId
 
 EunetTerminal::EunetTerminal() {
-	this->installPacketSync();
+}
+
+void EunetTerminal::DoInitialize() {
+	this->installPacketSink();
+	this->installInternetStack();
+	ns3::Node::DoInitialize();
 }
 
 EunetTerminal::~EunetTerminal() {
 	// TODO !CodeTemplates.destructorstub.tododesc!
 }
 
-void EunetTerminal::installPacketSync() {
-	NS_LOG_INFO("installing packet sync on node " << this->GetId());
+void EunetTerminal::installInternetStack() {
+	ns3::InternetStackHelper internet_stack_helper;
+	internet_stack_helper.Install(this);
+}
+
+void EunetTerminal::installPacketSink() {
+	NS_LOG_INFO("installing packet sink on node " << this->GetId());
 	ns3::PacketSinkHelper packet_sink_helper("ns3::UdpSocketFactory",
 			ns3::Address(ns3::InetSocketAddress(ns3::Ipv4Address::GetAny(),
-					PACKET_SYNC_UDP_PORT)));
-	this->packetSync = packet_sink_helper.Install(this);
-	this->packetSync.Start(ns3::Seconds(0.0));
+					PACKET_SINK_UDP_PORT)));
+	this->packetSink = packet_sink_helper.Install(this);
+	this->packetSink.Start(ns3::Seconds(0.0));
 }
 
 void EunetTerminal::installOnOffApplication() {
@@ -36,7 +47,7 @@ void EunetTerminal::installOnOffApplication() {
 					ON_OFF_APPLICATION_UDP_PORT)));
 	on_off_helper.SetConstantRate(ns3::DataRate("500kb/s"));
 	on_off_helper.SetAttribute("Remote", ns3::AddressValue(
-			ns3::InetSocketAddress(this->getAddress(), PACKET_SYNC_UDP_PORT)));
+			ns3::InetSocketAddress(this->getAddress(), PACKET_SINK_UDP_PORT)));
 	this->onOffApplication = on_off_helper.Install(this);
 }//installOnOffApplication
 
@@ -57,3 +68,7 @@ ns3::Ipv4Address EunetTerminal::getAddress() {
 	ns3::Ipv4Address ipv4_address = ipv4_interface_address.GetLocal();
 	return ipv4_address;
 }//getAddress
+
+uint32_t EunetTerminal::getTotalRx() {
+	return this->packetSink.Get(0)->GetObject<ns3::PacketSink> ()->GetTotalRx();
+}

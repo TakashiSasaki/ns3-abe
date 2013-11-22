@@ -21,7 +21,6 @@ namespace std {
 #include "EunetTerminal.h"
 
 class EunetSwitch: public ns3::Node {
-
 	std::vector<int> uplinkPortIndices;
 	std::vector<int> downlinkPortIndices;
 	ns3::NodeContainer ncTerminals;
@@ -40,6 +39,7 @@ class EunetSwitch: public ns3::Node {
 	static const char* const asciiTraceFileName;
 
 public:
+	static ns3::TypeId GetTypeId(void);
 	EunetSwitch(const int n_downlink_ports = 48, const int n_downlink_bps =
 			1000000000, const int n_downlink_delay_milliseconds = 1,
 			const int n_uplink_ports = 4, const int n_uplink_bps = 1000000000,

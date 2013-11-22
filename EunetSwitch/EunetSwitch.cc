@@ -1,13 +1,21 @@
 #define NS3_LOG_ENABLE 1
 #include "ns3/log.h"
 #include "ns3/applications-module.h"
-#include "ns3/internet-module.h"
 #include "ns3/network-module.h"
 #include "ns3/ipv4-address.h"
 #include "ns3/inet-socket-address.h"
 #include "EunetSwitch.h"
 #include "EunetTerminal.h"
 NS_LOG_COMPONENT_DEFINE("EunetSwitch");
+NS_OBJECT_ENSURE_REGISTERED(EunetSwitch);
+
+ns3::TypeId EunetSwitch::GetTypeId(void) {
+	static ns3::TypeId type_id =
+			ns3::TypeId("EunetSwitch").SetParent<ns3::Node> ().AddConstructor<
+					EunetSwitch> ();
+	return type_id;
+}//GetTypeId
+
 
 const char* const EunetSwitch::pcapPrefix = "EunetSwitch";
 const char* const EunetSwitch::asciiTraceFileName = "EunetSwitch.tr";
@@ -26,12 +34,11 @@ EunetSwitch::EunetSwitch(const int n_downlink_ports, const int n_downlink_bps,
 			nUplinkPorts(n_uplink_ports), nUplinkBps(n_uplink_bps),
 			nUplinkDelayMilliseconds(n_uplink_delay_milliseconds) {
 	for (int i = 0; i < n_downlink_ports; ++i) {
-		this->ncTerminals.Add(ns3::CreateObject<EunetTerminal>());
+		ns3::Ptr<EunetTerminal> ptr_eunet_terminal(ns3::CreateObject<EunetTerminal>());
+		this->ncTerminals.Add(ptr_eunet_terminal);
 	}
 	//this->ncTerminals.Create(n_downlink_ports);
 	this->deployTerminals();
-	ns3::InternetStackHelper internet_stack_helper;
-	internet_stack_helper.Install(ncTerminals);
 	//internet_stack_helper.Install(ncTerminals.getTerminals());
 	//ns3::Simulator::Schedule(ns3::Seconds(0.0), ns3::MakeCallback(&bridgeAllPorts, this));
 	this->nCreated += 1;
