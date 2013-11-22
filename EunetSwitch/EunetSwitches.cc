@@ -11,7 +11,7 @@ EunetSwitches::EunetSwitches(const int depth, const int width) :
 		std::vector<ns3::Ptr<EunetSwitch> > switches;
 		for (int j = 0; j < pow(width, i); ++j) {
 			NS_LOG_INFO("creating EunetSwitch "<< i << "," << j);
-			ns3::Ptr<EunetSwitch> p_switch(new EunetSwitch());
+			ns3::Ptr<EunetSwitch> p_switch(ns3::CreateObject<EunetSwitch>());
 			switches.push_back(p_switch);
 		}//for
 		this->switches.push_back(switches);

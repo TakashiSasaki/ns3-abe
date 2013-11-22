@@ -7,19 +7,22 @@
 
 class EunetTerminal: public ns3::Node {
 	ns3::ApplicationContainer onOffApplication;
-	ns3::ApplicationContainer packetSync;
+	ns3::ApplicationContainer packetSink;
 public:
 	static ns3::TypeId GetTypeId(void);
 	EunetTerminal();
 	virtual ~EunetTerminal();
+	void installInternetStack();
 	ns3::Ipv4Address getAddress();
 	void startOnOffApplication(ns3::Time start_seconds = ns3::Seconds(0.0));
 	void stopOnOffApplication(ns3::Time stop_seconds = ns3::Seconds(10.0));
+	uint32_t getTotalRx();
 private:
-	static const int PACKET_SYNC_UDP_PORT = 9; // Discard port (RFC 863)
+	void DoInitialize();
+	static const int PACKET_SINK_UDP_PORT = 9; // Discard port (RFC 863)
 	static const int ON_OFF_APPLICATION_UDP_PORT = 10009;
-	void installPacketSync();
+	void installPacketSink();
 	void installOnOffApplication();
-};
+};//EunetTerminal
 
 #endif /* EUNETTERMINAL_H_ */
