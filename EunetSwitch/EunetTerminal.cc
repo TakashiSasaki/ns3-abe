@@ -86,3 +86,7 @@ ns3::Ipv4Address EunetTerminal::getAddress() {
 uint32_t EunetTerminal::getTotalRx() {
 	return this->packetSink.Get(0)->GetObject<ns3::PacketSink> ()->GetTotalRx();
 }
+
+void EunetTerminal::assignAddress(ns3::Ipv4AddressHelper& ipv4_address_helper) {
+	ipv4_address_helper.Assign(this->GetDevice(0));
+}
