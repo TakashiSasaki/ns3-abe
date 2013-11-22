@@ -1,7 +1,7 @@
 #define NS3_LOG_ENABLE 1
 #include "ns3/log.h"
 NS_LOG_COMPONENT_DEFINE("EunetTerminal");
-#define NS3_ASSEERT_ENABLE 1
+#define NS3_ASSERT_ENABLE 1
 #include "ns3/assert.h"
 #include "ns3/applications-module.h"
 #include "ns3/ipv4.h"
@@ -29,8 +29,11 @@ void EunetTerminal::DoInitialize() {
 
 void EunetTerminal::NotifyConstructionCompleted() {
 	NS_LOG_INFO("notified the completion of EunetTerminal");
+	NS_ASSERT(this->GetNDevices() == 1);
 	this->installInternetStack();
+	NS_ASSERT(this->GetNDevices() == 1);
 	this->installPacketSink();
+	NS_ASSERT(this->GetNDevices() == 1);
 	this->installOnOffApplication();
 	NS_ASSERT(this->GetNDevices() == 1);
 }
@@ -40,10 +43,13 @@ EunetTerminal::~EunetTerminal() {
 }
 
 void EunetTerminal::installInternetStack() {
+	NS_ASSERT(this->GetNDevices() == 1);
 	ns3::InternetStackHelper internet_stack_helper;
 	internet_stack_helper.SetIpv4StackInstall(true);
 	internet_stack_helper.SetIpv6StackInstall(false);
+	NS_ASSERT(this->GetNDevices() == 1);
 	internet_stack_helper.Install(ns3::NodeContainer(this));
+	NS_ASSERT(this->GetNDevices() == 1);
 }
 
 void EunetTerminal::installPacketSink() {
@@ -76,6 +82,7 @@ void EunetTerminal::stopOnOffApplication(ns3::Time stop_seconds) {
 }//stopOnOffApplication
 
 ns3::Ipv4Address EunetTerminal::getAddress() {
+	NS_ASSERT(this->GetNDevices()==1);
 	ns3::Ptr<ns3::Ipv4> ptr_ipv4 = this->GetObject<ns3::Ipv4> ();
 	ns3::Ptr<ns3::NetDevice> ptr_net_device = this->GetDevice(0);
 	const int i_interface = ptr_ipv4->GetInterfaceForDevice(ptr_net_device);
@@ -90,6 +97,7 @@ uint32_t EunetTerminal::getTotalRx() {
 }
 
 void EunetTerminal::assignAddress(ns3::Ipv4AddressHelper& ipv4_address_helper) {
+	NS_ASSERT(this->GetNDevices()==1);
 	ipv4_address_helper.Assign(this->GetDevice(0));
 	this->onOffApplication.Get(0)->SetAttribute("Remote", ns3::AddressValue(
 			ns3::InetSocketAddress(this->getAddress(), PACKET_SINK_UDP_PORT)));
