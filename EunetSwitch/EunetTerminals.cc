@@ -14,7 +14,10 @@ EunetTerminals::EunetTerminals(const int n_terminals) {
 	ns3::ObjectFactory object_factory;
 	object_factory.SetTypeId("EunetTerminal");
 	for (int i = 0; i < n_terminals; ++i) {
-		auto ptr_eunet_terminal(object_factory.Create<EunetTerminal> ());
+		ns3::Ptr<EunetTerminal> ptr_eunet_terminal = object_factory.Create<
+				EunetTerminal> ();
+		NS_LOG_INFO(ptr_eunet_terminal->GetNDevices() << " device(s)");
+		//auto ptr_eunet_terminal = object_factory.Create<EunetTerminal> ();
 		//ns3::Ptr<ns3::Node> ptr_eunet_terminal(
 		//		ns3::CreateObject<EunetTerminal>());
 		NS_ASSERT(ptr_eunet_terminal->GetNDevices()==1);

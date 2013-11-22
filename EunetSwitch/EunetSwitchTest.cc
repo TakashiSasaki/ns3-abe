@@ -27,12 +27,24 @@ int main(int argc, char *argv[]) {
 	object_factory.SetTypeId("CsmaNode");
 	ns3::Ptr<CsmaNode> ptr_csma_node(object_factory.Create<CsmaNode> ());
 	internet_stack_helper.Install(ptr_csma_node);
+	NS_ASSERT(ptr_csma_node->GetNDevices()==1);
 
 	object_factory.SetTypeId("EunetTerminal");
 	ns3::Ptr<EunetTerminal> ptr_eunet_terminal(object_factory.Create<
 			EunetTerminal> ());
+	NS_ASSERT(ptr_eunet_terminal->GetNDevices()==1);
 
-	//EunetTerminals eunet_terminals;
+	ns3::Ptr<EunetTerminal> ptr_eunet_terminal_2(object_factory.Create<
+			EunetTerminal> ());
+	NS_ASSERT(ptr_eunet_terminal_2->GetNDevices()==1);
+
+	ns3::ObjectFactory object_factory_2;
+	object_factory_2.SetTypeId("EunetTerminal");
+	ns3::Ptr<EunetTerminal> ptr_eunet_terminal_3(object_factory_2.Create<
+			EunetTerminal> ());
+	NS_ASSERT(ptr_eunet_terminal_3->GetNDevices()==1);
+
+	EunetTerminals eunet_terminals;
 	//EunetSwitch eunet_switch;
 	//EunetSwitches eunet_switches(3, 2);
 	//LogComponentEnable ("EunetSwitchTest", LOG_LEVEL_INFO);
