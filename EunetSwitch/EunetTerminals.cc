@@ -33,7 +33,8 @@ EunetTerminals::~EunetTerminals() {
 
 ns3::Ptr<EunetTerminal> EunetTerminals::getEunetTerminal(
 		const int i_eunet_terminal) {
-	auto ptr = this->terminals.Get(i_eunet_terminal)->GetObject<EunetTerminal> ();
+	auto ptr =
+			this->terminals.Get(i_eunet_terminal)->GetObject<EunetTerminal> ();
 	NS_ASSERT(ptr->GetNDevices()==1);
 	return ptr;
 }
@@ -42,7 +43,7 @@ ns3::NetDeviceContainer EunetTerminals::getDevicesAll() {
 	NS_ASSERT_MSG(false, "a");
 	ns3::NetDeviceContainer net_device_container;
 	for (unsigned i = 0; i < this->terminals.GetN(); ++i) {
-		auto ptr_eunet_terminal=getEunetTerminal(i);
+		auto ptr_eunet_terminal = getEunetTerminal(i);
 		NS_ASSERT(ptr_eunet_terminal->GetNDevices()==1);
 		auto ptr_net_device = ptr_eunet_terminal->GetDevice(0);
 		net_device_container.Add(ptr_net_device);
