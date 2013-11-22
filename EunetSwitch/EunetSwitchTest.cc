@@ -8,14 +8,34 @@
 #include "ns3/bridge-module.h"
 #include "ns3/csma-module.h"
 #include "ns3/internet-module.h"
+#include "ns3/internet-stack-helper.h"
 #include "EunetSwitches.h"
 #include "EunetTerminals.h"
 //using namespace ns3;
 NS_LOG_COMPONENT_DEFINE ("EunetSwitchTest");
 
 int main(int argc, char *argv[]) {
-	EunetTerminals eunet_terminals;
-	//EunetTerminal eunet_terminal;
+	ns3::ObjectFactory object_factory;
+
+	object_factory.SetTypeId("ns3::Node");
+	//ns3::Ptr<ns3::Node> ptr_node (object_factory.Create<ns3::Node>());
+	ns3::Ptr<ns3::Node> ptr_node (new ns3::Node());
+
+	ns3::InternetStackHelper internet_stack_helper;
+	internet_stack_helper.Install(ptr_node);
+
+#if 0
+	object_factory.SetTypeId("CsmaNode");
+	ns3::Ptr<CsmaNode> ptr_csma_node(object_factory.Create<
+			CsmaNode> ());
+	internet_stack_helper.Install(ptr_csma_node);
+
+	object_factory.SetTypeId("EunetTerminal");
+	ns3::Ptr<EunetTerminal> ptr_eunet_terminal(object_factory.Create<
+			EunetTerminal> ());
+	internet_stack_helper.Install(ptr_eunet_terminal);
+#endif
+	//EunetTerminals eunet_terminals;
 	//EunetSwitch eunet_switch;
 	//EunetSwitches eunet_switches(3, 2);
 	//LogComponentEnable ("EunetSwitchTest", LOG_LEVEL_INFO);
@@ -32,7 +52,7 @@ int main(int argc, char *argv[]) {
 	ns3::Simulator::Run();
 	ns3::Simulator::Destroy();
 	NS_LOG_INFO ("Done.");
-	NS_LOG_INFO("received " << eunet_terminals.getEunetTerminal(0)->getTotalRx());
+	//NS_LOG_INFO("received " << eunet_terminals.getEunetTerminal(0)->getTotalRx());
 
 	return EXIT_SUCCESS;
 }//main

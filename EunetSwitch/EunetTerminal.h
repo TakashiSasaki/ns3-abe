@@ -4,8 +4,9 @@
 #include "ns3/node.h"
 #include "ns3/application-container.h"
 #include "ns3/nstime.h"
+#include "CsmaNode.h"
 
-class EunetTerminal: public ns3::Node {
+class EunetTerminal: public CsmaNode {
 	ns3::ApplicationContainer onOffApplication;
 	ns3::ApplicationContainer packetSink;
 public:
@@ -17,8 +18,9 @@ public:
 	void startOnOffApplication(ns3::Time start_seconds = ns3::Seconds(0.0));
 	void stopOnOffApplication(ns3::Time stop_seconds = ns3::Seconds(10.0));
 	uint32_t getTotalRx();
+protected:
+	virtual void DoInitialize();
 private:
-	void DoInitialize();
 	static const int PACKET_SINK_UDP_PORT = 9; // Discard port (RFC 863)
 	static const int ON_OFF_APPLICATION_UDP_PORT = 10009;
 	void installPacketSink();
