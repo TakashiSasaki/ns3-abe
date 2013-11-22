@@ -1,25 +1,31 @@
 #define NS3_LOG_ENABLE 1
 #include "ns3/log.h"
+NS_LOG_COMPONENT_DEFINE("EunetTerminal");
+#define NS3_ASSEERT_ENABLE 1
+#include "ns3/assert.h"
 #include "ns3/applications-module.h"
 #include "ns3/ipv4.h"
 #include "ns3/internet-module.h"
+#include "CsmaNode.h"
 #include "EunetTerminal.h"
-NS_LOG_COMPONENT_DEFINE("EunetTerminal");
 NS_OBJECT_ENSURE_REGISTERED(EunetTerminal);
 
 ns3::TypeId EunetTerminal::GetTypeId(void) {
 	static ns3::TypeId type_id = ns3::TypeId("EunetTerminal").SetParent<
-			ns3::Node> ().AddConstructor<EunetTerminal> ();
+			CsmaNode> ().AddConstructor<EunetTerminal> ();
 	return type_id;
 }//GetTypeId
 
-EunetTerminal::EunetTerminal() {
+EunetTerminal::EunetTerminal() :
+	CsmaNode(1) {
+	NS_ASSERT(this->GetNDevices() == 1);
+	this->installInternetStack();
+	this->installPacketSink();
+	//this->DoInitialize();
 }
 
 void EunetTerminal::DoInitialize() {
-	this->installPacketSink();
-	this->installInternetStack();
-	ns3::Node::DoInitialize();
+	CsmaNode::DoInitialize();
 }
 
 EunetTerminal::~EunetTerminal() {
@@ -28,7 +34,9 @@ EunetTerminal::~EunetTerminal() {
 
 void EunetTerminal::installInternetStack() {
 	ns3::InternetStackHelper internet_stack_helper;
-	internet_stack_helper.Install(this);
+	//internet_stack_helper.SetIpv4StackInstall(false);
+	internet_stack_helper.SetIpv6StackInstall(false);
+	internet_stack_helper.Install(ns3::NodeContainer(this));
 }
 
 void EunetTerminal::installPacketSink() {

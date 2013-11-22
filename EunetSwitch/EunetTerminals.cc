@@ -1,5 +1,7 @@
 #define NS3_LOG_ENABLE 1
 #include "ns3/log.h"
+#define NS3_ASSERT_ENABLE 1
+#include "ns3/assert.h"
 #include "ns3/csma-helper.h"
 #include "ns3/ipv4-address-helper.h"
 #include "ns3/internet-stack-helper.h"
@@ -8,19 +10,19 @@ NS_LOG_COMPONENT_DEFINE("EunetTerminals");
 #include "EunetTerminals.h"
 
 EunetTerminals::EunetTerminals(const int n_terminals) {
+	ns3::ObjectFactory object_factory;
+	object_factory.SetTypeId("EunetTerminal");
 	for (int i = 0; i < n_terminals; ++i) {
-		ns3::Ptr<ns3::Node> ptr_eunet_terminal(
-				ns3::CreateObject<EunetTerminal>());
-		ptr_eunet_terminal->GetObject<EunetTerminal> ()->startOnOffApplication(
-				ns3::Seconds(0.0));
-		ptr_eunet_terminal->GetObject<EunetTerminal> ()->stopOnOffApplication(
-				ns3::Seconds(10.0));
+		auto ptr_eunet_terminal(object_factory.Create<EunetTerminal> ());
+		//ns3::Ptr<ns3::Node> ptr_eunet_terminal(
+		//		ns3::CreateObject<EunetTerminal>());
+		NS_ASSERT(ptr_eunet_terminal->GetNDevices()==1);
+		ptr_eunet_terminal->startOnOffApplication(ns3::Seconds(0.0));
+		ptr_eunet_terminal->stopOnOffApplication(ns3::Seconds(10.0));
 		this->terminals.Add(ptr_eunet_terminal);
 	}//for
-	ns3::CsmaHelper csma_helper;
-	csma_helper.Install(this->terminals);
-	ns3::InternetStackHelper internet_stack_helper;
-	internet_stack_helper.Install(this->terminals);
+	//ns3::CsmaHelper csma_helper;
+	//csma_helper.Install(this->terminals);
 	ns3::Ipv4AddressHelper ipv4_address_helper;
 	ipv4_address_helper.Assign(this->getDevicesAll());
 }// a constructor
@@ -31,13 +33,19 @@ EunetTerminals::~EunetTerminals() {
 
 ns3::Ptr<EunetTerminal> EunetTerminals::getEunetTerminal(
 		const int i_eunet_terminal) {
-	return this->terminals.Get(i_eunet_terminal)->GetObject<EunetTerminal> ();
+	auto ptr = this->terminals.Get(i_eunet_terminal)->GetObject<EunetTerminal> ();
+	NS_ASSERT(ptr->GetNDevices()==1);
+	return ptr;
 }
 
 ns3::NetDeviceContainer EunetTerminals::getDevicesAll() {
+	NS_ASSERT_MSG(false, "a");
 	ns3::NetDeviceContainer net_device_container;
 	for (unsigned i = 0; i < this->terminals.GetN(); ++i) {
-		net_device_container.Add(this->terminals.Get(i)->GetDevice(0));
+		auto ptr_eunet_terminal=getEunetTerminal(i);
+		NS_ASSERT(ptr_eunet_terminal->GetNDevices()==1);
+		auto ptr_net_device = ptr_eunet_terminal->GetDevice(0);
+		net_device_container.Add(ptr_net_device);
 	}//for
 	return net_device_container;
 }//getDevicesAll
