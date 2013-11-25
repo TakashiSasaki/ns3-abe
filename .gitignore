@@ -15,6 +15,7 @@ hello
 EunetSwitchTest/EunetSwitchTest
 *.tr
 *.pcap
+<<<<<<< HEAD
 .cproject
 .project
 .settings
