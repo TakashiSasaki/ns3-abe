@@ -9,12 +9,8 @@ NS_LOG_COMPONENT_DEFINE("EunetTerminals");
 #include "EunetTerminal.h"
 #include "EunetTerminals.h"
 
-EunetTerminals::EunetTerminals(const unsigned n_terminals,
-		const char* network_address, const char* netmask) {
+EunetTerminals::EunetTerminals(const unsigned n_terminals) {
 	NS_LOG_INFO("constructing EunetTerminals");
-	ns3::Ipv4Address ipv4_address(network_address);
-	ns3::Ipv4Mask ipv4_mask(netmask);
-	ns3::Ipv4AddressHelper ipv4_address_helper(ipv4_address, ipv4_mask);
 	ns3::ObjectFactory object_factory;
 	object_factory.SetTypeId("EunetTerminal");
 	for (unsigned i = 0; i < n_terminals; ++i) {
@@ -26,7 +22,7 @@ EunetTerminals::EunetTerminals(const unsigned n_terminals,
 		//ns3::Ptr<ns3::Node> ptr_eunet_terminal(
 		//		ns3::CreateObject<EunetTerminal>());
 		NS_ASSERT(ptr_eunet_terminal->GetNDevices()==2);
-		ptr_eunet_terminal->assignAddress(ipv4_address_helper);
+		//ptr_eunet_terminal->assignAddress(ipv4_address_helper);
 		this->Add(ptr_eunet_terminal);
 	}//for
 	NS_ASSERT(n_terminals == this->GetN());
@@ -43,6 +39,23 @@ EunetTerminals::EunetTerminals(const unsigned n_terminals,
 	}
 #endif
 }// a constructor
+
+
+void EunetTerminals::assignAddresses(const char* network_address,
+		const char* netmask) {
+	ns3::Ipv4Address ipv4_address(network_address);
+	ns3::Ipv4Mask ipv4_mask(netmask);
+	ns3::Ipv4AddressHelper ipv4_address_helper(ipv4_address, ipv4_mask);
+	this->assignAddresses(ipv4_address_helper);
+}//assignAddresses
+
+void EunetTerminals::assignAddresses(
+		ns3::Ipv4AddressHelper& ipv4_address_helper) {
+	for (unsigned i = 0; i < this->GetN(); ++i) {
+		NS_ASSERT(this->Get(i)-> GetNDevices()==2);
+		this->Get(i)->assignAddress(ipv4_address_helper);
+	}//for
+}//assignAddresses
 
 EunetTerminals::~EunetTerminals() {
 	// TODO !CodeTemplates.destructorstub.tododesc!

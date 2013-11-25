@@ -49,6 +49,8 @@ int main(int argc, char *argv[]) {
 	EunetTerminals eunet_terminals;
 	eunet_terminals.bringAtoB(1, 0);
 	eunet_terminals.bringAtoB(2, 0);
+	eunet_terminals.assignAddresses();
+	eunet_terminals.setRemoteOfAtoB(0, 0);
 	eunet_terminals.setRemoteOfAtoB(1, 0);
 	eunet_terminals.setRemoteOfAtoB(2, 0);
 
