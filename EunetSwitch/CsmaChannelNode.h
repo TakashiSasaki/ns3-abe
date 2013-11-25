@@ -12,6 +12,7 @@ public:
 	static ns3::TypeId GetTypeId(void);
 	CsmaChannelNode();
 	virtual ~CsmaChannelNode();
+	void bring(ns3::Ptr<CsmaChannelNode>);
 };
 
 #endif /* CSMACHANNELNODE_H_ */

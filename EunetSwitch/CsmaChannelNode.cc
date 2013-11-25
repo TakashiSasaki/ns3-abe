@@ -19,8 +19,14 @@ CsmaChannelNode::CsmaChannelNode() {
 	this->csmaChannelFactory.SetTypeId("ns3::CsmaChannel");
 	this->ptrCsmaChannel = this->csmaChannelFactory.Create()->GetObject<
 			ns3::CsmaChannel> ();
+	this->getCsmaNetDevice()->Attach(this->ptrCsmaChannel);
 }
 
 CsmaChannelNode::~CsmaChannelNode() {
 	// TODO !CodeTemplates.destructorstub.tododesc!
+}
+
+void CsmaChannelNode::bring(ns3::Ptr<CsmaChannelNode> ptr_newcomer) {
+	auto ptr_newcomer_device = ptr_newcomer->getCsmaNetDevice();
+	ptr_newcomer_device->Attach(this->ptrCsmaChannel);
 }
