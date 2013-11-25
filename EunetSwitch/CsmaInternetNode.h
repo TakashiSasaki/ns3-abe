@@ -7,6 +7,8 @@ public:
 	static ns3::TypeId GetTypeId(void);
 	CsmaInternetNode(const int n_devices = 1);
 	virtual ~CsmaInternetNode();
+protected:
+	virtual void NotifyConstructionCompleted();
 };
 
 #endif /* CSMAINTERNETNODE_H_ */
