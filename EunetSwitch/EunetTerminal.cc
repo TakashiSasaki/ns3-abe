@@ -6,19 +6,16 @@ NS_LOG_COMPONENT_DEFINE("EunetTerminal");
 #include "ns3/applications-module.h"
 #include "ns3/ipv4.h"
 #include "ns3/internet-module.h"
-#include "CsmaNode.h"
-#include "CsmaInternetNode.h"
 #include "EunetTerminal.h"
 NS_OBJECT_ENSURE_REGISTERED(EunetTerminal);
 
 ns3::TypeId EunetTerminal::GetTypeId(void) {
 	static ns3::TypeId type_id = ns3::TypeId("EunetTerminal").SetParent<
-			CsmaInternetNode> ().AddConstructor<EunetTerminal> ();
+			PacketSinkNode> ().AddConstructor<EunetTerminal> ();
 	return type_id;
 }//GetTypeId
 
-EunetTerminal::EunetTerminal() :
-	CsmaInternetNode(1) {
+EunetTerminal::EunetTerminal() {
 	NS_ASSERT(this->GetNDevices() == 1);
 	//this->installInternetStack();
 	//this->installPacketSink();
@@ -31,9 +28,7 @@ void EunetTerminal::DoInitialize() {
 void EunetTerminal::NotifyConstructionCompleted() {
 	NS_LOG_INFO("notified the completion of EunetTerminal");
 	NS_ASSERT(this->GetNDevices() == 1);
-	CsmaInternetNode::NotifyConstructionCompleted();
-	NS_ASSERT(this->GetNDevices() == 2);
-	this->installPacketSink();
+	PacketSinkNode::NotifyConstructionCompleted();
 	NS_ASSERT(this->GetNDevices() == 2);
 	this->installOnOffApplication();
 	NS_ASSERT(this->GetNDevices() == 2);
@@ -42,15 +37,6 @@ void EunetTerminal::NotifyConstructionCompleted() {
 EunetTerminal::~EunetTerminal() {
 	// TODO !CodeTemplates.destructorstub.tododesc!
 }
-
-void EunetTerminal::installPacketSink() {
-	NS_LOG_INFO("installing packet sink on node " << this->GetId());
-	ns3::PacketSinkHelper packet_sink_helper("ns3::UdpSocketFactory",
-			ns3::Address(ns3::InetSocketAddress(ns3::Ipv4Address::GetAny(),
-					PACKET_SINK_UDP_PORT)));
-	this->packetSink = packet_sink_helper.Install(this);
-	this->packetSink.Start(ns3::Seconds(0.0));
-}//installPacketSink
 
 void EunetTerminal::installOnOffApplication() {
 	NS_LOG_INFO("installing on-off application on node " << this->GetId());
@@ -83,14 +69,6 @@ ns3::Ipv4Address EunetTerminal::getCsmaNetDeviceAddress() {
 	ns3::Ipv4Address ipv4_address = ipv4_interface_address.GetLocal();
 	return ipv4_address;
 }//getAddress
-
-uint32_t EunetTerminal::getTotalRx() {
-	return this->packetSink.Get(0)->GetObject<ns3::PacketSink> ()->GetTotalRx();
-}
-
-void EunetTerminal::logTotalRx(ns3::LogLevel log_level) {
-	NS_LOG(ns3::LOG_LEVEL_INFO, "node " << this->GetId() << " have received " << this->getTotalRx() << " bytes");
-}
 
 void EunetTerminal::assignAddress(ns3::Ipv4AddressHelper& ipv4_address_helper) {
 	NS_ASSERT(this->GetNDevices()==2);

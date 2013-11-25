@@ -30,5 +30,23 @@ void PacketSinkNode::DoInitialize() {
 }
 
 void PacketSinkNode::NotifyConstructionCompleted() {
+	CsmaInternetNode::NotifyConstructionCompleted();
+	NS_ASSERT(this->GetNDevices() == 2);
 
+	NS_LOG_INFO("installing packet sink on node " << this->GetId());
+	ns3::PacketSinkHelper packet_sink_helper("ns3::UdpSocketFactory",
+			ns3::Address(ns3::InetSocketAddress(ns3::Ipv4Address::GetAny(),
+					PACKET_SINK_UDP_PORT)));
+	this->packetSink = packet_sink_helper.Install(this);
+	this->packetSink.Start(ns3::Seconds(0.0));
+	NS_ASSERT(this->GetNDevices() == 2);
 }
+
+uint32_t PacketSinkNode::getTotalRx() {
+	return this->packetSink.Get(0)->GetObject<ns3::PacketSink> ()->GetTotalRx();
+}
+
+void PacketSinkNode::logTotalRx(ns3::LogLevel log_level) {
+	NS_LOG(ns3::LOG_LEVEL_INFO, "node " << this->GetId() << " have received " << this->getTotalRx() << " bytes");
+}
+
