@@ -8,6 +8,7 @@ public:
 	CsmaInternetNode(const int n_devices = 1);
 	virtual ~CsmaInternetNode();
 	ns3::Ipv4Address getCsmaNetDeviceAddress();
+	void assignAddress(ns3::Ipv4AddressHelper&);
 protected:
 	virtual void NotifyConstructionCompleted();
 };
