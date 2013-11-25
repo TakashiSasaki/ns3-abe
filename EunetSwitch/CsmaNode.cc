@@ -59,7 +59,7 @@ ns3::Ptr<ns3::CsmaNetDevice> CsmaNode::getCsmaNetDevice() {
 }
 
 uint32_t CsmaNode::countCsmaNetDevices() {
-	uint32_t n_csma_net_devices;
+	uint32_t n_csma_net_devices = 0;
 	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
 		//NS_LOG(log_level, this->GetDevice(i)->GetTypeId() << ", " << this->GetDevice(i)->GetInstanceTypeId());
 		if (this->GetDevice(i)->GetInstanceTypeId()
