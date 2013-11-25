@@ -83,3 +83,10 @@ void EunetTerminals::bringAtoB(const unsigned i_eunet_terminal_a,
 	NS_LOG_INFO("bringing node " << a->GetId() << " into CSMA domain of node " << b->GetId());
 	b->bring(a);
 }
+
+void EunetTerminals::setRemoteOfAtoB(const unsigned i_eunet_terminal_a,
+		const unsigned i_eunet_terminal_b) {
+	auto a = this->Get(i_eunet_terminal_a);
+	auto b = this->Get(i_eunet_terminal_b);
+	a->setRemote(b);
+}

@@ -47,6 +47,11 @@ int main(int argc, char *argv[]) {
 #endif
 
 	EunetTerminals eunet_terminals;
+	eunet_terminals.bringAtoB(1, 0);
+	eunet_terminals.bringAtoB(2, 0);
+	eunet_terminals.setRemoteOfAtoB(1, 0);
+	eunet_terminals.setRemoteOfAtoB(2, 0);
+
 	//EunetSwitch eunet_switch;
 	//EunetSwitches eunet_switches(3, 2);
 	//LogComponentEnable ("EunetSwitchTest", LOG_LEVEL_INFO);
