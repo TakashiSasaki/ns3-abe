@@ -15,6 +15,8 @@ public:
 	virtual ~CsmaNode();
 protected:
 	virtual void DoInitialize();
+	void logAllDevices(const ns3::LogLevel log_level = ns3::LOG_LEVEL_INFO);
+	ns3::Ptr<ns3::CsmaNetDevice> getCsmaDevice();
 };
 
 #endif /* CSMANODE_H_ */
