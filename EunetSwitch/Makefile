@@ -1,10 +1,14 @@
 include ../CommonMakefile
 
+define NS_LOG
+NS_LOG="EunetSwitch=**:EunetSwitches=**:EunetSwitchTest=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=**:OnOffApplication=**:CsmaChannelNode=**:CsmaInternetNode=**:PacketSinkNode=**"
+endef
+
 run: EunetSwitchTest
-	$(EXECENV) NS_LOG="EunetSwitch=**:EunetSwitches=**:EunetSwitchTest=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=**:OnOffApplication=**" ./EunetSwitchTest 
+	$(EXECENV) $(NS_LOG) ./EunetSwitchTest 
 
 gmon.out: EunetSwitchTest
-	$(EXECENV) NS_LOG="EunetSwitch=**:EunetSwitches=**:EunetSwitchTest=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=**" ./EunetSwitchTest 
+	$(EXECENV) $(NS_LOG)"EunetSwitch=**:EunetSwitches=**:EunetSwitchTest=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=**" ./EunetSwitchTest 
 
 gprof: gmon.out
 	$(EXECENV) gprof ./EunetSwitchTest -p -q
