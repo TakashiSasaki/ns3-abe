@@ -35,3 +35,4 @@ void EunetTerminal::NotifyConstructionCompleted() {
 EunetTerminal::~EunetTerminal() {
 	// TODO !CodeTemplates.destructorstub.tododesc!
 }
+
