@@ -7,8 +7,9 @@
 #include "ns3/ipv4-address-helper.h"
 #include "CsmaNode.h"
 #include "CsmaChannelNode.h"
+#include "CsmaInternetNode.h"
 
-class EunetTerminal: public CsmaChannelNode {
+class EunetTerminal: public CsmaInternetNode {
 	ns3::ApplicationContainer onOffApplication;
 	ns3::ApplicationContainer packetSink;
 public:

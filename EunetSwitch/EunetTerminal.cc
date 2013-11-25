@@ -7,17 +7,18 @@ NS_LOG_COMPONENT_DEFINE("EunetTerminal");
 #include "ns3/ipv4.h"
 #include "ns3/internet-module.h"
 #include "CsmaNode.h"
+#include "CsmaInternetNode.h"
 #include "EunetTerminal.h"
 NS_OBJECT_ENSURE_REGISTERED(EunetTerminal);
 
 ns3::TypeId EunetTerminal::GetTypeId(void) {
 	static ns3::TypeId type_id = ns3::TypeId("EunetTerminal").SetParent<
-			CsmaChannelNode> ().AddConstructor<EunetTerminal> ();
+			CsmaInternetNode> ().AddConstructor<EunetTerminal> ();
 	return type_id;
 }//GetTypeId
 
 EunetTerminal::EunetTerminal() :
-	CsmaChannelNode(1) {
+	CsmaInternetNode(1) {
 	NS_ASSERT(this->GetNDevices() == 1);
 	//this->installInternetStack();
 	//this->installPacketSink();
@@ -36,6 +37,7 @@ void EunetTerminal::NotifyConstructionCompleted() {
 	NS_ASSERT(this->GetNDevices() == 2);
 	this->installOnOffApplication();
 	NS_ASSERT(this->GetNDevices() == 2);
+	CsmaInternetNode::NotifyConstructionCompleted();
 }
 
 EunetTerminal::~EunetTerminal() {
