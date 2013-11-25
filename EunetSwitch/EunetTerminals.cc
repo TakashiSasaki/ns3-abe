@@ -35,8 +35,8 @@ EunetTerminals::EunetTerminals(const int n_terminals) {
 		auto ptr_remote = this->terminals.Get(0)->GetObject<EunetTerminal> ();
 		NS_LOG_INFO("setting remote EunetTerminal");
 		ptr_source->setRemote(ptr_remote);
-		ptr_source->startOnOffApplication(ns3::Seconds(0.0));
-		ptr_source->stopOnOffApplication(ns3::Seconds(10.0));
+		ptr_source->startAt(ns3::Seconds(0.0));
+		ptr_source->stopAt(ns3::Seconds(2.0));
 	}
 }// a constructor
 
@@ -66,6 +66,6 @@ ns3::NetDeviceContainer EunetTerminals::getDevicesAll() {
 
 void EunetTerminals::logTotalRx(ns3::LogLevel log_level) {
 	for (auto i = this->terminals.Begin(); i != this->terminals.End(); ++i) {
-		(**i).GetObject<EunetTerminal>()-> logTotalRx(log_level);
+		(**i).GetObject<EunetTerminal> ()-> logTotalRx(log_level);
 	}
 }

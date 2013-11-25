@@ -30,7 +30,7 @@ void PacketSinkNode::DoInitialize() {
 }
 
 void PacketSinkNode::NotifyConstructionCompleted() {
-	CsmaInternetNode::NotifyConstructionCompleted();
+	Base::NotifyConstructionCompleted();
 	NS_ASSERT(this->GetNDevices() == 2);
 
 	NS_LOG_INFO("installing packet sink on node " << this->GetId());

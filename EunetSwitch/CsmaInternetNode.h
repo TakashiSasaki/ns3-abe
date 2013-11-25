@@ -1,5 +1,6 @@
 #ifndef CSMAINTERNETNODE_H_
 #define CSMAINTERNETNODE_H_
+#include "ns3/ipv4-address-helper.h"
 #include "CsmaChannelNode.h"
 
 class CsmaInternetNode: public CsmaChannelNode {

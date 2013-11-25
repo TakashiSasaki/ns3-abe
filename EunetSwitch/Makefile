@@ -1,7 +1,7 @@
 include ../CommonMakefile
 
 define NS_LOG
-NS_LOG="EunetSwitch=**:EunetSwitches=**:EunetSwitchTest=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=**:OnOffApplication=**:CsmaChannelNode=**:CsmaInternetNode=**:PacketSinkNode=**"
+NS_LOG="EunetSwitch=**:EunetSwitches=**:EunetSwitchTest=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=**:OnOffApplication=**:CsmaChannelNode=**:CsmaInternetNode=**:PacketSinkNode=**:OnOffNode=**"
 endef
 
 run: EunetSwitchTest
@@ -35,7 +35,7 @@ EunetTerminals.o: EunetTerminals.cc EunetTerminals.h
 
 EunetSwitchTest: EunetSwitchTest.cc EunetSwitch.o EunetSwitches.o \
 					EunetTerminal.o EunetTerminals.o CsmaNode.o CsmaChannelNode.o \
-					CsmaInternetNode.o PacketSinkNode.o \
+					CsmaInternetNode.o PacketSinkNode.o OnOffNode.o \
 					$(NS3LIBS)
 	g++ -g -pg -O0 -std=c++0x -o EunetSwitchTest $(CPPFLAGS) $^
 
