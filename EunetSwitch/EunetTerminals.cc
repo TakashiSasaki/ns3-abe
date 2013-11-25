@@ -11,7 +11,8 @@ NS_LOG_COMPONENT_DEFINE("EunetTerminals");
 
 EunetTerminals::EunetTerminals(const int n_terminals) {
 	NS_LOG_INFO("constructing EunetTerminals");
-	ns3::Ipv4AddressHelper ipv4_address_helper;
+	ns3::Ipv4AddressHelper ipv4_address_helper(ns3::Ipv4Address("10.0.0.0"),
+			ns3::Ipv4Mask("255.0.0.0"));
 	ns3::ObjectFactory object_factory;
 	object_factory.SetTypeId("EunetTerminal");
 	for (int i = 0; i < n_terminals; ++i) {
@@ -23,11 +24,20 @@ EunetTerminals::EunetTerminals(const int n_terminals) {
 		//ns3::Ptr<ns3::Node> ptr_eunet_terminal(
 		//		ns3::CreateObject<EunetTerminal>());
 		NS_ASSERT(ptr_eunet_terminal->GetNDevices()==2);
-		ptr_eunet_terminal->startOnOffApplication(ns3::Seconds(0.0));
-		ptr_eunet_terminal->stopOnOffApplication(ns3::Seconds(10.0));
 		ptr_eunet_terminal->assignAddress(ipv4_address_helper);
 		this->terminals.Add(ptr_eunet_terminal);
 	}//for
+
+	for (unsigned i = 0; i < terminals.GetN(); ++i) {
+		NS_LOG_INFO("getting source EunetTerminal");
+		auto ptr_source = this->terminals.Get(i)->GetObject<EunetTerminal> ();
+		NS_LOG_INFO("getting remote EunetTerminal");
+		auto ptr_remote = this->terminals.Get(0)->GetObject<EunetTerminal> ();
+		NS_LOG_INFO("setting remote EunetTerminal");
+		ptr_source->setRemote(ptr_remote);
+		ptr_source->startOnOffApplication(ns3::Seconds(0.0));
+		ptr_source->stopOnOffApplication(ns3::Seconds(10.0));
+	}
 }// a constructor
 
 EunetTerminals::~EunetTerminals() {
