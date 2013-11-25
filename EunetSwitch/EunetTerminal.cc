@@ -48,14 +48,10 @@ void EunetTerminal::installInternetStack() {
 	internet_stack_helper.SetIpv4StackInstall(true);
 	internet_stack_helper.SetIpv6StackInstall(false);
 	NS_ASSERT(this->GetNDevices() == 1);
-	for(unsigned i=0; i<this->GetNDevices(); ++i){
-		NS_LOG_INFO(this->GetDevice(i)->GetTypeId() << ", " <<  this->GetDevice(i)->GetInstanceTypeId());
-	}
+	this->logAllDevices();
 	internet_stack_helper.Install(ns3::NodeContainer(this));
 	NS_LOG_INFO("InternetStackHelper::Install finished");
-	for(unsigned i=0; i<this->GetNDevices(); ++i){
-		NS_LOG_INFO(this->GetDevice(i)->GetTypeId() << ", " <<  this->GetDevice(i)->GetInstanceTypeId());
-	}
+	this->logAllDevices();
 	NS_ASSERT(this->GetNDevices() == 1);
 }
 
