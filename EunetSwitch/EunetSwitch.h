@@ -1,29 +1,25 @@
-/*
- * EunetSwitch.h
- *
- *  Created on: 2013/10/22
- *      Author: w535070h
- */
-
 #ifndef EUNETSWITCH_H_
 #define EUNETSWITCH_H_
 #include <cassert>
 #include <stdexcept>
-#include <memory>
+#if 100000L < __cplusplus && __cplusplus <= 199711L
 #include <strstream>
-#if __cplusplus > 199711L
-	#include <memory>
+#include <boost/shared_ptr.hpp>
+namespace std {
+	using boost::shared_ptr;
+}
 #else
-	#include <boost/shared_ptr.hpp>
-	namespace std{
-    		using boost::shared_ptr;
-	}
+#include <memory>
+#include <sstream>
 #endif
 #include "ns3/node.h"
+#include "ns3/csma-helper.h"
 #include "ns3/csma-channel.h"
+#include "ns3/internet-stack-helper.h"
+#include "ns3/bridge-helper.h"
+#include "EunetTerminal.h"
 
 class EunetSwitch: public ns3::Node {
-
 	std::vector<int> uplinkPortIndices;
 	std::vector<int> downlinkPortIndices;
 	ns3::NodeContainer ncTerminals;
@@ -36,31 +32,47 @@ class EunetSwitch: public ns3::Node {
 	//ns3::CsmaHelper downlinkCsmaHelper;
 	//ns3::CsmaHelper uplinkCsmaHelper;
 	//ns3::CsmaHelper siblingCsmaHelper;
+	static int nCreated;
+	ns3::Ptr<ns3::OutputStreamWrapper> oswAsciiTrace;
+	static const char* const pcapPrefix;
+	static const char* const asciiTraceFileName;
 
 public:
+	static ns3::TypeId GetTypeId(void);
 	EunetSwitch(const int n_downlink_ports = 48, const int n_downlink_bps =
 			1000000000, const int n_downlink_delay_milliseconds = 1,
 			const int n_uplink_ports = 4, const int n_uplink_bps = 1000000000,
-			const int n_uplink_delay_milliseconds = 1) :
-		uplinkPortIndices(n_uplink_ports),
-				downlinkPortIndices(n_downlink_ports), nDownlinkPorts(
-						n_downlink_ports), nDownlinkBps(n_downlink_bps),
-				nDownlinkDelayMilliseconds(n_downlink_delay_milliseconds),
-				nUplinkPorts(n_uplink_ports), nUplinkBps(n_uplink_bps),
-				nUplinkDelayMilliseconds(n_uplink_delay_milliseconds) {
-		this->ncTerminals.Create(n_downlink_ports);
-		this->deployTerminals();
-		ns3::InternetStackHelper internet_stack_helper;
-		internet_stack_helper.Install(ncTerminals);
-		//internet_stack_helper.Install(ncTerminals.getTerminals());
-	}//a constructor
+			const int n_uplink_delay_milliseconds = 1);
+	virtual ~EunetSwitch();
+
+	void enableAsciiTraceDownlink(const int i_downlink_port) {
+		ns3::CsmaHelper csma_helper;
+		csma_helper.EnableAscii(this->oswAsciiTrace, this->getDownlinkPort(
+				i_downlink_port));
+	}
+
+	void enableAsciiTraceUplink(const int i_uplink_port) {
+		ns3::CsmaHelper csma_helper;
+		csma_helper.EnableAscii(this->oswAsciiTrace, this->getUplinkPort(
+				i_uplink_port));
+	}
+
+	void enablePcapDownlink(const int i_downlink_port, const bool promiscuous =
+			false) {
+		ns3::CsmaHelper csma_helper;
+		csma_helper.EnablePcap(EunetSwitch::pcapPrefix, this->getDownlinkPort(
+				i_downlink_port), promiscuous);
+	}
+
+	void enablePcapUplink(const int i_uplink_port, const bool promiscuous =
+			false) {
+		ns3::CsmaHelper csma_helper;
+		csma_helper.EnablePcap(EunetSwitch::pcapPrefix, this->getUplinkPort(
+				i_uplink_port), promiscuous);
+	}
 
 	std::shared_ptr<ns3::CsmaHelper> getDownlinkCsmaHelper() const {
 		std::shared_ptr<ns3::CsmaHelper> csma_helper(new ns3::CsmaHelper());
-		csma_helper->SetChannelAttribute("DataRate", ns3::DataRateValue(
-				this->nDownlinkBps));
-		csma_helper->SetChannelAttribute("Delay", ns3::TimeValue(
-				ns3::MilliSeconds(this->nDownlinkDelayMilliseconds)));
 		csma_helper->SetChannelAttribute("DataRate", ns3::DataRateValue(
 				this->nDownlinkBps));
 		csma_helper->SetChannelAttribute("Delay", ns3::TimeValue(
@@ -70,10 +82,6 @@ public:
 
 	std::shared_ptr<ns3::CsmaHelper> getUplinkCsmaHelper() const {
 		std::shared_ptr<ns3::CsmaHelper> csma_helper(new ns3::CsmaHelper());
-		csma_helper->SetChannelAttribute("DataRate", ns3::DataRateValue(
-				this->nUplinkBps));
-		csma_helper->SetChannelAttribute("Delay", ns3::TimeValue(
-				ns3::MilliSeconds(this->nUplinkDelayMilliseconds)));
 		csma_helper->SetChannelAttribute("DataRate", ns3::DataRateValue(
 				this->nUplinkBps));
 		csma_helper->SetChannelAttribute("Delay", ns3::TimeValue(
@@ -173,9 +181,6 @@ public:
 				= sibling_switch.GetNDevices() - 1;
 	}//connectSibling
 
-	virtual ~EunetSwitch() {
-	}//the destructor
-
 	const ns3::NodeContainer& getTerminals() const {
 		return this->ncTerminals;
 	}//getTerminals
@@ -188,17 +193,16 @@ public:
 		return ndc;
 	}//getTerminalDevices
 
+	ns3::Ptr<EunetTerminal> getTerminal(const int i_downlink_port) {
+		return this->ncTerminals.Get(i_downlink_port)->GetObject<EunetTerminal> ();
+	}//getTerminal
+
 private:
 
+	void deployTerminal(const int i_downlink_port);
 	void deployTerminals() {
 		for (uint32_t i = 0; i < nDownlinkPorts; ++i) {
-			ns3::NetDeviceContainer link =
-					this->getDownlinkCsmaHelper()->Install(ns3::NodeContainer(
-							ns3::NodeContainer(this->ncTerminals.Get(i)),
-							ns3::NodeContainer(this)));
-			assert(this->ncTerminals.Get(i)->GetNDevices()==1);
-			//this->ncTerminals.Get(0)->AddDevice(link.Get(0));
-			this->downlinkPortIndices[i] = this->GetNDevices() - 1;
+			deployTerminal(i);
 		}//for
 		//this->bridgeAllPorts();
 	}//deployTerminals
@@ -211,6 +215,10 @@ private:
 		bridge_helper.Install(this, all_devices);
 	}//bridgeAllPorts
 
+	static void installApplication(ns3::Ptr<ns3::Node> ptr_node);
+	void installApplication(const int i_downlink_port);
+	void installApplications();
 };//class EunetSwitch
 
 #endif /* EUNETSWITCH_H_ */
+
