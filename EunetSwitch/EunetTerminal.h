@@ -6,8 +6,9 @@
 #include "ns3/nstime.h"
 #include "ns3/ipv4-address-helper.h"
 #include "CsmaNode.h"
+#include "CsmaChannelNode.h"
 
-class EunetTerminal: public CsmaNode {
+class EunetTerminal: public CsmaChannelNode {
 	ns3::ApplicationContainer onOffApplication;
 	ns3::ApplicationContainer packetSink;
 public:
@@ -20,6 +21,7 @@ public:
 	void stopOnOffApplication(ns3::Time stop_seconds = ns3::Seconds(10.0));
 	void setRemote(ns3::Ptr<EunetTerminal> ptr_remote);
 	uint32_t getTotalRx();
+	void logTotalRx(const ns3::LogLevel log_level = ns3::LOG_LEVEL_INFO);
 	void assignAddress(ns3::Ipv4AddressHelper&);
 protected:
 	virtual void DoInitialize();

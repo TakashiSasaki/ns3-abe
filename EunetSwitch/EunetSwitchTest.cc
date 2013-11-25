@@ -15,6 +15,7 @@
 NS_LOG_COMPONENT_DEFINE ("EunetSwitchTest");
 
 int main(int argc, char *argv[]) {
+#if 0
 	ns3::ObjectFactory object_factory;
 
 	object_factory.SetTypeId("ns3::Node");
@@ -43,6 +44,7 @@ int main(int argc, char *argv[]) {
 	ns3::Ptr<EunetTerminal> ptr_eunet_terminal_3(object_factory_2.Create<
 			EunetTerminal> ());
 	NS_ASSERT(ptr_eunet_terminal_3->GetNDevices()==1);
+#endif
 
 	EunetTerminals eunet_terminals;
 	//EunetSwitch eunet_switch;
@@ -56,12 +58,13 @@ int main(int argc, char *argv[]) {
 	//on_off_applications.Start(Seconds(1.0));
 	//on_off_applications.Stop(Seconds(10.0));
 
-
 	NS_LOG_INFO ("Run Simulation.");
 	ns3::Simulator::Stop(ns3::Seconds(10.0));
 	ns3::Simulator::Run();
 	ns3::Simulator::Destroy();
 	NS_LOG_INFO ("Done.");
+	eunet_terminals.logTotalRx();
+
 	//NS_LOG_INFO("received " << eunet_terminals.getEunetTerminal(0)->getTotalRx());
 	return EXIT_SUCCESS;
 }//main

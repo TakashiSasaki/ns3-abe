@@ -64,3 +64,8 @@ ns3::NetDeviceContainer EunetTerminals::getDevicesAll() {
 	return net_device_container;
 }//getDevicesAll
 
+void EunetTerminals::logTotalRx(ns3::LogLevel log_level) {
+	for (auto i = this->terminals.Begin(); i != this->terminals.End(); ++i) {
+		(**i).GetObject<EunetTerminal>()-> logTotalRx(log_level);
+	}
+}
