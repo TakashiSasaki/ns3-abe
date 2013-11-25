@@ -85,7 +85,7 @@ void EunetTerminal::stopOnOffApplication(ns3::Time stop_seconds) {
 	this->onOffApplication.Stop(stop_seconds);
 }//stopOnOffApplication
 
-ns3::Ipv4Address EunetTerminal::getAddress() {
+ns3::Ipv4Address EunetTerminal::getCsmaNetDeviceAddress() {
 	NS_ASSERT(this->GetNDevices()==2);
 	ns3::Ptr<ns3::Ipv4> ptr_ipv4 = this->GetObject<ns3::Ipv4> ();
 	ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device = this->getCsmaNetDevice();
@@ -105,7 +105,12 @@ void EunetTerminal::assignAddress(ns3::Ipv4AddressHelper& ipv4_address_helper) {
 	NS_ASSERT(this->GetNDevices()==2);
 	ipv4_address_helper.Assign(
 			ns3::NetDeviceContainer(this->getCsmaNetDevice()));
+	this->setRemote(*this);
+	NS_LOG_INFO(this->getCsmaNetDeviceAddress() << " node " << this->GetId());
+}
+
+void EunetTerminal::setRemote(EunetTerminal& remote) {
 	this->onOffApplication.Get(0)->SetAttribute("Remote", ns3::AddressValue(
-			ns3::InetSocketAddress(this->getAddress(), PACKET_SINK_UDP_PORT)));
-	NS_LOG_INFO(this->getAddress() << " node " << this->GetId());
+			ns3::InetSocketAddress(remote.getCsmaNetDeviceAddress(),
+					PACKET_SINK_UDP_PORT)));
 }
