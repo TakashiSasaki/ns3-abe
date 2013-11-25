@@ -22,7 +22,7 @@ EunetTerminals::EunetTerminals(const int n_terminals) {
 		//auto ptr_eunet_terminal = object_factory.Create<EunetTerminal> ();
 		//ns3::Ptr<ns3::Node> ptr_eunet_terminal(
 		//		ns3::CreateObject<EunetTerminal>());
-		NS_ASSERT(ptr_eunet_terminal->GetNDevices()==1);
+		NS_ASSERT(ptr_eunet_terminal->GetNDevices()==2);
 		ptr_eunet_terminal->startOnOffApplication(ns3::Seconds(0.0));
 		ptr_eunet_terminal->stopOnOffApplication(ns3::Seconds(10.0));
 		ptr_eunet_terminal->assignAddress(ipv4_address_helper);

@@ -31,11 +31,11 @@ void EunetTerminal::NotifyConstructionCompleted() {
 	NS_LOG_INFO("notified the completion of EunetTerminal");
 	NS_ASSERT(this->GetNDevices() == 1);
 	this->installInternetStack();
-	NS_ASSERT(this->GetNDevices() == 1);
+	NS_ASSERT(this->GetNDevices() == 2);
 	this->installPacketSink();
-	NS_ASSERT(this->GetNDevices() == 1);
+	NS_ASSERT(this->GetNDevices() == 2);
 	this->installOnOffApplication();
-	NS_ASSERT(this->GetNDevices() == 1);
+	NS_ASSERT(this->GetNDevices() == 2);
 }
 
 EunetTerminal::~EunetTerminal() {
@@ -52,7 +52,8 @@ void EunetTerminal::installInternetStack() {
 	internet_stack_helper.Install(ns3::NodeContainer(this));
 	NS_LOG_INFO("InternetStackHelper::Install finished");
 	this->logAllDevices();
-	NS_ASSERT(this->GetNDevices() == 1);
+	NS_ASSERT(this->GetNDevices() == 2);
+	NS_ASSERT(this->GetDevice(1)->GetObject<ns3::LoopbackNetDevice>(ns3::LoopbackNetDevice::GetTypeId()));
 }
 
 void EunetTerminal::installPacketSink() {
@@ -85,10 +86,11 @@ void EunetTerminal::stopOnOffApplication(ns3::Time stop_seconds) {
 }//stopOnOffApplication
 
 ns3::Ipv4Address EunetTerminal::getAddress() {
-	NS_ASSERT(this->GetNDevices()==1);
+	NS_ASSERT(this->GetNDevices()==2);
 	ns3::Ptr<ns3::Ipv4> ptr_ipv4 = this->GetObject<ns3::Ipv4> ();
-	ns3::Ptr<ns3::NetDevice> ptr_net_device = this->GetDevice(0);
-	const int i_interface = ptr_ipv4->GetInterfaceForDevice(ptr_net_device);
+	ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device = this->getCsmaNetDevice();
+	const int i_interface =
+			ptr_ipv4->GetInterfaceForDevice(ptr_csma_net_device);
 	ns3::Ipv4InterfaceAddress ipv4_interface_address = ptr_ipv4->GetAddress(
 			i_interface, 0);
 	ns3::Ipv4Address ipv4_address = ipv4_interface_address.GetLocal();
@@ -100,8 +102,9 @@ uint32_t EunetTerminal::getTotalRx() {
 }
 
 void EunetTerminal::assignAddress(ns3::Ipv4AddressHelper& ipv4_address_helper) {
-	NS_ASSERT(this->GetNDevices()==1);
-	ipv4_address_helper.Assign(this->GetDevice(0));
+	NS_ASSERT(this->GetNDevices()==2);
+	ipv4_address_helper.Assign(
+			ns3::NetDeviceContainer(this->getCsmaNetDevice()));
 	this->onOffApplication.Get(0)->SetAttribute("Remote", ns3::AddressValue(
 			ns3::InetSocketAddress(this->getAddress(), PACKET_SINK_UDP_PORT)));
 	NS_LOG_INFO(this->getAddress() << " node " << this->GetId());
