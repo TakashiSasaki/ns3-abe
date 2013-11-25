@@ -52,3 +52,11 @@ ns3::Ipv4Address CsmaInternetNode::getCsmaNetDeviceAddress() {
 	ns3::Ipv4Address ipv4_address = ipv4_interface_address.GetLocal();
 	return ipv4_address;
 }//getCsmaNetDeviceAddress
+
+void CsmaInternetNode::assignAddress(ns3::Ipv4AddressHelper& ipv4_address_helper) {
+	NS_ASSERT(this->GetNDevices()==2);
+	ipv4_address_helper.Assign(
+			ns3::NetDeviceContainer(this->getCsmaNetDevice()));
+	//this->setRemote(this);
+	NS_LOG_INFO(this->getCsmaNetDeviceAddress() << " node " << this->GetId());
+}
