@@ -18,7 +18,7 @@ public:
 	ns3::Ipv4Address getCsmaNetDeviceAddress();
 	void startOnOffApplication(ns3::Time start_seconds = ns3::Seconds(0.0));
 	void stopOnOffApplication(ns3::Time stop_seconds = ns3::Seconds(10.0));
-	void setRemote(EunetTerminal& remote);
+	void setRemote(ns3::Ptr<EunetTerminal> ptr_remote);
 	uint32_t getTotalRx();
 	void assignAddress(ns3::Ipv4AddressHelper&);
 protected:

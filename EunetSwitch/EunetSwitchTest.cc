@@ -63,7 +63,6 @@ int main(int argc, char *argv[]) {
 	ns3::Simulator::Destroy();
 	NS_LOG_INFO ("Done.");
 	//NS_LOG_INFO("received " << eunet_terminals.getEunetTerminal(0)->getTotalRx());
-
 	return EXIT_SUCCESS;
 }//main
 

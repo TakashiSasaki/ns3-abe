@@ -68,7 +68,7 @@ void EunetTerminal::installPacketSink() {
 void EunetTerminal::installOnOffApplication() {
 	NS_LOG_INFO("installing on-off application on node " << this->GetId());
 	ns3::OnOffHelper on_off_helper("ns3::UdpSocketFactory", ns3::Address(
-			ns3::InetSocketAddress(ns3::Ipv4Address("127.0.0.1"),
+			ns3::InetSocketAddress(ns3::Ipv4Address("1.2.3.4"),
 					PACKET_SINK_UDP_PORT)));
 	on_off_helper.SetConstantRate(ns3::DataRate("500kb/s"));
 	//on_off_helper.SetAttribute("Remote", ns3::AddressValue(
@@ -105,12 +105,12 @@ void EunetTerminal::assignAddress(ns3::Ipv4AddressHelper& ipv4_address_helper) {
 	NS_ASSERT(this->GetNDevices()==2);
 	ipv4_address_helper.Assign(
 			ns3::NetDeviceContainer(this->getCsmaNetDevice()));
-	this->setRemote(*this);
+	//this->setRemote(this);
 	NS_LOG_INFO(this->getCsmaNetDeviceAddress() << " node " << this->GetId());
 }
 
-void EunetTerminal::setRemote(EunetTerminal& remote) {
+void EunetTerminal::setRemote(ns3::Ptr<EunetTerminal> ptr_remote) {
 	this->onOffApplication.Get(0)->SetAttribute("Remote", ns3::AddressValue(
-			ns3::InetSocketAddress(remote.getCsmaNetDeviceAddress(),
+			ns3::InetSocketAddress(ptr_remote->getCsmaNetDeviceAddress(),
 					PACKET_SINK_UDP_PORT)));
 }

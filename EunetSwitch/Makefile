@@ -1,7 +1,7 @@
 include ../CommonMakefile
 
 run: EunetSwitchTest
-	$(EXECENV) NS_LOG="EunetSwitch=**:EunetSwitches=**:EunetSwitchTest=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=**" ./EunetSwitchTest 
+	$(EXECENV) NS_LOG="EunetSwitch=**:EunetSwitches=**:EunetSwitchTest=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=**:OnOffApplication=**" ./EunetSwitchTest 
 
 gmon.out: EunetSwitchTest
 	$(EXECENV) NS_LOG="EunetSwitch=**:EunetSwitches=**:EunetSwitchTest=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=**" ./EunetSwitchTest 
