@@ -3,6 +3,7 @@ EunetSwitch/EunetSwitchTest
 HelloGprof/hello
 *.stackdump
 *.o
+wifi-multihop-test/difs-wifi-mac-test
 DifsWifiMac/difs-wifi-mac-test
 sim_out*.txt
 wifi-multihop-test/HelloNsLog

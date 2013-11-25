@@ -12,7 +12,6 @@ namespace std {
 #include <memory>
 #include <sstream>
 #endif
-#define NS3_LOG_ENABLE 1
 #include "ns3/node.h"
 #include "ns3/csma-helper.h"
 #include "ns3/csma-channel.h"
