@@ -40,3 +40,15 @@ void CsmaInternetNode::NotifyConstructionCompleted() {
 	NS_ASSERT(this->GetNDevices() == 2);
 	NS_ASSERT(this->GetDevice(1)->GetObject<ns3::LoopbackNetDevice>(ns3::LoopbackNetDevice::GetTypeId()));
 }
+
+ns3::Ipv4Address CsmaInternetNode::getCsmaNetDeviceAddress() {
+	NS_ASSERT(this->GetNDevices()==2);
+	ns3::Ptr<ns3::Ipv4> ptr_ipv4 = this->GetObject<ns3::Ipv4> ();
+	ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device = this->getCsmaNetDevice();
+	const int i_interface =
+			ptr_ipv4->GetInterfaceForDevice(ptr_csma_net_device);
+	ns3::Ipv4InterfaceAddress ipv4_interface_address = ptr_ipv4->GetAddress(
+			i_interface, 0);
+	ns3::Ipv4Address ipv4_address = ipv4_interface_address.GetLocal();
+	return ipv4_address;
+}//getCsmaNetDeviceAddress
