@@ -17,7 +17,6 @@ EunetSwitchTest/EunetSwitchTest
 EunetSwitch/html
 EunetSwitch/latex
 *.pcap
-<<<<<<< HEAD
 .cproject
 .project
 .settings

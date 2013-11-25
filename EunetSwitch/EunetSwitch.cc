@@ -34,7 +34,8 @@ EunetSwitch::EunetSwitch(const int n_downlink_ports, const int n_downlink_bps,
 			nUplinkPorts(n_uplink_ports), nUplinkBps(n_uplink_bps),
 			nUplinkDelayMilliseconds(n_uplink_delay_milliseconds) {
 	for (int i = 0; i < n_downlink_ports; ++i) {
-		ns3::Ptr<EunetTerminal> ptr_eunet_terminal(ns3::CreateObject<EunetTerminal>());
+		ns3::Ptr<EunetTerminal> ptr_eunet_terminal(ns3::CreateObject<
+				EunetTerminal>());
 		this->ncTerminals.Add(ptr_eunet_terminal);
 	}
 	//this->ncTerminals.Create(n_downlink_ports);
@@ -61,3 +62,25 @@ void EunetSwitch::deployTerminal(const int i_downlink_port) {
 	NS_LOG_INFO("# of devices " << "on switch " << this->GetId() << " was changed from " << n_devices_before << " to " << n_devices_after);
 	this->downlinkPortIndices[i_downlink_port] = this->GetNDevices() - 1;
 }//deployTerminal
+
+void EunetSwitch::installApplication(const int i_downlink_port) {
+	this->installApplication(this->ncTerminals.Get(i_downlink_port));
+}
+
+void EunetSwitch::installApplication(ns3::Ptr<ns3::Node> ptr_node) {
+	NS_LOG_INFO("installing packet sync on node " << ptr_node->GetId());
+	const int UDP_PORT = 9; // Discard port (RFC 863)
+	ns3::PacketSinkHelper packet_sink_helper("ns3::UdpSocketFactory",
+			ns3::Address(ns3::InetSocketAddress(ns3::Ipv4Address::GetAny(),
+					UDP_PORT)));
+	ns3::ApplicationContainer packet_sink_applications;
+	ns3::ApplicationContainer ac = packet_sink_helper.Install(ptr_node);
+	packet_sink_applications.Add(ac);
+	packet_sink_applications.Start(ns3::Seconds(0.0));
+}
+
+void EunetSwitch::installApplications() {
+	for (unsigned i = 0; i < nDownlinkPorts; ++i) {
+		this->installApplication(i);
+	}//for
+}
