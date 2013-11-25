@@ -10,7 +10,7 @@ class CsmaChannelNode: public CsmaNode {
 
 public:
 	static ns3::TypeId GetTypeId(void);
-	CsmaChannelNode();
+	CsmaChannelNode(const int n_devices = 1);
 	virtual ~CsmaChannelNode();
 	void bring(ns3::Ptr<CsmaChannelNode>);
 };

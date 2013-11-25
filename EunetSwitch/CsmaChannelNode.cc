@@ -15,7 +15,8 @@ ns3::TypeId CsmaChannelNode::GetTypeId(void) {
 	return type_id;
 }//GetTypeId
 
-CsmaChannelNode::CsmaChannelNode() {
+CsmaChannelNode::CsmaChannelNode(const int n_devices) :
+	CsmaNode(n_devices) {
 	this->csmaChannelFactory.SetTypeId("ns3::CsmaChannel");
 	this->ptrCsmaChannel = this->csmaChannelFactory.Create()->GetObject<
 			ns3::CsmaChannel> ();

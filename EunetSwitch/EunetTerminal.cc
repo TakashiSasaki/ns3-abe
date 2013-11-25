@@ -12,12 +12,12 @@ NS_OBJECT_ENSURE_REGISTERED(EunetTerminal);
 
 ns3::TypeId EunetTerminal::GetTypeId(void) {
 	static ns3::TypeId type_id = ns3::TypeId("EunetTerminal").SetParent<
-			CsmaNode> ().AddConstructor<EunetTerminal> ();
+			CsmaChannelNode> ().AddConstructor<EunetTerminal> ();
 	return type_id;
 }//GetTypeId
 
 EunetTerminal::EunetTerminal() :
-	CsmaNode(1) {
+	CsmaChannelNode(1) {
 	NS_ASSERT(this->GetNDevices() == 1);
 	//this->installInternetStack();
 	//this->installPacketSink();
@@ -99,6 +99,10 @@ ns3::Ipv4Address EunetTerminal::getCsmaNetDeviceAddress() {
 
 uint32_t EunetTerminal::getTotalRx() {
 	return this->packetSink.Get(0)->GetObject<ns3::PacketSink> ()->GetTotalRx();
+}
+
+void EunetTerminal::logTotalRx(ns3::LogLevel log_level) {
+	NS_LOG(ns3::LOG_LEVEL_INFO, "node " << this->GetId() << " have received " << this->getTotalRx() << " bytes");
 }
 
 void EunetTerminal::assignAddress(ns3::Ipv4AddressHelper& ipv4_address_helper) {
