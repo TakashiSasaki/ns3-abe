@@ -29,7 +29,9 @@ CsmaNode.o: CsmaNode.cc CsmaNode.h
 EunetTerminals.o: EunetTerminals.cc EunetTerminals.h
 	g++ -g -pg -O0 -std=c++0x -c -o EunetTerminals.o $(CPPFLAGS) EunetTerminals.cc
 
-EunetSwitchTest: EunetSwitchTest.cc EunetSwitch.o EunetSwitches.o EunetTerminal.o EunetTerminals.o CsmaNode.o $(NS3LIBS)
+EunetSwitchTest: EunetSwitchTest.cc EunetSwitch.o EunetSwitches.o \
+					EunetTerminal.o EunetTerminals.o CsmaNode.o CsmaChannelNode.o \
+					$(NS3LIBS)
 	g++ -g -pg -O0 -std=c++0x -o EunetSwitchTest $(CPPFLAGS) $^
 
 clean:
