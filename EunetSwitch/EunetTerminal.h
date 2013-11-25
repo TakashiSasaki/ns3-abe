@@ -14,7 +14,6 @@ public:
 	EunetTerminal();
 	virtual ~EunetTerminal();
 	void installInternetStack();
-	ns3::Ipv4Address getCsmaNetDeviceAddress();
 	void startOnOffApplication(ns3::Time start_seconds = ns3::Seconds(0.0));
 	void stopOnOffApplication(ns3::Time stop_seconds = ns3::Seconds(10.0));
 	void setRemote(ns3::Ptr<EunetTerminal> ptr_remote);

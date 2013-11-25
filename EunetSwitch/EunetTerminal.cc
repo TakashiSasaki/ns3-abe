@@ -58,18 +58,6 @@ void EunetTerminal::stopOnOffApplication(ns3::Time stop_seconds) {
 	this->onOffApplication.Stop(stop_seconds);
 }//stopOnOffApplication
 
-ns3::Ipv4Address EunetTerminal::getCsmaNetDeviceAddress() {
-	NS_ASSERT(this->GetNDevices()==2);
-	ns3::Ptr<ns3::Ipv4> ptr_ipv4 = this->GetObject<ns3::Ipv4> ();
-	ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device = this->getCsmaNetDevice();
-	const int i_interface =
-			ptr_ipv4->GetInterfaceForDevice(ptr_csma_net_device);
-	ns3::Ipv4InterfaceAddress ipv4_interface_address = ptr_ipv4->GetAddress(
-			i_interface, 0);
-	ns3::Ipv4Address ipv4_address = ipv4_interface_address.GetLocal();
-	return ipv4_address;
-}//getAddress
-
 void EunetTerminal::assignAddress(ns3::Ipv4AddressHelper& ipv4_address_helper) {
 	NS_ASSERT(this->GetNDevices()==2);
 	ipv4_address_helper.Assign(
