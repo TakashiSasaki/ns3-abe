@@ -192,6 +192,7 @@ public:
 		return this->eunetTerminals;
 		//return this->ncTerminals;
 	}//getTerminals
+
 	ns3::NetDeviceContainer getTerminalDevices() {
 		ns3::NetDeviceContainer ndc;
 		for (unsigned i = 0; i < this->eunetTerminals.GetN(); ++i) {

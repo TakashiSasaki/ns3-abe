@@ -55,14 +55,11 @@ void testEunetTerminals() {
 	eunet_terminals.setRemoteOfAtoB(2, 0);
 }
 
-void testEunetSwitch() {
-	NS_LOG_INFO("creating EunetSwitch");
-	//EunetSwitch eunet_switch;
-	//eunet_switch.getTerminals().assignAddresses();
-}
-
 int main(int argc, char *argv[]) {
-	EunetSwitch eunet_switch(1);
+	EunetSwitch eunet_switch(2);
+	eunet_switch.getTerminals().assignAddresses();
+	eunet_switch.getTerminals().setRemoteOfAtoB(0, 0);
+	eunet_switch.getTerminals().setRemoteOfAtoB(1, 0);
 	//EunetTerminals eunet_terminals;
 
 	ns3::Node node;
