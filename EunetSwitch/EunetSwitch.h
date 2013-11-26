@@ -20,21 +20,16 @@ namespace std {
 #include "EunetTerminals.h"
 #include "CsmaChannelNode.h"
 
-class EunetSwitch: public CsmaChannelNode {
+class EunetSwitch: public SimpleSwitch {
 	EunetTerminals eunetTerminals;
 	std::vector<int> uplinkPortIndices;
 	std::vector<int> downlinkPortIndices;
-	//ns3::NodeContainer ncTerminals;
 	const uint32_t nDownlinkPorts;
 	const int nDownlinkBps;
 	const int nDownlinkDelayMilliseconds;
 	const int nUplinkPorts;
 	const int nUplinkBps;
 	const int nUplinkDelayMilliseconds;
-	//ns3::CsmaHelper downlinkCsmaHelper;
-	//ns3::CsmaHelper uplinkCsmaHelper;
-	//ns3::CsmaHelper siblingCsmaHelper;
-	//static int nCreated;
 	ns3::Ptr<ns3::OutputStreamWrapper> oswAsciiTrace;
 	static const char* const pcapPrefix;
 	static const char* const asciiTraceFileName;

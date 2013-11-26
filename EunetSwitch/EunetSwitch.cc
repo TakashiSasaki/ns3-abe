@@ -9,11 +9,13 @@ NS_LOG_COMPONENT_DEFINE("EunetSwitch");
 #include "ns3/inet-socket-address.h"
 #include "EunetSwitch.h"
 #include "EunetTerminal.h"
+#include "SimpleSwitch.h"
+
 NS_OBJECT_ENSURE_REGISTERED(EunetSwitch);
 
 ns3::TypeId EunetSwitch::GetTypeId(void) {
 	static ns3::TypeId type_id = ns3::TypeId("EunetSwitch").SetParent<
-			CsmaChannelNode> ().AddConstructor<EunetSwitch> ();
+			SimpleSwitch> ().AddConstructor<EunetSwitch> ();
 	return type_id;
 }//GetTypeId
 
