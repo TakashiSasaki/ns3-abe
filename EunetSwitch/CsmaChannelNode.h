@@ -5,14 +5,18 @@
 #include "ns3/csma-channel.h"
 
 class CsmaChannelNode: public CsmaNode {
-	ns3::Ptr<ns3::CsmaChannel> ptrCsmaChannel;
 	ns3::ObjectFactory csmaChannelFactory;
 
 public:
 	static ns3::TypeId GetTypeId(void);
 	CsmaChannelNode(const int n_devices = 1); // TODO: should support multiple devices
 	virtual ~CsmaChannelNode();
-	void bring(ns3::Ptr<CsmaChannelNode>);
+	void bring(ns3::Ptr<CsmaNode> ptr_their_csma_node,
+			const unsigned i_their_csma_device = 0);
+	void bring(const unsigned i_our_csma_device,
+			ns3::Ptr<CsmaNode> ptr_their_csma_node,
+			const unsigned i_their_csma_device = 0);
+	ns3::Ptr<ns3::CsmaChannel> getCsmaChannel(unsigned i_channel);
 };
 
 #endif /* CSMACHANNELNODE_H_ */
