@@ -44,13 +44,11 @@ EunetSwitch::EunetSwitch(const int n_downlink_ports, const int n_downlink_bps,
 	//internet_stack_helper.Install(ncTerminals.getTerminals());
 	//ns3::Simulator::Schedule(ns3::Seconds(0.0), ns3::MakeCallback(&bridgeAllPorts, this));
 	NS_LOG_INFO("constructing EunetSwitch");
-#if 0
 	{
 		ns3::AsciiTraceHelper ascii_trace_helper;
 		this->oswAsciiTrace = ascii_trace_helper.CreateFileStream(
 				this->asciiTraceFileName);
 	}
-#endif
 
 	NS_LOG_INFO("attaching " << this->eunetTerminals.GetN() << " terminal(s) to corresponding port(s)");
 	for (unsigned i = 0; i < this->eunetTerminals.GetN(); ++i) {
