@@ -62,6 +62,7 @@ int main(int argc, char *argv[]) {
 	eunet_switch->getTerminals().assignAddresses();
 	eunet_switch->getTerminals().setRemoteOfAtoB(0, 0);
 	eunet_switch->getTerminals().setRemoteOfAtoB(1, 0);
+	eunet_switch->getTerminals().Get(1)->startAt(ns3::Seconds(0.0));
 	//EunetTerminals eunet_terminals;
 
 	//ns3::Node node;

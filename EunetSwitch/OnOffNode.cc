@@ -16,7 +16,8 @@ ns3::TypeId OnOffNode::GetTypeId(void) {
 	return type_id;
 }//GetTypeId
 
-OnOffNode::OnOffNode() {
+OnOffNode::OnOffNode(const bool start_at_the_beginning) :
+	startAtTheBeginning(start_at_the_beginning) {
 	// TODO 自動生成されたコンストラクター・スタブ
 
 }
@@ -38,9 +39,12 @@ void OnOffNode::NotifyConstructionCompleted() {
 			ns3::InetSocketAddress(ns3::Ipv4Address("1.2.3.4"),
 					PACKET_SINK_UDP_PORT)));
 	on_off_helper.SetConstantRate(ns3::DataRate("500kb/s"));
-	on_off_helper.SetAttribute("StartTime", ns3::TimeValue(ns3::Time(
-			std::numeric_limits<int64_t>::max())));
-	on_off_helper.SetAttribute("StopTime", ns3::TimeValue(ns3::Seconds(0.0)));
+	if (!this->startAtTheBeginning) {
+		on_off_helper.SetAttribute("StartTime", ns3::TimeValue(ns3::Time(
+				std::numeric_limits<int64_t>::max())));
+		on_off_helper.SetAttribute("StopTime",
+				ns3::TimeValue(ns3::Seconds(0.0)));
+	}
 	//on_off_helper.SetAttribute("Remote", ns3::AddressValue(
 	//		ns3::InetSocketAddress(ns3::Ipv4Address("127.0.0.1"),
 	//				PACKET_SINK_UDP_PORT)));
