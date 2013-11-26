@@ -4,17 +4,11 @@ NS_LOG_COMPONENT_DEFINE("EunetSwitches");
 #define NS3_ASSERT_ENABLE 1
 #include "ns3/assert.h"
 #include "ns3/ipv4-address-helper.h"
-#include <cmath>
 #include "EunetSwitches.h"
-
-unsigned count_nodes(const unsigned height, const unsigned width) {
-	return (pow(width, height) - 1) / (width - 1);
-}
 
 EunetSwitches::EunetSwitches(const unsigned depth, const unsigned width) :
 	nDepth(depth), nWidth(width) {
-	NS_LOG_INFO("creating EunetSwitches");
-	assert(count_nodes(2,3)==4);
+	NS_LOG_INFO("creating as a regular tree with depth " << nDepth << " and width " << nWidth);
 	for (unsigned i = 0; i < depth; ++i) {
 		//std::vector<ns3::Ptr<EunetSwitch> > switches;
 		for (unsigned j = 0; j < pow(width, i); ++j) {
@@ -24,16 +18,16 @@ EunetSwitches::EunetSwitches(const unsigned depth, const unsigned width) :
 		}//for
 		//this->switches.push_back(switches);
 	}//for
-	NS_ASSERT(this->GetN() == count_nodes(depth, width));
+	NS_ASSERT(this->GetN() == countTriangle(nDepth));
 	for (unsigned d = 1; d < nDepth; ++d) {
 		for (unsigned w = 0; w < pow(width, d); ++w) {
 			NS_LOG_INFO("connecting EunetSwitch "
-					<< d << "," << w << " (" << count_nodes(d,width)+w << ") to "
-					<< d-1 << "," << w/width << " (" << count_nodes( d-1, width) + w/width << ")" );
-			ns3::Ptr<EunetSwitch> p_from = this->getEunetSwitch(count_nodes(d,
-					width) + w);
-			ns3::Ptr<EunetSwitch> p_to = this->getEunetSwitch(count_nodes(
-					d - 1, width) + w / width);
+					<< d << "," << w << " (" << countTriangle(d)+w << ") to "
+					<< d-1 << "," << w/width << " (" << countTriangle(d-1) + w/width << ")" << ", " << w%width );
+			ns3::Ptr<EunetSwitch> p_from = this->getEunetSwitch(
+					countTriangle(d) + w);
+			ns3::Ptr<EunetSwitch> p_to = this->getEunetSwitch(countTriangle(d
+					- 1) + w / width);
 			p_from->connectUpTo(0, p_to, w % width);
 		}//for
 	}//for
@@ -49,5 +43,5 @@ EunetSwitches::EunetSwitches(const unsigned depth, const unsigned width) :
 
 ns3::Ptr<EunetSwitch> EunetSwitches::getEunetSwitch(unsigned i_depth,
 		unsigned i_width) {
-	return getEunetSwitch(count_nodes(i_depth, nWidth) + i_width);
+	return getEunetSwitch(countTriangle(i_depth) + i_width);
 }

@@ -1,11 +1,11 @@
 #ifndef EUNETSWITCHES_H_
 #define EUNETSWITCHES_H_
-#include <vector>
+#include <cmath>
 #include "ns3/node-container.h"
 #include "EunetSwitch.h"
 
 class EunetSwitches: public ns3::NodeContainer {
-	static const unsigned iRootSwitch = 0;
+	//static const unsigned iRootSwitch = 0;
 	const unsigned nDepth;
 	const unsigned nWidth;
 	//EunetSwitch rootSwitch;
@@ -19,6 +19,10 @@ public:
 
 	ns3::Ptr<EunetSwitch> getEunetSwitch(unsigned i_switch) {
 		return this->Get(i_switch)->GetObject<EunetSwitch> ();
+	}
+private:
+	unsigned countTriangle(const unsigned depth) const {
+		return (pow(nWidth, depth) - 1) / (nWidth - 1);
 	}
 };
 

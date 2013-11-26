@@ -71,6 +71,11 @@ int main(int argc, char *argv[]) {
 	//testEunetSwitch();
 	//testEunetTerminals();
 	EunetSwitches eunet_switches(3, 2);
+	auto source_terminal = eunet_switches.getEunetSwitch(2, 3)->getTerminal(5);
+	auto dest_terminal = eunet_switches.getEunetSwitch(0, 0)->getTerminal(5);
+	source_terminal->setRemote(dest_terminal);
+	source_terminal->startAt(ns3::Seconds(0.0));
+
 	//LogComponentEnable ("EunetSwitchTest", LOG_LEVEL_INFO);
 	//CommandLine command_line;
 	//command_line.AddValue("nDownlinkPorts", "number of downlink ports on a switch", nDownlinkPorts);
@@ -85,6 +90,8 @@ int main(int argc, char *argv[]) {
 	ns3::Simulator::Run();
 	ns3::Simulator::Destroy();
 	NS_LOG_INFO ("Done.");
+	source_terminal->logTotalRx();
+	dest_terminal->logTotalRx();
 #if 0
 	eunet_switch->getTerminals().logTotalRx();
 #endif
