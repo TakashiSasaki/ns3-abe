@@ -13,7 +13,7 @@ public:
 	static ns3::TypeId GetTypeId(void);
 	CsmaNode(const uint32_t n_csma_net_devices = 0);
 	virtual ~CsmaNode();
-	ns3::Ptr<ns3::CsmaNetDevice> getCsmaNetDevice();
+	ns3::Ptr<ns3::CsmaNetDevice> getCsmaNetDevice(const unsigned i = 0);
 	void logAllDevices(const ns3::LogLevel log_level = ns3::LOG_LEVEL_INFO);
 protected:
 	virtual void DoInitialize();

@@ -45,18 +45,22 @@ void CsmaNode::logAllDevices(const ns3::LogLevel log_level) {
 	}
 }//logAllDevices
 
-ns3::Ptr<ns3::CsmaNetDevice> CsmaNode::getCsmaNetDevice() {
+ns3::Ptr<ns3::CsmaNetDevice> CsmaNode::getCsmaNetDevice(const unsigned i_device) {
 	NS_ASSERT(this->countCsmaNetDevices()==1);
+	unsigned j = 0;
 	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
 		//NS_LOG(log_level, this->GetDevice(i)->GetTypeId() << ", " << this->GetDevice(i)->GetInstanceTypeId());
 		if (this->GetDevice(i)->GetInstanceTypeId()
 				== ns3::CsmaNetDevice::GetTypeId()) {
-			return this->GetDevice(i)->GetObject<ns3::CsmaNetDevice> (
-					ns3::CsmaNetDevice::GetTypeId());
+			if (j == i_device) {
+				return this->GetDevice(i)->GetObject<ns3::CsmaNetDevice> (
+						ns3::CsmaNetDevice::GetTypeId());
+
+			}//if
 		}//if
 	}//for
 	NS_FATAL_ERROR("no CsmaNetDevice");
-}
+}//getCsmaNetDevice
 
 uint32_t CsmaNode::countCsmaNetDevices() {
 	uint32_t n_csma_net_devices = 0;
