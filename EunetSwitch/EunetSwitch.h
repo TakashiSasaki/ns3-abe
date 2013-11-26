@@ -24,8 +24,6 @@ namespace std {
 class EunetSwitch: public SimpleSwitch {
 	typedef SimpleSwitch Base;
 	EunetTerminals eunetTerminals;
-	//std::vector<int> uplinkPortIndices;
-	//std::vector<int> downlinkPortIndices;
 	ns3::Ptr<ns3::OutputStreamWrapper> oswAsciiTrace;
 	static const char* const pcapPrefix;
 	static const char* const asciiTraceFileName;
@@ -67,82 +65,6 @@ public:
 				i_uplink_port), promiscuous);
 	}
 
-#if 0
-	std::shared_ptr<ns3::CsmaHelper> getDownlinkCsmaHelper() const {
-		std::shared_ptr<ns3::CsmaHelper> csma_helper(new ns3::CsmaHelper());
-		csma_helper->SetChannelAttribute("DataRate", ns3::DataRateValue(
-						this->nDownlinkBps));
-		csma_helper->SetChannelAttribute("Delay", ns3::TimeValue(
-						ns3::MilliSeconds(this->nDownlinkDelayMilliseconds)));
-		return csma_helper;
-	}//getDownlinkCsmaHelper
-
-	std::shared_ptr<ns3::CsmaHelper> getUplinkCsmaHelper() const {
-		std::shared_ptr<ns3::CsmaHelper> csma_helper(new ns3::CsmaHelper());
-		csma_helper->SetChannelAttribute("DataRate", ns3::DataRateValue(
-						this->nUplinkBps));
-		csma_helper->SetChannelAttribute("Delay", ns3::TimeValue(
-						ns3::MilliSeconds(this->nUplinkDelayMilliseconds)));
-		return csma_helper;
-	}//getUplinkCsmaHelper
-#endif
-#if 0
-	ns3::NetDeviceContainer getUplinkDevices() {
-		ns3::NetDeviceContainer ndc;
-		for (unsigned i = 0; i < this->nUplinkPorts; ++i) {
-			ndc.Add(this->getUplinkPort(i));
-		}//for
-		return ndc;
-	}//getUplinkDevices
-
-	ns3::NetDeviceContainer getDownlinkDevices() {
-		ns3::NetDeviceContainer ndc;
-		for (uint32_t i = 0; i < this->nDownlinkPorts; ++i) {
-			ndc.Add(this->getDownlinkPort(i));
-		}//for
-		return ndc;
-	}//getDownlinkDevices
-#endif
-#if 0
-	void setUplinkPortIndex(const int i_uplink_port) {
-		this->setUplinkPortIndex(i_uplink_port, this->GetNDevices() - 1);
-	}//setUplinkPortIndex
-
-	void setUplinkPortIndex(const uint32_t i_uplink_port,
-			const uint32_t i_net_device) {
-		if (0 > i_uplink_port || this->uplinkPortIndices.size()
-				<= i_uplink_port) {
-			std::stringstream ss;
-			ss << "max uplink port index is ";
-			ss << this->uplinkPortIndices.size();
-			ss << " while ";
-			ss << i_uplink_port;
-			ss << " is given.";
-			throw std::invalid_argument(ss.str());
-		}//if
-		this->uplinkPortIndices[i_uplink_port] = i_net_device;
-	}//setUplinkPortIndex
-
-	void setDownlinkPortIndex(const uint32_t i_downlink_port) {
-		this->setDownlinkPortIndex(i_downlink_port, this->GetNDevices() - 1);
-	}//setUplinkPortIndex
-
-	void setDownlinkPortIndex(const uint32_t i_downlink_port,
-			const uint32_t i_net_device) {
-		if (0 > i_downlink_port || this->downlinkPortIndices.size()
-				<= i_downlink_port) {
-			std::stringstream ss;
-			ss << "max downlink port index is ";
-			ss << this->downlinkPortIndices.size();
-			ss << " while ";
-			ss << i_downlink_port;
-			ss << " is given.";
-			throw std::invalid_argument(ss.str());
-		}//if
-		this->downlinkPortIndices[i_downlink_port] = i_net_device;
-	}//setUplinkPortIndex
-#endif
-
 	EunetTerminals& getTerminals() {
 		return this->eunetTerminals;
 		//return this->ncTerminals;
@@ -166,4 +88,3 @@ private:
 };//class EunetSwitch
 
 #endif /* EUNETSWITCH_H_ */
-
