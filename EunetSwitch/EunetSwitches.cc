@@ -1,7 +1,7 @@
 #define NS3_LOG_ENABLE 1
 #include "ns3/log.h"
-#include "ns3/ipv4-address-helper.h"
 NS_LOG_COMPONENT_DEFINE("EunetSwitches");
+#include "ns3/ipv4-address-helper.h"
 #include <cmath>
 #include "EunetSwitches.h"
 

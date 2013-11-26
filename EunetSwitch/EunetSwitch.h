@@ -21,10 +21,10 @@ namespace std {
 #include "CsmaChannelNode.h"
 
 class EunetSwitch: public CsmaChannelNode {
+	EunetTerminals eunetTerminals;
 	std::vector<int> uplinkPortIndices;
 	std::vector<int> downlinkPortIndices;
 	//ns3::NodeContainer ncTerminals;
-	EunetTerminals eunetTerminals;
 	const uint32_t nDownlinkPorts;
 	const int nDownlinkBps;
 	const int nDownlinkDelayMilliseconds;
@@ -34,7 +34,7 @@ class EunetSwitch: public CsmaChannelNode {
 	//ns3::CsmaHelper downlinkCsmaHelper;
 	//ns3::CsmaHelper uplinkCsmaHelper;
 	//ns3::CsmaHelper siblingCsmaHelper;
-	static int nCreated;
+	//static int nCreated;
 	ns3::Ptr<ns3::OutputStreamWrapper> oswAsciiTrace;
 	static const char* const pcapPrefix;
 	static const char* const asciiTraceFileName;
@@ -188,11 +188,10 @@ public:
 				= sibling_switch.GetNDevices() - 1;
 	}//connectSibling
 
-	const ns3::NodeContainer& getTerminals() const {
+	EunetTerminals& getTerminals() {
 		return this->eunetTerminals;
 		//return this->ncTerminals;
 	}//getTerminals
-
 	ns3::NetDeviceContainer getTerminalDevices() {
 		ns3::NetDeviceContainer ndc;
 		for (unsigned i = 0; i < this->eunetTerminals.GetN(); ++i) {
@@ -206,14 +205,6 @@ public:
 	}//getTerminal
 
 private:
-
-	void deployTerminal(const int i_downlink_port);
-	void deployTerminals() {
-		for (uint32_t i = 0; i < nDownlinkPorts; ++i) {
-			deployTerminal(i);
-		}//for
-		//this->bridgeAllPorts();
-	}//deployTerminals
 
 	void bridgeAllPorts() {
 		ns3::NetDeviceContainer all_devices;

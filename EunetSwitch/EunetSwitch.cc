@@ -1,18 +1,19 @@
 #define NS3_LOG_ENABLE 1
 #include "ns3/log.h"
+NS_LOG_COMPONENT_DEFINE("EunetSwitch");
+#define NS3_ASSERT_ENABLE 1
+#include "ns3/assert.h"
 #include "ns3/applications-module.h"
 #include "ns3/network-module.h"
 #include "ns3/ipv4-address.h"
 #include "ns3/inet-socket-address.h"
 #include "EunetSwitch.h"
 #include "EunetTerminal.h"
-NS_LOG_COMPONENT_DEFINE("EunetSwitch");
 NS_OBJECT_ENSURE_REGISTERED(EunetSwitch);
 
 ns3::TypeId EunetSwitch::GetTypeId(void) {
-	static ns3::TypeId type_id =
-			ns3::TypeId("EunetSwitch").SetParent<ns3::Node> ().AddConstructor<
-					EunetSwitch> ();
+	static ns3::TypeId type_id = ns3::TypeId("EunetSwitch").SetParent<
+			CsmaChannelNode> ().AddConstructor<EunetSwitch> ();
 	return type_id;
 }//GetTypeId
 
@@ -23,14 +24,13 @@ const char* const EunetSwitch::asciiTraceFileName = "EunetSwitch.tr";
 EunetSwitch::~EunetSwitch() {
 }
 
-int EunetSwitch::nCreated = 0;
-
 EunetSwitch::EunetSwitch(const int n_downlink_ports, const int n_downlink_bps,
 		const int n_downlink_delay_milliseconds, const int n_uplink_ports,
 		const int n_uplink_bps, const int n_uplink_delay_milliseconds) :
-	CsmaChannelNode(n_uplink_ports + n_downlink_ports), uplinkPortIndices(
-			n_uplink_ports), downlinkPortIndices(n_downlink_ports),
-			nDownlinkPorts(n_downlink_ports), nDownlinkBps(n_downlink_bps),
+	CsmaChannelNode(n_uplink_ports + n_downlink_ports), eunetTerminals(
+			n_downlink_ports), uplinkPortIndices(n_uplink_ports),
+			downlinkPortIndices(n_downlink_ports), nDownlinkPorts(
+					n_downlink_ports), nDownlinkBps(n_downlink_bps),
 			nDownlinkDelayMilliseconds(n_downlink_delay_milliseconds),
 			nUplinkPorts(n_uplink_ports), nUplinkBps(n_uplink_bps),
 			nUplinkDelayMilliseconds(n_uplink_delay_milliseconds) {
@@ -43,14 +43,18 @@ EunetSwitch::EunetSwitch(const int n_downlink_ports, const int n_downlink_bps,
 	//this->deployTerminals();
 	//internet_stack_helper.Install(ncTerminals.getTerminals());
 	//ns3::Simulator::Schedule(ns3::Seconds(0.0), ns3::MakeCallback(&bridgeAllPorts, this));
-	this->nCreated += 1;
-	NS_LOG_INFO("constructing EunetSwitch " << this->nCreated);
+	NS_LOG_INFO("constructing EunetSwitch");
+#if 0
 	{
 		ns3::AsciiTraceHelper ascii_trace_helper;
 		this->oswAsciiTrace = ascii_trace_helper.CreateFileStream(
 				this->asciiTraceFileName);
 	}
+#endif
+
+	NS_LOG_INFO("attaching " << this->eunetTerminals.GetN() << " terminal(s) to corresponding port(s)");
 	for (unsigned i = 0; i < this->eunetTerminals.GetN(); ++i) {
+		NS_LOG_INFO("attaching terminal " << i << " to corresponding port");
 		this->bring(i, this->eunetTerminals.Get(i), 0);
 	}
 }//a constructor

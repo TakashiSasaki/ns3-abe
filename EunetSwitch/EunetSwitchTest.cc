@@ -14,8 +14,7 @@
 //using namespace ns3;
 NS_LOG_COMPONENT_DEFINE ("EunetSwitchTest");
 
-int main(int argc, char *argv[]) {
-#if 0
+void testEunetTerminal() {
 	ns3::ObjectFactory object_factory;
 
 	object_factory.SetTypeId("ns3::Node");
@@ -44,18 +43,31 @@ int main(int argc, char *argv[]) {
 	ns3::Ptr<EunetTerminal> ptr_eunet_terminal_3(object_factory_2.Create<
 			EunetTerminal> ());
 	NS_ASSERT(ptr_eunet_terminal_3->GetNDevices()==1);
-#endif
+}
 
-	EunetTerminals eunet_terminals;
+void testEunetTerminals() {
+	EunetTerminals eunet_terminals(3);
 	eunet_terminals.bringAtoB(1, 0);
 	eunet_terminals.bringAtoB(2, 0);
 	eunet_terminals.assignAddresses();
 	eunet_terminals.setRemoteOfAtoB(0, 0);
 	eunet_terminals.setRemoteOfAtoB(1, 0);
 	eunet_terminals.setRemoteOfAtoB(2, 0);
+}
 
+void testEunetSwitch() {
 	NS_LOG_INFO("creating EunetSwitch");
-	EunetSwitch eunet_switch;
+	//EunetSwitch eunet_switch;
+	//eunet_switch.getTerminals().assignAddresses();
+}
+
+int main(int argc, char *argv[]) {
+	EunetSwitch eunet_switch(1);
+	//EunetTerminals eunet_terminals;
+
+	ns3::Node node;
+	//testEunetSwitch();
+	//testEunetTerminals();
 	//EunetSwitches eunet_switches(3, 2);
 	//LogComponentEnable ("EunetSwitchTest", LOG_LEVEL_INFO);
 	//CommandLine command_line;
@@ -67,13 +79,12 @@ int main(int argc, char *argv[]) {
 	//on_off_applications.Stop(Seconds(10.0));
 
 	NS_LOG_INFO ("Run Simulation.");
-	ns3::Simulator::Stop(ns3::Seconds(10.0));
+	ns3::Simulator::Stop(ns3::Seconds(0.1));
 	ns3::Simulator::Run();
 	ns3::Simulator::Destroy();
 	NS_LOG_INFO ("Done.");
-	eunet_terminals.logTotalRx();
+	//eunet_terminals.logTotalRx();
 
 	//NS_LOG_INFO("received " << eunet_terminals.getEunetTerminal(0)->getTotalRx());
 	return EXIT_SUCCESS;
 }//main
-
