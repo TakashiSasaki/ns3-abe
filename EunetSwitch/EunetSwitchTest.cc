@@ -80,6 +80,7 @@ int main(int argc, char *argv[]) {
 	ns3::Simulator::Run();
 	ns3::Simulator::Destroy();
 	NS_LOG_INFO ("Done.");
+	eunet_switch.getTerminals().logTotalRx();
 	//eunet_terminals.logTotalRx();
 
 	//NS_LOG_INFO("received " << eunet_terminals.getEunetTerminal(0)->getTotalRx());
