@@ -17,6 +17,8 @@ public:
 			ns3::Ptr<CsmaNode> ptr_their_csma_node,
 			const unsigned i_their_csma_device = 0);
 	ns3::Ptr<ns3::CsmaChannel> getCsmaChannel(unsigned i_channel);
+	void setDataRate(ns3::DataRateValue&);
+	void setDelay(ns3::TimeValue&);
 };
 
 #endif /* CSMACHANNELNODE_H_ */

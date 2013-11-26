@@ -54,7 +54,8 @@ int main(int argc, char *argv[]) {
 	eunet_terminals.setRemoteOfAtoB(1, 0);
 	eunet_terminals.setRemoteOfAtoB(2, 0);
 
-	//EunetSwitch eunet_switch;
+	NS_LOG_INFO("creating EunetSwitch");
+	EunetSwitch eunet_switch;
 	//EunetSwitches eunet_switches(3, 2);
 	//LogComponentEnable ("EunetSwitchTest", LOG_LEVEL_INFO);
 	//CommandLine command_line;

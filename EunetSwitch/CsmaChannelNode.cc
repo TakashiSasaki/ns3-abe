@@ -17,12 +17,14 @@ ns3::TypeId CsmaChannelNode::GetTypeId(void) {
 
 CsmaChannelNode::CsmaChannelNode(const int n_devices) :
 	CsmaNode(n_devices) {
+	NS_LOG_INFO("constructing CsmaChannelNode with " << n_devices << " devices");
 	this->csmaChannelFactory.SetTypeId("ns3::CsmaChannel");
 	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
 		ns3::Ptr<ns3::CsmaChannel>
 				ptr_csma_channel =
 						this->csmaChannelFactory.Create()->GetObject<
 								ns3::CsmaChannel> ();
+		NS_LOG_INFO("attaching a channel to device #" << i);
 		this->getCsmaNetDevice(i)->Attach(ptr_csma_channel);
 	}//for
 }

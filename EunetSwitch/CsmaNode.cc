@@ -16,6 +16,7 @@ ns3::TypeId CsmaNode::GetTypeId(void) {
 
 CsmaNode::CsmaNode(const uint32_t n_csma_net_devices) :
 	nCsmaNetDevices(n_csma_net_devices) {
+	NS_LOG_INFO("constructing CsmaNode with " << n_csma_net_devices << " devices");
 	this->deviceFactory.SetTypeId("ns3::CsmaNetDevice");
 	this->queueFactory.SetTypeId("ns3::DropTailQueue");
 	NS_ASSERT(this->GetNDevices()==0);
@@ -28,7 +29,7 @@ CsmaNode::CsmaNode(const uint32_t n_csma_net_devices) :
 				this->queueFactory.Create<ns3::Queue> ();
 		ptr_csma_net_device->SetQueue(ptr_queue);
 	}//for
-	NS_ASSERT(this->GetNDevices()==this->nCsmaNetDevices);
+	NS_ASSERT(this->GetNDevices()==this->nCsmaNetDevices); NS_LOG_INFO("constructed with " << this->GetNDevices() << " devices");
 }
 
 void CsmaNode::DoInitialize() {
@@ -46,7 +47,7 @@ void CsmaNode::logAllDevices(const ns3::LogLevel log_level) {
 }//logAllDevices
 
 ns3::Ptr<ns3::CsmaNetDevice> CsmaNode::getCsmaNetDevice(const unsigned i_device) {
-	NS_ASSERT(this->countCsmaNetDevices()==1);
+	//NS_ASSERT(this->countCsmaNetDevices()==1);
 	unsigned j = 0;
 	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
 		//NS_LOG(log_level, this->GetDevice(i)->GetTypeId() << ", " << this->GetDevice(i)->GetInstanceTypeId());
@@ -57,6 +58,7 @@ ns3::Ptr<ns3::CsmaNetDevice> CsmaNode::getCsmaNetDevice(const unsigned i_device)
 						ns3::CsmaNetDevice::GetTypeId());
 
 			}//if
+			++j;
 		}//if
 	}//for
 	NS_FATAL_ERROR("no CsmaNetDevice");

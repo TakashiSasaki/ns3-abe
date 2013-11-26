@@ -17,12 +17,14 @@ namespace std {
 #include "ns3/csma-channel.h"
 #include "ns3/internet-stack-helper.h"
 #include "ns3/bridge-helper.h"
-#include "EunetTerminal.h"
+#include "EunetTerminals.h"
+#include "CsmaChannelNode.h"
 
-class EunetSwitch: public ns3::Node {
+class EunetSwitch: public CsmaChannelNode {
 	std::vector<int> uplinkPortIndices;
 	std::vector<int> downlinkPortIndices;
-	ns3::NodeContainer ncTerminals;
+	//ns3::NodeContainer ncTerminals;
+	EunetTerminals eunetTerminals;
 	const uint32_t nDownlinkPorts;
 	const int nDownlinkBps;
 	const int nDownlinkDelayMilliseconds;
@@ -187,19 +189,20 @@ public:
 	}//connectSibling
 
 	const ns3::NodeContainer& getTerminals() const {
-		return this->ncTerminals;
+		return this->eunetTerminals;
+		//return this->ncTerminals;
 	}//getTerminals
 
-	ns3::NetDeviceContainer getTerminalDevices() const {
+	ns3::NetDeviceContainer getTerminalDevices() {
 		ns3::NetDeviceContainer ndc;
-		for (unsigned i = 0; i < ncTerminals.GetN(); ++i) {
-			ndc.Add(ncTerminals.Get(i)->GetDevice(0));
+		for (unsigned i = 0; i < this->eunetTerminals.GetN(); ++i) {
+			ndc.Add(this->eunetTerminals.Get(i)->getCsmaNetDevice(0));
 		}//for
 		return ndc;
 	}//getTerminalDevices
 
 	ns3::Ptr<EunetTerminal> getTerminal(const int i_downlink_port) {
-		return this->ncTerminals.Get(i_downlink_port)->GetObject<EunetTerminal> ();
+		return this->eunetTerminals.Get(i_downlink_port);
 	}//getTerminal
 
 private:

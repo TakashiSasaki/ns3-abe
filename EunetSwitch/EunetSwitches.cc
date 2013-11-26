@@ -7,6 +7,7 @@ NS_LOG_COMPONENT_DEFINE("EunetSwitches");
 
 EunetSwitches::EunetSwitches(const int depth, const int width) :
 	nDepth(depth), nWidth(width) {
+	NS_LOG_INFO("creating EunetSwitches");
 	for (int i = 0; i < depth; ++i) {
 		std::vector<ns3::Ptr<EunetSwitch> > switches;
 		for (int j = 0; j < pow(width, i); ++j) {

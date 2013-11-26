@@ -1,6 +1,8 @@
 #ifndef EUNETTERMINALS_H_
 #define EUNETTERMINALS_H_
 #include "ns3/node-container.h"
+#include "ns3/ipv4-address-helper.h"
+#include "EunetTerminal.h"
 
 class EunetTerminals: public ns3::NodeContainer {
 	typedef ns3::NodeContainer Base;
