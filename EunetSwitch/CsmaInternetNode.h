@@ -4,6 +4,7 @@
 #include "CsmaChannelNode.h"
 
 class CsmaInternetNode: public CsmaChannelNode {
+	typedef CsmaChannelNode Base;
 public:
 	static ns3::TypeId GetTypeId(void);
 	CsmaInternetNode(const int n_devices = 1);

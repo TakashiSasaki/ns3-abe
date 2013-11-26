@@ -26,7 +26,8 @@ PacketSinkNode::~PacketSinkNode() {
 }
 
 void PacketSinkNode::DoInitialize() {
-
+	NS_LOG_INFO("just calling up");
+	Base::DoInitialize();
 }
 
 void PacketSinkNode::NotifyConstructionCompleted() {

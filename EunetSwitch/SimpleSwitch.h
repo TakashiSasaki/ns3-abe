@@ -4,6 +4,7 @@
 #include "CsmaChannelNode.h"
 
 class SimpleSwitch: public CsmaChannelNode {
+	typedef CsmaChannelNode Base;
 	//	const int nDownlinkBps;
 	//	const int nDownlinkDelayMilliseconds;
 	//	const int nUplinkBps;
@@ -37,6 +38,9 @@ public:
 	void connectSibling(const unsigned i_uplink_port,
 			ns3::Ptr<SimpleSwitch> sibling_switch,
 			const unsigned i_sibling_uplink_port);
+protected:
+	virtual void DoInitialize();
+	virtual void NotifyConstructionCompleted();
 };
 
 #endif /* SIMPLESWITCH_H_ */

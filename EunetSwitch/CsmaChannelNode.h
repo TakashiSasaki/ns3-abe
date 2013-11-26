@@ -5,6 +5,7 @@
 #include "ns3/csma-channel.h"
 
 class CsmaChannelNode: public CsmaNode {
+	typedef CsmaNode Base;
 	ns3::ObjectFactory csmaChannelFactory;
 public:
 	static ns3::TypeId GetTypeId(void);
@@ -19,6 +20,9 @@ public:
 	ns3::Ptr<ns3::CsmaChannel> getCsmaChannel(unsigned i_channel);
 	void setDataRate(ns3::DataRateValue&, const unsigned i_channel = 0);
 	void setDelay(ns3::TimeValue&, const unsigned i_channel = 0);
+protected:
+	virtual void DoInitialize();
+	virtual void NotifyConstructionCompleted();
 };
 
 #endif /* CSMACHANNELNODE_H_ */

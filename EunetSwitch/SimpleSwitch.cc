@@ -4,7 +4,9 @@ NS_LOG_COMPONENT_DEFINE("SimpleSwitch");
 #define NS3_ASSERT_ENABLE 1
 #include "ns3/assert.h"
 #include "ns3/type-id.h"
+#include "ns3/bridge-helper.h"
 #include "SimpleSwitch.h"
+
 NS_OBJECT_ENSURE_REGISTERED( SimpleSwitch);
 
 const ns3::DataRate SimpleSwitch::defaultUplinkDataRate("1000000000bps");
@@ -13,8 +15,9 @@ const ns3::DataRate SimpleSwitch::defaultDownlinkDataRate("1000000000bps");
 const ns3::TimeValue SimpleSwitch::defaultDownlinkDelay(ns3::MilliSeconds(1));
 
 ns3::TypeId SimpleSwitch::GetTypeId(void) {
-	static ns3::TypeId type_id = ns3::TypeId("SimpleSwitch").SetParent<
-			CsmaChannelNode> ().AddConstructor<SimpleSwitch> ();
+	static ns3::TypeId type_id =
+			ns3::TypeId("SimpleSwitch").SetParent<Base> ().AddConstructor<
+					SimpleSwitch> ();
 	return type_id;
 }//GetTypeId
 
@@ -23,6 +26,7 @@ SimpleSwitch::SimpleSwitch(const unsigned n_downlink_ports,
 		const unsigned n_uplink_ports) :
 	CsmaChannelNode(n_downlink_ports + n_uplink_ports), nUplinkPorts(
 			n_uplink_ports), nDownlinkPorts(n_downlink_ports) {
+	NS_LOG_INFO("constructing SimpleSwitch");
 }
 
 SimpleSwitch::~SimpleSwitch() {
@@ -84,3 +88,24 @@ void SimpleSwitch::connectSibling(const unsigned i_uplink_port, ns3::Ptr<
 	this->bring(nDownlinkPorts + i_uplink_port, sibling_switch,
 			sibling_switch->nDownlinkPorts + i_sibling_uplink_port);
 }//connectSibling
+
+void SimpleSwitch::NotifyConstructionCompleted() {
+	NS_LOG_INFO("bridging all devices");
+	Base::NotifyConstructionCompleted();
+	ns3::NetDeviceContainer ndc;
+	for (unsigned i = 0; i < nUplinkPorts + nDownlinkPorts; ++i) {
+		auto ptr_csma_net_device = this->getCsmaNetDevice(i);
+		ndc.Add(ptr_csma_net_device);
+	}
+	ns3::BridgeHelper bridge_helper;
+	bridge_helper.Install(this, ndc);
+	//this->logAllDevices();
+	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
+		NS_LOG_INFO(this->GetDevice(i)->GetTypeId() << ", " << this->GetDevice(i)->GetInstanceTypeId());
+	}
+}
+
+void SimpleSwitch::DoInitialize() {
+	NS_LOG_INFO("just calling up");
+	Base::DoInitialize();
+}

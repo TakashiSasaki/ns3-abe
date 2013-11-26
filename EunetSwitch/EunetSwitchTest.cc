@@ -56,13 +56,15 @@ void testEunetTerminals() {
 }
 
 int main(int argc, char *argv[]) {
-	EunetSwitch eunet_switch(2);
-	eunet_switch.getTerminals().assignAddresses();
-	eunet_switch.getTerminals().setRemoteOfAtoB(0, 0);
-	eunet_switch.getTerminals().setRemoteOfAtoB(1, 0);
+	ns3::ObjectFactory object_factory;
+	object_factory.SetTypeId("EunetSwitch");
+	ns3::Ptr<EunetSwitch> eunet_switch(object_factory.Create<EunetSwitch> ());
+	eunet_switch->getTerminals().assignAddresses();
+	eunet_switch->getTerminals().setRemoteOfAtoB(0, 0);
+	eunet_switch->getTerminals().setRemoteOfAtoB(1, 0);
 	//EunetTerminals eunet_terminals;
 
-	ns3::Node node;
+	//ns3::Node node;
 	//testEunetSwitch();
 	//testEunetTerminals();
 	//EunetSwitches eunet_switches(3, 2);
@@ -80,7 +82,7 @@ int main(int argc, char *argv[]) {
 	ns3::Simulator::Run();
 	ns3::Simulator::Destroy();
 	NS_LOG_INFO ("Done.");
-	eunet_switch.getTerminals().logTotalRx();
+	eunet_switch->getTerminals().logTotalRx();
 	//eunet_terminals.logTotalRx();
 
 	//NS_LOG_INFO("received " << eunet_terminals.getEunetTerminal(0)->getTotalRx());

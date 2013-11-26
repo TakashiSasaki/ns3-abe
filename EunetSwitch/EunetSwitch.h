@@ -22,6 +22,7 @@ namespace std {
 #include "SimpleSwitch.h"
 
 class EunetSwitch: public SimpleSwitch {
+	typedef SimpleSwitch Base;
 	EunetTerminals eunetTerminals;
 	//std::vector<int> uplinkPortIndices;
 	//std::vector<int> downlinkPortIndices;
@@ -85,7 +86,7 @@ public:
 		return csma_helper;
 	}//getUplinkCsmaHelper
 #endif
-
+#if 0
 	ns3::NetDeviceContainer getUplinkDevices() {
 		ns3::NetDeviceContainer ndc;
 		for (unsigned i = 0; i < this->nUplinkPorts; ++i) {
@@ -101,7 +102,7 @@ public:
 		}//for
 		return ndc;
 	}//getDownlinkDevices
-
+#endif
 #if 0
 	void setUplinkPortIndex(const int i_uplink_port) {
 		this->setUplinkPortIndex(i_uplink_port, this->GetNDevices() - 1);
@@ -160,15 +161,8 @@ public:
 	}//getTerminal
 
 private:
-
-	void bridgeAllPorts() {
-		ns3::NetDeviceContainer all_devices;
-		all_devices.Add(this->getUplinkDevices());
-		all_devices.Add(this->getDownlinkDevices());
-		ns3::BridgeHelper bridge_helper;
-		bridge_helper.Install(this, all_devices);
-	}//bridgeAllPorts
-
+	virtual void DoInitialize();
+	virtual void NotifyConstructionCompleted();
 };//class EunetSwitch
 
 #endif /* EUNETSWITCH_H_ */

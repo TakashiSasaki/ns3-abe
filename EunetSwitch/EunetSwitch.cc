@@ -14,8 +14,9 @@ NS_LOG_COMPONENT_DEFINE("EunetSwitch");
 NS_OBJECT_ENSURE_REGISTERED(EunetSwitch);
 
 ns3::TypeId EunetSwitch::GetTypeId(void) {
-	static ns3::TypeId type_id = ns3::TypeId("EunetSwitch").SetParent<
-			SimpleSwitch> ().AddConstructor<EunetSwitch> ();
+	static ns3::TypeId type_id =
+			ns3::TypeId("EunetSwitch").SetParent<Base> ().AddConstructor<
+					EunetSwitch> ();
 	return type_id;
 }//GetTypeId
 
@@ -44,3 +45,13 @@ EunetSwitch::EunetSwitch(const unsigned n_downlink_ports,
 		this->bring(i, this->eunetTerminals.Get(i), 0);
 	}
 }//a constructor
+
+void EunetSwitch::DoInitialize() {
+	NS_LOG_INFO("just calling up");
+	Base::DoInitialize();
+}
+
+void EunetSwitch::NotifyConstructionCompleted() {
+	NS_LOG_INFO("just calling up");
+	Base::NotifyConstructionCompleted();
+}
