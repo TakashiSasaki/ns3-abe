@@ -19,7 +19,7 @@ void testEunetTerminal() {
 
 	object_factory.SetTypeId("ns3::Node");
 	//ns3::Ptr<ns3::Node> ptr_node (object_factory.Create<ns3::Node>());
-	ns3::Ptr<ns3::Node> ptr_node(object_factory.Create<ns3::Node> ());
+	ns3::Ptr < ns3::Node > ptr_node(object_factory.Create<ns3::Node> ());
 
 	ns3::InternetStackHelper internet_stack_helper;
 	internet_stack_helper.Install(ptr_node);
@@ -27,22 +27,28 @@ void testEunetTerminal() {
 	object_factory.SetTypeId("CsmaNode");
 	ns3::Ptr<CsmaNode> ptr_csma_node(object_factory.Create<CsmaNode> ());
 	internet_stack_helper.Install(ptr_csma_node);
-	NS_ASSERT(ptr_csma_node->GetNDevices()==1);
+	NS_ASSERT(ptr_csma_node->GetNDevices() == 1);
 
 	object_factory.SetTypeId("EunetTerminal");
 	ns3::Ptr<EunetTerminal> ptr_eunet_terminal(object_factory.Create<
 			EunetTerminal> ());
-	NS_ASSERT(ptr_eunet_terminal->GetNDevices()==1);
+	NS_ASSERT(ptr_eunet_terminal->GetNDevices() == 1);
 
 	ns3::Ptr<EunetTerminal> ptr_eunet_terminal_2(object_factory.Create<
 			EunetTerminal> ());
-	NS_ASSERT(ptr_eunet_terminal_2->GetNDevices()==1);
+	NS_ASSERT(ptr_eunet_terminal_2->GetNDevices() == 1);
 
 	ns3::ObjectFactory object_factory_2;
 	object_factory_2.SetTypeId("EunetTerminal");
 	ns3::Ptr<EunetTerminal> ptr_eunet_terminal_3(object_factory_2.Create<
 			EunetTerminal> ());
-	NS_ASSERT(ptr_eunet_terminal_3->GetNDevices()==1);
+	NS_ASSERT(ptr_eunet_terminal_3->GetNDevices() == 1);
+
+	NS_LOG_INFO("Run Simulation.");
+	ns3::Simulator::Stop(ns3::Seconds(0.1));
+	ns3::Simulator::Run();
+	ns3::Simulator::Destroy();
+	NS_LOG_INFO("Done.");
 }
 
 void testEunetTerminals() {
@@ -53,10 +59,14 @@ void testEunetTerminals() {
 	eunet_terminals.setRemoteOfAtoB(0, 0);
 	eunet_terminals.setRemoteOfAtoB(1, 0);
 	eunet_terminals.setRemoteOfAtoB(2, 0);
+	NS_LOG_INFO("Run Simulation.");
+	ns3::Simulator::Stop(ns3::Seconds(0.1));
+	ns3::Simulator::Run();
+	ns3::Simulator::Destroy();
+	NS_LOG_INFO("Done.");
 }
 
-int main(int argc, char *argv[]) {
-#if 0
+void testEunetSwitch() {
 	ns3::ObjectFactory object_factory;
 	object_factory.SetTypeId("EunetSwitch");
 	ns3::Ptr<EunetSwitch> eunet_switch(object_factory.Create<EunetSwitch> ());
@@ -64,39 +74,46 @@ int main(int argc, char *argv[]) {
 	eunet_switch->getTerminals().setRemoteOfAtoB(0, 0);
 	eunet_switch->getTerminals().setRemoteOfAtoB(1, 0);
 	eunet_switch->getTerminals().Get(1)->startAt(ns3::Seconds(0.0));
-#endif
-	//EunetTerminals eunet_terminals;
+	NS_LOG_INFO("Run Simulation.");
+	ns3::Simulator::Stop(ns3::Seconds(0.1));
+	ns3::Simulator::Run();
+	ns3::Simulator::Destroy();
+	NS_LOG_INFO("Done.");
+	eunet_switch->getTerminals().logTotalRx();
+}
 
-	//ns3::Node node;
-	//testEunetSwitch();
-	//testEunetTerminals();
+void testEunetSwitches() {
 	EunetSwitches eunet_switches(3, 2);
 	auto source_terminal = eunet_switches.getEunetSwitch(2, 3)->getTerminal(5);
 	auto dest_terminal = eunet_switches.getEunetSwitch(0, 0)->getTerminal(5);
 	source_terminal->setRemote(dest_terminal);
 	source_terminal->startAt(ns3::Seconds(0.0));
-
-	//LogComponentEnable ("EunetSwitchTest", LOG_LEVEL_INFO);
-	//CommandLine command_line;
-	//command_line.AddValue("nDownlinkPorts", "number of downlink ports on a switch", nDownlinkPorts);
-	//command_line.AddValue("nSwitches", "number of switches", nSwitches);
-	//command_line.Parse(argc, argv);
-
-	//on_off_applications.Start(Seconds(1.0));
-	//on_off_applications.Stop(Seconds(10.0));
-
-	NS_LOG_INFO ("Run Simulation.");
+	NS_LOG_INFO("Run Simulation.");
 	ns3::Simulator::Stop(ns3::Seconds(0.1));
 	ns3::Simulator::Run();
 	ns3::Simulator::Destroy();
-	NS_LOG_INFO ("Done.");
+	NS_LOG_INFO("Done.");
 	source_terminal->logTotalRx();
 	dest_terminal->logTotalRx();
-#if 0
-	eunet_switch->getTerminals().logTotalRx();
-#endif
-	//eunet_terminals.logTotalRx();
+}
 
-	//NS_LOG_INFO("received " << eunet_terminals.getEunetTerminal(0)->getTotalRx());
+int main(int argc, char *argv[]) {
+	//LogComponentEnable ("EunetSwitchTest", LOG_LEVEL_INFO);
+	ns3::CommandLine command_line;
+	std::string test;
+	command_line.AddValue("scenario", "name of test scenario", test);
+	command_line.Parse(argc, argv);
+	if (test == "EunetSwitches") {
+		testEunetSwitches();
+	} else {
+		NS_LOG_UNCOND("");
+		NS_LOG_UNCOND("Usage:");
+		NS_LOG_UNCOND(" EunetSwitchTest --scenario=<ScenarioName>");
+		NS_LOG_UNCOND("");
+		NS_LOG_UNCOND("Scenario name:");
+		NS_LOG_UNCOND(
+				" testEunetSwitches: sample scenario for EunetSwitches class");
+		NS_LOG_UNCOND("");
+	}
 	return EXIT_SUCCESS;
 }//main

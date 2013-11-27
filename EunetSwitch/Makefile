@@ -5,7 +5,7 @@ NS_LOG="EunetSwitch=**:EunetSwitches=**:EunetSwitchTest=**:EunetTerminal=**:Eune
 endef
 
 run: EunetSwitchTest
-	$(EXECENV) $(NS_LOG) ./EunetSwitchTest 
+	$(EXECENV) $(NS_LOG) ./EunetSwitchTest --scenario=EunetSwitches
 
 gmon.out: EunetSwitchTest
 	$(EXECENV) $(NS_LOG)"EunetSwitch=**:EunetSwitches=**:EunetSwitchTest=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=**" ./EunetSwitchTest 
