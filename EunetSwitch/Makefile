@@ -1,11 +1,11 @@
 include ../CommonMakefile
 
 define NS_LOG
-NS_LOG="EunetSwitch=**:EunetSwitches=**:EunetSwitchTest=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=**:OnOffApplication=**:CsmaChannelNode=**:CsmaInternetNode=**:PacketSinkNode=**"
+NS_LOG="EunetSwitch=**:EunetSwitches=**:EunetSwitchTest=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"
 endef
 
 run: EunetSwitchTest
-	$(EXECENV) $(NS_LOG) ./EunetSwitchTest 
+	$(EXECENV) $(NS_LOG) ./EunetSwitchTest --scenario=EunetSwitches
 
 gmon.out: EunetSwitchTest
 	$(EXECENV) $(NS_LOG)"EunetSwitch=**:EunetSwitches=**:EunetSwitchTest=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=**" ./EunetSwitchTest 
@@ -35,9 +35,13 @@ EunetTerminals.o: EunetTerminals.cc EunetTerminals.h
 
 EunetSwitchTest: EunetSwitchTest.cc EunetSwitch.o EunetSwitches.o \
 					EunetTerminal.o EunetTerminals.o CsmaNode.o CsmaChannelNode.o \
-					CsmaInternetNode.o PacketSinkNode.o \
+					CsmaInternetNode.o PacketSinkNode.o OnOffNode.o SimpleSwitch.o \
 					$(NS3LIBS)
 	g++ -g -pg -O0 -std=c++0x -o EunetSwitchTest $(CPPFLAGS) $^
+
+doxygen:
+	doxygen
+	make -C latex
 
 clean:
 	-rm -f gmon.out

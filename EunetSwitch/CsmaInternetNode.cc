@@ -13,8 +13,9 @@ NS_LOG_COMPONENT_DEFINE("CsmaInternetNode");
 NS_OBJECT_ENSURE_REGISTERED(CsmaInternetNode);
 
 ns3::TypeId CsmaInternetNode::GetTypeId(void) {
-	static ns3::TypeId type_id = ns3::TypeId("CsmaInternetNode").SetParent<
-			CsmaChannelNode> ().AddConstructor<CsmaInternetNode> ();
+	static ns3::TypeId type_id =
+			ns3::TypeId("CsmaInternetNode").SetParent<Base> ().AddConstructor<
+					CsmaInternetNode> ();
 	return type_id;
 }//GetTypeId
 
@@ -27,7 +28,7 @@ CsmaInternetNode::~CsmaInternetNode() {
 }
 
 void CsmaInternetNode::NotifyConstructionCompleted() {
-	CsmaChannelNode::NotifyConstructionCompleted();
+	Base::NotifyConstructionCompleted();
 	NS_ASSERT(this->GetNDevices() == 1);
 	ns3::InternetStackHelper internet_stack_helper;
 	internet_stack_helper.SetIpv4StackInstall(true);
@@ -53,7 +54,8 @@ ns3::Ipv4Address CsmaInternetNode::getCsmaNetDeviceAddress() {
 	return ipv4_address;
 }//getCsmaNetDeviceAddress
 
-void CsmaInternetNode::assignAddress(ns3::Ipv4AddressHelper& ipv4_address_helper) {
+void CsmaInternetNode::assignAddress(
+		ns3::Ipv4AddressHelper& ipv4_address_helper) {
 	NS_ASSERT(this->GetNDevices()==2);
 	ipv4_address_helper.Assign(
 			ns3::NetDeviceContainer(this->getCsmaNetDevice()));

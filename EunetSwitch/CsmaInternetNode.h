@@ -1,8 +1,10 @@
 #ifndef CSMAINTERNETNODE_H_
 #define CSMAINTERNETNODE_H_
+#include "ns3/ipv4-address-helper.h"
 #include "CsmaChannelNode.h"
 
 class CsmaInternetNode: public CsmaChannelNode {
+	typedef CsmaChannelNode Base;
 public:
 	static ns3::TypeId GetTypeId(void);
 	CsmaInternetNode(const int n_devices = 1);

@@ -16,6 +16,7 @@ ns3::TypeId CsmaNode::GetTypeId(void) {
 
 CsmaNode::CsmaNode(const uint32_t n_csma_net_devices) :
 	nCsmaNetDevices(n_csma_net_devices) {
+	NS_LOG_INFO("constructing CsmaNode with " << n_csma_net_devices << " devices");
 	this->deviceFactory.SetTypeId("ns3::CsmaNetDevice");
 	this->queueFactory.SetTypeId("ns3::DropTailQueue");
 	NS_ASSERT(this->GetNDevices()==0);
@@ -28,11 +29,17 @@ CsmaNode::CsmaNode(const uint32_t n_csma_net_devices) :
 				this->queueFactory.Create<ns3::Queue> ();
 		ptr_csma_net_device->SetQueue(ptr_queue);
 	}//for
-	NS_ASSERT(this->GetNDevices()==this->nCsmaNetDevices);
+	NS_ASSERT(this->GetNDevices()==this->nCsmaNetDevices);NS_LOG_INFO("constructed with " << this->GetNDevices() << " devices");
 }
 
 void CsmaNode::DoInitialize() {
-	ns3::Node::DoInitialize();
+	NS_LOG_INFO("just calling up");
+	Base::DoInitialize();
+}
+
+void CsmaNode::NotifyConstructionCompleted() {
+	NS_LOG_INFO("just calling up");
+	Base::NotifyConstructionCompleted();
 }
 
 CsmaNode::~CsmaNode() {
@@ -45,18 +52,23 @@ void CsmaNode::logAllDevices(const ns3::LogLevel log_level) {
 	}
 }//logAllDevices
 
-ns3::Ptr<ns3::CsmaNetDevice> CsmaNode::getCsmaNetDevice() {
-	NS_ASSERT(this->countCsmaNetDevices()==1);
+ns3::Ptr<ns3::CsmaNetDevice> CsmaNode::getCsmaNetDevice(const unsigned i_device) {
+	//NS_ASSERT(this->countCsmaNetDevices()==1);
+	unsigned j = 0;
 	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
 		//NS_LOG(log_level, this->GetDevice(i)->GetTypeId() << ", " << this->GetDevice(i)->GetInstanceTypeId());
 		if (this->GetDevice(i)->GetInstanceTypeId()
 				== ns3::CsmaNetDevice::GetTypeId()) {
-			return this->GetDevice(i)->GetObject<ns3::CsmaNetDevice> (
-					ns3::CsmaNetDevice::GetTypeId());
+			if (j == i_device) {
+				return this->GetDevice(i)->GetObject<ns3::CsmaNetDevice> (
+						ns3::CsmaNetDevice::GetTypeId());
+
+			}//if
+			++j;
 		}//if
 	}//for
 	NS_FATAL_ERROR("no CsmaNetDevice");
-}
+}//getCsmaNetDevice
 
 uint32_t CsmaNode::countCsmaNetDevices() {
 	uint32_t n_csma_net_devices = 0;
