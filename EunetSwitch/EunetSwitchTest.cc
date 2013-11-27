@@ -1,3 +1,12 @@
+/*!
+ @mainpage
+
+ EunetSwitchTest.cc shows some simple usage of EunetSwitches class.
+ If you need any assistance, contact the author.
+
+ @author Takashi SASAKI
+ @email takashi316@gmail.com
+ */
 #include <iostream>
 #include <fstream>
 #define NS3_LOG_ENABLE 1
