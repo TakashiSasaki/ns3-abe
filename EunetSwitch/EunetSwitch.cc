@@ -22,7 +22,7 @@ ns3::TypeId EunetSwitch::GetTypeId(void) {
 
 
 const char* const EunetSwitch::pcapPrefix = "EunetSwitch";
-const char* const EunetSwitch::asciiTraceFileName = "EunetSwitch.tr";
+const char* const EunetSwitch::asciiTracePrefix = "EunetSwitch";
 
 EunetSwitch::~EunetSwitch() {
 }
@@ -33,11 +33,13 @@ EunetSwitch::EunetSwitch(const unsigned n_downlink_ports,
 			n_downlink_ports) {
 	NS_LOG_INFO("constructing EunetSwitch");
 	//ns3::Simulator::Schedule(ns3::Seconds(0.0), ns3::MakeCallback(&bridgeAllPorts, this));
+#if 0
 	{
 		ns3::AsciiTraceHelper ascii_trace_helper;
 		this->oswAsciiTrace = ascii_trace_helper.CreateFileStream(
 				this->asciiTraceFileName);
 	}
+#endif
 
 	NS_LOG_INFO("attaching " << this->eunetTerminals.GetN() << " terminal(s) to corresponding port(s)");
 	for (unsigned i = 0; i < this->eunetTerminals.GetN(); ++i) {

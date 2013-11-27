@@ -19,7 +19,7 @@ void testEunetTerminal() {
 
 	object_factory.SetTypeId("ns3::Node");
 	//ns3::Ptr<ns3::Node> ptr_node (object_factory.Create<ns3::Node>());
-	ns3::Ptr < ns3::Node > ptr_node(object_factory.Create<ns3::Node> ());
+	ns3::Ptr<ns3::Node> ptr_node(object_factory.Create<ns3::Node> ());
 
 	ns3::InternetStackHelper internet_stack_helper;
 	internet_stack_helper.Install(ptr_node);
@@ -84,10 +84,18 @@ void testEunetSwitch() {
 
 void testEunetSwitches() {
 	EunetSwitches eunet_switches(3, 2);
-	auto source_terminal = eunet_switches.getEunetSwitch(2, 3)->getTerminal(5);
-	auto dest_terminal = eunet_switches.getEunetSwitch(0, 0)->getTerminal(5);
+	auto source_switch = eunet_switches.getEunetSwitch(2, 3);
+	auto source_terminal = source_switch->getTerminal(5);
+	auto dest_switch = eunet_switches.getEunetSwitch(0, 0);
+	auto dest_terminal = dest_switch->getTerminal(5);
 	source_terminal->setRemote(dest_terminal);
 	source_terminal->startAt(ns3::Seconds(0.0));
+	source_switch->enableAsciiTraceDownlink(5);
+	source_switch->enablePcapDownlink(5);
+	dest_switch->enableAsciiTraceDownlink(5);
+	dest_switch->enablePcapDownlink(5);
+	//ns3::CsmaHelper csma_helper;
+	//csma_helper.EnableAsciiAll("a");
 	NS_LOG_INFO("Run Simulation.");
 	ns3::Simulator::Stop(ns3::Seconds(0.1));
 	ns3::Simulator::Run();

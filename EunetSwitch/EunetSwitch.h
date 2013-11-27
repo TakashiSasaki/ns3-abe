@@ -24,9 +24,9 @@ namespace std {
 class EunetSwitch: public SimpleSwitch {
 	typedef SimpleSwitch Base;
 	EunetTerminals eunetTerminals;
-	ns3::Ptr<ns3::OutputStreamWrapper> oswAsciiTrace;
+	//ns3::Ptr<ns3::OutputStreamWrapper> oswAsciiTrace;
 	static const char* const pcapPrefix;
-	static const char* const asciiTraceFileName;
+	static const char* const asciiTracePrefix;
 
 public:
 	static ns3::TypeId GetTypeId(void);
@@ -34,20 +34,22 @@ public:
 			const unsigned n_uplink_ports = 4);
 	virtual ~EunetSwitch();
 
+#if 0
 	void setAsciiTraceFilename(const std::string& file_name) {
 		ns3::AsciiTraceHelper ascii_trace_helper;
 		this->oswAsciiTrace = ascii_trace_helper.CreateFileStream(file_name);
 	}//createFileStream
+#endif
 
 	void enableAsciiTraceDownlink(const int i_downlink_port) {
 		ns3::CsmaHelper csma_helper;
-		csma_helper.EnableAscii(this->oswAsciiTrace, this->getDownlinkPort(
+		csma_helper.EnableAscii(asciiTracePrefix, this->getDownlinkPort(
 				i_downlink_port));
 	}
 
 	void enableAsciiTraceUplink(const int i_uplink_port) {
 		ns3::CsmaHelper csma_helper;
-		csma_helper.EnableAscii(this->oswAsciiTrace, this->getUplinkPort(
+		csma_helper.EnableAscii(asciiTracePrefix, this->getUplinkPort(
 				i_uplink_port));
 	}
 
