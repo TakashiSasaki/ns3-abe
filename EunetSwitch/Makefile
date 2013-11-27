@@ -39,6 +39,10 @@ EunetSwitchTest: EunetSwitchTest.cc EunetSwitch.o EunetSwitches.o \
 					$(NS3LIBS)
 	g++ -g -pg -O0 -std=c++0x -o EunetSwitchTest $(CPPFLAGS) $^
 
+doxygen:
+	doxygen
+	make -C latex
+
 clean:
 	-rm -f gmon.out
 	-rm -f EunetSwitchTest
