@@ -62,6 +62,8 @@ void testEunetTerminal() {
 }
 
 void testEunetTerminals() {
+	ns3::GlobalValue::Bind("SimulatorImplementationType", ns3::StringValue(
+			"ns3::VisualSimulatorImpl"));
 	EunetTerminals eunet_terminals(3);
 	eunet_terminals.bringAtoB(1, 0);
 	eunet_terminals.bringAtoB(2, 0);
@@ -69,8 +71,11 @@ void testEunetTerminals() {
 	eunet_terminals.setRemoteOfAtoB(0, 0);
 	eunet_terminals.setRemoteOfAtoB(1, 0);
 	eunet_terminals.setRemoteOfAtoB(2, 0);
+	eunet_terminals.Get(0)->startAt(ns3::Seconds(0.0));
+	eunet_terminals.Get(1)->startAt(ns3::Seconds(0.0));
+	ns3::AnimationInterface animation_interface("EunetTerminals.xml");
 	NS_LOG_INFO("Run Simulation.");
-	ns3::Simulator::Stop(ns3::Seconds(0.1));
+	ns3::Simulator::Stop(ns3::Seconds(10.0));
 	ns3::Simulator::Run();
 	ns3::Simulator::Destroy();
 	NS_LOG_INFO("Done.");
@@ -124,6 +129,8 @@ int main(int argc, char *argv[]) {
 	command_line.Parse(argc, argv);
 	if (test == "EunetSwitches") {
 		testEunetSwitches();
+	} else if (test == "EunetTerminals") {
+		testEunetTerminals();
 	} else {
 		NS_LOG_UNCOND("");
 		NS_LOG_UNCOND("Usage:");
