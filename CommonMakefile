@@ -14,7 +14,10 @@ libns3.17-internet-debug.$(SOSUFFIX) libns3.17-mpi-debug.$(SOSUFFIX) libns3.17-a
 libns3.17-stats-debug.$(SOSUFFIX) \
 libns3.17-config-store-debug.$(SOSUFFIX) libns3.17-tools-debug.$(SOSUFFIX) libns3.17-olsr-debug.$(SOSUFFIX) \
 libns3.17-point-to-point-debug.$(SOSUFFIX) \
-libns3.17-wifi-debug.$(SOSUFFIX) libns3.17-propagation-debug.$(SOSUFFIX) libns3.17-mobility-debug.$(SOSUFFIX)
+libns3.17-wifi-debug.$(SOSUFFIX) libns3.17-propagation-debug.$(SOSUFFIX) libns3.17-mobility-debug.$(SOSUFFIX) \
+libns3.17-netanim-debug.$(SOSUFFIX) libns3.17-lte-debug.$(SOSUFFIX) libns3.17-spectrum-debug.$(SOSUFFIX) \
+libns3.17-virtual-net-device-debug.$(SOSUFFIX) libns3.17-buildings-debug.$(SOSUFFIX) \
+libns3.17-antenna-debug.$(SOSUFFIX)
 
 VPATH=../build:../../build
 

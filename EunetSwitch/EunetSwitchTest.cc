@@ -18,6 +18,7 @@
 #include "ns3/csma-module.h"
 #include "ns3/internet-module.h"
 #include "ns3/internet-stack-helper.h"
+#include "ns3/netanim-module.h"
 #include "EunetSwitches.h"
 #include "EunetTerminals.h"
 //using namespace ns3;
@@ -105,6 +106,7 @@ void testEunetSwitches() {
 	dest_switch->enablePcapDownlink(5);
 	//ns3::CsmaHelper csma_helper;
 	//csma_helper.EnableAsciiAll("a");
+	ns3::AnimationInterface animation_interface("EunetSwitch.xml");
 	NS_LOG_INFO("Run Simulation.");
 	ns3::Simulator::Stop(ns3::Seconds(0.1));
 	ns3::Simulator::Run();

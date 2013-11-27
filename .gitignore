@@ -14,6 +14,7 @@ factorial/*.s
 *.ccc
 hello
 EunetSwitchTest/EunetSwitchTest
+EunetSwitch/*.xml
 *.tr
 EunetSwitch/html
 EunetSwitch/latex
