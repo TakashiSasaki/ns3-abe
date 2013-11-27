@@ -15,7 +15,6 @@ factorial/*.s
 hello
 EunetSwitchTest/EunetSwitchTest
 *.tr
-EunetSwitch/html
 EunetSwitch/latex
 *.pcap
 .cproject
