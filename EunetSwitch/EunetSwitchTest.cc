@@ -62,8 +62,8 @@ void testEunetTerminal() {
 }
 
 void testEunetTerminals() {
-	ns3::GlobalValue::Bind("SimulatorImplementationType", ns3::StringValue(
-			"ns3::VisualSimulatorImpl"));
+	//ns3::GlobalValue::Bind("SimulatorImplementationType", ns3::StringValue(
+	//"ns3::VisualSimulatorImpl"));
 	EunetTerminals eunet_terminals(3);
 	eunet_terminals.bringAtoB(1, 0);
 	eunet_terminals.bringAtoB(2, 0);

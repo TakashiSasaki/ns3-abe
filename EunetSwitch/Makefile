@@ -7,6 +7,9 @@ endef
 run: EunetSwitchTest
 	$(EXECENV) $(NS_LOG) ./EunetSwitchTest --scenario=EunetSwitches
 
+visualize:
+	$(EXECENV) $(NS_LOG) ./EunetSwitchTest --scenario=EunetSwitches --SimulatorImplementationType=ns3::VisualSimulatorImpl
+
 gmon.out: EunetSwitchTest
 	$(EXECENV) $(NS_LOG)"EunetSwitch=**:EunetSwitches=**:EunetSwitchTest=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=**" ./EunetSwitchTest 
 
