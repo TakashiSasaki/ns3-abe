@@ -17,7 +17,9 @@ libns3.17-point-to-point-debug.$(SOSUFFIX) \
 libns3.17-wifi-debug.$(SOSUFFIX) libns3.17-propagation-debug.$(SOSUFFIX) libns3.17-mobility-debug.$(SOSUFFIX) \
 libns3.17-netanim-debug.$(SOSUFFIX) libns3.17-lte-debug.$(SOSUFFIX) libns3.17-spectrum-debug.$(SOSUFFIX) \
 libns3.17-virtual-net-device-debug.$(SOSUFFIX) libns3.17-buildings-debug.$(SOSUFFIX) \
-libns3.17-antenna-debug.$(SOSUFFIX) libns3.17-visualizer-debug.$(SOSUFFIX) libns3.17-dsr-debug.$(SOSUFFIX)
+libns3.17-antenna-debug.$(SOSUFFIX) libns3.17-visualizer-debug.$(SOSUFFIX) libns3.17-dsr-debug.$(SOSUFFIX) \
+libns3.17-uan-debug.so libns3.17-energy-debug.so libns3.17-dsr-debug.so libns3.17-mesh-debug.so \
+libns3.17-wimax-debug.so
 
 VPATH=../build:../../build
 
