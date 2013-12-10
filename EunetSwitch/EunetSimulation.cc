@@ -46,5 +46,7 @@ int EunetSimulation::run() {
 
 int main(int argc, char** argv) {
 	EunetSimulation eunet_simulation;
-	return eunet_simulation.run();
+	auto r = eunet_simulation.run();
+	NS_LOG_UNCOND("EunetSimulation finished.");
+	return r;
 }

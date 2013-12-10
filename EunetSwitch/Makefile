@@ -1,8 +1,11 @@
 include ../CommonMakefile
 
 define NS_LOG
-NS_LOG="NamedSwitches=**:EunetSwitch=**:EunetSwitches=**:EunetSwitchTest=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"
+NS_LOG="NamedSwitches=**:EunetSwitch=**:EunetSwitches=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"
 endef
+
+run2: EunetSimulation
+	$(EXECENV) $(NS_LOG):EunetSimulation=** ./EunetSimulation 
 
 EunetSimulation: EunetSimulation.cc NamedSwitches.o EunetSwitch.o EunetSwitches.o \
 					EunetTerminal.o EunetTerminals.o CsmaNode.o CsmaChannelNode.o \
@@ -11,7 +14,7 @@ EunetSimulation: EunetSimulation.cc NamedSwitches.o EunetSwitch.o EunetSwitches.
 	g++ -g -pg -O0 -std=c++0x -o EunetSimulation $(CPPFLAGS) $^
 
 run: EunetSwitchTest
-	$(EXECENV) $(NS_LOG) ./EunetSwitchTest --scenario=EunetSwitches
+	$(EXECENV) $(NS_LOG):EunetSwitchTest=** ./EunetSwitchTest --scenario=EunetSwitches
 
 visualize:
 	$(EXECENV) $(NS_LOG) ./EunetSwitchTest --scenario=EunetSwitches --SimulatorImplementationType=ns3::VisualSimulatorImpl
