@@ -15,21 +15,7 @@
 NS_LOG_COMPONENT_DEFINE ("EunetSimulation");
 
 EunetSimulation::EunetSimulation() {
-	EunetSwitches eunet_switches(3, 2);
-	auto source_switch = eunet_switches.getEunetSwitch(2, 3);
-	this->sourceTerminal = source_switch->getTerminal(5);
-	auto dest_switch = eunet_switches.getEunetSwitch(0, 0);
-	this->destTerminal = dest_switch->getTerminal(5);
-	this->sourceTerminal->setRemote(this->destTerminal);
-	this->sourceTerminal->startAt(ns3::Seconds(0.0));
-	source_switch->enableAsciiTraceDownlink(5);
-	source_switch->enablePcapDownlink(5);
-	dest_switch->enableAsciiTraceDownlink(5);
-	dest_switch->enablePcapDownlink(5);
-	//ns3::CsmaHelper csma_helper;
-	//csma_helper.EnableAsciiAll("a");
-	ns3::AnimationInterface animation_interface("EunetSwitch.xml");
-
+	ns3::AnimationInterface animation_interface("EunetSimulation.xml");
 	NamedSwitches named_switches("133.71.0.0", "255.255.0.0");
 	named_switches.addEunetSwitch("dpc_04_1_sw01");
 	named_switches.findEunetSwitch("dpc_04_1_sw01")->setUplinkDataRate(
@@ -48,8 +34,8 @@ int EunetSimulation::run() {
 	ns3::Simulator::Run();
 	ns3::Simulator::Destroy();
 	NS_LOG_INFO("Done.");
-	this->sourceTerminal->logTotalRx();
-	this->destTerminal->logTotalRx();
+	//this->sourceTerminal->logTotalRx();
+	//this->destTerminal->logTotalRx();
 	return EXIT_SUCCESS;
 }
 
