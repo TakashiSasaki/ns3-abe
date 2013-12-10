@@ -24,8 +24,11 @@ ns3::TypeId SimpleSwitch::GetTypeId(void) {
 
 SimpleSwitch::SimpleSwitch(const unsigned n_downlink_ports,
 		const unsigned n_uplink_ports) :
-	CsmaChannelNode(n_downlink_ports + n_uplink_ports), nUplinkPorts(
-			n_uplink_ports), nDownlinkPorts(n_downlink_ports) {
+	CsmaChannelNode(n_downlink_ports + n_uplink_ports, defaultDownlinkDataRate,
+			defaultDownlinkDelay), nUplinkPorts(n_uplink_ports),
+			nDownlinkPorts(n_downlink_ports) {
+	this->setUplinkDataRate(defaultUplinkDataRate);
+	this->setUplinkDelay(defaultUplinkDelay);
 	NS_LOG_INFO("constructing SimpleSwitch");
 }
 

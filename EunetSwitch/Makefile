@@ -7,6 +7,9 @@ endef
 run2: EunetSimulation
 	$(EXECENV) $(NS_LOG):EunetSimulation=** ./EunetSimulation 
 
+gdb2: EunetSimulation
+	$(EXECENV) gdb ./EunetSimulation 
+
 EunetSimulation: EunetSimulation.cc NamedSwitches.o EunetSwitch.o EunetSwitches.o \
 					EunetTerminal.o EunetTerminals.o CsmaNode.o CsmaChannelNode.o \
 					CsmaInternetNode.o PacketSinkNode.o OnOffNode.o SimpleSwitch.o \
