@@ -32,15 +32,21 @@ public:
 	void connectUpTo(const unsigned i_uplink_port,
 			ns3::Ptr<SimpleSwitch> upstream_switch,
 			const unsigned i_downlink_port);
+	void connectUpTo(std::string upstream_switch_name);
 	void connectDownTo(const unsigned i_downlink_port,
 			ns3::Ptr<SimpleSwitch> downstream_switch,
 			const unsigned i_uplink_port);
+	void connectDownTo(const std::string downstream_switch_name);
 	void connectSibling(const unsigned i_uplink_port,
 			ns3::Ptr<SimpleSwitch> sibling_switch,
 			const unsigned i_sibling_uplink_port);
+	unsigned getUnusedUplinkPort();
+	unsigned getUnusedDownlinkPort();
 protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();
+private:
+	bool isConnectedToSimpleSwitch(const unsigned i_port);
 };
 
 #endif /* SIMPLESWITCH_H_ */

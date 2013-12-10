@@ -61,12 +61,12 @@ void CsmaChannelNode::bring(const unsigned i_our_csma_device,
 
 void CsmaChannelNode::setDataRate(ns3::DataRateValue& data_rate,
 		const unsigned i_channel) {
-	auto ptr_csma_net_device = this->getCsmaNetDevice(i_channel);
-	ptr_csma_net_device->SetAttribute("DataRate", data_rate);
+	auto ptr_csma_channel = this->getCsmaChannel(i_channel);
+	ptr_csma_channel->SetAttribute("DataRate", data_rate);
 }
 
 void CsmaChannelNode::setDelay(ns3::TimeValue& delay, const unsigned i_channel) {
-	auto p = this->getCsmaNetDevice(i_channel);
+	auto p = this->getCsmaChannel(i_channel);
 	p->SetAttribute("Delay", delay);
 }
 
