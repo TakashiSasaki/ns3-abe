@@ -8,7 +8,10 @@ run2: EunetSimulation
 	$(EXECENV) $(NS_LOG):EunetSimulation=** ./EunetSimulation 
 
 gdb2: EunetSimulation
-	$(EXECENV) gdb ./EunetSimulation 
+	$(EXECENV) gdb ./EunetSimulation
+	
+visualize2: EunetSimulation 
+	$(EXECENV) $(NS_LOG) ./EunetSimulation --SimulatorImplementationType=ns3::VisualSimulatorImpl
 
 EunetSimulation: EunetSimulation.cc NamedSwitches.o EunetSwitch.o EunetSwitches.o \
 					EunetTerminal.o EunetTerminals.o CsmaNode.o CsmaChannelNode.o \

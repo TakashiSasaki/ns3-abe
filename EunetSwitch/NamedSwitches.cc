@@ -13,8 +13,9 @@ NamedSwitches::NamedSwitches(const std::string base_ip_address,
 	baseIpAddress(base_ip_address), subnetMask(subnet_mask) {
 }// a constructor
 
-void NamedSwitches::addEunetSwitch(std::string name) {
-	auto ptr_eunet_switch(ns3::CreateObject<EunetSwitch>());
+void NamedSwitches::addEunetSwitch(std::string name,
+		const unsigned n_downlink_ports) {
+	auto ptr_eunet_switch(ns3::CreateObject<EunetSwitch>(n_downlink_ports));
 	ns3::Names::Add(name, ptr_eunet_switch);
 }
 

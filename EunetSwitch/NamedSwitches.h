@@ -9,7 +9,7 @@ class NamedSwitches: protected ns3::NodeContainer {
 public:
 	NamedSwitches(const std::string base_ip_address,
 			const std::string subnet_mask);
-	void addEunetSwitch(std::string name);
+	void addEunetSwitch(std::string name, const unsigned n_downlink_ports);
 	ns3::Ptr<EunetSwitch> findEunetSwitch(std::string name);
 	ns3::Ptr<EunetSwitch> getEunetSwitch(unsigned i_switch) {
 		//TODO: should be moved to common base class.

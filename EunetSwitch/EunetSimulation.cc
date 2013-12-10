@@ -17,10 +17,10 @@ NS_LOG_COMPONENT_DEFINE ("EunetSimulation");
 EunetSimulation::EunetSimulation() {
 	ns3::AnimationInterface animation_interface("EunetSimulation.xml");
 	NamedSwitches named_switches("133.71.0.0", "255.255.0.0");
-	named_switches.addEunetSwitch("dpc_04_1_sw01");
+	named_switches.addEunetSwitch("dpc_04_1_sw01", 48);
 	named_switches.findEunetSwitch("dpc_04_1_sw01")->setUplinkDataRate(
 			ns3::DataRate("10Gbps"));
-	named_switches.addEunetSwitch("dpc_02_01_sw02");
+	named_switches.addEunetSwitch("dpc_02_01_sw02", 32);
 	named_switches.findEunetSwitch("dpc_04_1_sw01")->connectUpTo(
 			"dpc_02_01_sw02");
 }
@@ -40,6 +40,8 @@ int EunetSimulation::run() {
 }
 
 int main(int argc, char** argv) {
+	ns3::CommandLine command_line;
+	command_line.Parse(argc, argv);
 	EunetSimulation eunet_simulation;
 	auto r = eunet_simulation.run();
 	NS_LOG_UNCOND("EunetSimulation finished.");
