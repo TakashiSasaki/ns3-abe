@@ -1,8 +1,14 @@
 include ../CommonMakefile
 
 define NS_LOG
-NS_LOG="EunetSwitch=**:EunetSwitches=**:EunetSwitchTest=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"
+NS_LOG="NamedSwitches=**:EunetSwitch=**:EunetSwitches=**:EunetSwitchTest=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"
 endef
+
+EunetSimulation: EunetSimulation.cc NamedSwitches.o EunetSwitch.o EunetSwitches.o \
+					EunetTerminal.o EunetTerminals.o CsmaNode.o CsmaChannelNode.o \
+					CsmaInternetNode.o PacketSinkNode.o OnOffNode.o SimpleSwitch.o \
+					$(NS3LIBS)
+	g++ -g -pg -O0 -std=c++0x -o EunetSimulation $(CPPFLAGS) $^
 
 run: EunetSwitchTest
 	$(EXECENV) $(NS_LOG) ./EunetSwitchTest --scenario=EunetSwitches
