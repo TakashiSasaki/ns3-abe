@@ -35,7 +35,8 @@ EunetSimulation::EunetSimulation() {
 	named_switches.findEunetSwitch("dpc_04_1_sw01")->setUplinkDataRate(
 			ns3::DataRate("10Gbps"));
 	named_switches.addEunetSwitch("dpc_02_01_sw02");
-	//named_switches.findEunetSwitch("dpc_04_1_sw01")->connectUpTo("dpc_02_01_sw02");
+	named_switches.findEunetSwitch("dpc_04_1_sw01")->connectUpTo(
+			"dpc_02_01_sw02");
 }
 
 EunetSimulation::~EunetSimulation() {
