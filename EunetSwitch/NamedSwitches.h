@@ -3,7 +3,7 @@
 #include "ns3/node-container.h"
 #include "EunetSwitches.h"
 
-class NamedSwitches: public ns3::NodeContainer {
+class NamedSwitches: protected ns3::NodeContainer {
 	const std::string baseIpAddress;
 	const std::string subnetMask;
 public:

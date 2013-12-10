@@ -11,6 +11,7 @@
 #include "EunetSimulation.h"
 #include "EunetSwitches.h"
 #include "EunetTerminal.h"
+#include "NamedSwitches.h"
 NS_LOG_COMPONENT_DEFINE ("EunetSimulation");
 
 EunetSimulation::EunetSimulation() {
@@ -28,6 +29,13 @@ EunetSimulation::EunetSimulation() {
 	//ns3::CsmaHelper csma_helper;
 	//csma_helper.EnableAsciiAll("a");
 	ns3::AnimationInterface animation_interface("EunetSwitch.xml");
+
+	NamedSwitches named_switches("133.71.0.0", "255.255.0.0");
+	named_switches.addEunetSwitch("dpc_04_1_sw01");
+	named_switches.findEunetSwitch("dpc_04_1_sw01")->setUplinkDataRate(
+			ns3::DataRate("10Gbps"));
+	named_switches.addEunetSwitch("dpc_02_01_sw02");
+	//named_switches.findEunetSwitch("dpc_04_1_sw01")->connectUpTo("dpc_02_01_sw02");
 }
 
 EunetSimulation::~EunetSimulation() {

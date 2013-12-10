@@ -78,18 +78,24 @@ void SimpleSwitch::connectUpTo(const unsigned i_uplink_port, ns3::Ptr<
 		SimpleSwitch> upstream_switch, const unsigned i_downlink_port) {
 	this->bring(nDownlinkPorts + i_uplink_port, upstream_switch,
 			i_downlink_port);
+	NS_ASSERT(this->isConnectedToSimpleSwitch(this->nDownlinkPorts+i_uplink_port));
+	NS_ASSERT(upstream_switch->isConnectedToSimpleSwitch(i_downlink_port));
 }//connectUpTo
 
 void SimpleSwitch::connectDownTo(const unsigned i_downlink_port, ns3::Ptr<
 		SimpleSwitch> downstream_switch, const unsigned i_uplink_port) {
 	this->bring(i_downlink_port, downstream_switch,
 			downstream_switch->nDownlinkPorts + i_uplink_port);
+	NS_ASSERT(this->isConnectedToSimpleSwitch(i_downlink_port));
+	NS_ASSERT(downstream_switch->isConnectedToSimpleSwitch(downstream_switch->nDownlinkPorts+i_uplink_port));
 }//connectDownTo
 
 void SimpleSwitch::connectSibling(const unsigned i_uplink_port, ns3::Ptr<
 		SimpleSwitch> sibling_switch, const unsigned i_sibling_uplink_port) {
 	this->bring(nDownlinkPorts + i_uplink_port, sibling_switch,
 			sibling_switch->nDownlinkPorts + i_sibling_uplink_port);
+	NS_ASSERT(this->isConnectedToSimpleSwitch(this->nDownlinkPorts+i_uplink_port));
+	NS_ASSERT(sibling_switch->isConnectedToSimpleSwitch(sibling_switch->nDownlinkPorts+i_sibling_uplink_port));
 }//connectSibling
 
 void SimpleSwitch::NotifyConstructionCompleted() {
@@ -111,4 +117,42 @@ void SimpleSwitch::NotifyConstructionCompleted() {
 void SimpleSwitch::DoInitialize() {
 	NS_LOG_INFO("just calling up");
 	Base::DoInitialize();
+}
+
+bool SimpleSwitch::isConnectedToSimpleSwitch(const unsigned i_port) {
+	ns3::Ptr<ns3::CsmaChannel> ptr_csma_channel = this->getCsmaChannel(i_port);
+	for (unsigned i = 0; i < ptr_csma_channel->GetNDevices(); ++i) {
+		NS_LOG_INFO("inspecting port " << i);
+		ns3::Ptr<ns3::NetDevice> ptr_net_device =
+				ptr_csma_channel->GetDevice(i);
+		NS_LOG_INFO("NetDevice " << ptr_csma_channel->GetTypeId());
+		ns3::Ptr<ns3::Node> ptr_node = ptr_net_device->GetNode();
+		NS_LOG_INFO("Node " << ptr_node->GetTypeId());
+		ns3::Ptr<SimpleSwitch> ptr_simple_switch = ptr_node->GetObject<
+				SimpleSwitch> ();
+		NS_LOG_INFO("SimpleSwitch " << ptr_node->GetTypeId());
+		if (ptr_simple_switch) {
+			return true;
+		}
+	}//for
+	return false;
+}//isConnectedToSimpleSwitch
+
+
+unsigned SimpleSwitch::getUnusedDownlinkPort() {
+	for (unsigned i = 0; i < this->nDownlinkPorts; ++i) {
+		if (!this->isConnectedToSimpleSwitch(i)) {
+			return i;
+		}//if
+	}//for
+	NS_FATAL_ERROR("no unused downlink port");
+}
+
+unsigned SimpleSwitch::getUnusedUplinkPort() {
+	for (unsigned i = 0; i < this->nUplinkPorts; ++i) {
+		if (!this->isConnectedToSimpleSwitch(this->nDownlinkPorts + i)) {
+			return i;
+		}//if
+	}//for
+	NS_FATAL_ERROR("no unused uplink port");
 }
