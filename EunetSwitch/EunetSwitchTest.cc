@@ -21,6 +21,7 @@
 #include "ns3/netanim-module.h"
 #include "EunetSwitches.h"
 #include "EunetTerminals.h"
+#include "SimpleAp.h"
 //using namespace ns3;
 NS_LOG_COMPONENT_DEFINE ("EunetSwitchTest");
 
@@ -121,6 +122,19 @@ void testEunetSwitches() {
 	dest_terminal->logTotalRx();
 }
 
+void testSimpleAp() {
+	NS_LOG_UNCOND("creating instances of SimpleAp");
+	ns3::ObjectFactory object_factory;
+	object_factory.SetTypeId("SimpleAp");
+	auto simple_ap = object_factory.Create<SimpleAp> ();
+	NS_LOG_UNCOND("done.");
+	NS_LOG_INFO("Run Simulation.");
+	ns3::Simulator::Stop(ns3::Seconds(0.1));
+	ns3::Simulator::Run();
+	ns3::Simulator::Destroy();
+	NS_LOG_INFO("Done.");
+}
+
 int main(int argc, char *argv[]) {
 	//LogComponentEnable ("EunetSwitchTest", LOG_LEVEL_INFO);
 	ns3::CommandLine command_line;
@@ -131,6 +145,8 @@ int main(int argc, char *argv[]) {
 		testEunetSwitches();
 	} else if (test == "EunetTerminals") {
 		testEunetTerminals();
+	} else if (test == "SimpleAp") {
+		testSimpleAp();
 	} else {
 		NS_LOG_UNCOND("");
 		NS_LOG_UNCOND("Usage:");
