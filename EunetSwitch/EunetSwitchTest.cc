@@ -127,6 +127,7 @@ void testSimpleAp() {
 	ns3::ObjectFactory object_factory;
 	object_factory.SetTypeId("SimpleAp");
 	auto simple_ap = object_factory.Create<SimpleAp> ();
+	simple_ap->setSsid(ns3::Ssid("eunet"));
 	NS_LOG_UNCOND("done.");
 	NS_LOG_INFO("Run Simulation.");
 	ns3::Simulator::Stop(ns3::Seconds(0.1));

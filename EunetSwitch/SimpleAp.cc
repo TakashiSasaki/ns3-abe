@@ -9,6 +9,8 @@ NS_LOG_COMPONENT_DEFINE("SimpleAp");
 #include "ns3/ssid.h"
 #include "ns3/boolean.h"
 #include "ns3/mobility-helper.h"
+#include "ns3/ap-wifi-mac.h"
+#include "ns3/wifi-net-device.h"
 #include "SimpleAp.h"
 NS_OBJECT_ENSURE_REGISTERED(SimpleAp);
 
@@ -42,6 +44,10 @@ void SimpleAp::setPosition(const ns3::Vector& position) {
 	this->position = position;
 }//setPosition
 
+void SimpleAp::setSsid(const ns3::Ssid& ssid) {
+	this->ssid = ssid;
+}
+
 void SimpleAp::DoInitialize() {
 	auto ptr_node = ns3::Ptr<SimpleAp>(this, true);
 	NS_LOG_INFO("setting position to " << this->position);
@@ -52,6 +58,19 @@ void SimpleAp::DoInitialize() {
 	mobility_helper.SetPositionAllocator(ptr_position_allocator);
 	mobility_helper.SetMobilityModel("ns3::ConstantPositionMobilityModel");
 	mobility_helper.Install(ptr_node);
+
+	NS_LOG_INFO("setting ssid to " << this->ssid);
+	ns3::Ptr<ns3::WifiNetDevice> ptr_wifi_net_device = ptr_node->getNetDevice<
+			ns3::WifiNetDevice> ();
+	NS_ASSERT(ptr_wifi_net_device !=0);
+	auto ptr_wifi_mac = ptr_wifi_net_device->GetMac();
+	NS_ASSERT(ptr_wifi_mac != 0);
+	NS_LOG_UNCOND(ptr_wifi_mac);
+	if (this->ssid.IsEqual(ns3::Ssid())) {
+		NS_FATAL_ERROR("ssid is not specified. call setSsid in advance.");
+	}
+	ptr_wifi_mac->SetSsid(this->ssid);
+
 	NS_LOG_INFO("calling up SimpleSwitch::DoInitialize");
 	Base::DoInitialize();
 }
