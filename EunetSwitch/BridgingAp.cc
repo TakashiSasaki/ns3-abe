@@ -30,3 +30,13 @@ BridgingAp::BridgingAp() {
 BridgingAp::~BridgingAp() {
 	// TODO !CodeTemplates.destructorstub.tododesc!
 }
+
+void SimpleAp::DoInitialize() {
+	NS_LOG_INFO("calling up SimpleAp::DoInitialize");
+	Base::DoInitialize();
+}
+
+void BridgingAp::NotifyConstructionCompleted() {
+	NS_LOG_INFO("just calling up SimpleAp::NotifyConstructionCompleted");
+	Base::NotifyConstructionCompleted();
+}
