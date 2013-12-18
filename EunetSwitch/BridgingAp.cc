@@ -16,7 +16,7 @@ NS_LOG_COMPONENT_DEFINE("BridgingAp");
 #include "BridgingAp.h"
 NS_OBJECT_ENSURE_REGISTERED(BridgingAp);
 
-ns3::TypeId SimpleAp::GetTypeId(void) {
+ns3::TypeId BridgingAp::GetTypeId(void) {
 	static ns3::TypeId type_id =
 			ns3::TypeId("BridgingAp").SetParent<SimpleAp> ().AddConstructor<
 					BridgingAp> ();
@@ -32,12 +32,13 @@ BridgingAp::~BridgingAp() {
 	// TODO !CodeTemplates.destructorstub.tododesc!
 }
 
-void SimpleAp::DoInitialize() {
+void BridgingAp::DoInitialize() {
 	NS_LOG_INFO("calling up SimpleAp::DoInitialize");
 	Base::DoInitialize();
 }
 
 void BridgingAp::NotifyConstructionCompleted() {
+	NS_LOG_INFO("bridging over CsmaNetDevice and WifiNetDevice");
 	ns3::Ptr<ns3::BridgeNetDevice> ptr_bridge_net_device = this->getNetDevice<
 			ns3::BridgeNetDevice> ();
 	NS_ASSERT(ptr_bridge_net_device != 0);

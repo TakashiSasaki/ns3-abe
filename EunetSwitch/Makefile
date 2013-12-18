@@ -1,7 +1,7 @@
 include ../CommonMakefile
 
 define NS_LOG
-NS_LOG="SimpleAp=**:NamedSwitches=**:EunetSwitch=**:EunetSwitches=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"
+NS_LOG="BridgingAp=**:SimpleAp=**:NamedSwitches=**:EunetSwitch=**:EunetSwitches=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"
 endef
 
 run2: EunetSimulation
@@ -16,7 +16,7 @@ visualize2: EunetSimulation
 EunetSimulation: EunetSimulation.cc NamedSwitches.o EunetSwitch.o EunetSwitches.o \
 					EunetTerminal.o EunetTerminals.o CsmaNode.o CsmaChannelNode.o \
 					CsmaInternetNode.o PacketSinkNode.o OnOffNode.o SimpleSwitch.o \
-					SimpleAp.o \
+					SimpleAp.o BridgingAp \
 					$(NS3LIBS)
 	g++ -g -pg -O0 -std=c++0x -o EunetSimulation $(CPPFLAGS) $^
 
@@ -55,7 +55,7 @@ EunetTerminals.o: EunetTerminals.cc EunetTerminals.h
 EunetSwitchTest: EunetSwitchTest.cc EunetSwitch.o EunetSwitches.o \
 					EunetTerminal.o EunetTerminals.o CsmaNode.o CsmaChannelNode.o \
 					CsmaInternetNode.o PacketSinkNode.o OnOffNode.o SimpleSwitch.o \
-					SimpleAp.o NamedSwitches.o \
+					SimpleAp.o NamedSwitches.o BridgingAp.o \
 					$(NS3LIBS)
 	g++ -g -pg -O0 -std=c++0x -o EunetSwitchTest $(CPPFLAGS) $^
 
