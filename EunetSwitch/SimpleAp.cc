@@ -18,14 +18,16 @@ ns3::TypeId SimpleAp::GetTypeId(void) {
 					SimpleAp> ();
 	return type_id;
 }//GetTypeId
+
 SimpleAp::SimpleAp() {
+	//NS_FATAL_ERROR("no default constructor for SimpleAp");
 	auto wifi_channel_helper = ns3::YansWifiChannelHelper::Default();
 	auto ptr_wifi_channel = wifi_channel_helper.Create();
 	auto wifi_phy_helper = ns3::YansWifiPhyHelper::Default();
 	wifi_phy_helper.SetChannel(ptr_wifi_channel);
 	auto wifi_mac_helper = ns3::NqosWifiMacHelper::Default();
-	auto ssid = ns3::Ssid("eunet");
-	wifi_mac_helper.SetType("ns3::ApWifiMac", "Ssid", ns3::SsidValue(ssid));
+	//auto ssid = ns3::Ssid("eunet");
+	wifi_mac_helper.SetType("ns3::ApWifiMac"/*, "Ssid", ns3::SsidValue(ssid)*/);
 	auto wifi_helper = ns3::WifiHelper::Default();
 	auto ptr_node = ns3::Ptr<SimpleSwitch>(this, true);
 	//auto ptr_node = ns3::CreateObject<ns3::Node>();
@@ -34,17 +36,22 @@ SimpleAp::SimpleAp() {
 	wifi_helper.Install(wifi_phy_helper, wifi_mac_helper, ptr_node);
 	auto n_devices_after = this->GetNDevices();
 	NS_ASSERT(n_devices_after == n_devices_before + 1);
+}
 
+void SimpleAp::setPosition(const ns3::Vector& position) {
+	this->position = position;
+}//setPosition
+
+void SimpleAp::DoInitialize() {
+	auto ptr_node = ns3::Ptr<SimpleAp>(this, true);
+	NS_LOG_INFO("setting position to " << this->position);
 	ns3::MobilityHelper mobility_helper;
 	auto ptr_position_allocator =
 			ns3::CreateObject<ns3::ListPositionAllocator>();
-	ptr_position_allocator->Add(ns3::Vector(0.0, 0.0, 0.0));
+	ptr_position_allocator->Add(this->position);
 	mobility_helper.SetPositionAllocator(ptr_position_allocator);
 	mobility_helper.SetMobilityModel("ns3::ConstantPositionMobilityModel");
 	mobility_helper.Install(ptr_node);
-}
-
-void SimpleAp::DoInitialize() {
 	NS_LOG_INFO("calling up SimpleSwitch::DoInitialize");
 	Base::DoInitialize();
 }
