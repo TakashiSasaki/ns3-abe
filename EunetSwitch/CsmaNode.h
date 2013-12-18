@@ -14,7 +14,23 @@ public:
 	static ns3::TypeId GetTypeId(void);
 	CsmaNode(const uint32_t n_csma_net_devices = 0);
 	virtual ~CsmaNode();
-	ns3::Ptr<ns3::CsmaNetDevice> getCsmaNetDevice(const unsigned i = 0);
+	ns3::Ptr<ns3::CsmaNetDevice> getCsmaNetDevice(const unsigned i_device = 0);
+	template<class T>
+	ns3::Ptr<T> getNetDevice(const unsigned i_device = 0) {
+		//NS_ASSERT(this->countCsmaNetDevices()==1);
+		unsigned j = 0;
+		for (unsigned i = 0; i < this->GetNDevices(); ++i) {
+			//NS_LOG(log_level, this->GetDevice(i)->GetTypeId() << ", " << this->GetDevice(i)->GetInstanceTypeId());
+			if (this->GetDevice(i)->GetInstanceTypeId() == T::GetTypeId()) {
+				if (j == i_device) {
+					return this->GetDevice(i)->GetObject<T> (T::GetTypeId());
+
+				}//if
+				++j;
+			}//if
+		}//for
+		NS_FATAL_ERROR("no " << T::GetTypeId());
+	}
 	void logAllDevices(const ns3::LogLevel log_level = ns3::LOG_LEVEL_INFO);
 protected:
 	virtual void NotifyConstructionCompleted();
