@@ -16,6 +16,7 @@ visualize2: EunetSimulation
 EunetSimulation: EunetSimulation.cc NamedSwitches.o EunetSwitch.o EunetSwitches.o \
 					EunetTerminal.o EunetTerminals.o CsmaNode.o CsmaChannelNode.o \
 					CsmaInternetNode.o PacketSinkNode.o OnOffNode.o SimpleSwitch.o \
+					SimpleAp.o \
 					$(NS3LIBS)
 	g++ -g -pg -O0 -std=c++0x -o EunetSimulation $(CPPFLAGS) $^
 
