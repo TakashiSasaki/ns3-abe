@@ -19,9 +19,13 @@
 #include "ns3/internet-module.h"
 #include "ns3/internet-stack-helper.h"
 #include "ns3/netanim-module.h"
+#include "ns3/dce-module.h"
+#include "ns3/quagga-helper.h"
 #include "EunetSwitches.h"
 #include "EunetTerminals.h"
+#include "EunetRouter.h"
 //using namespace ns3;
+
 NS_LOG_COMPONENT_DEFINE ("EunetSwitchTest");
 
 void testEunetTerminal() {
@@ -97,6 +101,18 @@ void testEunetSwitch() {
 	eunet_switch->getTerminals().logTotalRx();
 }
 
+void testEunetRouter() {
+	EunetRouter eunet_router(48, 2);
+	eunet_router.NotifyConstructionCompleted();
+	eunet_router.bring(1,0);
+	eunet_router.enablePcap(0);
+	NS_LOG_INFO("Run Simulation.");
+	ns3::Simulator::Stop(ns3::Seconds(0.1));
+	ns3::Simulator::Run();
+	ns3::Simulator::Destroy();
+	NS_LOG_INFO("Done.");
+}
+
 void testEunetSwitches() {
 	EunetSwitches eunet_switches(3, 2);
 	auto source_switch = eunet_switches.getEunetSwitch(2, 3);
@@ -131,6 +147,8 @@ int main(int argc, char *argv[]) {
 		testEunetSwitches();
 	} else if (test == "EunetTerminals") {
 		testEunetTerminals();
+	} else if(test == "EunetRouter"){
+		testEunetRouter();
 	} else {
 		NS_LOG_UNCOND("");
 		NS_LOG_UNCOND("Usage:");

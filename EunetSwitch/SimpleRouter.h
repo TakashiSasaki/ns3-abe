@@ -14,15 +14,19 @@ class SimpleRouter: public CsmaChannelNode {
 	ns3::DceApplicationHelper dceApplicationHelper;
 
 public:
+	unsigned n_ports;
 	static ns3::TypeId GetTypeId(void);
-	SimpleRouter();
+	SimpleRouter(const unsigned n_ports = 48);
 	virtual ~SimpleRouter();
-protected:
+	ns3::Ptr<ns3::CsmaNetDevice>
+		getlinkPort(const unsigned i_port);
+//protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();
 private:
 	bool isConnectedToSimpleRouter(const unsigned i_port);
-	void assignIpAddressToDevice(unsigned i_net_device, ns3::Ipv4Address, ns3::Ipv4Mask);
+	void assignIpAddressToDevice(unsigned i_net_device, ns3::Ipv4Address,
+			ns3::Ipv4Mask);
 	std::unique_ptr<std::vector<std::string> > getAllNetworks();
 };
 

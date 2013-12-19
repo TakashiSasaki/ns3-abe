@@ -20,12 +20,24 @@ ns3::TypeId SimpleRouter::GetTypeId(void) {
 }//GetTypeId
 
 
-SimpleRouter::SimpleRouter() {
+SimpleRouter::SimpleRouter(unsigned n_ports) :
+	CsmaChannelNode(2),n_ports(n_ports) {
+	NS_LOG_INFO("constructing SimpleRouter");
+	for (unsigned i = 0; i < 2; ++i) {
+		NS_LOG_INFO("investigating port " << i);
+	}
 	NS_LOG_INFO("constructing SimpleRouter");
 }
 
 SimpleRouter::~SimpleRouter() {
 }
+
+ns3::Ptr<ns3::CsmaNetDevice> SimpleRouter::getlinkPort(
+		const unsigned i_port) {
+	NS_ASSERT(i_port < n_ports);
+	auto p = this->getCsmaNetDevice(i_port);
+	return p;
+}//getDownlinkPort
 
 void SimpleRouter::assignIpAddressToDevice(const unsigned i_device,
 		ns3::Ipv4Address ipv4_address, ns3::Ipv4Mask ipv4_mask) {
@@ -83,6 +95,7 @@ void SimpleRouter::NotifyConstructionCompleted() {
 	NS_ASSERT(n_devices_before +1 == n_devices_after);
 	NS_ASSERT(this->GetDevice(n_devices_before)->GetObject<ns3::LoopbackNetDevice>(ns3::LoopbackNetDevice::GetTypeId()));
 
+	//assignIpAddressToDevice();
 	//Ipv4GlobalRoutingHelper::PopulateRoutingTables();
 
 	ns3::DceManagerHelper processManager;
