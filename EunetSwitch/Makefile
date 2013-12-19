@@ -1,9 +1,9 @@
 include ../CommonMakefile
 vpath %.h container:model
-vpath %.cc container:model:../../utils
+vpath %.cc container:model:test:../../utils
 .PHONY: test
 
-CXXFLAGS=-Icontainer -Imodel -I. -I../../build -g -pg -O0 -std=c++0x
+CXXFLAGS=-Icontainer -Imodel -I. -I../../build -L. -g -pg -O0 -std=c++0x
 
 #define NS_LOG
 #NS_LOG="BridgingAp=**:SimpleAp=**:NamedSwitches=**:EunetSwitch=**:EunetSwitches=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"
@@ -16,7 +16,7 @@ endef
 libeunet.a : NamedSwitches.o EunetSwitch.o EunetSwitches.o \
 			EunetTerminal.o EunetTerminals.o CsmaNode.o CsmaChannelNode.o \
 			CsmaInternetNode.o PacketSinkNode.o OnOffNode.o SimpleSwitch.o \
-			SimpleAp.o SimpleApTest.o BridgingAp.o
+			SimpleAp.o BridgingAp.o
 	ar r $@ $^
 
 run2: EunetSimulation
@@ -57,11 +57,11 @@ clean:
 	-rm -f gmon.out
 	-rm -f EunetSwitchTest
 	-rm -f *.pcap *.tr
-	-rm -f container/*.o model/*.o *.o
+	-rm -f container/*.o model/*.o test/*.o *.o
 	-rm *.a
 
-test-runner: libeunet.a test-runner.o $(NS3LIBS)
+test-runner: test-runner.o $(NS3LIBS) SimpleApTest.o libeunet.a 
 	g++ -o $@ $(CXXFLAGS) $^
 
-test:
+test: test-runner
 	$(EXECENV) ./test-runner
