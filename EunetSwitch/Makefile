@@ -60,7 +60,7 @@ clean:
 	-rm -f container/*.o model/*.o test/*.o *.o
 	-rm *.a
 
-test-runner: test-runner.o $(NS3LIBS) SimpleApTest.o libeunet.a 
+test-runner: test-runner.o $(NS3LIBS) SimpleApTest.o EunetTerminalTest.o EunetTerminalsTest.o EunetSwitchesTest.o EunetSwitchTest.o libeunet.a 
 	g++ -o $@ $(CXXFLAGS) $^
 
 test: test-runner
