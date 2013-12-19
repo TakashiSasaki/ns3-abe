@@ -29,4 +29,6 @@ EunetTest.bak
 \#*#
 *~
 EunetSwitch/EunetSimulation
+EunetSwitch/test-runner
+*.a
 

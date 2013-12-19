@@ -19,7 +19,8 @@ libns3.17-netanim-debug.$(SOSUFFIX) libns3.17-lte-debug.$(SOSUFFIX) libns3.17-sp
 libns3.17-virtual-net-device-debug.$(SOSUFFIX) libns3.17-buildings-debug.$(SOSUFFIX) \
 libns3.17-antenna-debug.$(SOSUFFIX) libns3.17-visualizer-debug.$(SOSUFFIX) libns3.17-dsr-debug.$(SOSUFFIX) \
 libns3.17-wimax-debug.$(SOSUFFIX) libns3.17-uan-debug.$(SOSUFFIX) libns3.17-energy-debug.$(SOSUFFIX) \
-libns3.17-mesh-debug.$(SOSUFFIX)
+libns3.17-mesh-debug.$(SOSUFFIX) libns3.17-test-debug.$(SOSUFFIX) libns3.17-tools-test-debug.$(SOSUFFIX) \
+libns3.17-csma-layout-debug.$(SOSUFFIX) libns3.17-flow-monitor-debug.$(SOSUFFIX)
 
 VPATH=../build:../../build
 

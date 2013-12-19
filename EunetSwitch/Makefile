@@ -1,6 +1,7 @@
 include ../CommonMakefile
 vpath %.h container:model
-vpath %.cc container:model
+vpath %.cc container:model:../../utils
+.PHONY: test
 
 CXXFLAGS=-Icontainer -Imodel -I. -I../../build -g -pg -O0 -std=c++0x
 
@@ -15,7 +16,7 @@ endef
 libeunet.a : NamedSwitches.o EunetSwitch.o EunetSwitches.o \
 			EunetTerminal.o EunetTerminals.o CsmaNode.o CsmaChannelNode.o \
 			CsmaInternetNode.o PacketSinkNode.o OnOffNode.o SimpleSwitch.o \
-			SimpleAp.o BridgingAp.o
+			SimpleAp.o SimpleApTest.o BridgingAp.o
 	ar r $@ $^
 
 run2: EunetSimulation
@@ -58,3 +59,9 @@ clean:
 	-rm -f *.pcap *.tr
 	-rm -f container/*.o model/*.o *.o
 	-rm *.a
+
+test-runner: libeunet.a test-runner.o $(NS3LIBS)
+	g++ -o $@ $(CXXFLAGS) $^
+
+test:
+	$(EXECENV) ./test-runner
