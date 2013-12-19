@@ -4,6 +4,7 @@ NS_LOG_COMPONENT_DEFINE("EunetSwitches");
 #define NS3_ASSERT_ENABLE 1
 #include "ns3/assert.h"
 #include "ns3/ipv4-address-helper.h"
+#include "ns3/mobility-helper.h"
 #include "EunetSwitches.h"
 
 EunetSwitches::EunetSwitches(const unsigned depth, const unsigned width) :
@@ -39,6 +40,11 @@ EunetSwitches::EunetSwitches(const unsigned depth, const unsigned width) :
 		ipv4_address_helper.Assign(
 				this->getEunetSwitch(i)->getTerminalDevices());
 	}//for
+
+	ns3::MobilityHelper mobility_helper;
+	mobility_helper.SetMobilityModel("ns3::ConstantPositionMobilityModel");
+	mobility_helper.Install(*this);
+
 }// a constructor
 
 ns3::Ptr<EunetSwitch> EunetSwitches::getEunetSwitch(unsigned i_depth,

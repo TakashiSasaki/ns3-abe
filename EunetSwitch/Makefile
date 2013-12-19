@@ -10,7 +10,7 @@ CXXFLAGS=-Icontainer -Imodel -I. -I../../build -L. -g -pg -O0 -std=c++0x
 #endef
 
 define NS_LOG
-NS_LOG="*"
+NS_LOG="AnimationInterface=error"
 endef
 
 libeunet.a : NamedSwitches.o EunetSwitch.o EunetSwitches.o \
@@ -64,4 +64,4 @@ test-runner: test-runner.o $(NS3LIBS) SimpleApTest.o EunetTerminalTest.o EunetTe
 	g++ -o $@ $(CXXFLAGS) $^
 
 test: test-runner
-	$(EXECENV) ./test-runner
+	$(EXECENV) $(NS_LOG) ./test-runner

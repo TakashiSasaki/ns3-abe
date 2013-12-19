@@ -5,6 +5,7 @@
 #include "ns3/csma-helper.h"
 #include "ns3/ipv4-address-helper.h"
 #include "ns3/internet-stack-helper.h"
+#include "ns3/mobility-helper.h"
 NS_LOG_COMPONENT_DEFINE("EunetTerminals");
 #include "EunetTerminal.h"
 #include "EunetTerminals.h"
@@ -38,6 +39,11 @@ EunetTerminals::EunetTerminals(const unsigned n_terminals) {
 		ptr_source->stopAt(ns3::Seconds(2.0));
 	}
 #endif
+
+	ns3::MobilityHelper mobility_helper;
+	mobility_helper.SetMobilityModel("ns3::ConstantPositionMobilityModel");
+	mobility_helper.Install(*this);
+
 }// a constructor
 
 
