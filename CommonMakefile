@@ -6,7 +6,7 @@ else
 	EXECENV=LD_LIBRARY_PATH=../../build PYTHONPATH=../../build/bindings/python:../../src/visualizer:../../../pybindgen-0.16.0.825 
 endif
 
-CPPFLAGS = -g -pg -O0 -std=c++0x -Wall -Werror -I ../../build
+CPPFLAGS = -g -pg -O0 -std=c++0x -Wall -Werror -I../../build -I../../build/include -I../../../ns-3-dev/build
 
 NS3LIBS=libns3.17-core-debug.$(SOSUFFIX) libns3.17-network-debug.$(SOSUFFIX) libns3.17-bridge-debug.$(SOSUFFIX) \
 libns3.17-csma-debug.$(SOSUFFIX) \
