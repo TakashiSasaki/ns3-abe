@@ -29,7 +29,8 @@ CsmaNode::CsmaNode(const uint32_t n_csma_net_devices) :
 				this->queueFactory.Create<ns3::Queue> ();
 		ptr_csma_net_device->SetQueue(ptr_queue);
 	}//for
-	NS_ASSERT(this->GetNDevices()==this->nCsmaNetDevices);NS_LOG_INFO("constructed with " << this->GetNDevices() << " devices");
+	NS_ASSERT(this->GetNDevices()==this->nCsmaNetDevices);
+	NS_LOG_INFO("constructed with " << this->GetNDevices() << " devices");
 }
 
 void CsmaNode::DoInitialize() {
