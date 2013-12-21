@@ -64,13 +64,7 @@ visualize2: EunetSimulation
 EunetSimulation: EunetSimulation.cc libeunet.a $(NS3LIBS)
 	g++ -o $@ $(CXXFLAGS) $^
 
-run: EunetSwitchTest
-	$(EXECENV) $(NS_LOG):EunetSwitchTest=** ./EunetSwitchTest --scenario=SimpleAp
-
-EunetSwitchTest: EunetSwitchTest.o libeunet.a $(NS3LIBS) visualize.cc
-	g++ -o $@ $(CXXFLAGS) $^
-
-visualize:
+visualize: EunetSwitchTest.o libeunet.a $(NS3LIBS) visualize.cc
 	$(EXECENV) $(NS_LOG) ./EunetSwitchTest --SimulatorImplementationType=ns3::VisualSimulatorImpl
 
 gmon.out: EunetSwitchTest
