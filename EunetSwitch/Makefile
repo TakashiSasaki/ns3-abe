@@ -3,7 +3,7 @@ vpath %.cc container:model:test:../../utils
 vpath %.so ../../build:libs
 .PHONY: test
 
-CXXFLAGS=-Icontainer -Imodel -Iinclude -L. -Llib -g -pg -O0 -std=c++0x
+CXXFLAGS=-Icontainer -Imodel -I../../build -Iinclude -L../../build -L. -Llibs -g -pg -O0 -std=c++0x
 
 ifeq ($(OS),Windows_NT)
 	SOSUFFIX=dll.a
@@ -11,7 +11,7 @@ ifeq ($(OS),Windows_NT)
 	EXECENV=PATH="$(PATH):../../build"
 else
 	SOSUFFIX=so
-	EXECENV=LD_LIBRARY_PATH=../../build:lib PYTHONPATH=../../build/bindings/python:../../src/visualizer:../../../pybindgen-0.16.0.825 
+	EXECENV=LD_LIBRARY_PATH=../../build:libs PYTHONPATH=../../build/bindings/python:../../src/visualizer:../../../pybindgen-0.16.0.825 
 endif
 
 CPPFLAGS = -g -pg -O0 -std=c++0x -Wall -Werror -I../../build -I../../build/include -I../../../ns-3-dev/build
@@ -31,11 +31,11 @@ $(SOPREFIX)virtual-net-device-debug.$(SOSUFFIX) $(SOPREFIX)buildings-debug.$(SOS
 $(SOPREFIX)antenna-debug.$(SOSUFFIX) $(SOPREFIX)visualizer-debug.$(SOSUFFIX) $(SOPREFIX)dsr-debug.$(SOSUFFIX) \
 $(SOPREFIX)wimax-debug.$(SOSUFFIX) $(SOPREFIX)uan-debug.$(SOSUFFIX) $(SOPREFIX)energy-debug.$(SOSUFFIX) \
 $(SOPREFIX)mesh-debug.$(SOSUFFIX) $(SOPREFIX)test-debug.$(SOSUFFIX) $(SOPREFIX)tools-test-debug.$(SOSUFFIX) \
-$(SOPREFIX)csma-layout-debug.$(SOSUFFIX) $(SOPREFIX)flow-monitor-debug.$(SOSUFFIX) \
+$(SOPREFIX)csma-layout-debug.$(SOSUFFIX) $(SOPREFIX)flow-monitor-debug.$(SOSUFFIX)
 
 NS3LIBSDEV=
 
-NS3LIBSDCE=libsn3-dce.so libns3-dce-quagga.so
+NS3LIBSDCE=libns3-dce.so libns3-dce-quagga.so libns3-dce-quagga-test.so libns3-dce-test-netlink.so libns3-dce-test.so
 
 
 #define NS_LOG
@@ -67,8 +67,11 @@ EunetSimulation: EunetSimulation.cc libeunet.a $(NS3LIBS)
 run: EunetSwitchTest
 	$(EXECENV) $(NS_LOG):EunetSwitchTest=** ./EunetSwitchTest --scenario=SimpleAp
 
+EunetSwitchTest: EunetSwitchTest.o libeunet.a $(NS3LIBS) visualize.cc
+	g++ -o $@ $(CXXFLAGS) $^
+
 visualize:
-	$(EXECENV) $(NS_LOG) ./EunetSwitchTest --scenario=EunetSwitches --SimulatorImplementationType=ns3::VisualSimulatorImpl
+	$(EXECENV) $(NS_LOG) ./EunetSwitchTest --SimulatorImplementationType=ns3::VisualSimulatorImpl
 
 gmon.out: EunetSwitchTest
 	$(EXECENV) $(NS_LOG)"EunetSwitch=**:EunetSwitches=**:EunetSwitchTest=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=**" ./EunetSwitchTest 
@@ -78,9 +81,6 @@ gprof: gmon.out
 
 gdb: EunetSwitchTest
 	$(EXECENV) gdb ./EunetSwitchTest 
-
-EunetSwitchTest: EunetSwitchTest.cc libeunet.a $(NS3LIBS)
-	g++ -o $@ $(CXXFLAGS) $^
 
 doxygen:
 	doxygen
