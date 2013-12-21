@@ -11,7 +11,7 @@ class EunetSwitchesTestCase: public ns3::TestCase {
 public:
 	EunetSwitchesTestCase() :
 		ns3::TestCase("EunetSwitchesTestCase") {
-		NS_LOG_UNCOND("constructing a test case");
+		//NS_LOG_UNCOND("constructing a test case");
 	}
 	virtual ~EunetSwitchesTestCase() {
 	}

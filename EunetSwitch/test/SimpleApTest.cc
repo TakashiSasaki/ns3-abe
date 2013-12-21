@@ -9,19 +9,19 @@ class SimpleApTestCase: public ns3::TestCase {
 public:
 	SimpleApTestCase() :
 		ns3::TestCase("SimpleApTestCase") {
-		NS_LOG_UNCOND("constructing a test case");
+		//NS_LOG_UNCOND("constructing a test case");
 	}
 	virtual ~SimpleApTestCase() {
 	}
 
 private:
 	virtual void DoRun(void) {
-		NS_LOG_UNCOND("creating instances of SimpleAp");
 		ns3::ObjectFactory object_factory;
 		object_factory.SetTypeId("SimpleAp");
 		auto simple_ap = object_factory.Create<SimpleAp> ();
 		simple_ap->setSsid(ns3::Ssid("eunet"));
-		NS_LOG_UNCOND("done.");
+		auto simple_ap_2 = object_factory.Create<SimpleAp>();
+		simple_ap_2->setSsid(ns3::Ssid("eunet"));
 		NS_LOG_INFO("Run Simulation.");
 		ns3::Simulator::Stop(ns3::Seconds(0.1));
 		ns3::Simulator::Run();
@@ -34,7 +34,7 @@ class SimpleApTestSuite: public ns3::TestSuite {
 public:
 	SimpleApTestSuite() :
 		ns3::TestSuite("SimpleAp", UNIT) {
-		NS_LOG_UNCOND("adding a test case");
+		//NS_LOG_UNCOND("adding a test case");
 		AddTestCase(new SimpleApTestCase, ns3::TestCase::QUICK);
 	}
 };

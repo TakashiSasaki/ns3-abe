@@ -10,7 +10,7 @@ class EunetTerminalTestCase: public ns3::TestCase {
 public:
 	EunetTerminalTestCase() :
 		ns3::TestCase("EunetTerminalTestCase") {
-		NS_LOG_UNCOND("constructing a test case");
+		//NS_LOG_UNCOND("constructing a test case");
 	}
 	virtual ~EunetTerminalTestCase() {
 	}
@@ -58,7 +58,7 @@ class EunetTerminalTestSuite: public ns3::TestSuite {
 public:
 	EunetTerminalTestSuite() :
 		ns3::TestSuite("EunetTerminal", UNIT) {
-		NS_LOG_UNCOND("adding a test case");
+		//NS_LOG_UNCOND("adding a test case");
 		AddTestCase(new EunetTerminalTestCase, ns3::TestCase::QUICK);
 	}
 };

@@ -14,7 +14,7 @@ class EunetTerminalsTestCase: public ns3::TestCase {
 public:
 	EunetTerminalsTestCase() :
 		ns3::TestCase("EunetTerminalsTestCase") {
-		NS_LOG_UNCOND("constructing a test case");
+		//NS_LOG_UNCOND("constructing a test case");
 	}
 	virtual ~EunetTerminalsTestCase() {
 	}
