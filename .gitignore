@@ -30,6 +30,7 @@ EunetTest.bak
 *~
 EunetSwitch/EunetSimulation
 EunetSwitch/test-runner
+EunetSwitch/visualize
 *.a
 bake
 dce

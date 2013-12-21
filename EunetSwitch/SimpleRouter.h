@@ -19,7 +19,7 @@ public:
 	SimpleRouter(const unsigned n_ports = 48);
 	virtual ~SimpleRouter();
 	ns3::Ptr<ns3::CsmaNetDevice>
-		getlinkPort(const unsigned i_port);
+		getLinkPort(const unsigned i_port);
 //protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();

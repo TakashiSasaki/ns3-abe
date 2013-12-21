@@ -1,7 +1,7 @@
 vpath %.h container:model
 vpath %.cc container:model:test:../../utils
 vpath %.so ../../build:libs
-.PHONY: test
+.PHONY: test visualize
 
 CXXFLAGS=-Icontainer -Imodel -I../../build -Iinclude -L../../build -L. -Llibs -g -pg -O0 -std=c++0x
 
@@ -65,7 +65,8 @@ EunetSimulation: EunetSimulation.cc libeunet.a $(NS3LIBS)
 	g++ -o $@ $(CXXFLAGS) $^
 
 visualize: EunetSwitchTest.o libeunet.a $(NS3LIBS) visualize.cc
-	$(EXECENV) $(NS_LOG) ./EunetSwitchTest --SimulatorImplementationType=ns3::VisualSimulatorImpl
+	g++ -o $@ $(CXXFLAGS) $^
+	$(EXECENV) $(NS_LOG) ./visualize --SimulatorImplementationType=ns3::VisualSimulatorImpl
 
 gmon.out: EunetSwitchTest
 	$(EXECENV) $(NS_LOG)"EunetSwitch=**:EunetSwitches=**:EunetSwitchTest=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=**" ./EunetSwitchTest 

@@ -24,18 +24,18 @@ class EunetRouter: public SimpleRouter {
 
 public:
 	static ns3::TypeId GetTypeId(void);
-	EunetRouter(const unsigned n_ports = 48, const unsigned n_devices = 2);
+	EunetRouter(const unsigned n_ports = 48,const unsigned n_devices = 2);
 	virtual ~EunetRouter();
 
 	void enablePcap(const int i_port, const bool promiscuous = false) {
 		ns3::CsmaHelper csma_helper;
-		csma_helper.EnablePcap(EunetRouter::pcapPrefix, this->getlinkPort(
+		csma_helper.EnablePcap(EunetRouter::pcapPrefix, this->getLinkPort(
 				i_port), promiscuous);
 	}
 
 	void enableAsciiTrace(const int i_port) {
 		ns3::CsmaHelper csma_helper;
-		csma_helper.EnableAscii(EunetRouter::asciiTracePrefix, this->getlinkPort(i_port));
+		csma_helper.EnableAscii(EunetRouter::asciiTracePrefix, this->getLinkPort(i_port));
 	}
 
 

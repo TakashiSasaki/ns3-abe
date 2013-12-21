@@ -32,7 +32,7 @@ SimpleRouter::SimpleRouter(unsigned n_ports) :
 SimpleRouter::~SimpleRouter() {
 }
 
-ns3::Ptr<ns3::CsmaNetDevice> SimpleRouter::getlinkPort(
+ns3::Ptr<ns3::CsmaNetDevice> SimpleRouter::getLinkPort(
 		const unsigned i_port) {
 	NS_ASSERT(i_port < n_ports);
 	auto p = this->getCsmaNetDevice(i_port);

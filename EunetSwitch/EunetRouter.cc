@@ -17,12 +17,11 @@ NS_OBJECT_ENSURE_REGISTERED(EunetRouter);
 EunetRouter::~EunetRouter() {
 }
 
-EunetRouter::EunetRouter(const unsigned n_port, const unsigned n_devices) :
-	SimpleRouter(48) {
+EunetRouter::EunetRouter(const unsigned n_ports, const unsigned n_devices) :
+	SimpleRouter(n_ports){
 	NS_LOG_INFO("constructing EunetRouter");
 	for (unsigned i = 0; i < n_devices; ++i) {
 		NS_LOG_INFO("attaching " << i << " to corresponding port");
-		this->bring(i,SimpleRouter);
-
+		this->bring(ns3::Ptr<CsmaNode> SimpleRouter(i).getCsmaNetDevice(i) ,this->getLinkPort(SimpleRouter));
 	}
 }
