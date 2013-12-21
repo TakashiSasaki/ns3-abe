@@ -29,4 +29,11 @@ EunetTest.bak
 \#*#
 *~
 EunetSwitch/EunetSimulation
+EunetSwitch/test-runner
+*.a
+bake
+dce
+libs/
+include/
+
 
