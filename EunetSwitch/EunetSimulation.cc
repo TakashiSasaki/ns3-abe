@@ -2157,7 +2157,6 @@ EunetSimulation::EunetSimulation() {
 			ns3::DataRate("1Gbps"));
 	named_switches.findEunetSwitch("youchi_01_1_sw01")->connectUpTo(
 			"syou_01_1_sw01");
-
 }
 
 EunetSimulation::~EunetSimulation() {
