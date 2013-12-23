@@ -12,15 +12,24 @@ using namespace ns3;
 class SimpleRouter: public CsmaChannelNode {
 	typedef CsmaChannelNode Base;
 	ns3::DceApplicationHelper dceApplicationHelper;
+	static const ns3::DataRate defaultlinkDataRate;
+	static const ns3::TimeValue defaultlinkDelay;
 
 public:
-	unsigned n_ports;
+	const unsigned nlinkPorts;
+
 	static ns3::TypeId GetTypeId(void);
 	SimpleRouter(const unsigned n_ports = 48);
 	virtual ~SimpleRouter();
+	void setlinkDataRate(ns3::DataRateValue = defaultlinkDataRate);
+	void setlinkDelay(ns3::TimeValue = defaultlinkDelay);
 	ns3::Ptr<ns3::CsmaNetDevice>
-		getLinkPort(const unsigned i_port);
-//protected:
+	getLinkPort(const unsigned i_link_port);
+	void connectTo(const unsigned i_link_port,
+			ns3::Ptr<SimpleRouter> connect_to_device, const unsigned connect_i_link_port);
+	void connectTo(std::string router_name);
+	unsigned getUnusedlinkPort();
+protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();
 private:

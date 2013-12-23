@@ -39,17 +39,18 @@ NS3LIBSDCE=libns3-dce.so libns3-dce-quagga.so libns3-dce-quagga-test.so libns3-d
 
 
 #define NS_LOG
-#NS_LOG="BridgingAp=**:SimpleAp=**:NamedSwitches=**:EunetSwitch=**:EunetSwitches=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"
+#NS_LOG="NamedRouters=**:EunetRouters=**:EunetRouter=**:SimpleRouter=**:BridgingAp=**:SimpleAp=**:NamedSwitches=**:EunetSwitch=**:EunetSwitches=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"
 #endef
 
 define NS_LOG
 NS_LOG="AnimationInterface=error"
 endef
 
-libeunet.a : NamedSwitches.o EunetSwitch.o EunetSwitches.o \
+libeunet.a :NamedSwitches.o EunetSwitch.o EunetSwitches.o \
 			EunetTerminal.o EunetTerminals.o CsmaNode.o CsmaChannelNode.o \
 			CsmaInternetNode.o PacketSinkNode.o OnOffNode.o SimpleSwitch.o \
-			SimpleAp.o BridgingAp.o
+			SimpleAp.o BridgingAp.o \
+			NamedRouters.o EunetRouter.o SimpleRouter.o EunetRouters.o 
 	ar r $@ $^
 
 run2: EunetSimulation
@@ -88,7 +89,7 @@ clean:
 	-rm -f container/*.o model/*.o test/*.o *.o
 	-rm *.a
 
-test-runner: test-runner.o $(NS3LIBS) $(NS3LIBSDEV) $(NS3LIBDCE) SimpleApTest.o EunetTerminalTest.o EunetTerminalsTest.o EunetSwitchesTest.o EunetSwitchTest.o libeunet.a 
+test-runner: test-runner.o $(NS3LIBS) $(NS3LIBSDEV) $(NS3LIBDCE) SimpleApTest.o EunetTerminalTest.o EunetTerminalsTest.o EunetSwitchesTest.o EunetSwitchTest.o EunetRouter.o libeunet.a 
 	g++ -o $@ $(CXXFLAGS) $^
 
 test: test-runner
