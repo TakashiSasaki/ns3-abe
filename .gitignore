@@ -24,4 +24,11 @@ EunetSwitch/latex
 .settings
 *.exe
 *.out
+EunetTest.bak
+.metadata
+\#*#
+*~
+EunetSwitch/EunetSimulation
+libeunet.a
+test-runner
 
