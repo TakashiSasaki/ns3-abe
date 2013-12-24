@@ -36,5 +36,6 @@ bake
 dce
 libs/
 include/
-
+libeunet.a
+test-runner
 
