@@ -5,6 +5,7 @@ NS_LOG_COMPONENT_DEFINE("EunetTerminal");
 #include "ns3/assert.h"
 #include "ns3/ipv4.h"
 #include "ns3/internet-module.h"
+#include "ns3/mobility-helper.h"
 #include "EunetTerminal.h"
 NS_OBJECT_ENSURE_REGISTERED(EunetTerminal);
 

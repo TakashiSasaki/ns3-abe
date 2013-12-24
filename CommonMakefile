@@ -1,14 +1,14 @@
 ifeq ($(OS),Windows_NT)
         SOSUFFIX=dll.a
-	EXECENV=PATH="$(PATH):../../build"
+	EXECENV=PATH="$(PATH):../../../../../ns-3.17/build"
 else
         SOSUFFIX=so
-	EXECENV=LD_LIBRARY_PATH=../../build PYTHONPATH=../../build/bindings/python:../../src/visualizer:../../../pybindgen-0.16.0.825 
+	EXECENV=LD_LIBRARY_PATH=../../build:lib PYTHONPATH=../../build/bindings/python:../../src/visualizer:../../../pybindgen-0.16.0.825 
 endif
 
-CPPFLAGS = -g -pg -O0 -std=c++0x -Wall -Werror -I ../../build
+CPPFLAGS = -g -pg -O0 -std=c++0x -Wall -Werror -I../../build -I../../build/include -I../../../ns-3-dev/build -I../../../../../ns-3.17/build
 
-NS3LIBS=libns3.17-core-debug.$(SOSUFFIX) libns3.17-network-debug.$(SOSUFFIX) libns3.17-bridge-debug.$(SOSUFFIX) \
+NS3LIBS =libns3.17-core-debug.$(SOSUFFIX) libns3.17-network-debug.$(SOSUFFIX) libns3.17-bridge-debug.$(SOSUFFIX) \
 libns3.17-csma-debug.$(SOSUFFIX) \
 libns3.17-internet-debug.$(SOSUFFIX) libns3.17-mpi-debug.$(SOSUFFIX) libns3.17-applications-debug.$(SOSUFFIX) \
 libns3.17-stats-debug.$(SOSUFFIX) \
@@ -17,7 +17,10 @@ libns3.17-point-to-point-debug.$(SOSUFFIX) \
 libns3.17-wifi-debug.$(SOSUFFIX) libns3.17-propagation-debug.$(SOSUFFIX) libns3.17-mobility-debug.$(SOSUFFIX) \
 libns3.17-netanim-debug.$(SOSUFFIX) libns3.17-lte-debug.$(SOSUFFIX) libns3.17-spectrum-debug.$(SOSUFFIX) \
 libns3.17-virtual-net-device-debug.$(SOSUFFIX) libns3.17-buildings-debug.$(SOSUFFIX) \
-libns3.17-antenna-debug.$(SOSUFFIX) libns3.17-visualizer-debug.$(SOSUFFIX) libns3.17-dsr-debug.$(SOSUFFIX)
+libns3.17-antenna-debug.$(SOSUFFIX) libns3.17-visualizer-debug.$(SOSUFFIX) libns3.17-dsr-debug.$(SOSUFFIX) \
+libns3.17-wimax-debug.$(SOSUFFIX) libns3.17-uan-debug.$(SOSUFFIX) libns3.17-energy-debug.$(SOSUFFIX) \
+libns3.17-mesh-debug.$(SOSUFFIX) libns3.17-test-debug.$(SOSUFFIX) libns3.17-tools-test-debug.$(SOSUFFIX) \
+libns3.17-csma-layout-debug.$(SOSUFFIX) libns3.17-flow-monitor-debug.$(SOSUFFIX)
 
 VPATH=../build:../../build
 

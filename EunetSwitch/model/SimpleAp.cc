@@ -65,7 +65,7 @@ void SimpleAp::DoInitialize() {
 	NS_ASSERT(ptr_wifi_net_device !=0);
 	auto ptr_wifi_mac = ptr_wifi_net_device->GetMac();
 	NS_ASSERT(ptr_wifi_mac != 0);
-	NS_LOG_UNCOND(ptr_wifi_mac);
+	//NS_LOG_UNCOND(ptr_wifi_mac);
 	if (this->ssid.IsEqual(ns3::Ssid())) {
 		NS_FATAL_ERROR("ssid is not specified. call setSsid in advance.");
 	}
