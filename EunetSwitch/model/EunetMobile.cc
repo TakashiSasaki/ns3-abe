@@ -30,9 +30,12 @@ void EunetMobile::DoInitialize() {
 }
 
 void EunetMobile::NotifyConstructionCompleted() {
-	NS_ASSERT(this->GetNDevices() == 1);
-	Base::NotifyConstructionCompleted();
+	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
+		NS_LOG_INFO(this->GetDevice(i)->GetTypeId().GetName());
+	}//for
 	NS_ASSERT(this->GetNDevices() == 2);
+	Base::NotifyConstructionCompleted();
+	NS_ASSERT(this->GetNDevices() == 3);
 }
 
 EunetMobile::~EunetMobile() {

@@ -42,13 +42,13 @@ NS3LIBSDCE=libns3-dce.so libns3-dce-quagga.so libns3-dce-quagga-test.so libns3-d
 #endef
 
 define NS_LOG
-NS_LOG="AnimationInterface=error"
+NS_LOG="EunetMobile=*"
 endef
 
 libeunet.a : NamedSwitches.o EunetSwitch.o EunetSwitches.o \
 			EunetTerminal.o EunetTerminals.o CsmaNode.o CsmaChannelNode.o \
 			CsmaInternetNode.o PacketSinkNode.o OnOffNode.o SimpleSwitch.o \
-			SimpleAp.o BridgingAp.o WifiBase.o MobilityBase.o
+			SimpleAp.o BridgingAp.o WifiBase.o MobilityBase.o EunetMobile.o
 	ar r $@ $^
 
 run2: EunetSimulation
@@ -87,7 +87,9 @@ clean:
 	-rm -f container/*.o model/*.o test/*.o *.o
 	-rm *.a
 
-test-runner: test-runner.o $(NS3LIBS) $(NS3LIBSDEV) $(NS3LIBDCE) SimpleApTest.o EunetTerminalTest.o EunetTerminalsTest.o EunetSwitchesTest.o EunetSwitchTest.o libeunet.a 
+test-runner: test-runner.o $(NS3LIBS) $(NS3LIBSDEV) $(NS3LIBDCE) \
+	SimpleApTest.o EunetTerminalTest.o EunetTerminalsTest.o \
+	EunetSwitchesTest.o EunetSwitchTest.o EunetMobileTest.o libeunet.a 
 	g++ -o $@ $(CXXFLAGS) $^
 
 test: test-runner

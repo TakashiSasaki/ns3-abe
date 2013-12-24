@@ -29,17 +29,18 @@ CsmaInternetNode::~CsmaInternetNode() {
 
 void CsmaInternetNode::NotifyConstructionCompleted() {
 	Base::NotifyConstructionCompleted();
-	NS_ASSERT(this->GetNDevices() == 1);
+	const unsigned n_devices_before = this->GetNDevices();
+	//NS_ASSERT(this->GetNDevices() == 1);
 	ns3::InternetStackHelper internet_stack_helper;
 	internet_stack_helper.SetIpv4StackInstall(true);
 	internet_stack_helper.SetIpv6StackInstall(false);
-	NS_ASSERT(this->GetNDevices() == 1);
+	NS_ASSERT(this->GetNDevices() == n_devices_before);
 	this->logAllDevices();
 	internet_stack_helper.Install(ns3::NodeContainer(this));
 	NS_LOG_INFO("InternetStackHelper::Install finished");
 	this->logAllDevices();
-	NS_ASSERT(this->GetNDevices() == 2);
-	NS_ASSERT(this->GetDevice(1)->GetObject<ns3::LoopbackNetDevice>(ns3::LoopbackNetDevice::GetTypeId()));
+	NS_ASSERT(this->GetNDevices() == n_devices_before+1);
+	NS_ASSERT(this->GetDevice(n_devices_before)->GetObject<ns3::LoopbackNetDevice>(ns3::LoopbackNetDevice::GetTypeId()));
 }
 
 ns3::Ipv4Address CsmaInternetNode::getCsmaNetDeviceAddress() {
