@@ -48,7 +48,7 @@ endef
 libeunet.a : NamedSwitches.o EunetSwitch.o EunetSwitches.o \
 			EunetTerminal.o EunetTerminals.o CsmaNode.o CsmaChannelNode.o \
 			CsmaInternetNode.o PacketSinkNode.o OnOffNode.o SimpleSwitch.o \
-			SimpleAp.o BridgingAp.o
+			SimpleAp.o BridgingAp.o WifiBase.o MobilityBase.o
 	ar r $@ $^
 
 run2: EunetSimulation

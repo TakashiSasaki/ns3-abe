@@ -1,0 +1,30 @@
+#define NS3_LOG_ENABLE 1
+#include "ns3/log.h"
+NS_LOG_COMPONENT_DEFINE("MobilityBase");
+#define NS3_ASSERT_ENABLE 1
+#include "ns3/assert.h"
+#include "ns3/mobility-helper.h"
+#include "MobilityBase.h"
+
+MobilityBase::MobilityBase(ns3::Node* p_node) :
+	ptrNode(p_node, true) {
+}
+
+MobilityBase::~MobilityBase() {
+}
+
+void MobilityBase::DoInitialize() {
+	//auto ptr_node = ns3::Ptr<SimpleAp>(this, true);
+	NS_LOG_INFO("setting position to " << this->position);
+	ns3::MobilityHelper mobility_helper;
+	auto ptr_position_allocator =
+			ns3::CreateObject<ns3::ListPositionAllocator>();
+	ptr_position_allocator->Add(this->position);
+	mobility_helper.SetPositionAllocator(ptr_position_allocator);
+	mobility_helper.SetMobilityModel("ns3::ConstantPositionMobilityModel");
+	mobility_helper.Install(ptrNode);
+}
+
+void MobilityBase::setPosition(const ns3::Vector& position) {
+	this->position = position;
+}//setPosition
