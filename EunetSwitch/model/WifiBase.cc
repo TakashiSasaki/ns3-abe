@@ -73,6 +73,15 @@ void WifiBase::DoInitialize() {
 			&WifiBase::traceMacRx, this));
 	ptr_wifi_mac->TraceConnectWithoutContext("MacRxDrop", ns3::MakeCallback(
 			&WifiBase::traceMacRxDrop, this));
+
+	auto ptr_wifi_phy = ptr_wifi_net_device->GetPhy();
+
+	ptr_wifi_phy->TraceConnectWithoutContext("PhyTxBegin", ns3::MakeCallback(
+			&WifiBase::tracePhyTxBegin, this));
+	ptr_wifi_phy->TraceConnectWithoutContext("PhyTxEnd", ns3::MakeCallback(
+			&WifiBase::tracePhyTxEnd, this));
+	ptr_wifi_phy->TraceConnectWithoutContext("PhyTxDrop", ns3::MakeCallback(
+			&WifiBase::tracePhyTxDrop, this));
 }
 
 WifiBase::~WifiBase() {
@@ -90,21 +99,33 @@ ns3::Ptr<ns3::WifiNetDevice> WifiBase::getWifiNetDevice() {
 }
 
 void WifiBase::traceMacTx(ns3::Ptr<const ns3::Packet> ptr_packet) const {
-	NS_LOG_INFO("MacTx on node " << this->ptrNode->GetId());
+	NS_LOG_INFO(ptr_packet->GetSize() << " bytes " << "MacTx on node " << this->ptrNode->GetId());
 }
 
 void WifiBase::traceMacTxDrop(ns3::Ptr<const ns3::Packet> ptr_packet) const {
-	NS_LOG_INFO("MacTxDrop on node " << this->ptrNode->GetId());
+	NS_LOG_INFO(ptr_packet->GetSize() << " bytes " << "MacTxDrop on node " << this->ptrNode->GetId());
 }
 
 void WifiBase::traceMacPromiscRx(ns3::Ptr<const ns3::Packet> ptr_packet) const {
-	NS_LOG_INFO("MacPromiscRx on node "<< this->ptrNode->GetId());
+	NS_LOG_INFO(ptr_packet->GetSize() << " bytes " << "MacPromiscRx on node "<< this->ptrNode->GetId());
 }
 
 void WifiBase::traceMacRx(ns3::Ptr<const ns3::Packet> ptr_packet) const {
-	NS_LOG_INFO("MacRx on node "<< this->ptrNode->GetId());
+	NS_LOG_INFO(ptr_packet->GetSize() << " bytes " << "MacRx on node "<< this->ptrNode->GetId());
 }
 
 void WifiBase::traceMacRxDrop(ns3::Ptr<const ns3::Packet> ptr_packet) const {
-	NS_LOG_INFO("MacRxDrop on node " << this->ptrNode->GetId());
+	NS_LOG_INFO(ptr_packet->GetSize() << " bytes " << "MacRxDrop on node " << this->ptrNode->GetId());
+}
+
+void WifiBase::tracePhyTxBegin(ns3::Ptr<const ns3::Packet> ptr_packet) const {
+	NS_LOG_INFO(ptr_packet->GetSize() << " bytes " <<" PhyTxBegin on node " << this->ptrNode->GetId());
+}
+
+void WifiBase::tracePhyTxEnd(ns3::Ptr<const ns3::Packet> ptr_packet) const {
+	NS_LOG_INFO(ptr_packet->GetSize() << " bytes " <<" PhyTxEnd on node " << this->ptrNode->GetId());
+}
+
+void WifiBase::tracePhyTxDrop(ns3::Ptr<const ns3::Packet> ptr_packet) const {
+	NS_LOG_INFO(ptr_packet->GetSize() << " bytes " <<" PhyTxDrop on node " << this->ptrNode->GetId());
 }

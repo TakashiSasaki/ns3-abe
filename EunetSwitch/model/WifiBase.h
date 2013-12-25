@@ -27,6 +27,16 @@ private:
 	void traceMacPromiscRx(ns3::Ptr<const ns3::Packet>) const;
 	void traceMacRx(ns3::Ptr<const ns3::Packet>) const;
 	void traceMacRxDrop(ns3::Ptr<const ns3::Packet>) const;
+	void tracePhyTxBegin(ns3::Ptr<const ns3::Packet>) const;
+	void tracePhyTxEnd(ns3::Ptr<const ns3::Packet>) const;
+	void tracePhyTxDrop(ns3::Ptr<const ns3::Packet>) const;
+	void tracePhyRxBegin(ns3::Ptr<const ns3::Packet>) const;
+	void tracePhyRxEnd(ns3::Ptr<const ns3::Packet>) const;
+	void tracePhyRxDrop(ns3::Ptr<const ns3::Packet>) const;
+	void traceMonitorSnifferRx(ns3::Ptr<const ns3::Packet>, uint16_t, uint16_t,
+			uint32_t, bool, double, double) const;
+	void traceMonitorSnifferTx(ns3::Ptr<const ns3::Packet>, uint16_t, uint16_t,
+			uint32_t, bool, uint8_t) const;
 };
 
 #endif /* WIFIBASE_H_ */
