@@ -63,8 +63,4 @@ void OnOffNode::stopAt(ns3::Time stop_seconds) {
 	this->onOffApplication.Stop(stop_seconds);
 }//stopOnOffApplication
 
-void OnOffNode::setRemote(ns3::Ptr<PacketSinkNode> ptr_remote) {
-	this->onOffApplication.Get(0)->SetAttribute("Remote", ns3::AddressValue(
-			ns3::InetSocketAddress(ptr_remote->getCsmaNetDeviceAddress(),
-					PACKET_SINK_UDP_PORT)));
-}
+

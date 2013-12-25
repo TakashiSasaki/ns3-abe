@@ -68,3 +68,7 @@ void CsmaInternetNode::assignAddress(
 	//this->setRemote(this);
 	NS_LOG_INFO(this->getCsmaNetDeviceAddress() << " node " << this->GetId());
 }
+
+void CsmaInternetNode::logAddress(const ns3::Ipv4Address& ipv4_address) {
+	NS_LOG_INFO(ipv4_address << " to node " << this->GetId());
+}

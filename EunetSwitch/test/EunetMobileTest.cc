@@ -34,9 +34,12 @@ private:
 				ns3::WifiNetDevice> (0);
 		NS_ASSERT(ptr_wifi_net_device->GetInstanceTypeId().IsChildOf(ns3::WifiNetDevice::GetTypeId()));
 
+		eunet_mobile_1->setAddress<ns3::WifiNetDevice> (ipv4_address_helper);
+		eunet_mobile_2->setAddress<ns3::WifiNetDevice> (ipv4_address_helper);
+
 		eunet_mobile_1->startAt(ns3::Seconds(0.0));
 		eunet_mobile_1->stopAt(ns3::Seconds(10.0));
-		eunet_mobile_1->setRemote(eunet_mobile_2);
+		eunet_mobile_1->setRemote<ns3::WifiNetDevice> (eunet_mobile_2);
 		NS_LOG_INFO(eunet_mobile_2->getTotalRx());
 
 		object_factory.SetTypeId("SimpleAp");
