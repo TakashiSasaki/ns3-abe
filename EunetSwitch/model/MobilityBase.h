@@ -6,11 +6,11 @@
 class MobilityBase {
 	//ns3::Node* pNode;
 	ns3::Ptr<ns3::Node> ptrNode;
-	ns3::Vector position;
+	const ns3::Vector initialPosition;
 public:
 	void setPosition(const ns3::Vector& position);
 protected:
-	MobilityBase(ns3::Node* p_node);
+	MobilityBase(ns3::Node* p_node, const ns3::Vector);
 	virtual ~MobilityBase();
 	void DoInitialize();
 };

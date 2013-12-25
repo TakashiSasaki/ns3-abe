@@ -16,6 +16,7 @@ public:
 	static WifiMacTypeString OcbWifimac;
 	static WifiMacTypeString StaWifiMac;
 	ns3::Ptr<ns3::WifiNetDevice> getWifiNetDevice();
+	void bring(WifiBase& foreign_node);
 protected:
 	WifiBase(ns3::Node* p_node, const WifiMacTypeString);
 	virtual ~WifiBase();
