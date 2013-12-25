@@ -48,6 +48,7 @@ CsmaNode::~CsmaNode() {
 }
 
 void CsmaNode::logAllDevices(const ns3::LogLevel log_level) {
+	NS_LOG_INFO("listing all devices installed in a node");
 	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
 		NS_LOG(log_level, this->GetDevice(i)->GetTypeId() << ", " << this->GetDevice(i)->GetInstanceTypeId());
 	}

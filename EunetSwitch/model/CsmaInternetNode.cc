@@ -44,14 +44,19 @@ void CsmaInternetNode::NotifyConstructionCompleted() {
 }
 
 ns3::Ipv4Address CsmaInternetNode::getCsmaNetDeviceAddress() {
-	NS_ASSERT(this->GetNDevices()==2);
+	this->logAllDevices(ns3::LOG_LEVEL_INFO);
+	const unsigned n_devices_before = this->GetNDevices();
+	NS_ASSERT(this->GetNDevices()>=2);
 	ns3::Ptr<ns3::Ipv4> ptr_ipv4 = this->GetObject<ns3::Ipv4> ();
 	ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device = this->getCsmaNetDevice();
-	const int i_interface =
+	NS_ASSERT(ptr_csma_net_device != 0);
+	const int n_interface =
 			ptr_ipv4->GetInterfaceForDevice(ptr_csma_net_device);
+	NS_ASSERT(n_interface != -1);
 	ns3::Ipv4InterfaceAddress ipv4_interface_address = ptr_ipv4->GetAddress(
-			i_interface, 0);
+			n_interface, 0);
 	ns3::Ipv4Address ipv4_address = ipv4_interface_address.GetLocal();
+	NS_ASSERT(this->GetNDevices()==n_devices_before);
 	return ipv4_address;
 }//getCsmaNetDeviceAddress
 
