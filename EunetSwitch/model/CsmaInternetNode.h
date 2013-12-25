@@ -43,7 +43,7 @@ ns3::Ipv4Address CsmaInternetNode::getAddress() {
 
 template<class T>
 void CsmaInternetNode::setAddress(ns3::Ipv4AddressHelper& ipv4_address_helper) {
-	NS_ASSERT(this->GetNDevices()==2);
+	NS_ASSERT(this->GetNDevices()>=2);
 	ipv4_address_helper.Assign(
 			ns3::NetDeviceContainer(this->getNetDevice<T> ()));
 	//this->setRemote(this);

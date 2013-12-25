@@ -1,6 +1,8 @@
 #define NS3_LOG_ENABLE 1
 #include "ns3/log.h"
 NS_LOG_COMPONENT_DEFINE("EunetMobileTest");
+#define NS3_ASSERT_ENABLE 1
+#include "ns3/assert.h"
 #include "ns3/test.h"
 #include "ns3/simulator.h"
 #include "EunetMobile.h"
@@ -32,7 +34,9 @@ private:
 
 		auto ptr_wifi_net_device = eunet_mobile_1->getNetDevice<
 				ns3::WifiNetDevice> (0);
-		NS_ASSERT(ptr_wifi_net_device->GetInstanceTypeId().IsChildOf(ns3::WifiNetDevice::GetTypeId()));
+		NS_ASSERT(ptr_wifi_net_device != 0);
+		NS_LOG_INFO(ptr_wifi_net_device->GetInstanceTypeId());
+		NS_ASSERT(ptr_wifi_net_device->GetInstanceTypeId() == ns3::WifiNetDevice::GetTypeId());
 
 		eunet_mobile_1->setAddress<ns3::WifiNetDevice> (ipv4_address_helper);
 		eunet_mobile_2->setAddress<ns3::WifiNetDevice> (ipv4_address_helper);
@@ -40,7 +44,7 @@ private:
 		eunet_mobile_1->startAt(ns3::Seconds(0.0));
 		eunet_mobile_1->stopAt(ns3::Seconds(10.0));
 		eunet_mobile_1->setRemote<ns3::WifiNetDevice> (eunet_mobile_2);
-		NS_LOG_INFO(eunet_mobile_2->getTotalRx());
+		NS_ASSERT(eunet_mobile_2->getTotalRx()==0);
 
 		object_factory.SetTypeId("SimpleAp");
 		auto simple_ap = object_factory.Create<SimpleAp> ();
@@ -53,7 +57,7 @@ private:
 		ns3::Simulator::Stop(ns3::Seconds(10.1));
 		ns3::Simulator::Run();
 		ns3::Simulator::Destroy();
-		NS_LOG_INFO(eunet_mobile_2->getTotalRx());
+		NS_ASSERT(eunet_mobile_2->getTotalRx()>0);
 		NS_LOG_INFO("Done.");
 	}
 };
