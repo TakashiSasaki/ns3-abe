@@ -50,7 +50,10 @@ private:
 		auto simple_ap = object_factory.Create<SimpleAp> ();
 		simple_ap->setSsid(ns3::Ssid("eunet"));
 		NS_LOG_INFO(simple_ap);
+
 		eunet_mobile_1->logAllDevices();
+		eunet_mobile_2->logAllDevices();
+		simple_ap->logAllDevices();
 
 		//NS_LOG_INFO(eunet_mobile);
 

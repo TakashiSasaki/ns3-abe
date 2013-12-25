@@ -21,7 +21,7 @@ ns3::TypeId EunetMobile::GetTypeId(void) {
 
 EunetMobile::EunetMobile() :
 	MobilityBase(this, ns3::Vector(0, this->GetId(), 0)), WifiBase(this,
-			WifiBase::StaWifiMac) {
+			WifiBase::StaWifiMac, true) {
 }// the default constructor
 
 void EunetMobile::DoInitialize() {

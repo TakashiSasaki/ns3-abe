@@ -21,7 +21,7 @@ ns3::TypeId SimpleAp::GetTypeId(void) {
 }//GetTypeId
 
 SimpleAp::SimpleAp() :
-	WifiBase(this, WifiBase::ApWifiMac), MobilityBase(this, ns3::Vector(
+	WifiBase(this, WifiBase::ApWifiMac, false), MobilityBase(this, ns3::Vector(
 			this->GetId(), 0, 0)) {
 }
 

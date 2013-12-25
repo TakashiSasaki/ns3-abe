@@ -18,7 +18,7 @@ public:
 	ns3::Ptr<ns3::WifiNetDevice> getWifiNetDevice();
 	void bring(WifiBase& foreign_node);
 protected:
-	WifiBase(ns3::Node* p_node, const WifiMacTypeString);
+	WifiBase(ns3::Node* p_node, const WifiMacTypeString, bool active_probing);
 	virtual ~WifiBase();
 	void DoInitialize();
 private:

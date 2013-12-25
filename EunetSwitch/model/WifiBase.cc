@@ -21,7 +21,8 @@ WifiBase::WifiMacTypeString WifiBase::OcbWifimac = "ns3::OcbWifiMac";
 WifiBase::WifiMacTypeString WifiBase::StaWifiMac = "ns3::StaWifiMac";
 
 WifiBase::WifiBase(ns3::Node* p_node,
-		const WifiBase::WifiMacTypeString wifi_mac_type_string) :
+		const WifiBase::WifiMacTypeString wifi_mac_type_string,
+		bool active_probing) :
 	ptrNode(p_node, true), ifIndex(-1) {
 	//NS_FATAL_ERROR("no default constructor for SimpleAp");
 	auto wifi_channel_helper = ns3::YansWifiChannelHelper::Default();
@@ -29,8 +30,14 @@ WifiBase::WifiBase(ns3::Node* p_node,
 	auto wifi_phy_helper = ns3::YansWifiPhyHelper::Default();
 	wifi_phy_helper.SetChannel(ptr_wifi_channel);
 	auto wifi_mac_helper = ns3::NqosWifiMacHelper::Default();
-	wifi_mac_helper.SetType(wifi_mac_type_string);
+	if (active_probing == true) {
+		wifi_mac_helper.SetType(wifi_mac_type_string, "ActiveProbing",
+				ns3::BooleanValue(active_probing));
+	} else {
+		wifi_mac_helper.SetType(wifi_mac_type_string);
+	}
 	auto wifi_helper = ns3::WifiHelper::Default();
+	wifi_helper.SetRemoteStationManager("ns3::ArfWifiManager");
 	auto n_devices_before = ptrNode->GetNDevices();
 	NS_LOG_INFO("installing wifi phy and mac on this node.");
 	auto devices = wifi_helper.Install(wifi_phy_helper, wifi_mac_helper,
