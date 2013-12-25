@@ -4,6 +4,8 @@ NS_LOG_COMPONENT_DEFINE("CsmaNode");
 #define NS3_ASSERT_ENABLE 1
 #include "ns3/assert.h"
 #include "ns3/queue.h"
+#include "ns3/ipv4-interface.h"
+#include "ns3/ipv4-l3-protocol.h"
 #include "CsmaNode.h"
 NS_OBJECT_ENSURE_REGISTERED(CsmaNode);
 
@@ -48,9 +50,27 @@ CsmaNode::~CsmaNode() {
 }
 
 void CsmaNode::logAllDevices(const ns3::LogLevel log_level) {
+	//TODO: separate this method to other mixin class
 	NS_LOG_INFO("listing all devices installed in a node");
 	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
-		NS_LOG(log_level, this->GetDevice(i)->GetTypeId() << ", " << this->GetDevice(i)->GetInstanceTypeId());
+		auto ptr_net_device = this->GetDevice(i);
+		auto ptr_ipv4 = this->GetObject<ns3::Ipv4L3Protocol> ();
+		if (ptr_ipv4 == 0) {
+			NS_LOG_INFO("this node has no IPv4 stack");
+		} else {
+			const int i_interface = ptr_ipv4->GetInterfaceForDevice(
+					ptr_net_device);
+			if (i_interface == -1) {
+				NS_LOG_INFO(ptr_net_device->GetInstanceTypeId() << "\tno Ipv4InterfaceAddress");
+			} else {
+				auto ipv4_interface = ptr_ipv4->GetInterface(i_interface);
+				const int n_addresses = ipv4_interface->GetNAddresses();
+				for (int j = 0; j < n_addresses; ++j) {
+					auto ipv4_interface_address = ipv4_interface->GetAddress(j);
+					NS_LOG_INFO(ptr_net_device->GetInstanceTypeId() << "\t" << ipv4_interface_address.GetLocal());
+				}//for
+			}//if
+		}//if
 	}
 }//logAllDevices
 
