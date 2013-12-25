@@ -93,7 +93,7 @@ test-runner: test-runner.o $(NS3LIBS) $(NS3LIBSDEV) $(NS3LIBDCE) \
 	g++ -o $@ $(CXXFLAGS) $^
 
 test: test-runner
-	$(EXECENV) $(NS_LOG) ./test-runner
+	$(EXECENV) $(NS_LOG) ./test-runner --stop-on-failure
 
 install-dce-quagga: build-dce-quagga copy-shared-library copy-include-files
 
