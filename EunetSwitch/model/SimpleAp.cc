@@ -21,7 +21,7 @@ ns3::TypeId SimpleAp::GetTypeId(void) {
 }//GetTypeId
 
 SimpleAp::SimpleAp() :
-	WifiBase(this), MobilityBase(this) {
+	WifiBase(this, WifiBase::ApWifiMac), MobilityBase(this) {
 }
 
 void SimpleAp::DoInitialize() {

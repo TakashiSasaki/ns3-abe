@@ -8,9 +8,18 @@ NS_LOG_COMPONENT_DEFINE("WifiBase");
 #include "ns3/yans-wifi-helper.h"
 #include "ns3/nqos-wifi-mac-helper.h"
 #include "ns3/wifi-net-device.h"
+#include "ns3/wifi-mac-header.h"
 #include "WifiBase.h"
 
-WifiBase::WifiBase(ns3::Node* p_node) :
+WifiBase::WifiMacTypeString WifiBase::AdhocWifiMac = "ns3::AdhocWifiMac";
+WifiBase::WifiMacTypeString WifiBase::ApWifiMac = "ns3::ApWifiMac";
+WifiBase::WifiMacTypeString WifiBase::MeshWifiNeterfaceMac =
+		"ns3::MeshWifiInterfaceMac";
+WifiBase::WifiMacTypeString WifiBase::OcbWifimac = "ns3::OcbWifiMac";
+WifiBase::WifiMacTypeString WifiBase::StaWifiMac = "ns3::StaWifiMac";
+
+WifiBase::WifiBase(ns3::Node* p_node,
+		const WifiBase::WifiMacTypeString wifi_mac_type_string) :
 	ptrNode(p_node, true), ifIndex(-1) {
 	//NS_FATAL_ERROR("no default constructor for SimpleAp");
 	auto wifi_channel_helper = ns3::YansWifiChannelHelper::Default();
@@ -18,7 +27,7 @@ WifiBase::WifiBase(ns3::Node* p_node) :
 	auto wifi_phy_helper = ns3::YansWifiPhyHelper::Default();
 	wifi_phy_helper.SetChannel(ptr_wifi_channel);
 	auto wifi_mac_helper = ns3::NqosWifiMacHelper::Default();
-	wifi_mac_helper.SetType("ns3::ApWifiMac");
+	wifi_mac_helper.SetType(wifi_mac_type_string);
 	auto wifi_helper = ns3::WifiHelper::Default();
 	auto n_devices_before = ptrNode->GetNDevices();
 	NS_LOG_INFO("installing wifi phy and mac on this node.");
@@ -51,4 +60,11 @@ WifiBase::~WifiBase() {
 
 void WifiBase::setSsid(const ns3::Ssid& ssid) {
 	this->ssid = ssid;
+}
+
+ns3::Ptr<ns3::WifiNetDevice> WifiBase::getWifiNetDevice() {
+	auto ptr_net_device = this->ptrNode->GetDevice(this->ifIndex);
+	auto ptr_wifi_net_device = ptr_net_device->GetObject<ns3::WifiNetDevice> ();
+	NS_ASSERT(ptr_wifi_net_device != 0);
+	return ptr_wifi_net_device;
 }
