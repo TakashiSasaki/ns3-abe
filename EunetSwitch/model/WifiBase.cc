@@ -5,12 +5,15 @@ NS_LOG_COMPONENT_DEFINE("WifiBase");
 #include "ns3/assert.h"
 #include "ns3/net-device.h"
 #include "ns3/wifi-mac.h"
+#include "ns3/yans-wifi-phy.h"
 #include "ns3/yans-wifi-helper.h"
 #include "ns3/nqos-wifi-mac-helper.h"
 #include "ns3/wifi-net-device.h"
 #include "ns3/wifi-mac-header.h"
 #include "ns3/traced-value.h"
 #include "ns3/trace-source-accessor.h"
+#include "ns3/config.h"
+#include "ns3/string.h"
 #include "WifiBase.h"
 
 WifiBase::WifiMacTypeString WifiBase::AdhocWifiMac = "ns3::AdhocWifiMac";
@@ -24,6 +27,13 @@ WifiBase::WifiBase(ns3::Node* p_node,
 		const WifiBase::WifiMacTypeString wifi_mac_type_string,
 		bool active_probing) :
 	ptrNode(p_node, true), ifIndex(-1) {
+	// enable rts cts all the time.
+	ns3::Config::SetDefault("ns3::WifiRemoteStationManager::RtsCtsThreshold",
+			ns3::StringValue("0"));
+	// disable fragmentation
+	ns3::Config::SetDefault(
+			"ns3::WifiRemoteStationManager::FragmentationThreshold",
+			ns3::StringValue("2200"));
 	//NS_FATAL_ERROR("no default constructor for SimpleAp");
 	auto wifi_channel_helper = ns3::YansWifiChannelHelper::Default();
 	auto ptr_wifi_channel = wifi_channel_helper.Create();
@@ -100,6 +110,24 @@ ns3::Ptr<ns3::WifiNetDevice> WifiBase::getWifiNetDevice() {
 	auto ptr_wifi_net_device = ptr_net_device->GetObject<ns3::WifiNetDevice> ();
 	NS_ASSERT(ptr_wifi_net_device != 0);
 	return ptr_wifi_net_device;
+}
+
+void WifiBase::bringWifiBase(WifiBase& foreign_node) {
+	auto ptr_wifi_net_device =
+			this->ptrNode->GetObject<CsmaNode> ()->getNetDevice<
+					ns3::WifiNetDevice> ();
+	auto ptr_wifi_phy = ptr_wifi_net_device->GetPhy();
+	auto ptr_yans_wifi_phy = ptr_wifi_phy->GetObject<ns3::YansWifiPhy> ();
+	auto ptr_wifi_channel = ptr_wifi_phy->GetChannel();
+	auto ptr_yans_wifi_channel = ptr_wifi_channel->GetObject<
+			ns3::YansWifiChannel> ();
+	auto ptr_foreign_wifi_net_device =
+			foreign_node.ptrNode->GetObject<CsmaNode> ()->getNetDevice<
+					ns3::WifiNetDevice> ();
+	auto ptr_foreign_wifi_phy = ptr_foreign_wifi_net_device->GetPhy();
+	auto ptr_foreign_yans_wifi_phy = ptr_foreign_wifi_phy->GetObject<
+			ns3::YansWifiPhy> ();
+	ptr_foreign_yans_wifi_phy->SetChannel(ptr_yans_wifi_channel);
 }
 
 void WifiBase::traceMacTx(ns3::Ptr<const ns3::Packet> ptr_packet) const {

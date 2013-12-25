@@ -49,6 +49,8 @@ private:
 		object_factory.SetTypeId("SimpleAp");
 		auto simple_ap = object_factory.Create<SimpleAp> ();
 		simple_ap->setSsid(ns3::Ssid("eunet"));
+		simple_ap->bringWifiBase(*eunet_mobile_1);
+		simple_ap->bringWifiBase(*eunet_mobile_2);
 		NS_LOG_INFO(simple_ap);
 
 		eunet_mobile_1->logAllDevices();

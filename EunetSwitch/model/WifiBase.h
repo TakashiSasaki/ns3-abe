@@ -3,6 +3,7 @@
 #include "ns3/node.h"
 #include "ns3/ssid.h"
 #include "ns3/wifi-net-device.h"
+#include "CsmaNode.h"
 class WifiBase {
 	ns3::Ptr<ns3::Node> ptrNode;
 	ns3::Ssid ssid;
@@ -16,7 +17,7 @@ public:
 	static WifiMacTypeString OcbWifimac;
 	static WifiMacTypeString StaWifiMac;
 	ns3::Ptr<ns3::WifiNetDevice> getWifiNetDevice();
-	void bring(WifiBase& foreign_node);
+	void bringWifiBase(WifiBase& foreign_node);
 protected:
 	WifiBase(ns3::Node* p_node, const WifiMacTypeString, bool active_probing);
 	virtual ~WifiBase();
