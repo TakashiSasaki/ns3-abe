@@ -9,6 +9,8 @@ NS_LOG_COMPONENT_DEFINE("WifiBase");
 #include "ns3/nqos-wifi-mac-helper.h"
 #include "ns3/wifi-net-device.h"
 #include "ns3/wifi-mac-header.h"
+#include "ns3/traced-value.h"
+#include "ns3/trace-source-accessor.h"
 #include "WifiBase.h"
 
 WifiBase::WifiMacTypeString WifiBase::AdhocWifiMac = "ns3::AdhocWifiMac";
@@ -53,6 +55,17 @@ void WifiBase::DoInitialize() {
 		NS_FATAL_ERROR("ssid is not specified. call setSsid in advance.");
 	}
 	ptr_wifi_mac->SetSsid(this->ssid);
+
+	ptr_wifi_mac->TraceConnectWithoutContext("MacTx", ns3::MakeCallback(
+			&WifiBase::traceMacTx, this));
+	ptr_wifi_mac->TraceConnectWithoutContext("MacTxDrop", ns3::MakeCallback(
+			&WifiBase::traceMacTxDrop, this));
+	ptr_wifi_mac->TraceConnectWithoutContext("MacPromiscRx", ns3::MakeCallback(
+			&WifiBase::traceMacPromiscRx, this));
+	ptr_wifi_mac->TraceConnectWithoutContext("MacRx", ns3::MakeCallback(
+			&WifiBase::traceMacRx, this));
+	ptr_wifi_mac->TraceConnectWithoutContext("MacRxDrop", ns3::MakeCallback(
+			&WifiBase::traceMacRxDrop, this));
 }
 
 WifiBase::~WifiBase() {
@@ -67,4 +80,24 @@ ns3::Ptr<ns3::WifiNetDevice> WifiBase::getWifiNetDevice() {
 	auto ptr_wifi_net_device = ptr_net_device->GetObject<ns3::WifiNetDevice> ();
 	NS_ASSERT(ptr_wifi_net_device != 0);
 	return ptr_wifi_net_device;
+}
+
+void WifiBase::traceMacTx(ns3::Ptr<const ns3::Packet> ptr_packet) const {
+	NS_LOG_INFO("MacTx on node " << this->ptrNode->GetId());
+}
+
+void WifiBase::traceMacTxDrop(ns3::Ptr<const ns3::Packet> ptr_packet) const {
+	NS_LOG_INFO("MacTxDrop on node " << this->ptrNode->GetId());
+}
+
+void WifiBase::traceMacPromiscRx(ns3::Ptr<const ns3::Packet> ptr_packet) const {
+	NS_LOG_INFO("MacPromiscRx on node "<< this->ptrNode->GetId());
+}
+
+void WifiBase::traceMacRx(ns3::Ptr<const ns3::Packet> ptr_packet) const {
+	NS_LOG_INFO("MacRx on node "<< this->ptrNode->GetId());
+}
+
+void WifiBase::traceMacRxDrop(ns3::Ptr<const ns3::Packet> ptr_packet) const {
+	NS_LOG_INFO("MacRxDrop on node " << this->ptrNode->GetId());
 }

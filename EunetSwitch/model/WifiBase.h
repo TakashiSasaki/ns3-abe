@@ -21,6 +21,12 @@ protected:
 	WifiBase(ns3::Node* p_node, const WifiMacTypeString);
 	virtual ~WifiBase();
 	void DoInitialize();
+private:
+	void traceMacTx(ns3::Ptr<const ns3::Packet>) const;
+	void traceMacTxDrop(ns3::Ptr<const ns3::Packet>) const;
+	void traceMacPromiscRx(ns3::Ptr<const ns3::Packet>) const;
+	void traceMacRx(ns3::Ptr<const ns3::Packet>) const;
+	void traceMacRxDrop(ns3::Ptr<const ns3::Packet>) const;
 };
 
 #endif /* WIFIBASE_H_ */
