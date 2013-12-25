@@ -42,7 +42,7 @@ NS3LIBSDCE=libns3-dce.so libns3-dce-quagga.so libns3-dce-quagga-test.so libns3-d
 #endef
 
 define NS_LOG
-NS_LOG="EunetMobile=*:CsmaInternetNode=*:CsmaNode=*"
+NS_LOG="EunetMobile=*:CsmaInternetNode=*:CsmaNode=*:EunetMobileTest=*"
 endef
 
 libeunet.a : NamedSwitches.o EunetSwitch.o EunetSwitches.o \

@@ -26,6 +26,14 @@ private:
 		auto eunet_mobile_2 = object_factory.Create<EunetMobile> ();
 		eunet_mobile_2->setSsid(ns3::Ssid("eunet"));
 
+		ns3::Ipv4Address ipv4_address("10.0.0.0");
+		ns3::Ipv4Mask ipv4_mask("255.0.0.0");
+		ns3::Ipv4AddressHelper ipv4_address_helper(ipv4_address, ipv4_mask);
+
+		auto ptr_wifi_net_device = eunet_mobile_1->getNetDevice<
+				ns3::WifiNetDevice> (0);
+		NS_ASSERT(ptr_wifi_net_device->GetInstanceTypeId().IsChildOf(ns3::WifiNetDevice::GetTypeId()));
+
 		eunet_mobile_1->startAt(ns3::Seconds(0.0));
 		eunet_mobile_1->stopAt(ns3::Seconds(10.0));
 		eunet_mobile_1->setRemote(eunet_mobile_2);
