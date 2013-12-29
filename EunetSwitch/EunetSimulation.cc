@@ -19,8 +19,8 @@ EunetSimulation::EunetSimulation() {
 	NamedSwitches named_switches("133.71.0.0", "255.255.0.0");
 	named_switches.addEunetSwitch("キャンパス間接続L2", 64);
 
-	//城北キャンパスネットワーク
-	/*
+/*
+	 //城北キャンパスネットワーク
 	 named_switches.addEunetSwitch("dpc_02_core01", 64);
 	 named_switches.findEunetSwitch("dpc_02_core01")->setUplinkDataRate(
 	 ns3::DataRate("10Gbps"));
@@ -1182,9 +1182,8 @@ EunetSimulation::EunetSimulation() {
 	 ns3::DataRate("10Gbps"));
 	 named_switches.findEunetSwitch("odpc_01_1_sw01")->connectUpTo(
 	 "dpc_02_01_sw01");
-	 */
-
-	/*
+*/
+/*
 	 //重信キャンパスネットワーク
 	 //医学部寮
 	 named_switches.addEunetSwitch("me0_02_1_core01", 64);
@@ -1305,14 +1304,14 @@ EunetSimulation::EunetSimulation() {
 	 named_switches.findEunetSwitch("mej_01_1_sw01")->setUplinkDataRate(
 	 ns3::DataRate("1Gbps"));
 	 named_switches.findEunetSwitch("mej_01_1_sw01")->connectUpTo(
-	 "me0_02_1_sw01");
+	 "me0_02_1_core01");
 
 	 //臨床研究棟
 	 named_switches.addEunetSwitch("mer_01_1_sw01", 24);
 	 named_switches.findEunetSwitch("mer_01_1_sw01")->setUplinkDataRate(
 	 ns3::DataRate("10Gbps"));
 	 named_switches.findEunetSwitch("mer_01_1_sw01")->connectUpTo(
-	 "me0_　02_1_core01");
+	 "me0_02_1_core01");
 
 	 named_switches.addEunetSwitch("mer_02_1_sw01", 24);
 	 named_switches.findEunetSwitch("mer_02_1_sw01")->setUplinkDataRate(
@@ -1774,314 +1773,320 @@ EunetSimulation::EunetSimulation() {
 	 ns3::DataRate("1Gbps"));
 	 named_switches.findEunetSwitch("huku_01_1_sw01")->connectUpTo(
 	 "me2_01_1_sw01");
-	 */
+*/
 
-	//樽味キャンパスネットワーク
-	//農学部2号館
-	named_switches.addEunetSwitch("ag2_03_1_core01", 64);
-	named_switches.findEunetSwitch("ag2_03_1_core01")->setUplinkDataRate(
-			ns3::DataRate("10Gbps"));
-	named_switches.findEunetSwitch("ag2_03_1_core01")->connectUpTo("キャンパス間接続L2");
+	 //樽味キャンパスネットワーク
+	 //農学部2号館
+	 named_switches.addEunetSwitch("ag2_03_1_core01", 64);
+	 named_switches.findEunetSwitch("ag2_03_1_core01")->setUplinkDataRate(
+	 ns3::DataRate("10Gbps"));
+	 named_switches.findEunetSwitch("ag2_03_1_core01")->connectUpTo("キャンパス間接続L2");
 
-	named_switches.addEunetSwitch("ag2_03_1_sw01", 64);
-	named_switches.findEunetSwitch("ag2_03_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("10Gbps"));
-	named_switches.findEunetSwitch("ag2_03_1_sw01")->connectUpTo("キャンパス間接続L2");
+	 named_switches.addEunetSwitch("ag2_03_1_sw01", 64);
+	 named_switches.findEunetSwitch("ag2_03_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("10Gbps"));
+	 named_switches.findEunetSwitch("ag2_03_1_sw01")->connectUpTo("キャンパス間接続L2");
 
-	named_switches.addEunetSwitch("ag2_03_1_sw02", 48);
-	named_switches.findEunetSwitch("ag2_03_1_sw02")->setUplinkDataRate(
-			ns3::DataRate("10Gbps"));
-	named_switches.findEunetSwitch("ag2_03_1_sw02")->connectUpTo(
-			"ag2_03_1_core01");
+	 named_switches.addEunetSwitch("ag2_03_1_sw02", 48);
+	 named_switches.findEunetSwitch("ag2_03_1_sw02")->setUplinkDataRate(
+	 ns3::DataRate("10Gbps"));
+	 named_switches.findEunetSwitch("ag2_03_1_sw02")->connectUpTo(
+	 "ag2_03_1_core01");
 
-	named_switches.addEunetSwitch("ag2_03_1_sw03", 48);
-	named_switches.findEunetSwitch("ag2_03_1_sw03")->setUplinkDataRate(
-			ns3::DataRate("10Gbps"));
-	named_switches.findEunetSwitch("ag2_03_1_sw03")->connectUpTo(
-			"ag2_03_1_core01");
+	 named_switches.addEunetSwitch("ag2_03_1_sw03", 48);
+	 named_switches.findEunetSwitch("ag2_03_1_sw03")->setUplinkDataRate(
+	 ns3::DataRate("10Gbps"));
+	 named_switches.findEunetSwitch("ag2_03_1_sw03")->connectUpTo(
+	 "ag2_03_1_core01");
 
-	named_switches.addEunetSwitch("ag2_03_1_sw04", 24);
-	named_switches.findEunetSwitch("ag2_03_1_sw04")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("ag2_03_1_sw04")->connectUpTo(
-			"ag2_03_1_sw02");
+	 named_switches.addEunetSwitch("ag2_03_1_sw04", 24);
+	 named_switches.findEunetSwitch("ag2_03_1_sw04")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("ag2_03_1_sw04")->connectUpTo(
+	 "ag2_03_1_sw02");
 
-	named_switches.addEunetSwitch("ag2_03_1_sw05", 24);
-	named_switches.findEunetSwitch("ag2_03_1_sw05")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("ag2_03_1_sw05")->connectUpTo(
-			"ag2_03_1_core01");
+	 named_switches.addEunetSwitch("ag2_03_1_sw05", 24);
+	 named_switches.findEunetSwitch("ag2_03_1_sw05")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("ag2_03_1_sw05")->connectUpTo(
+	 "ag2_03_1_core01");
 
-	named_switches.addEunetSwitch("ag2_03_1_sw06", 24);
-	named_switches.findEunetSwitch("ag2_03_1_sw06")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("ag2_03_1_sw06")->connectUpTo(
-			"ag2_03_1_core01");
+	 named_switches.addEunetSwitch("ag2_03_1_sw06", 24);
+	 named_switches.findEunetSwitch("ag2_03_1_sw06")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("ag2_03_1_sw06")->connectUpTo(
+	 "ag2_03_1_core01");
 
-	named_switches.addEunetSwitch("ag2_03_2_sw01", 48);
-	named_switches.findEunetSwitch("ag2_03_2_sw01")->setUplinkDataRate(
-			ns3::DataRate("10Gbps"));
-	named_switches.findEunetSwitch("ag2_03_2_sw01")->connectUpTo(
-			"ag2_03_1_sw01");
+	 named_switches.addEunetSwitch("ag2_03_2_sw01", 48);
+	 named_switches.findEunetSwitch("ag2_03_2_sw01")->setUplinkDataRate(
+	 ns3::DataRate("10Gbps"));
+	 named_switches.findEunetSwitch("ag2_03_2_sw01")->connectUpTo(
+	 "ag2_03_1_sw01");
 
-	named_switches.addEunetSwitch("ag2_02_2_sw01", 48);
-	named_switches.findEunetSwitch("ag2_02_2_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("ag2_02_2_sw01")->connectUpTo(
-			"ag2_03_1_core01");
+	 named_switches.addEunetSwitch("ag2_02_2_sw01", 48);
+	 named_switches.findEunetSwitch("ag2_02_2_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("ag2_02_2_sw01")->connectUpTo(
+	 "ag2_03_1_core01");
 
-	named_switches.addEunetSwitch("ag2_02_2_sw02", 24);
-	named_switches.findEunetSwitch("ag2_02_2_sw02")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("ag2_02_2_sw02")->connectUpTo(
-			"ag2_03_2_sw01");
+	 named_switches.addEunetSwitch("ag2_02_2_sw02", 24);
+	 named_switches.findEunetSwitch("ag2_02_2_sw02")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("ag2_02_2_sw02")->connectUpTo(
+	 "ag2_03_2_sw01");
 
-	named_switches.addEunetSwitch("ag2_02_1_sw01", 48);
-	named_switches.findEunetSwitch("ag2_02_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("ag2_02_1_sw01")->connectUpTo(
-			"ag2_02_2_sw01");
+	 named_switches.addEunetSwitch("ag2_02_1_sw01", 48);
+	 named_switches.findEunetSwitch("ag2_02_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("ag2_02_1_sw01")->connectUpTo(
+	 "ag2_02_2_sw01");
 
-	//農学部本館(北)
-	named_switches.addEunetSwitch("aghn_01_1_sw01", 48);
-	named_switches.findEunetSwitch("aghn_01_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("10Gbps"));
-	named_switches.findEunetSwitch("aghn_01_1_sw01")->connectUpTo(
-			"ag2_03_1_core01");
+	 named_switches.addEunetSwitch("ag2_03_3_sw01", 48);
+	 named_switches.findEunetSwitch("ag2_03_3_sw01")->setUplinkDataRate(
+	 ns3::DataRate("10Gbps"));
+	 named_switches.findEunetSwitch("ag2_03_3_sw01")->connectUpTo(
+	 "ag2_02_2_sw01");
 
-	named_switches.addEunetSwitch("aghn_01_1_sw02", 48);
-	named_switches.findEunetSwitch("aghn_01_1_sw02")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("aghn_01_1_sw02")->connectUpTo(
-			"aghn_01_1_sw01");
+	 //農学部本館(北)
+	 named_switches.addEunetSwitch("aghn_01_1_sw01", 48);
+	 named_switches.findEunetSwitch("aghn_01_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("10Gbps"));
+	 named_switches.findEunetSwitch("aghn_01_1_sw01")->connectUpTo(
+	 "ag2_03_1_core01");
 
-	named_switches.addEunetSwitch("aghn_02_1_sw01", 48);
-	named_switches.findEunetSwitch("aghn_02_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("aghn_02_1_sw01")->connectUpTo(
-			"aghn_01_1_sw01");
+	 named_switches.addEunetSwitch("aghn_01_1_sw02", 48);
+	 named_switches.findEunetSwitch("aghn_01_1_sw02")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("aghn_01_1_sw02")->connectUpTo(
+	 "aghn_01_1_sw01");
 
-	named_switches.addEunetSwitch("aghn_03_1_sw01", 72);
-	named_switches.findEunetSwitch("aghn_03_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("aghn_03_1_sw01")->connectUpTo(
-			"aghn_01_1_sw01");
+	 named_switches.addEunetSwitch("aghn_02_1_sw01", 48);
+	 named_switches.findEunetSwitch("aghn_02_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("aghn_02_1_sw01")->connectUpTo(
+	 "aghn_01_1_sw01");
 
-	named_switches.addEunetSwitch("aghn_06_1_sw01", 48);
-	named_switches.findEunetSwitch("aghn_06_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("aghn_06_1_sw01")->connectUpTo(
-			"aghn_01_1_sw01");
+	 named_switches.addEunetSwitch("aghn_03_1_sw01", 72);
+	 named_switches.findEunetSwitch("aghn_03_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("aghn_03_1_sw01")->connectUpTo(
+	 "aghn_01_1_sw01");
 
-	named_switches.addEunetSwitch("aghn_06_2_sw01", 48);
-	named_switches.findEunetSwitch("aghn_06_2_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("aghn_06_2_sw01")->connectUpTo(
-			"aghn_06_1_sw01");
+	 named_switches.addEunetSwitch("aghn_06_1_sw01", 48);
+	 named_switches.findEunetSwitch("aghn_06_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("aghn_06_1_sw01")->connectUpTo(
+	 "aghn_01_1_sw01");
 
-	named_switches.addEunetSwitch("aghn_05_1_sw01", 48);
-	named_switches.findEunetSwitch("aghn_05_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("aghn_05_1_sw01")->connectUpTo(
-			"aghn_06_1_sw01");
+	 named_switches.addEunetSwitch("aghn_06_2_sw01", 48);
+	 named_switches.findEunetSwitch("aghn_06_2_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("aghn_06_2_sw01")->connectUpTo(
+	 "aghn_06_1_sw01");
 
-	named_switches.addEunetSwitch("aghn_04_1_sw01", 72);
-	named_switches.findEunetSwitch("aghn_04_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("aghn_04_1_sw01")->connectUpTo(
-			"aghn_06_1_sw01");
+	 named_switches.addEunetSwitch("aghn_05_1_sw01", 48);
+	 named_switches.findEunetSwitch("aghn_05_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("aghn_05_1_sw01")->connectUpTo(
+	 "aghn_06_1_sw01");
 
-	//農学部3号館
-	named_switches.addEunetSwitch("ag3_04_1_sw01", 48);
-	named_switches.findEunetSwitch("ag3_04_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("10Gbps"));
-	named_switches.findEunetSwitch("ag3_04_1_sw01")->connectUpTo(
-			"ag2_03_1_core01");
+	 named_switches.addEunetSwitch("aghn_04_1_sw01", 72);
+	 named_switches.findEunetSwitch("aghn_04_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("aghn_04_1_sw01")->connectUpTo(
+	 "aghn_06_1_sw01");
 
-	named_switches.addEunetSwitch("ag3_04_1_sw02", 48);
-	named_switches.findEunetSwitch("ag3_04_1_sw02")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("ag3_04_1_sw02")->connectUpTo(
-			"ag3_04_1_sw01");
+	 //農学部3号館
+	 named_switches.addEunetSwitch("ag3_04_1_sw01", 48);
+	 named_switches.findEunetSwitch("ag3_04_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("10Gbps"));
+	 named_switches.findEunetSwitch("ag3_04_1_sw01")->connectUpTo(
+	 "ag2_03_1_core01");
 
-	named_switches.addEunetSwitch("ag3_03_1_sw01", 24);
-	named_switches.findEunetSwitch("ag3_03_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("ag3_03_1_sw01")->connectUpTo(
-			"ag3_04_1_sw01");
+	 named_switches.addEunetSwitch("ag3_04_1_sw02", 48);
+	 named_switches.findEunetSwitch("ag3_04_1_sw02")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("ag3_04_1_sw02")->connectUpTo(
+	 "ag3_04_1_sw01");
 
-	named_switches.addEunetSwitch("ag3_02_1_sw01", 24);
-	named_switches.findEunetSwitch("ag3_02_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("ag3_02_1_sw01")->connectUpTo(
-			"ag3_04_1_sw01");
+	 named_switches.addEunetSwitch("ag3_03_1_sw01", 24);
+	 named_switches.findEunetSwitch("ag3_03_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("ag3_03_1_sw01")->connectUpTo(
+	 "ag3_04_1_sw01");
 
-	named_switches.addEunetSwitch("ag3_02_2_sw01", 24);
-	named_switches.findEunetSwitch("ag3_02_2_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("ag3_02_2_sw01")->connectUpTo(
-			"ag3_04_1_sw01");
+	 named_switches.addEunetSwitch("ag3_02_1_sw01", 24);
+	 named_switches.findEunetSwitch("ag3_02_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("ag3_02_1_sw01")->connectUpTo(
+	 "ag3_04_1_sw01");
 
-	named_switches.addEunetSwitch("ag3_01_1_sw01", 24);
-	named_switches.findEunetSwitch("ag3_01_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("ag3_01_1_sw01")->connectUpTo(
-			"ag3_04_1_sw01");
+	 named_switches.addEunetSwitch("ag3_02_2_sw01", 24);
+	 named_switches.findEunetSwitch("ag3_02_2_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("ag3_02_2_sw01")->connectUpTo(
+	 "ag3_04_1_sw01");
 
-	named_switches.addEunetSwitch("ag3_05_1_sw01", 24);
-	named_switches.findEunetSwitch("ag3_05_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("ag3_05_1_sw01")->connectUpTo(
-			"ag3_04_1_sw01");
+	 named_switches.addEunetSwitch("ag3_01_1_sw01", 24);
+	 named_switches.findEunetSwitch("ag3_01_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("ag3_01_1_sw01")->connectUpTo(
+	 "ag3_04_1_sw01");
 
-	named_switches.addEunetSwitch("ag3_05_2_sw01", 24);
-	named_switches.findEunetSwitch("ag3_05_2_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("ag3_05_2_sw01")->connectUpTo(
-			"ag3_04_1_sw01");
+	 named_switches.addEunetSwitch("ag3_05_1_sw01", 24);
+	 named_switches.findEunetSwitch("ag3_05_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("ag3_05_1_sw01")->connectUpTo(
+	 "ag3_04_1_sw01");
 
-	//総合科学研究支援センター
-	named_switches.addEunetSwitch("ags_02_1_sw01", 48);
-	named_switches.findEunetSwitch("ags_02_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("ags_02_1_sw01")->connectUpTo(
-			"ag2_03_1_sw01");
+	 named_switches.addEunetSwitch("ag3_05_2_sw01", 24);
+	 named_switches.findEunetSwitch("ag3_05_2_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("ag3_05_2_sw01")->connectUpTo(
+	 "ag3_04_1_sw01");
 
-	//三科実験室
-	named_switches.addEunetSwitch("agm_01_1_sw01", 48);
-	named_switches.findEunetSwitch("agm_01_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("agm_01_1_sw01")->connectUpTo(
-			"ag2_03_1_sw01");
+	 //総合科学研究支援センター
+	 named_switches.addEunetSwitch("ags_02_1_sw01", 48);
+	 named_switches.findEunetSwitch("ags_02_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("ags_02_1_sw01")->connectUpTo(
+	 "ag2_03_1_sw01");
 
-	//連合農学研究科
-	named_switches.addEunetSwitch("agr_02_1_sw01", 48);
-	named_switches.findEunetSwitch("agr_02_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("agr_02_1_sw01")->connectUpTo(
-			"ag2_03_1_sw01");
+	 //三科実験室
+	 named_switches.addEunetSwitch("agm_01_1_sw01", 48);
+	 named_switches.findEunetSwitch("agm_01_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("agm_01_1_sw01")->connectUpTo(
+	 "ag2_03_1_sw01");
 
-	named_switches.addEunetSwitch("agr_03_1_sw01", 48);
-	named_switches.findEunetSwitch("agr_03_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("agr_03_1_sw01")->connectUpTo(
-			"agr_02_1_sw01");
+	 //連合農学研究科
+	 named_switches.addEunetSwitch("agr_02_1_sw01", 48);
+	 named_switches.findEunetSwitch("agr_02_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("agr_02_1_sw01")->connectUpTo(
+	 "ag2_03_1_sw01");
 
-	named_switches.addEunetSwitch("agr_01_1_sw01", 24);
-	named_switches.findEunetSwitch("agr_01_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("agr_01_1_sw01")->connectUpTo(
-			"agr_02_1_sw01");
+	 named_switches.addEunetSwitch("agr_03_1_sw01", 48);
+	 named_switches.findEunetSwitch("agr_03_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("agr_03_1_sw01")->connectUpTo(
+	 "agr_02_1_sw01");
 
-	//ユーカリ会館
-	named_switches.addEunetSwitch("agu_02_1_sw01", 24);
-	named_switches.findEunetSwitch("agu_02_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("agu_02_1_sw01")->connectUpTo(
-			"agr_02_1_sw01");
+	 named_switches.addEunetSwitch("agr_01_1_sw01", 24);
+	 named_switches.findEunetSwitch("agr_01_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("agr_01_1_sw01")->connectUpTo(
+	 "agr_02_1_sw01");
 
-	//附属高校校舎(南)
-	named_switches.addEunetSwitch("agfs_01_1_sw01", 24);
-	named_switches.findEunetSwitch("agfs_01_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("agfs_01_1_sw01")->connectUpTo(
-			"ag2_03_1_sw01");
+	 //ユーカリ会館
+	 named_switches.addEunetSwitch("agu_02_1_sw01", 24);
+	 named_switches.findEunetSwitch("agu_02_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("agu_02_1_sw01")->connectUpTo(
+	 "agr_02_1_sw01");
 
-	named_switches.addEunetSwitch("agfs_01_1_sw02", 48);
-	named_switches.findEunetSwitch("agfs_01_1_sw02")->setUplinkDataRate(
-			ns3::DataRate("10Gbps"));
-	named_switches.findEunetSwitch("agfs_01_1_sw02")->connectUpTo(
-			"ag2_03_1_sw01");
+	 //附属高校校舎(南)
+	 named_switches.addEunetSwitch("agfs_01_1_sw01", 24);
+	 named_switches.findEunetSwitch("agfs_01_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("agfs_01_1_sw01")->connectUpTo(
+	 "ag2_03_1_sw01");
 
-	named_switches.addEunetSwitch("agfs_05_1_sw01", 24);
-	named_switches.findEunetSwitch("agfs_05_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("agfs_05_1_sw01")->connectUpTo(
-			"ag2_03_1_sw01");
+	 named_switches.addEunetSwitch("agfs_01_1_sw02", 48);
+	 named_switches.findEunetSwitch("agfs_01_1_sw02")->setUplinkDataRate(
+	 ns3::DataRate("10Gbps"));
+	 named_switches.findEunetSwitch("agfs_01_1_sw02")->connectUpTo(
+	 "ag2_03_1_sw01");
 
-	named_switches.addEunetSwitch("agfs_05_1_sw02", 48);
-	named_switches.findEunetSwitch("agfs_05_1_sw02")->setUplinkDataRate(
-			ns3::DataRate("10Gbps"));
-	named_switches.findEunetSwitch("agfs_05_1_sw02")->connectUpTo(
-			"ag2_03_1_sw01");
+	 named_switches.addEunetSwitch("agfs_05_1_sw01", 24);
+	 named_switches.findEunetSwitch("agfs_05_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("agfs_05_1_sw01")->connectUpTo(
+	 "ag2_03_1_sw01");
 
-	//附属高校舎（北）
-	named_switches.addEunetSwitch("agfn_03_1_sw01", 48);
-	named_switches.findEunetSwitch("agfn_03_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("10Gbps"));
-	named_switches.findEunetSwitch("agfn_03_1_sw01")->connectUpTo(
-			"ag2_03_1_core01");
+	 named_switches.addEunetSwitch("agfs_05_1_sw02", 48);
+	 named_switches.findEunetSwitch("agfs_05_1_sw02")->setUplinkDataRate(
+	 ns3::DataRate("10Gbps"));
+	 named_switches.findEunetSwitch("agfs_05_1_sw02")->connectUpTo(
+	 "ag2_03_1_sw01");
 
-	//環境産業研究施設
-	named_switches.addEunetSwitch("agk_01_1_sw01", 24);
-	named_switches.findEunetSwitch("agk_01_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("agk_01_1_sw01")->connectUpTo(
-			"ag2_03_1_sw01");
+	 //附属高校舎（北）
+	 named_switches.addEunetSwitch("agfn_03_1_sw01", 48);
+	 named_switches.findEunetSwitch("agfn_03_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("10Gbps"));
+	 named_switches.findEunetSwitch("agfn_03_1_sw01")->connectUpTo(
+	 "ag2_03_1_core01");
 
-	//農学部本館（南）
-	named_switches.addEunetSwitch("aghs_03_1_sw01", 48);
-	named_switches.findEunetSwitch("aghs_03_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("10Gbps"));
-	named_switches.findEunetSwitch("aghs_03_1_sw01")->connectUpTo(
-			"ag2_03_1_core01");
+	 //環境産業研究施設
+	 named_switches.addEunetSwitch("agk_01_1_sw01", 24);
+	 named_switches.findEunetSwitch("agk_01_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("agk_01_1_sw01")->connectUpTo(
+	 "ag2_03_1_sw01");
 
-	named_switches.addEunetSwitch("aghs_03_1_sw02", 48);
-	named_switches.findEunetSwitch("aghs_03_1_sw02")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("aghs_03_1_sw02")->connectUpTo(
-			"aghs_03_1_sw01");
+	 //農学部本館（南）
+	 named_switches.addEunetSwitch("aghs_03_1_sw01", 48);
+	 named_switches.findEunetSwitch("aghs_03_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("10Gbps"));
+	 named_switches.findEunetSwitch("aghs_03_1_sw01")->connectUpTo(
+	 "ag2_03_1_core01");
 
-	named_switches.addEunetSwitch("aghs_02_1_sw01", 48);
-	named_switches.findEunetSwitch("aghs_02_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("aghs_02_1_sw01")->connectUpTo(
-			"aghs_03_1_sw01");
+	 named_switches.addEunetSwitch("aghs_03_1_sw02", 48);
+	 named_switches.findEunetSwitch("aghs_03_1_sw02")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("aghs_03_1_sw02")->connectUpTo(
+	 "aghs_03_1_sw01");
 
-	named_switches.addEunetSwitch("aghs_02_2_sw01", 24);
-	named_switches.findEunetSwitch("aghs_02_2_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("aghs_02_2_sw01")->connectUpTo(
-			"aghs_03_1_sw01");
+	 named_switches.addEunetSwitch("aghs_02_1_sw01", 48);
+	 named_switches.findEunetSwitch("aghs_02_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("aghs_02_1_sw01")->connectUpTo(
+	 "aghs_03_1_sw01");
 
-	named_switches.addEunetSwitch("aghs_01_1_sw01", 48);
-	named_switches.findEunetSwitch("aghs_01_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("aghs_01_1_sw01")->connectUpTo(
-			"aghs_03_1_sw01");
+	 named_switches.addEunetSwitch("aghs_02_2_sw01", 24);
+	 named_switches.findEunetSwitch("aghs_02_2_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("aghs_02_2_sw01")->connectUpTo(
+	 "aghs_03_1_sw01");
 
-	named_switches.addEunetSwitch("aghs_04_1_sw01", 72);
-	named_switches.findEunetSwitch("aghs_04_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("aghs_04_1_sw01")->connectUpTo(
-			"aghs_03_1_sw01");
+	 named_switches.addEunetSwitch("aghs_01_1_sw01", 48);
+	 named_switches.findEunetSwitch("aghs_01_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("aghs_01_1_sw01")->connectUpTo(
+	 "aghs_03_1_sw01");
 
-	named_switches.addEunetSwitch("aghs_05_1_sw01", 48);
-	named_switches.findEunetSwitch("aghs_05_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("aghs_05_1_sw01")->connectUpTo(
-			"aghs_03_1_sw01");
+	 named_switches.addEunetSwitch("aghs_04_1_sw01", 72);
+	 named_switches.findEunetSwitch("aghs_04_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("aghs_04_1_sw01")->connectUpTo(
+	 "aghs_03_1_sw01");
 
-	//植物工場棟
-	named_switches.addEunetSwitch("agp_02_1_sw01", 48);
-	named_switches.findEunetSwitch("agp_02_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("agp_02_1_sw01")->connectUpTo(
-			"agk_01_1_sw01");
+	 named_switches.addEunetSwitch("aghs_05_1_sw01", 48);
+	 named_switches.findEunetSwitch("aghs_05_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("aghs_05_1_sw01")->connectUpTo(
+	 "aghs_03_1_sw01");
 
-	//農学部制御化実験施設
-	named_switches.addEunetSwitch("agce_01_1_sw01", 24);
-	named_switches.findEunetSwitch("agce_01_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("agce_01_1_sw01")->connectUpTo(
-			"ag3_02_1_sw01");
+	 //植物工場棟
+	 named_switches.addEunetSwitch("agp_02_1_sw01", 48);
+	 named_switches.findEunetSwitch("agp_02_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("agp_02_1_sw01")->connectUpTo(
+	 "agk_01_1_sw01");
 
-	//附属高校（中_北）2棟 廊下
-	named_switches.addEunetSwitch("agfcn_02_1_sw01", 48);
-	named_switches.findEunetSwitch("agfcn_02_1_sw01")->setUplinkDataRate(
-			ns3::DataRate("1Gbps"));
-	named_switches.findEunetSwitch("agfcn_02_1_sw01")->connectUpTo(
-			"agfn_03_1_sw01");
+	 //農学部制御化実験施設
+	 named_switches.addEunetSwitch("agce_01_1_sw01", 24);
+	 named_switches.findEunetSwitch("agce_01_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("agce_01_1_sw01")->connectUpTo(
+	 "ag3_02_1_sw01");
+
+	 //附属高校（中_北）2棟 廊下
+	 named_switches.addEunetSwitch("agfcn_02_1_sw01", 48);
+	 named_switches.findEunetSwitch("agfcn_02_1_sw01")->setUplinkDataRate(
+	 ns3::DataRate("1Gbps"));
+	 named_switches.findEunetSwitch("agfcn_02_1_sw01")->connectUpTo(
+	 "agfn_03_1_sw01");
 
 	/*
 	 //持田キャンパス

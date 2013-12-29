@@ -3,7 +3,7 @@ vpath %.cc container:model:test:../../utils
 vpath %.so ../../build:libs
 .PHONY: test visualize
 
-CXXFLAGS=-Icontainer -Imodel -I../../build -Iinclude -L../../build -L. -Llibs -g -pg -O0 -std=c++0x
+CXXFLAGS=-I./dce/build -I./dce/build/include/ns3 -Icontainer -Imodel -I../../build -Iinclude  -L../../build -L. -Llibs -L./dce/build -L./dce/build/include/ns3 -g -pg -O0 -std=c++0x
 
 ifeq ($(OS),Windows_NT)
 	SOSUFFIX=dll.a
@@ -11,10 +11,10 @@ ifeq ($(OS),Windows_NT)
 	EXECENV=PATH="$(PATH):../../build"
 else
 	SOSUFFIX=so
-	EXECENV=LD_LIBRARY_PATH=../../build:libs PYTHONPATH=../../build/bindings/python:../../src/visualizer:../../../pybindgen-0.16.0.825 
+	EXECENV=LD_LIBRARY_PATH=./dce/build:./dce/build/include/ns3:../../build:libs PYTHONPATH=../../build/bindings/python:../../src/visualizer:../../../pybindgen-0.16.0.825 
 endif
 
-CPPFLAGS = -g -pg -O0 -std=c++0x -Wall -Werror -I../../build -I../../build/include -I../../../ns-3-dev/build
+CPPFLAGS = -g -pg -O0 -std=c++0x -Wall -Werror -I../../build -I../../build/include -I../../../ns-3-dev/build 
 
 SOPREFIX=libns3.17-
 SOPREFIXDEV=libns3-dev-
@@ -89,7 +89,7 @@ clean:
 	-rm -f container/*.o model/*.o test/*.o *.o
 	-rm *.a
 
-test-runner: test-runner.o $(NS3LIBS) $(NS3LIBSDEV) $(NS3LIBDCE) SimpleApTest.o EunetTerminalTest.o EunetTerminalsTest.o EunetSwitchesTest.o EunetSwitchTest.o EunetRouter.o libeunet.a 
+test-runner: test-runner.o $(NS3LIBS) $(NS3LIBDCE) $(NS3LIBSDEV) SimpleApTest.o EunetTerminalTest.o EunetTerminalsTest.o EunetSwitchesTest.o EunetSwitchTest.o EunetRouterTest.o libeunet.a 
 	g++ -o $@ $(CXXFLAGS) $^
 
 test: test-runner

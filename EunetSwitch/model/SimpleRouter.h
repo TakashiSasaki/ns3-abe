@@ -3,6 +3,7 @@
 #include "ns3/nstime.h"
 #include "ns3/core-module.h"
 #include "ns3/internet-module.h"
+#include "ns3/dce-application-helper.h"
 #include "ns3/dce-module.h"
 #include "ns3/quagga-helper.h"
 #include "CsmaChannelNode.h"
@@ -26,7 +27,8 @@ public:
 	ns3::Ptr<ns3::CsmaNetDevice>
 	getLinkPort(const unsigned i_link_port);
 	void connectTo(const unsigned i_link_port,
-			ns3::Ptr<SimpleRouter> connect_to_device, const unsigned connect_i_link_port);
+			ns3::Ptr<SimpleRouter> connect_to_device,
+			const unsigned connect_i_link_port);
 	void connectTo(std::string router_name);
 	unsigned getUnusedlinkPort();
 protected:

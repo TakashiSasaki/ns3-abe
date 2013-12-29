@@ -7,6 +7,8 @@ NS_LOG_COMPONENT_DEFINE("SimpleRouter");
 #include "ns3/assert.h"
 #include "ns3/type-id.h"
 #include "ns3/bridge-helper.h"
+#include "ns3/dce-module.h"
+#include "ns3/dce-application-helper.h"
 #include "ns3/quagga-helper.h"
 #include "ns3/names.h"
 #include "SimpleRouter.h"
@@ -25,7 +27,7 @@ ns3::TypeId SimpleRouter::GetTypeId(void) {
 
 
 SimpleRouter::SimpleRouter(const unsigned n_ports) :
-	CsmaChannelNode(n_ports, defaultlinkDataRate, defaultlinkDelay),
+		CsmaChannelNode(n_ports, defaultlinkDataRate, defaultlinkDelay),
 			nlinkPorts(n_ports) {
 	this->setlinkDataRate(defaultlinkDataRate);
 	this->setlinkDelay(defaultlinkDelay);
