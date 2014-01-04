@@ -2,7 +2,7 @@
 #include <sstream>
 #define NS3_LOG_ENABLE 1
 #include "ns3/log.h"
-NS_LOG_COMPONENT_DEFINE("SimpleRouter");
+NS_LOG_COMPONENT_DEFINE("EunetRouter");
 #define NS3_ASSERT_ENABLE 1
 #include "ns3/assert.h"
 #include "ns3/type-id.h"
@@ -24,20 +24,18 @@ ns3::TypeId EunetRouter::GetTypeId(void) {
 const char* const EunetRouter::pcapPrefix = "EunetRouter";
 const char* const EunetRouter::asciiTracePrefix = "EunetRouter";
 
-
 EunetRouter::~EunetRouter() {
 }
 
 EunetRouter::EunetRouter(const unsigned n_ports) :
-		SimpleRouter(n_ports), eunetTerminals(
-					n_ports) {
+	SimpleRouter(n_ports), eunetTerminals(n_ports) {
 	NS_LOG_INFO("constructing EunetRouter");
 	NS_LOG_INFO("attaching " << this->eunetTerminals.GetN() << " terminal(s) to corresponding port(s)");
-		for (unsigned i = 0; i < this->eunetTerminals.GetN(); ++i) {
-			NS_LOG_INFO("attaching terminal " << i << " to corresponding port");
-			this->bring(i, this->eunetTerminals.Get(i), 0);
-		}
-		this->NotifyConstructionCompleted();
+	for (unsigned i = 0; i < this->eunetTerminals.GetN(); ++i) {
+		NS_LOG_INFO("attaching terminal " << i << " to corresponding port");
+		this->bring(i, this->eunetTerminals.Get(i), 0);
+	}
+	this->NotifyConstructionCompleted();
 }
 
 void EunetRouter::DoInitialize() {

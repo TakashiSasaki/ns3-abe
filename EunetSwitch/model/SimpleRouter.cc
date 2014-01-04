@@ -27,14 +27,14 @@ ns3::TypeId SimpleRouter::GetTypeId(void) {
 
 
 SimpleRouter::SimpleRouter(const unsigned n_ports) :
-		CsmaChannelNode(n_ports, defaultlinkDataRate, defaultlinkDelay),
+	CsmaChannelNode(n_ports, defaultlinkDataRate, defaultlinkDelay),
 			nlinkPorts(n_ports) {
 	this->setlinkDataRate(defaultlinkDataRate);
 	this->setlinkDelay(defaultlinkDelay);
 	NS_LOG_INFO("constructing SimpleSwitch");
 	for (unsigned i = 0; i < nlinkPorts; ++i) {
-			NS_LOG_INFO("investigating port " << i);
-			NS_ASSERT(!this->isConnectedToSimpleRouter(i));
+		NS_LOG_INFO("investigating port " << i);
+		NS_ASSERT(!this->isConnectedToSimpleRouter(i));
 	}
 }
 
@@ -59,9 +59,10 @@ ns3::Ptr<ns3::CsmaNetDevice> SimpleRouter::getLinkPort(const unsigned i_port) {
 	return p;
 }//getlinkPort
 
-void SimpleRouter::connectTo(const unsigned i_link_port, ns3::Ptr<
-		SimpleRouter> connect_router, const unsigned connect_i_link_port) {
-	this->bring(i_link_port, connect_router,connect_i_link_port);
+void SimpleRouter::connectTo(const unsigned i_link_port,
+		ns3::Ptr<SimpleRouter> connect_router,
+		const unsigned connect_i_link_port) {
+	this->bring(i_link_port, connect_router, connect_i_link_port);
 	NS_ASSERT(this->isConnectedToSimpleRouter(i_link_port));
 	NS_ASSERT(connect_router->isConnectedToSimpleRouter(connect_i_link_port));
 }//connectTo
