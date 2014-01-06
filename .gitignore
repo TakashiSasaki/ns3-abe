@@ -36,5 +36,8 @@ bake
 dce
 libs/
 include/
+EunetSwitch/elf-cache
+EunetSwitch/exitprocs
+EunetSwitch/files-?
 
 

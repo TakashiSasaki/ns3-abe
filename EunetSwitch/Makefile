@@ -12,8 +12,8 @@ ifeq ($(OS),Windows_NT)
         SOPREFIX=libns3.17-
         EXECENV=PATH="$(PATH):../../build"
 else
-        SOSUFFIX=so
-        EXECENV=LD_LIBRARY_PATH=./dce/build:./dce/build/include/ns3:../../build:libs PYTHONPATH=../../build/bindings/python:../../src/visualizer:../../../pybindgen-0.16.0.825 DCE_PATH=dce/build/bin_dce
+	SOSUFFIX=so
+	EXECENV=LD_LIBRARY_PATH=./dce/build:./dce/build/include/ns3:../../build:libs PYTHONPATH=../../build/bindings/python:../../src/visualizer:../../../pybindgen-0.16.0.825 DCE_PATH=dce/build/bin_dce
 endif
 
 CPPFLAGS = -g -pg -O0 -std=c++0x -Wall -Werror -I../../build -I../../build/include -I../../../ns-3-dev/build
@@ -24,70 +24,69 @@ SOPREFIXDEV=libns3-dev-
 #keep alphabetical order
 SOPREFIX=$(SOPREFIX317)
 NS3LIBS317=\
-        $(SOPREFIX)antenna-debug.$(SOSUFFIX) \
-        $(SOPREFIX)applications-debug.$(SOSUFFIX) \
-        $(SOPREFIX)bridge-debug.$(SOSUFFIX) \
-        $(SOPREFIX)buildings-debug.$(SOSUFFIX) \
-        $(SOPREFIX)config-store-debug.$(SOSUFFIX) \
-        $(SOPREFIX)core-debug.$(SOSUFFIX) \
-        $(SOPREFIX)csma-debug.$(SOSUFFIX) \
-        $(SOPREFIX)csma-layout-debug.$(SOSUFFIX) \
-        $(SOPREFIX)dsr-debug.$(SOSUFFIX) \
-        $(SOPREFIX)energy-debug.$(SOSUFFIX) \
-        $(SOPREFIX)flow-monitor-debug.$(SOSUFFIX) \
-        $(SOPREFIX)internet-debug.$(SOSUFFIX) \
-        $(SOPREFIX)lte-debug.$(SOSUFFIX) \
-        $(SOPREFIX)mesh-debug.$(SOSUFFIX) \
-        $(SOPREFIX)mpi-debug.$(SOSUFFIX) \
-        $(SOPREFIX)netanim-debug.$(SOSUFFIX) \
-        $(SOPREFIX)network-debug.$(SOSUFFIX) \
-        $(SOPREFIX)point-to-point-debug.$(SOSUFFIX) \
-        $(SOPREFIX)stats-debug.$(SOSUFFIX) \
-        $(SOPREFIX)olsr-debug.$(SOSUFFIX) \
-        $(SOPREFIX)propagation-debug.$(SOSUFFIX) \
-        $(SOPREFIX)tools-debug.$(SOSUFFIX) \
-        $(SOPREFIX)wifi-debug.$(SOSUFFIX) \
-        $(SOPREFIX)mobility-debug.$(SOSUFFIX) \
-        $(SOPREFIX)spectrum-debug.$(SOSUFFIX) \
-        $(SOPREFIX)uan-debug.$(SOSUFFIX) \
-        $(SOPREFIX)virtual-net-device-debug.$(SOSUFFIX) \
-        $(SOPREFIX)visualizer-debug.$(SOSUFFIX) \
-        $(SOPREFIX)wimax-debug.$(SOSUFFIX) \
-        $(SOPREFIX)test-debug.$(SOSUFFIX) \
-        $(SOPREFIX)tools-test-debug.$(SOSUFFIX) \
+	$(SOPREFIX)antenna-debug.$(SOSUFFIX) \
+	$(SOPREFIX)applications-debug.$(SOSUFFIX) \
+	$(SOPREFIX)bridge-debug.$(SOSUFFIX) \
+	$(SOPREFIX)buildings-debug.$(SOSUFFIX) \
+	$(SOPREFIX)config-store-debug.$(SOSUFFIX) \
+	$(SOPREFIX)core-debug.$(SOSUFFIX) \
+	$(SOPREFIX)csma-debug.$(SOSUFFIX) \
+	$(SOPREFIX)csma-layout-debug.$(SOSUFFIX) \
+	$(SOPREFIX)dsr-debug.$(SOSUFFIX) \
+	$(SOPREFIX)energy-debug.$(SOSUFFIX) \
+	$(SOPREFIX)flow-monitor-debug.$(SOSUFFIX) \
+	$(SOPREFIX)internet-debug.$(SOSUFFIX) \
+	$(SOPREFIX)lte-debug.$(SOSUFFIX) \
+	$(SOPREFIX)mesh-debug.$(SOSUFFIX) \
+	$(SOPREFIX)mpi-debug.$(SOSUFFIX) \
+	$(SOPREFIX)netanim-debug.$(SOSUFFIX) \
+	$(SOPREFIX)network-debug.$(SOSUFFIX) \
+	$(SOPREFIX)point-to-point-debug.$(SOSUFFIX) \
+	$(SOPREFIX)stats-debug.$(SOSUFFIX) \
+	$(SOPREFIX)olsr-debug.$(SOSUFFIX) \
+	$(SOPREFIX)propagation-debug.$(SOSUFFIX) \
+	$(SOPREFIX)tools-debug.$(SOSUFFIX) \
+	$(SOPREFIX)wifi-debug.$(SOSUFFIX) \
+	$(SOPREFIX)mobility-debug.$(SOSUFFIX) \
+	$(SOPREFIX)spectrum-debug.$(SOSUFFIX) \
+	$(SOPREFIX)uan-debug.$(SOSUFFIX) \
+	$(SOPREFIX)virtual-net-device-debug.$(SOSUFFIX) \
+	$(SOPREFIX)visualizer-debug.$(SOSUFFIX) \
+	$(SOPREFIX)wimax-debug.$(SOSUFFIX) \
+	$(SOPREFIX)test-debug.$(SOSUFFIX) \
+	$(SOPREFIX)tools-test-debug.$(SOSUFFIX) \
 
 
 # keep alphabetical order
 SOPREFIX=$(SOPREFIXDEV)
 NS3LIBSDEV=\
-        $(SOPREFIX)antenna-debug.$(SOSUFFIX) \
-        $(SOPREFIX)applications-debug.$(SOSUFFIX) \
-        $(SOPREFIX)bridge-debug.so \
-        $(SOPREFIX)buildings-debug.$(SOSUFFIX) \
-        $(SOPREFIX)config-store-debug.$(SOSUFFIX) \
-        $(SOPREFIX)core-debug.so \
-        $(SOPREFIX)core-test-debug.so \
-        $(SOPREFIX)csma-debug.$(SOSUFFIX) \
-        $(SOPREFIX)csma-layout-debug.$(SOSUFFIX) \
-        $(SOPREFIX)energy-debug.$(SOSUFFIX) \
-        $(SOPREFIX)flow-monitor-debug.$(SOSUFFIX) \
-        $(SOPREFIX)internet-debug.so \
-        $(SOPREFIX)lte-debug.$(SOSUFFIX) \
-        $(SOPREFIX)netanim-debug.$(SOSUFFIX) \
-        $(SOPREFIX)network-debug.so \
-        $(SOPREFIX)mobility-debug.$(SOSUFFIX) \
-        $(SOPREFIX)mpi-debug.$(SOSUFFIX) \
-        $(SOPREFIX)point-to-point-debug.$(SOSUFFIX) \
-        $(SOPREFIX)propagation-debug.$(SOSUFFIX) \
-        $(SOPREFIX)spectrum-debug.$(SOSUFFIX) \
-        $(SOPREFIX)stats-debug.so \
-        $(SOPREFIX)test-debug.$(SOSUFFIX) \
-        $(SOPREFIX)uan-debug.$(SOSUFFIX) \
-        $(SOPREFIX)virtual-net-device-debug.$(SOSUFFIX) \
-        $(SOPREFIX)wifi-debug.$(SOSUFFIX) \
-        $(SOPREFIX)wimax-debug.$(SOSUFFIX) \
+	$(SOPREFIX)antenna-debug.$(SOSUFFIX) \
+	$(SOPREFIX)applications-debug.$(SOSUFFIX) \
+	$(SOPREFIX)bridge-debug.so \
+	$(SOPREFIX)buildings-debug.$(SOSUFFIX) \
+	$(SOPREFIX)config-store-debug.$(SOSUFFIX) \
+	$(SOPREFIX)core-debug.so \
+	$(SOPREFIX)core-test-debug.so \
+	$(SOPREFIX)csma-debug.$(SOSUFFIX) \
+	$(SOPREFIX)csma-layout-debug.$(SOSUFFIX) \
+	$(SOPREFIX)energy-debug.$(SOSUFFIX) \
+	$(SOPREFIX)flow-monitor-debug.$(SOSUFFIX) \
+	$(SOPREFIX)internet-debug.so \
+	$(SOPREFIX)lte-debug.$(SOSUFFIX) \
+	$(SOPREFIX)netanim-debug.$(SOSUFFIX) \
+	$(SOPREFIX)network-debug.so \
+	$(SOPREFIX)mobility-debug.$(SOSUFFIX) \
+	$(SOPREFIX)mpi-debug.$(SOSUFFIX) \
+	$(SOPREFIX)point-to-point-debug.$(SOSUFFIX) \
+	$(SOPREFIX)propagation-debug.$(SOSUFFIX) \
+	$(SOPREFIX)spectrum-debug.$(SOSUFFIX) \
+	$(SOPREFIX)stats-debug.so \
+	$(SOPREFIX)test-debug.$(SOSUFFIX) \
+	$(SOPREFIX)uan-debug.$(SOSUFFIX) \
+	$(SOPREFIX)virtual-net-device-debug.$(SOSUFFIX) \
+	$(SOPREFIX)wifi-debug.$(SOSUFFIX) \
+	$(SOPREFIX)wimax-debug.$(SOSUFFIX) \
 
-        
 NS3LIBSDCE=libns3-dce.so libns3-dce-quagga.so libns3-dce-quagga-test.so libns3-dce-test-netlink.so libns3-dce-test.so libns3-netlink.so
 
 NS3LIBS=$(NS3LIBSDEV) $(NS3LIBSDCE)
@@ -143,11 +142,11 @@ clean:
 		-rm -f container/*.o model/*.o test/*.o *.o
 		-rm *.a
 
-test-runner-dce: test-runner.o $(NS3LIBS) SimpleApTest.o EunetTerminalTest.o EunetTerminalsTest.o EunetSwitchesTest.o EunetSwitchTest.o EunetRouterTest.o libeunet.a
-		g++ -o $@ $(CXXFLAGS) $^
+test-runner-dce: test-runner.o $(NS3LIBS) SimpleApTest.o EunetTerminalTest.o EunetTerminalsTest.o EunetSwitchesTest.o EunetSwitchTest.o EunetRouterTest.o libeunet.a 
+	g++ -o $@ $(CXXFLAGS) $^
 
-test-runner: test-runner.o $(NS3LIBS) $(NS3LIBSDCE) $(NS3LIBSDEV) SimpleApTest.o EunetTerminalTest.o EunetTerminalsTest.o EunetSwitchesTest.o EunetSwitchTest.o EunetRouterTest.o libeunet.a
-		g++ -o $@ $(CXXFLAGS) $^
+test-runner: test-runner.o $(NS3LIBS) $(NS3LIBSDCE) $(NS3LIBSDEV) SimpleApTest.o EunetTerminalTest.o EunetTerminalsTest.o EunetSwitchesTest.o EunetSwitchTest.o EunetRouterTest.o libeunet.a 
+	g++ -o $@ $(CXXFLAGS) $^
 
 test: test-runner
 		$(EXECENV) $(NS_LOG) ./test-runner
