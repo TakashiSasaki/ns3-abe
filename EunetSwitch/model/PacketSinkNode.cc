@@ -32,7 +32,8 @@ void PacketSinkNode::DoInitialize() {
 
 void PacketSinkNode::NotifyConstructionCompleted() {
 	Base::NotifyConstructionCompleted();
-	NS_ASSERT(this->GetNDevices() == 2);
+	const unsigned n_devices_before = this->GetNDevices();
+	//NS_ASSERT(this->GetNDevices() == 2);
 
 	NS_LOG_INFO("installing packet sink on node " << this->GetId());
 	ns3::PacketSinkHelper packet_sink_helper("ns3::UdpSocketFactory",
@@ -40,7 +41,7 @@ void PacketSinkNode::NotifyConstructionCompleted() {
 					PACKET_SINK_UDP_PORT)));
 	this->packetSink = packet_sink_helper.Install(this);
 	this->packetSink.Start(ns3::Seconds(0.0));
-	NS_ASSERT(this->GetNDevices() == 2);
+	NS_ASSERT(this->GetNDevices() == n_devices_before);
 }
 
 uint32_t PacketSinkNode::getTotalRx() {

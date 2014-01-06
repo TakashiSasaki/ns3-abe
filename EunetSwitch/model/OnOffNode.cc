@@ -32,9 +32,11 @@ void OnOffNode::DoInitialize() {
 
 void OnOffNode::NotifyConstructionCompleted() {
 	NS_LOG_INFO("notified the completion of OnOffNode");
-	NS_ASSERT(this->GetNDevices() == 1);
+	const unsigned n_devices_before = this->GetNDevices();
+	//NS_ASSERT(this->GetNDevices() == 1);
 	Base::NotifyConstructionCompleted();
-	NS_ASSERT(this->GetNDevices() == 2);NS_LOG_INFO("installing on-off application on node " << this->GetId());
+	NS_ASSERT(this->GetNDevices() == n_devices_before+1);
+	NS_LOG_INFO("installing on-off application on node " << this->GetId());
 	ns3::OnOffHelper on_off_helper("ns3::UdpSocketFactory", ns3::Address(
 			ns3::InetSocketAddress(ns3::Ipv4Address("1.2.3.4"),
 					PACKET_SINK_UDP_PORT)));
@@ -49,7 +51,7 @@ void OnOffNode::NotifyConstructionCompleted() {
 	//		ns3::InetSocketAddress(ns3::Ipv4Address("127.0.0.1"),
 	//				PACKET_SINK_UDP_PORT)));
 	this->onOffApplication = on_off_helper.Install(this);
-	NS_ASSERT(this->GetNDevices() == 2);
+	NS_ASSERT(this->GetNDevices() == n_devices_before+1);
 	NS_ASSERT(this->onOffApplication.GetN()==1);
 }
 
@@ -61,8 +63,4 @@ void OnOffNode::stopAt(ns3::Time stop_seconds) {
 	this->onOffApplication.Stop(stop_seconds);
 }//stopOnOffApplication
 
-void OnOffNode::setRemote(ns3::Ptr<PacketSinkNode> ptr_remote) {
-	this->onOffApplication.Get(0)->SetAttribute("Remote", ns3::AddressValue(
-			ns3::InetSocketAddress(ptr_remote->getCsmaNetDeviceAddress(),
-					PACKET_SINK_UDP_PORT)));
-}
+

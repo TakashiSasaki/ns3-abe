@@ -107,5 +107,5 @@ void EunetTerminals::setRemoteOfAtoB(const unsigned i_eunet_terminal_a,
 		const unsigned i_eunet_terminal_b) {
 	auto a = this->Get(i_eunet_terminal_a);
 	auto b = this->Get(i_eunet_terminal_b);
-	a->setRemote(b);
+	a->setRemote<ns3::CsmaNetDevice> (b);
 }

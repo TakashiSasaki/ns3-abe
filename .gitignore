@@ -1,5 +1,4 @@
 Debug
-EunetSwitch/EunetSwitchTest
 HelloGprof/hello
 *.stackdump
 *.o
@@ -13,11 +12,7 @@ factorial/*.s
 *.E.cc
 *.ccc
 hello
-EunetSwitchTest/EunetSwitchTest
-EunetSwitch/*.xml
 *.tr
-EunetSwitch/html
-EunetSwitch/latex
 *.pcap
 .cproject
 .project
@@ -28,16 +23,23 @@ EunetTest.bak
 .metadata
 \#*#
 *~
-EunetSwitch/EunetSimulation
-EunetSwitch/test-runner
-EunetSwitch/visualize
 *.a
 bake
 dce
 libs/
 include/
+test-runner
+EunetSwitch/EunetSwitchTest
+EunetSwitch/html
+EunetSwitch/latex
+EunetSwitchTest/EunetSwitchTest
+EunetSwitch/*.xml
+EunetSwitch/EunetSimulation
+EunetSwitch/test-runner
+EunetSwitch/visualize
 EunetSwitch/elf-cache
 EunetSwitch/exitprocs
 EunetSwitch/files-?
-
+EunetSimulation
+*.orig
 
