@@ -152,13 +152,18 @@ test: test-runner
 		$(EXECENV) $(NS_LOG) ./test-runner
 
 #build this target first to use DCE feature
-install-dce-quagga: build-dce-quagga copy-shared-library copy-include-files
+install-dce-quagga: build-dce-quagga run-dce-quagga test-dce-quagga \
+	copy-shared-library copy-include-files
 
 build-dce-quagga:
-		sh build-dce-quagga.sh
+	sh build-dce-quagga.sh
 
 run-dce-quagga:
 	$(EXECENV) dce/build/bin/dce-quagga-ospfd
+
+test-dce-quagga:
+	(cd dce/source/ns-3-dev; ./test.py)
+	-(cd dce/source/ns-3-dce; ./test.py)
 
 copy-from-dce-build: copy-shared-library copy-include-files
 
