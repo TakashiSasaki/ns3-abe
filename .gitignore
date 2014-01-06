@@ -39,5 +39,7 @@ include/
 EunetSwitch/elf-cache
 EunetSwitch/exitprocs
 EunetSwitch/files-?
+test-runner-dce
+
 
 

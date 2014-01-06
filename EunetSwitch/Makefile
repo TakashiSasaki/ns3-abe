@@ -1,9 +1,9 @@
 vpath %.h container:model
 vpath %.cc container:model:test:../../utils
-vpath %.so ../../build:libs
+vpath %.so ../../build:dce/build/lib:libs
 .PHONY: test visualize
 
-CXXFLAGSDCE=-I./dce/build -I./dce/build/include/ns3 -Icontainer -Imodel -Iinclude -L. -Llibs -L./dce/build -L./dce/build/lib -L./dce/build/include/ns3 -g -pg -O0 -std=c++0x
+CXXFLAGSDCE=-I./dce/build -I./dce/build/include -Icontainer -Imodel -Iinclude -L. -Llibs -L./dce/build -L./dce/build/lib -L./dce/build/include/ns3 -g -pg -O0 -std=c++0x
 CXXFLAGS317=-I./dce/build -I./dce/build/include/ns3 -Icontainer -Imodel -I../../build -Iinclude -L../../build -L. -Llibs -L./dce/build -L./dce/build/include/ns3 -g -pg -O0 -std=c++0x
 CXXFLAGS=$(CXXFLAGSDCE)
 
@@ -178,7 +178,7 @@ test-runner: test-runner.o $(NS3LIBS) $(NS3LIBSDCE) $(NS3LIBSDEV) SimpleApTest.o
 	g++ -o $@ $(CXXFLAGS) $^
 
 test: test-runner-dce
-	$(EXECENV) $(NS_LOG) ./test-runner --verbose --xml --tempdir=testpy-output/2014-01-06-04-35-10-CUT --out=process-manager.xml
+	$(EXECENV) $(NS_LOG) ./test-runner-dce --verbose --xml --tempdir=testpy-output/2014-01-06-04-35-10-CUT --out=process-manager.xml
 
 #build this target first to use DCE feature
 install-dce-quagga: build-dce-quagga test-dce-quagga \
