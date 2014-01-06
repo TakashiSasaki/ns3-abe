@@ -3,23 +3,50 @@ vpath %.cc container:model:test:../../utils
 vpath %.so ../../build:libs
 .PHONY: test visualize
 
-CXXFLAGSDCE=-I./dce/build -I./dce/build/include/ns3 -Icontainer -Imodel -Iinclude -L. -Llibs -L./dce/build -L./dce/build/include/ns3 -g -pg -O0 -std=c++0x
+CXXFLAGSDCE=-I./dce/build -I./dce/build/include/ns3 -Icontainer -Imodel -Iinclude -L. -Llibs -L./dce/build -L./dce/build/lib -L./dce/build/include/ns3 -g -pg -O0 -std=c++0x
 CXXFLAGS317=-I./dce/build -I./dce/build/include/ns3 -Icontainer -Imodel -I../../build -Iinclude -L../../build -L. -Llibs -L./dce/build -L./dce/build/include/ns3 -g -pg -O0 -std=c++0x
 CXXFLAGS=$(CXXFLAGSDCE)
+
+PWD:=$(shell pwd)
+$(info PWD=$(PWD))
+
+LD_LIBRARY_PATH:=$(LD_LIBRARY_PATH):$(PWD)/dce/source/ns-3-dce/build/lib
+LD_LIBRARY_PATH:=$(LD_LIBRARY_PATH):$(PWD)/dce/source/ns-3-dce/build/bin
+LD_LIBRARY_PATH:=$(LD_LIBRARY_PATH):$(PWD)/dce/source/ns-3-dce/build/bin_dce
+LD_LIBRARY_PATH:=$(LD_LIBRARY_PATH):$(PWD)/dce/source/ns-3-dce/build/bin_dce
+LD_LIBRARY_PATH:=$(LD_LIBRARY_PATH):$(PWD)/dce/build/lib
+LD_LIBRARY_PATH:=$(LD_LIBRARY_PATH):$(PWD)/dce/build/sbin
+LD_LIBRARY_PATH:=$(LD_LIBRARY_PATH):$(PWD)/dce/build/bin_dce
+LD_LIBRARY_PATH:=$(LD_LIBRARY_PATH):$(PWD)/dce/build/bin
+$(info LD_LIBRARY_PATH=$(LD_LIBRARY_PATH))
+
+DCE_PATH:=$(DCE_PATH):$(PWD)/dce/source/ns-3-dce/build/lib
+DCE_PATH:=$(DCE_PATH):$(PWD)/dce/source/ns-3-dce/build/bin
+DCE_PATH:=$(DCE_PATH):$(PWD)/dce/source/ns-3-dce/build/bin_dce
+DCE_PATH:=$(DCE_PATH):$(PWD)/dce/build/lib
+DCE_PATH:=$(DCE_PATH):$(PWD)/dce/biuld/sbin
+DCE_PATH:=$(DCE_PATH):$(PWD)/dce/build/bin_dce
+DCE_PATH:=$(DCE_PATH):$(PWD)/dce/build/bin
+$(info DCE_PATH=$(DCE_PATH))
+
+DCE_ROOT:=$(PWD)/dce/source/ns-3-dce/build:$(PWD)/dce/build
+$(info DCE_ROOT=$(DCE_ROOT))
 
 ifeq ($(OS),Windows_NT)
         SOSUFFIX=dll.a
         SOPREFIX=libns3.17-
         EXECENV=PATH="$(PATH):../../build"
 else
-	SOSUFFIX=so
-	EXECENV=LD_LIBRARY_PATH=./dce/build:./dce/build/include/ns3:../../build:libs PYTHONPATH=../../build/bindings/python:../../src/visualizer:../../../pybindgen-0.16.0.825 DCE_PATH=dce/build/bin_dce
+	SOSUFFIX:=so
+	EXECENV:=LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) DCE_PATH=$(DCE_PATH) DCE_ROOT=$(DCE_ROOT) \
+	PYTHONPATH=../../build/bindings/python:../../src/visualizer:../../../pybindgen-0.16.0.825 
 endif
 
 CPPFLAGS = -g -pg -O0 -std=c++0x -Wall -Werror -I../../build -I../../build/include -I../../../ns-3-dev/build
 
 SOPREFIX317=libns3.17-
 SOPREFIXDEV=libns3-dev-
+SOPREFIX=$(SOPREFIX317)
 
 #keep alphabetical order
 SOPREFIX=$(SOPREFIX317)
@@ -142,24 +169,29 @@ clean:
 		-rm -f container/*.o model/*.o test/*.o *.o
 		-rm *.a
 
-test-runner-dce: test-runner.o $(NS3LIBS) SimpleApTest.o EunetTerminalTest.o EunetTerminalsTest.o EunetSwitchesTest.o EunetSwitchTest.o EunetRouterTest.o libeunet.a 
+test-runner-dce: test-runner.o $(NS3LIBS) 
+	#SimpleApTest.o EunetTerminalTest.o EunetTerminalsTest.o \
+	#EunetSwitchesTest.o EunetSwitchTest.o EunetRouterTest.o libeunet.a 
 	g++ -o $@ $(CXXFLAGS) $^
 
 test-runner: test-runner.o $(NS3LIBS) $(NS3LIBSDCE) $(NS3LIBSDEV) SimpleApTest.o EunetTerminalTest.o EunetTerminalsTest.o EunetSwitchesTest.o EunetSwitchTest.o EunetRouterTest.o libeunet.a 
 	g++ -o $@ $(CXXFLAGS) $^
 
-test: test-runner
-		$(EXECENV) $(NS_LOG) ./test-runner
+test: test-runner-dce
+	$(EXECENV) $(NS_LOG) ./test-runner --verbose --xml --tempdir=testpy-output/2014-01-06-04-35-10-CUT --out=process-manager.xml
 
 #build this target first to use DCE feature
-install-dce-quagga: build-dce-quagga run-dce-quagga test-dce-quagga \
+install-dce-quagga: build-dce-quagga test-dce-quagga \
 	copy-shared-library copy-include-files
 
 build-dce-quagga:
 	sh build-dce-quagga.sh
 
 run-dce-quagga:
-	$(EXECENV) dce/build/bin/dce-quagga-ospfd
+	#$(EXECENV) dce/build/bin/test-runner --test-name=process-manager --stop-on-failure --fullness=QUICK --verbose
+	#(cd dce/source/ns-3-dce; ./test.py -s process-manager --verbose)
+	$(EXECENV) dce/build/bin/test-runner --verbose
+	$(EXECENV) dce/build/bin/dce-quagga-ospfd 
 
 test-dce-quagga:
 	(cd dce/source/ns-3-dev; ./test.py)
