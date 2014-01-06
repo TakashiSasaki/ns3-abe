@@ -5,7 +5,7 @@ export PATH=$PATH:$BAKE_HOME
 export PYTHONPATH=$PYTHONPATH:$BAKE_HOME
 mkdir dce
 cd dce
-bake.py configure -e dce-ns3-dev -e dce-quagga-dev
-bake.py download
-bake.py build
+bake.py configure -vvv -e dce-ns3-dev -e dce-quagga-dev
+bake.py download -vvv
+bake.py build -vvv
 

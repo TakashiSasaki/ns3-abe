@@ -151,10 +151,14 @@ test-runner: test-runner.o $(NS3LIBS) $(NS3LIBSDCE) $(NS3LIBSDEV) SimpleApTest.o
 test: test-runner
 		$(EXECENV) $(NS_LOG) ./test-runner
 
+#build this target first to use DCE feature
 install-dce-quagga: build-dce-quagga copy-shared-library copy-include-files
 
 build-dce-quagga:
 		sh build-dce-quagga.sh
+
+run-dce-quagga:
+	$(EXECENV) dce/build/bin/dce-quagga-ospfd
 
 copy-from-dce-build: copy-shared-library copy-include-files
 
