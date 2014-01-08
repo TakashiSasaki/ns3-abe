@@ -130,12 +130,24 @@ void WifiBase::bringWifiBase(WifiBase& foreign_node) {
 	ptr_foreign_yans_wifi_phy->SetChannel(ptr_yans_wifi_channel);
 }
 
+void WifiBase::getHex(std::ostream& os, ns3::Ptr<const ns3::Packet> ptr_packet) {
+
+	uint8_t buffer[ptr_packet->GetSize()];
+	for (unsigned i = 0; i < sizeof buffer; ++i) {
+		os << std::hex << (unsigned) buffer[i];
+	}
+}
+
 void WifiBase::traceMacTx(ns3::Ptr<const ns3::Packet> ptr_packet) const {
-	NS_LOG_INFO(ptr_packet->GetSize() << " bytes " << "MacTx on node " << this->ptrNode->GetId());
+	std::ostringstream oss;
+	getHex(oss, ptr_packet);
+	NS_LOG_INFO(ptr_packet->GetSize() << " bytes " << "MacTx on node " << this->ptrNode->GetId() << " " << oss.str());
 }
 
 void WifiBase::traceMacTxDrop(ns3::Ptr<const ns3::Packet> ptr_packet) const {
-	NS_LOG_INFO(ptr_packet->GetSize() << " bytes " << "MacTxDrop on node " << this->ptrNode->GetId());
+	std::ostringstream oss;
+	getHex(oss, ptr_packet);
+	NS_LOG_INFO(ptr_packet->GetSize() << " bytes " << "MacTxDrop on node " << this->ptrNode->GetId() << " " << oss.str());
 }
 
 void WifiBase::traceMacPromiscRx(ns3::Ptr<const ns3::Packet> ptr_packet) const {
