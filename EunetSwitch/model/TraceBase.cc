@@ -11,6 +11,7 @@ NS_LOG_COMPONENT_DEFINE("TraceBase");
 void TraceBase::getHex(std::ostream& os, ns3::Ptr<const ns3::Packet> ptr_packet) {
 
 	uint8_t buffer[ptr_packet->GetSize()];
+	ptr_packet->CopyData(buffer, sizeof buffer);
 	for (unsigned i = 0; i < sizeof buffer; ++i) {
 		os << std::hex << std::setw(2) << std::setfill('0')
 				<< (unsigned) buffer[i];
