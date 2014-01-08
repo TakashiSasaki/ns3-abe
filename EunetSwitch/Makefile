@@ -75,7 +75,7 @@ ifdef STD
 endif
 
 NS_LOG_STD=WifiBase=*:EunetMobile=*:CsmaInternetNode=*:CsmaNode=*:EunetMobileTest=*
-NS_LOG_DCE=*
+NS_LOG_DCE=
 #define NS_LOG
 #NS_LOG="NamedRouters=**:EunetRouters=**:EunetRouter=**:SimpleRouter=**:BridgingAp=**:SimpleAp=**:NamedSwitches=**:EunetSwitch=**:EunetSwitches=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"
 #endef
@@ -129,7 +129,6 @@ NS3LIBS_DCE=\
     $(SOPREFIXDEV)buildings-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)config-store-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)core-debug.so \
-    $(SOPREFIXDEV)core-test-debug.so \
     $(SOPREFIXDEV)csma-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)csma-layout-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)energy-debug.$(SOSUFFIX) \
@@ -144,15 +143,11 @@ NS3LIBS_DCE=\
     $(SOPREFIXDEV)propagation-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)spectrum-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)stats-debug.so \
-    $(SOPREFIXDEV)test-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)uan-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)virtual-net-device-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)wifi-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)wimax-debug.$(SOSUFFIX) \
     libns3-dce.so libns3-dce-quagga.so \
-    libns3-dce-quagga-test.so \
-    libns3-dce-test-netlink.so \
-    libns3-dce-test.so \
     libns3-netlink.so
 
 TESTS_COMMON= \
@@ -167,7 +162,6 @@ TESTS_STD= \
 
 TESTS_DCE= \
     EunetRouterTest.o 
-
 
 OBJS_COMMON:= \
     NamedSwitches.o EunetSwitch.o EunetSwitches.o \
@@ -215,7 +209,7 @@ test-runner: $(TEST_RUNNER) $(NS3LIBS_$(VER)) $(TESTS_$(VER)) libeunet.a
 	g++ -o $@ $(CXXFLAGS) $^
 
 test: test-runner
-	$(EXECENV) $(NS_LOG) ./test-runner --stop-on-failure
+	$(EXECENV) ./test-runner --stop-on-failure
 	#$(EXECENV) $(NS_LOG) ./test-runner --verbose --xml --tempdir=testpy-output/2014-01-06-04-35-10-CUT --out=process-manager.xml
 
 #build this target first to use DCE feature
