@@ -19,6 +19,8 @@ NS_LOG_COMPONENT_DEFINE("WifiTest");
 #include "ns3/aarf-wifi-manager.h"
 #include "ns3/propagation-delay-model.h"
 #include "ns3/propagation-loss-model.h"
+#include "WifiPhyTrace.h"
+#include "WifiMacTrace.h"
 
 class WifiTestCase: public ns3::TestCase {
 	ns3::Ptr<ns3::YansWifiChannel> ptrYansWifiChannel;
@@ -57,6 +59,13 @@ public:
 
 WifiTestCase::WifiTestCase() :
 	ns3::TestCase("WifiTestCase") {
+#if 0
+#endif
+}
+WifiTestCase::~WifiTestCase() {
+}
+
+void WifiTestCase::DoRun() {
 	auto wifi_channel_helper = ns3::YansWifiChannelHelper::Default();
 	this->ptrYansWifiChannel = wifi_channel_helper.Create();
 	this->ptrPropagationDelayModel = ns3::CreateObject<
@@ -135,13 +144,24 @@ WifiTestCase::WifiTestCase() :
 	this->ptrNode1->AddDevice(this->ptrWifiNetDevice1);
 	this->ptrNode2->AddDevice(this->ptrWifiNetDevice2);
 	this->ptrNode3->AddDevice(this->ptrWifiNetDevice3);
-#if 0
-#endif
-}
-WifiTestCase::~WifiTestCase() {
-}
-
-void WifiTestCase::DoRun() {
+	NS_ASSERT(this->ptrNode1->GetNDevices() > 0);
+	NS_ASSERT(this->ptrNode2->GetNDevices() > 0);
+	NS_ASSERT(this->ptrNode3->GetNDevices() > 0);
+	WifiMacTrace wifi_mac_trace_1(this->ptrNode1.operator ->());
+	WifiMacTrace wifi_mac_trace_2(this->ptrNode2.operator ->());
+	WifiMacTrace wifi_mac_trace_3(this->ptrNode3.operator ->());
+	WifiPhyTrace wifi_phy_trace_1(this->ptrNode1.operator ->());
+	WifiPhyTrace wifi_phy_trace_2(this->ptrNode2.operator ->());
+	WifiPhyTrace wifi_phy_trace_3(this->ptrNode3.operator ->());
+	wifi_mac_trace_1.DoInitialize();
+	wifi_mac_trace_2.DoInitialize();
+	wifi_mac_trace_3.DoInitialize();
+	wifi_phy_trace_1.DoInitialize();
+	wifi_phy_trace_2.DoInitialize();
+	wifi_phy_trace_3.DoInitialize();
+	ns3::Simulator::Stop(ns3::Seconds(10.0));
+	ns3::Simulator::Run();
+	ns3::Simulator::Destroy();
 }
 
 class WifiTestSuite: public ns3::TestSuite {

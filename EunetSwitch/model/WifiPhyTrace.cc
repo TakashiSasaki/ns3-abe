@@ -67,6 +67,7 @@ void WifiPhyTrace::tracePhyRxDrop(ns3::Ptr<const ns3::Packet> ptr_packet) const 
 }
 
 void WifiPhyTrace::DoInitialize() {
+	NS_LOG_INFO("WifiPhyTrace::DoInitialize");
 	for (unsigned i = 0; i < this->ptrNode->GetNDevices(); ++i) {
 		auto ptr_net_device = this->ptrNode->GetDevice(i);
 		auto type_id = ptr_net_device->GetInstanceTypeId();

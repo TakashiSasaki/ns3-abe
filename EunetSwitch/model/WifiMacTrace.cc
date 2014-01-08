@@ -39,12 +39,14 @@ void WifiMacTrace::traceMacRxDrop(ns3::Ptr<const ns3::Packet> ptr_packet) const 
 
 WifiMacTrace::WifiMacTrace(ns3::Node* p_node) :
 	TraceBase(p_node) {
+	NS_LOG_INFO("node " << p_node->GetId() << " has " << p_node->GetNDevices() << " device(s)");
 }
 
 WifiMacTrace::~WifiMacTrace() {
 }
 
 void WifiMacTrace::DoInitialize() {
+	NS_LOG_INFO("WifiMacTrace::DoInitialize");
 	for (unsigned i = 0; i < this->ptrNode->GetNDevices(); ++i) {
 		auto ptr_net_device = this->ptrNode->GetDevice(i);
 		auto type_id = ptr_net_device->GetInstanceTypeId();
