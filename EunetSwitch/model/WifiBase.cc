@@ -95,6 +95,8 @@ void WifiBase::DoInitialize() {
 			&WifiBase::tracePhyTxDrop, this));
 	ptr_wifi_phy->TraceConnectWithoutContext("PhyRxBegin", ns3::MakeCallback(
 			&WifiBase::tracePhyRxBegin, this));
+	ptr_wifi_phy->TraceConnectWithoutContext("PhyRxEnd", ns3::MakeCallback(
+			&WifiBase::tracePhyRxEnd, this));
 	ptr_wifi_phy->TraceConnectWithoutContext("PhyRxDrop", ns3::MakeCallback(
 			&WifiBase::tracePhyRxDrop, this));
 }
@@ -157,11 +159,15 @@ void WifiBase::traceMacPromiscRx(ns3::Ptr<const ns3::Packet> ptr_packet) const {
 }
 
 void WifiBase::traceMacRx(ns3::Ptr<const ns3::Packet> ptr_packet) const {
-	NS_LOG_INFO(ptr_packet->GetSize() << " bytes " << "MacRx on node "<< this->ptrNode->GetId());
+	std::ostringstream oss;
+	getHex(oss, ptr_packet);
+	NS_LOG_INFO(ptr_packet->GetSize() << " bytes " << "MacRx\ton node "<< this->ptrNode->GetId() << " " << oss.str());
 }
 
 void WifiBase::traceMacRxDrop(ns3::Ptr<const ns3::Packet> ptr_packet) const {
-	NS_LOG_INFO(ptr_packet->GetSize() << " bytes " << "MacRxDrop on node " << this->ptrNode->GetId());
+	std::ostringstream oss;
+	getHex(oss, ptr_packet);
+	NS_LOG_INFO(ptr_packet->GetSize() << " bytes " << "MacRxDrop\ton node " << this->ptrNode->GetId() << " " << oss.str());
 }
 
 void WifiBase::tracePhyTxBegin(ns3::Ptr<const ns3::Packet> ptr_packet) const {
@@ -183,9 +189,19 @@ void WifiBase::tracePhyTxDrop(ns3::Ptr<const ns3::Packet> ptr_packet) const {
 }
 
 void WifiBase::tracePhyRxBegin(ns3::Ptr<const ns3::Packet> ptr_packet) const {
-	NS_LOG_INFO(ptr_packet->GetSize() << " bytes " <<"PhyRxBegin on node " << this->ptrNode->GetId());
+	std::ostringstream oss;
+	getHex(oss, ptr_packet);
+	NS_LOG_INFO(ptr_packet->GetSize() << " bytes " <<"PhyRxBegin\ton node " << this->ptrNode->GetId() << " " << oss.str());
+}
+
+void WifiBase::tracePhyRxEnd(ns3::Ptr<const ns3::Packet> ptr_packet) const {
+	std::ostringstream oss;
+	getHex(oss, ptr_packet);
+	NS_LOG_INFO(ptr_packet->GetSize() << " bytes " <<"PhyRxEnd\ton node " << this->ptrNode->GetId() << " " << oss.str());
 }
 
 void WifiBase::tracePhyRxDrop(ns3::Ptr<const ns3::Packet> ptr_packet) const {
-	NS_LOG_INFO(ptr_packet->GetSize() << " bytes " <<"PhyRxDrop on node " << this->ptrNode->GetId());
+	std::ostringstream oss;
+	getHex(oss, ptr_packet);
+	NS_LOG_INFO(ptr_packet->GetSize() << " bytes " <<"PhyRxDrop\ton node " << this->ptrNode->GetId() << " " << oss.str());
 }
