@@ -6,7 +6,10 @@
 #include "ns3/wifi-net-device.h"
 #include "CsmaNode.h"
 #include "TraceBase.h"
-class WifiBase: public TraceBase {
+#include "WifiMacTrace.h"
+#include "WifiPhyTrace.h"
+
+class WifiBase: public WifiPhyTrace, public WifiMacTrace {
 	ns3::Ptr<ns3::Node> ptrNode;
 	ns3::Ssid ssid;
 	unsigned ifIndex;

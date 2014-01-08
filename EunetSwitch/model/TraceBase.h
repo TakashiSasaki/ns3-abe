@@ -5,8 +5,8 @@
 class TraceBase {
 protected:
 	ns3::Ptr<ns3::Node> ptrNode;
-public:
 	TraceBase(ns3::Node* p_node);
+public:
 	virtual ~TraceBase();
 protected:
 	static void getHex(std::ostream&, ns3::Ptr<const ns3::Packet> ptr_packet);

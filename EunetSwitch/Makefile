@@ -71,7 +71,7 @@ ifdef STD
 endif
 
 #NS_LOG_STD=WifiBase=*:EunetMobile=*:CsmaInternetNode=*:CsmaNode=*:EunetMobileTest=*
-NS_LOG_STD=EunetMobile=*:SimpleAp=*:WifiBase=*
+NS_LOG_STD=EunetMobile=*:SimpleAp=*:WifiBase=*:WifiPhyTrace=*:WifiMacTrace=*:TraceBase=*
 NS_LOG_DCE=
 #define NS_LOG
 #NS_LOG="NamedRouters=**:EunetRouters=**:EunetRouter=**:SimpleRouter=**:BridgingAp=**:SimpleAp=**:NamedSwitches=**:EunetSwitch=**:EunetSwitches=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"

@@ -1,5 +1,10 @@
 #include <iostream>
 #include <iomanip>
+#define NS3_LOG_ENABLE 1
+#include "ns3/log.h"
+NS_LOG_COMPONENT_DEFINE("TraceBase");
+#define NS3_ASSERT_ENABLE 1
+#include "ns3/assert.h"
 #include "ns3/node.h"
 #include "TraceBase.h"
 

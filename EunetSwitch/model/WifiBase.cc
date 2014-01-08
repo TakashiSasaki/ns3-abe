@@ -27,8 +27,9 @@ WifiBase::WifiMacTypeString WifiBase::StaWifiMac = "ns3::StaWifiMac";
 WifiBase::WifiBase(ns3::Node* p_node,
 		const WifiBase::WifiMacTypeString wifi_mac_type_string,
 		bool active_probing) :
-	TraceBase(p_node), ptrNode(p_node, true), ifIndex(-1) {
-	// enable rts cts all the time.
+	TraceBase(p_node), WifiPhyTrace(p_node), WifiMacTrace(p_node), ptrNode(
+			p_node, true), ifIndex(-1) {
+	// enable rts cts all the time.#define NS3_LOG_ENABLE 1
 	ns3::Config::SetDefault("ns3::WifiRemoteStationManager::RtsCtsThreshold",
 			ns3::StringValue("0"));
 	// disable fragmentation
@@ -67,6 +68,7 @@ void WifiBase::DoInitialize() {
 			ptr_net_device->GetObject<ns3::WifiNetDevice> ();
 	NS_ASSERT(ptr_wifi_net_device != 0);
 	auto ptr_wifi_mac = ptr_wifi_net_device->GetMac();
+	NS_LOG_INFO(ptr_wifi_mac->GetAddress());
 	NS_ASSERT(ptr_wifi_mac != 0);
 	//NS_LOG_UNCOND(ptr_wifi_mac);
 	if (this->ssid.IsEqual(ns3::Ssid())) {
@@ -74,31 +76,8 @@ void WifiBase::DoInitialize() {
 	}
 	ptr_wifi_mac->SetSsid(this->ssid);
 
-	ptr_wifi_mac->TraceConnectWithoutContext("MacTx", ns3::MakeCallback(
-			&WifiBase::traceMacTx, this));
-	ptr_wifi_mac->TraceConnectWithoutContext("MacTxDrop", ns3::MakeCallback(
-			&WifiBase::traceMacTxDrop, this));
-	ptr_wifi_mac->TraceConnectWithoutContext("MacPromiscRx", ns3::MakeCallback(
-			&WifiBase::traceMacPromiscRx, this));
-	ptr_wifi_mac->TraceConnectWithoutContext("MacRx", ns3::MakeCallback(
-			&WifiBase::traceMacRx, this));
-	ptr_wifi_mac->TraceConnectWithoutContext("MacRxDrop", ns3::MakeCallback(
-			&WifiBase::traceMacRxDrop, this));
-
-	auto ptr_wifi_phy = ptr_wifi_net_device->GetPhy();
-
-	ptr_wifi_phy->TraceConnectWithoutContext("PhyTxBegin", ns3::MakeCallback(
-			&WifiBase::tracePhyTxBegin, this));
-	ptr_wifi_phy->TraceConnectWithoutContext("PhyTxEnd", ns3::MakeCallback(
-			&WifiBase::tracePhyTxEnd, this));
-	ptr_wifi_phy->TraceConnectWithoutContext("PhyTxDrop", ns3::MakeCallback(
-			&WifiBase::tracePhyTxDrop, this));
-	ptr_wifi_phy->TraceConnectWithoutContext("PhyRxBegin", ns3::MakeCallback(
-			&WifiBase::tracePhyRxBegin, this));
-	ptr_wifi_phy->TraceConnectWithoutContext("PhyRxEnd", ns3::MakeCallback(
-			&WifiBase::tracePhyRxEnd, this));
-	ptr_wifi_phy->TraceConnectWithoutContext("PhyRxDrop", ns3::MakeCallback(
-			&WifiBase::tracePhyRxDrop, this));
+	WifiMacTrace::DoInitialize();
+	WifiPhyTrace::DoInitialize();
 }
 
 WifiBase::~WifiBase() {

@@ -23,7 +23,8 @@ ns3::TypeId BridgingAp::GetTypeId(void) {
 	return type_id;
 }//GetTypeId
 
-BridgingAp::BridgingAp() {
+BridgingAp::BridgingAp() :
+	TraceBase(this) {
 	// TODO 自動生成されたコンストラクター・スタブ
 
 }

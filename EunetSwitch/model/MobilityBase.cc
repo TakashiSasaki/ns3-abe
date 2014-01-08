@@ -8,7 +8,7 @@ NS_LOG_COMPONENT_DEFINE("MobilityBase");
 
 MobilityBase::MobilityBase(ns3::Node* p_node,
 		const ns3::Vector initial_position) :
-	ptrNode(p_node, true), initialPosition(initialPosition) {
+	ptrNode(p_node, true), initialPosition(initial_position) {
 }
 
 MobilityBase::~MobilityBase() {
