@@ -71,14 +71,14 @@ ifdef STD
 endif
 
 #NS_LOG_STD=WifiBase=*:EunetMobile=*:CsmaInternetNode=*:CsmaNode=*:EunetMobileTest=*
-NS_LOG_STD=
+NS_LOG_STD=EunetMobile=*:SimpleAp=*:WifiBase=*
 NS_LOG_DCE=
 #define NS_LOG
 #NS_LOG="NamedRouters=**:EunetRouters=**:EunetRouter=**:SimpleRouter=**:BridgingAp=**:SimpleAp=**:NamedSwitches=**:EunetSwitch=**:EunetSwitches=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"
 #endef
 
 
-EXECENV:=LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) DCE_PATH=$(DCE_PATH) DCE_ROOT=$(DCE_ROOT) PYTHONPATH=$(PYTHONPATH) NS_LOG=$(NsS_LOG_$(VER))
+EXECENV:=LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) DCE_PATH=$(DCE_PATH) DCE_ROOT=$(DCE_ROOT) PYTHONPATH=$(PYTHONPATH) NS_LOG=$(NS_LOG_$(VER))
 $(info EXECENV=$(EXECENV))
 
 SOPREFIX317:=libns3.17-
