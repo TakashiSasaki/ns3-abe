@@ -3,7 +3,7 @@ vpath %.cc container:model:eunet:test
 vpath %.so ../../build:libs
 .PHONY: test visualize
 
-DCEDIR=$(shell ls | grep dce)
+DCEDIR=$(shell find . -maxdepth 1 -type d -name dce | grep ./dce)
 $(info DCEDIR=$(DCEDIR))
 ifneq ($(DCEDIR),)
     VER:=DCE
@@ -35,12 +35,8 @@ CXXFLAGS_DCE := -I./dce/build -I./dce/build/include -L./dce/build -L./dce/build/
 CXXFLAGS_STD := -I../../build -L../../build 
 CXXFLAGS:=$(CXXFLAGS_COMMON) $(CXXFLAGS_$(VER))
 
-ifdef DCE
-  TEST_RUNNER:=../../utils/test-runner.cc
-endif
-ifdef STD
-  TEST_RUNNER:=dce/sources/ns-3-dce/utils/test-runner.cc
-endif
+TEST_RUNNER_STD:=../../utils/test-runner.cc
+TEST_RUNNER_DCE:=dce/sources/ns-3-dce/utils/test-runner.cc
 
 PWD:=$(shell pwd)
 $(info PWD=$(PWD))
@@ -68,20 +64,21 @@ ifdef DCE
 endif
 
 ifdef STD
-    LD_LIBRARY_PATH:=$(LD_LIBRARY_PATH):../build
+    LD_LIBRARY_PATH:=$(LD_LIBRARY_PATH):../../build
     DCE_PATH:=
     DCE_ROOT:=
     PYTHONPATH:=../../build/bindings/python:../../src/visualizer:../../../pybindgen-0.16.0.825 
 endif
 
-NS_LOG_STD=WifiBase=*:EunetMobile=*:CsmaInternetNode=*:CsmaNode=*:EunetMobileTest=*
+#NS_LOG_STD=WifiBase=*:EunetMobile=*:CsmaInternetNode=*:CsmaNode=*:EunetMobileTest=*
+NS_LOG_STD=
 NS_LOG_DCE=
 #define NS_LOG
 #NS_LOG="NamedRouters=**:EunetRouters=**:EunetRouter=**:SimpleRouter=**:BridgingAp=**:SimpleAp=**:NamedSwitches=**:EunetSwitch=**:EunetSwitches=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"
 #endef
 
 
-EXECENV:=LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) DCE_PATH=$(DCE_PATH) DCE_ROOT=$(DCE_ROOT) PYTHONPATH=$(PYTHONPATH) NS_LOG=$(NS_LOG_$(VER))
+EXECENV:=LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) DCE_PATH=$(DCE_PATH) DCE_ROOT=$(DCE_ROOT) PYTHONPATH=$(PYTHONPATH) NS_LOG=$(NsS_LOG_$(VER))
 $(info EXECENV=$(EXECENV))
 
 SOPREFIX317:=libns3.17-
@@ -89,36 +86,41 @@ SOPREFIXDEV:=libns3-dev-
 
 #keep alphabetical order
 NS3LIBS_STD=\
-    $(SOPREFIXDEV)applications-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)bridge-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)buildings-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)config-store-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)core-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)csma-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)csma-layout-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)dsr-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)energy-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)flow-monitor-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)internet-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)lte-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)mesh-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)mpi-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)netanim-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)network-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)point-to-point-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)stats-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)olsr-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)propagation-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)tools-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)wifi-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)mobility-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)spectrum-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)uan-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)virtual-net-device-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)visualizer-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)wimax-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)test-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)tools-test-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)antenna-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)aodv-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)applications-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)bridge-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)buildings-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)config-store-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)core-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)csma-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)csma-layout-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)dsdv-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)dsr-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)energy-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)flow-monitor-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)internet-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)lte-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)mesh-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)mpi-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)netanim-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)network-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)point-to-point-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)stats-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)olsr-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)propagation-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)tools-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)topology-read-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)wifi-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)mobility-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)spectrum-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)test-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)uan-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)virtual-net-device-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)visualizer-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)wimax-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)test-debug.$(SOSUFFIX) \
+    $(SOPREFIX317)tools-test-debug.$(SOSUFFIX) \
 
 # keep alphabetical order
 SOPREFIX=$(SOPREFIXDEV)
@@ -174,19 +176,19 @@ TESTS_SO_STD:= \
     libns3.17-propagation-test-debug.so \
     libns3.17-network-test-debug.so \
     libns3.17-test-test-debug.so \
-    libns3.17-point-to-point-test-debug.so \
-    libns3.17-buildings-test-debug.so \
     libns3.17-tools-test-debug.so \
     libns3.17-stats-test-debug.so \
     libns3.17-dsr-test-debug.so \
     libns3.17-test-debug.so \
-    libns3.17-olsr-test-debug.so \
     libns3.17-wimax-test-debug.so \
     libns3.17-spectrum-test-debug.so \
     libns3.17-energy-test-debug.so \
     libns3.17-flow-monitor-test-debug.so \
     libns3.17-dsdv-test-debug.so \
-    #libns3.17-lte-test-debug.so \
+    libns3.17-buildings-test-debug.so \
+    libns3.17-lte-test-debug.so \
+    libns3.17-olsr-test-debug.so \
+    libns3.17-point-to-point-test-debug.so \
 
 
 TESTS_SO_DCE:= \
@@ -225,13 +227,13 @@ TESTS_SO_DCE:= \
 
 
 TESTS_COMMON= \
-    SimpleApTest.o \
     EunetTerminalTest.o \
     EunetTerminalsTest.o \
     EunetSwitchesTest.o \
     EunetSwitchTest.o 
 
 TESTS_STD= \
+    SimpleApTest.o \
     EunetMobileTest.o 
 
 TESTS_DCE= \
@@ -275,18 +277,20 @@ doxygen:
 clean:
 	-rm -f gmon.out
 	-rm -f EunetSwitchTest
+	-rm -f test-so test-runner
 	-rm -f *.pcap *.tr
 	-rm -f container/*.o model/*.o test/*.o *.o
 	-rm -f *.a
 
-test-runner: $(TEST_RUNNER) $(NS3LIBS_$(VER)) $(TESTS_$(VER)) libeunet.a 
+test-runner: $(TEST_RUNNER_$(VER)) $(NS3LIBS_$(VER)) $(TESTS_$(VER)) libeunet.a 
 	g++ -o $@ $(CXXFLAGS) $^
 
-test-so: $(TEST_RUNNER) $(NS3LIBS_$(VER)) $(TESTS_SO_$(VER))
+test-so: $(TEST_RUNNER_$(VER)) $(NS3LIBS_$(VER)) $(TESTS_SO_$(VER))
 	g++ -o $@ $(CXXFLAGS) $^
 
 run-test-so: test-so
-	$(EXECENV) ./test-so --stop-on-failure
+	#$(EXECENV) ./test-so --stop-on-failure --verbose
+	$(EXECENV) ./test-so --verbose
 
 test: test-runner
 	$(EXECENV) ./test-runner --stop-on-failure
@@ -308,14 +312,14 @@ test-dce-quagga:
 	(cd dce/source/ns-3-dev; ./test.py)
 	-(cd dce/source/ns-3-dce; ./test.py)
 
-copy-from-dce-build: copy-shared-library copy-include-files
+#copy-from-dce-build: copy-shared-library copy-include-files
 
-copy-shared-library:
-	-mkdir libs/
-	cp dce/build/lib/*.so libs/
+#copy-shared-library:
+#	-mkdir libs/
+#	cp dce/build/lib/*.so libs/
 
-copy-include-files:
-	-mkdir -p include/ns3
-	cp dce/build/include/ns3/*.h include/ns3/
-	cp dce/build/include/ns3-dev/ns3/*.h include/ns3/
+#copy-include-files:
+#	-mkdir -p include/ns3
+#	cp dce/build/include/ns3/*.h include/ns3/
+#	cp dce/build/include/ns3-dev/ns3/*.h include/ns3/
 

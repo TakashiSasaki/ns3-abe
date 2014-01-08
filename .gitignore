@@ -44,4 +44,10 @@ test-runner-dce
 EunetSimulation
 *.orig
 test-so
+EunetSwitch/DlMacStats.txt
+EunetSwitch/DlPdcpStats.txt
+EunetSwitch/DlRlcStats.txt
+EunetSwitch/UlMacStats.txt
+EunetSwitch/UlPdcpStats.txt
+EunetSwitch/UlRlcStats.txt
 
