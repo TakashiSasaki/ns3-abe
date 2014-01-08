@@ -12,6 +12,7 @@ NS_LOG_COMPONENT_DEFINE("WifiTest");
 #include "ns3/constant-acceleration-mobility-model.h"
 #include "ns3/regular-wifi-mac.h"
 #include "ns3/sta-wifi-mac.h"
+#include "ns3/adhoc-wifi-mac.h"
 #include "ns3/yans-wifi-phy.h"
 #include "ns3/mac-rx-middle.h"
 #include "ns3/wifi-net-device.h"
@@ -60,6 +61,9 @@ public:
 
 WifiTestCase::WifiTestCase() :
 	ns3::TestCase("WifiTestCase") {
+	this->mac48Address1 = ns3::Mac48Address("01:11:11:11:11:10");
+	this->mac48Address2 = ns3::Mac48Address("02:22:22:22:22:20");
+	this->mac48Address3 = ns3::Mac48Address("03:33:33:33:33:30");
 #if 0
 #endif
 }
@@ -67,9 +71,15 @@ WifiTestCase::~WifiTestCase() {
 }
 
 void WifiTestCase::SendOnePacket() {
-	ns3::Ptr<ns3::Packet> ptr_packet = ns3::Create<ns3::Packet>();
-	this->ptrWifiNetDevice2->Send(ptr_packet,
-			this->ptrWifiNetDevice2->GetBroadcast(), 1);
+	uint8_t buffer[] = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88,
+			0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff };
+	ns3::Ptr<ns3::Packet> ptr_packet = ns3::Create<ns3::Packet>(buffer,
+			sizeof buffer);
+	//this->ptrWifiNetDevice2->Send(ptr_packet,
+	//		this->ptrWifiNetDevice2->GetBroadcast(), 1);
+	this->ptrWifiNetDevice1->Send(ptr_packet,
+			this->ptrWifiNetDevice1->GetBroadcast(), 1);
+	//this->ptrWifiNetDevice1->Send(ptr_packet, this->mac48Address3 ,1);
 }
 
 void WifiTestCase::DoRun() {
@@ -118,15 +128,12 @@ void WifiTestCase::DoRun() {
 	this->ptrYansWifiPhy1->SetDevice(this->ptrWifiNetDevice1);
 	this->ptrYansWifiPhy2->SetDevice(this->ptrWifiNetDevice2);
 	this->ptrYansWifiPhy3->SetDevice(this->ptrWifiNetDevice3);
-	this->ptrWifiMac1 = ns3::CreateObject<ns3::StaWifiMac>();
-	this->ptrWifiMac2 = ns3::CreateObject<ns3::StaWifiMac>();
-	this->ptrWifiMac3 = ns3::CreateObject<ns3::StaWifiMac>();
+	this->ptrWifiMac1 = ns3::CreateObject<ns3::AdhocWifiMac>();
+	this->ptrWifiMac2 = ns3::CreateObject<ns3::AdhocWifiMac>();
+	this->ptrWifiMac3 = ns3::CreateObject<ns3::AdhocWifiMac>();
 	this->ptrWifiMac1->ConfigureStandard(ns3::WIFI_PHY_STANDARD_80211a);
 	this->ptrWifiMac2->ConfigureStandard(ns3::WIFI_PHY_STANDARD_80211a);
 	this->ptrWifiMac3->ConfigureStandard(ns3::WIFI_PHY_STANDARD_80211a);
-	this->mac48Address1 = ns3::Mac48Address("11:11:11:11:11:11");
-	this->mac48Address2 = ns3::Mac48Address("22:22:22:22:22:22");
-	this->mac48Address3 = ns3::Mac48Address("33:33:33:33:33:33");
 	this->ptrWifiMac1->SetAddress(this->mac48Address1);
 	this->ptrWifiMac2->SetAddress(this->mac48Address2);
 	this->ptrWifiMac3->SetAddress(this->mac48Address3);
@@ -168,7 +175,7 @@ void WifiTestCase::DoRun() {
 	wifi_phy_trace_3.DoInitialize();
 	ns3::Simulator::Schedule(ns3::Seconds(1.0), &WifiTestCase::SendOnePacket,
 			this);
-	ns3::Simulator::Stop(ns3::Seconds(10.0));
+	ns3::Simulator::Stop(ns3::Seconds(1.001));
 	ns3::Simulator::Run();
 	ns3::Simulator::Destroy();
 }
