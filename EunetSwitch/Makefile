@@ -71,7 +71,7 @@ ifdef STD
 endif
 
 #NS_LOG_STD=WifiBase=*:EunetMobile=*:CsmaInternetNode=*:CsmaNode=*:EunetMobileTest=*
-NS_LOG_STD=EunetMobile=*:SimpleAp=*:WifiBase=*:WifiPhyTrace=*:WifiMacTrace=*:TraceBase=*
+NS_LOG_STD=WifiTest=*
 NS_LOG_DCE=
 #define NS_LOG
 #NS_LOG="NamedRouters=**:EunetRouters=**:EunetRouter=**:SimpleRouter=**:BridgingAp=**:SimpleAp=**:NamedSwitches=**:EunetSwitch=**:EunetSwitches=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"
@@ -233,8 +233,9 @@ TESTS_COMMON= \
     EunetSwitchTest.o 
 
 TESTS_STD= \
-    SimpleApTest.o \
-    EunetMobileTest.o 
+    WifiTest.o \
+    #EunetMobileTest.o \
+    #SimpleApTest.o \
 
 TESTS_DCE= \
     EunetRouterTest.o 
@@ -294,7 +295,8 @@ run-test-so: test-so
 	$(EXECENV) ./test-so --verbose
 
 test: test-runner
-	$(EXECENV) ./test-runner --stop-on-failure
+	$(EXECENV) ./test-runner
+	#$(EXECENV) ./test-runner --stop-on-failure
 	#$(EXECENV) $(NS_LOG) ./test-runner --verbose --xml --tempdir=testpy-output/2014-01-06-04-35-10-CUT --out=process-manager.xml
 
 #build this target first to use DCE feature
