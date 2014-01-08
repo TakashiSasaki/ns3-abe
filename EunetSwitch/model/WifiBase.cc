@@ -27,7 +27,7 @@ WifiBase::WifiMacTypeString WifiBase::StaWifiMac = "ns3::StaWifiMac";
 WifiBase::WifiBase(ns3::Node* p_node,
 		const WifiBase::WifiMacTypeString wifi_mac_type_string,
 		bool active_probing) :
-	ptrNode(p_node, true), ifIndex(-1) {
+	TraceBase(p_node), ptrNode(p_node, true), ifIndex(-1) {
 	// enable rts cts all the time.
 	ns3::Config::SetDefault("ns3::WifiRemoteStationManager::RtsCtsThreshold",
 			ns3::StringValue("0"));
@@ -133,25 +133,16 @@ void WifiBase::bringWifiBase(WifiBase& foreign_node) {
 	ptr_foreign_yans_wifi_phy->SetChannel(ptr_yans_wifi_channel);
 }
 
-void WifiBase::getHex(std::ostream& os, ns3::Ptr<const ns3::Packet> ptr_packet) {
-
-	uint8_t buffer[ptr_packet->GetSize()];
-	for (unsigned i = 0; i < sizeof buffer; ++i) {
-		os << std::hex << std::setw(2) << std::setfill('0')
-				<< (unsigned) buffer[i];
-	}
-}
-
 void WifiBase::traceMacTx(ns3::Ptr<const ns3::Packet> ptr_packet) const {
 	std::ostringstream oss;
 	getHex(oss, ptr_packet);
-	NS_LOG_INFO(ns3::Simulator::Now() << "\t" <<  ptr_packet->GetSize() << " bytes " << "MacTx\t\ton node " << this->ptrNode->GetId() << " " << oss.str());
+	NS_LOG_INFO(ns3::Simulator::Now() << "\t" << ptr_packet->GetSize() << " bytes " << "MacTx\t\ton node " << this->ptrNode->GetId() << " " << oss.str());
 }
 
 void WifiBase::traceMacTxDrop(ns3::Ptr<const ns3::Packet> ptr_packet) const {
 	std::ostringstream oss;
 	getHex(oss, ptr_packet);
-	NS_LOG_INFO(ns3::Simulator::Now() << "\t" <<  ptr_packet->GetSize() << " bytes " << "MacTxDrop\ton node " << this->ptrNode->GetId() << " " << oss.str());
+	NS_LOG_INFO(ns3::Simulator::Now() << "\t" << ptr_packet->GetSize() << " bytes " << "MacTxDrop\ton node " << this->ptrNode->GetId() << " " << oss.str());
 }
 
 void WifiBase::traceMacPromiscRx(ns3::Ptr<const ns3::Packet> ptr_packet) const {
@@ -161,47 +152,47 @@ void WifiBase::traceMacPromiscRx(ns3::Ptr<const ns3::Packet> ptr_packet) const {
 void WifiBase::traceMacRx(ns3::Ptr<const ns3::Packet> ptr_packet) const {
 	std::ostringstream oss;
 	getHex(oss, ptr_packet);
-	NS_LOG_INFO(ns3::Simulator::Now() << "\t" <<  ptr_packet->GetSize() << " bytes " << "MacRx\ton node "<< this->ptrNode->GetId() << " " << oss.str());
+	NS_LOG_INFO(ns3::Simulator::Now() << "\t" << ptr_packet->GetSize() << " bytes " << "MacRx\ton node "<< this->ptrNode->GetId() << " " << oss.str());
 }
 
 void WifiBase::traceMacRxDrop(ns3::Ptr<const ns3::Packet> ptr_packet) const {
 	std::ostringstream oss;
 	getHex(oss, ptr_packet);
-	NS_LOG_INFO(ns3::Simulator::Now() << "\t" <<  ptr_packet->GetSize() << " bytes " << "MacRxDrop\ton node " << this->ptrNode->GetId() << " " << oss.str());
+	NS_LOG_INFO(ns3::Simulator::Now() << "\t" << ptr_packet->GetSize() << " bytes " << "MacRxDrop\ton node " << this->ptrNode->GetId() << " " << oss.str());
 }
 
 void WifiBase::tracePhyTxBegin(ns3::Ptr<const ns3::Packet> ptr_packet) const {
 	std::ostringstream oss;
 	getHex(oss, ptr_packet);
-	NS_LOG_INFO(ns3::Simulator::Now() << "\t" <<  ptr_packet->GetSize() << " bytes " <<"PhyTxBegin\ton node " << this->ptrNode->GetId() << " " << oss.str());
+	NS_LOG_INFO(ns3::Simulator::Now() << "\t" << ptr_packet->GetSize() << " bytes " <<"PhyTxBegin\ton node " << this->ptrNode->GetId() << " " << oss.str());
 }
 
 void WifiBase::tracePhyTxEnd(ns3::Ptr<const ns3::Packet> ptr_packet) const {
 	std::ostringstream oss;
 	getHex(oss, ptr_packet);
-	NS_LOG_INFO(ns3::Simulator::Now() << "\t" <<  ptr_packet->GetSize() << " bytes " <<"PhyTxEnd\ton node " << this->ptrNode->GetId() << " " << oss.str());
+	NS_LOG_INFO(ns3::Simulator::Now() << "\t" << ptr_packet->GetSize() << " bytes " <<"PhyTxEnd\ton node " << this->ptrNode->GetId() << " " << oss.str());
 }
 
 void WifiBase::tracePhyTxDrop(ns3::Ptr<const ns3::Packet> ptr_packet) const {
 	std::ostringstream oss;
 	getHex(oss, ptr_packet);
-	NS_LOG_INFO(ns3::Simulator::Now() << "\t" <<  ptr_packet->GetSize() << " bytes " <<"PhyTxDrop\ton node " << this->ptrNode->GetId() << " " << oss.str());
+	NS_LOG_INFO(ns3::Simulator::Now() << "\t" << ptr_packet->GetSize() << " bytes " <<"PhyTxDrop\ton node " << this->ptrNode->GetId() << " " << oss.str());
 }
 
 void WifiBase::tracePhyRxBegin(ns3::Ptr<const ns3::Packet> ptr_packet) const {
 	std::ostringstream oss;
 	getHex(oss, ptr_packet);
-	NS_LOG_INFO(ns3::Simulator::Now() << "\t" <<  ptr_packet->GetSize() << " bytes " <<"PhyRxBegin\ton node " << this->ptrNode->GetId() << " " << oss.str());
+	NS_LOG_INFO(ns3::Simulator::Now() << "\t" << ptr_packet->GetSize() << " bytes " <<"PhyRxBegin\ton node " << this->ptrNode->GetId() << " " << oss.str());
 }
 
 void WifiBase::tracePhyRxEnd(ns3::Ptr<const ns3::Packet> ptr_packet) const {
 	std::ostringstream oss;
 	getHex(oss, ptr_packet);
-	NS_LOG_INFO(ns3::Simulator::Now() << "\t" <<  ptr_packet->GetSize() << " bytes " <<"PhyRxEnd\ton node " << this->ptrNode->GetId() << " " << oss.str());
+	NS_LOG_INFO(ns3::Simulator::Now() << "\t" << ptr_packet->GetSize() << " bytes " <<"PhyRxEnd\ton node " << this->ptrNode->GetId() << " " << oss.str());
 }
 
 void WifiBase::tracePhyRxDrop(ns3::Ptr<const ns3::Packet> ptr_packet) const {
 	std::ostringstream oss;
 	getHex(oss, ptr_packet);
-	NS_LOG_INFO(ns3::Simulator::Now() << "\t" <<  ptr_packet->GetSize() << " bytes " <<"PhyRxDrop\ton node " << this->ptrNode->GetId() << " " << oss.str());
+	NS_LOG_INFO(ns3::Simulator::Now() << "\t" << ptr_packet->GetSize() << " bytes " <<"PhyRxDrop\ton node " << this->ptrNode->GetId() << " " << oss.str());
 }

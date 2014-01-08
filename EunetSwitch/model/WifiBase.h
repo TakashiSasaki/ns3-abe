@@ -1,11 +1,12 @@
 #ifndef WIFIBASE_H_
 #define WIFIBASE_H_
+#include <memory>
 #include "ns3/node.h"
 #include "ns3/ssid.h"
 #include "ns3/wifi-net-device.h"
 #include "CsmaNode.h"
-#include <memory>
-class WifiBase {
+#include "TraceBase.h"
+class WifiBase: public TraceBase {
 	ns3::Ptr<ns3::Node> ptrNode;
 	ns3::Ssid ssid;
 	unsigned ifIndex;
@@ -23,7 +24,6 @@ protected:
 	WifiBase(ns3::Node* p_node, const WifiMacTypeString, bool active_probing);
 	virtual ~WifiBase();
 	void DoInitialize();
-	static void getHex(std::ostream&, ns3::Ptr<const ns3::Packet> ptr_packet);
 private:
 	void traceMacTx(ns3::Ptr<const ns3::Packet>) const;
 	void traceMacTxDrop(ns3::Ptr<const ns3::Packet>) const;
