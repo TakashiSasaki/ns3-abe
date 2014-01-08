@@ -124,6 +124,7 @@ NS3LIBS_STD=\
 SOPREFIX=$(SOPREFIXDEV)
 NS3LIBS_DCE=\
     $(SOPREFIXDEV)antenna-debug.$(SOSUFFIX) \
+    $(SOPREFIXDEV)aodv-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)applications-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)bridge-debug.so \
     $(SOPREFIXDEV)buildings-debug.$(SOSUFFIX) \
@@ -131,24 +132,97 @@ NS3LIBS_DCE=\
     $(SOPREFIXDEV)core-debug.so \
     $(SOPREFIXDEV)csma-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)csma-layout-debug.$(SOSUFFIX) \
+    $(SOPREFIXDEV)dsdv-debug.$(SOSUFFIX) \
+    $(SOPREFIXDEV)dsr-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)energy-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)flow-monitor-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)internet-debug.so \
     $(SOPREFIXDEV)lte-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)netanim-debug.$(SOSUFFIX) \
-    $(SOPREFIXDEV)network-debug.so \
+    $(SOPREFIXDEV)mesh-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)mobility-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)mpi-debug.$(SOSUFFIX) \
+    $(SOPREFIXDEV)netanim-debug.$(SOSUFFIX) \
+    $(SOPREFIXDEV)network-debug.so \
+    $(SOPREFIXDEV)olsr-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)point-to-point-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)propagation-debug.$(SOSUFFIX) \
+    $(SOPREFIXDEV)sixlowpan-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)spectrum-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)stats-debug.so \
+    $(SOPREFIXDEV)topology-read-debug.so \
     $(SOPREFIXDEV)uan-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)virtual-net-device-debug.$(SOSUFFIX) \
+    $(SOPREFIXDEV)wave-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)wifi-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)wimax-debug.$(SOSUFFIX) \
     libns3-dce.so libns3-dce-quagga.so \
-    libns3-netlink.so
+    libns3-netlink.so \
+    #libmylib.so
+
+TESTS_SO_STD:= \
+    libns3.17-core-test-debug.so \
+    libns3.17-topology-read-test-debug.so \
+    libns3.17-aodv-test-debug.so \
+    libns3.17-applications-test-debug.so \
+    libns3.17-mesh-test-debug.so \
+    libns3.17-wifi-test-debug.so \
+    libns3.17-uan-test-debug.so \
+    libns3.17-mobility-test-debug.so \
+    libns3.17-netanim-test-debug.so \
+    libns3.17-internet-test-debug.so \
+    libns3.17-antenna-test-debug.so \
+    libns3.17-propagation-test-debug.so \
+    libns3.17-network-test-debug.so \
+    libns3.17-test-test-debug.so \
+    libns3.17-point-to-point-test-debug.so \
+    libns3.17-buildings-test-debug.so \
+    libns3.17-tools-test-debug.so \
+    libns3.17-stats-test-debug.so \
+    libns3.17-dsr-test-debug.so \
+    libns3.17-test-debug.so \
+    libns3.17-olsr-test-debug.so \
+    libns3.17-wimax-test-debug.so \
+    libns3.17-spectrum-test-debug.so \
+    libns3.17-energy-test-debug.so \
+    libns3.17-flow-monitor-test-debug.so \
+    libns3.17-dsdv-test-debug.so \
+    #libns3.17-lte-test-debug.so \
+
+
+TESTS_SO_DCE:= \
+    libns3-dev-mobility-test-debug.so \
+    libns3-dce-test-netlink.so \
+    libns3-dev-test-debug.so \
+    libns3-dev-dsdv-test-debug.so \
+    libns3-dev-dsr-test-debug.so \
+    libns3-dev-aodv-test-debug.so \
+    libns3-dev-buildings-test-debug.so \
+    libns3-dev-applications-test-debug.so \
+    libns3-dev-point-to-point-test-debug.so \
+    libns3-dev-spectrum-test-debug.so \
+    libns3-dev-stats-test-debug.so \
+    libns3-dev-wave-test-debug.so \
+    libtest.so \
+    libns3-dce-test.so \
+    libns3-dev-core-test-debug.so \
+    libns3-dev-wimax-test-debug.so \
+    libns3-dev-mesh-test-debug.so \
+    libns3-dev-antenna-test-debug.so \
+    libns3-dev-topology-read-test-debug.so \
+    libns3-dev-test-test-debug.so \
+    libns3-dev-energy-test-debug.so \
+    libns3-dev-olsr-test-debug.so \
+    libns3-dev-wifi-test-debug.so \
+    libns3-dev-sixlowpan-test-debug.so \
+    libns3-dev-internet-test-debug.so \
+    libns3-dev-uan-test-debug.so \
+    libns3-dev-netanim-test-debug.so \
+    libns3-dev-flow-monitor-test-debug.so \
+    libns3-dev-lte-test-debug.so \
+    libns3-dev-network-test-debug.so \
+    libns3-dev-propagation-test-debug.so \
+    libns3-dce-quagga-test.so \
+
 
 TESTS_COMMON= \
     SimpleApTest.o \
@@ -207,6 +281,12 @@ clean:
 
 test-runner: $(TEST_RUNNER) $(NS3LIBS_$(VER)) $(TESTS_$(VER)) libeunet.a 
 	g++ -o $@ $(CXXFLAGS) $^
+
+test-so: $(TEST_RUNNER) $(NS3LIBS_$(VER)) $(TESTS_SO_$(VER))
+	g++ -o $@ $(CXXFLAGS) $^
+
+run-test-so: test-so
+	$(EXECENV) ./test-so --stop-on-failure
 
 test: test-runner
 	$(EXECENV) ./test-runner --stop-on-failure

@@ -43,4 +43,5 @@ EunetSwitch/files-?
 test-runner-dce
 EunetSimulation
 *.orig
+test-so
 
