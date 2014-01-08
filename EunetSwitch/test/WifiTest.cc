@@ -55,6 +55,7 @@ public:
 	WifiTestCase();
 	virtual void DoRun();
 	virtual ~WifiTestCase();
+	void SendOnePacket();
 };//WifiTest
 
 WifiTestCase::WifiTestCase() :
@@ -63,6 +64,12 @@ WifiTestCase::WifiTestCase() :
 #endif
 }
 WifiTestCase::~WifiTestCase() {
+}
+
+void WifiTestCase::SendOnePacket() {
+	ns3::Ptr<ns3::Packet> ptr_packet = ns3::Create<ns3::Packet>();
+	this->ptrWifiNetDevice2->Send(ptr_packet,
+			this->ptrWifiNetDevice2->GetBroadcast(), 1);
 }
 
 void WifiTestCase::DoRun() {
@@ -159,6 +166,8 @@ void WifiTestCase::DoRun() {
 	wifi_phy_trace_1.DoInitialize();
 	wifi_phy_trace_2.DoInitialize();
 	wifi_phy_trace_3.DoInitialize();
+	ns3::Simulator::Schedule(ns3::Seconds(1.0), &WifiTestCase::SendOnePacket,
+			this);
 	ns3::Simulator::Stop(ns3::Seconds(10.0));
 	ns3::Simulator::Run();
 	ns3::Simulator::Destroy();
