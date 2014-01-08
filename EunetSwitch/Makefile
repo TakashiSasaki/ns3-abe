@@ -247,7 +247,7 @@ OBJS_COMMON:= \
 OBJS_STD:= \
     SimpleAp.o BridgingAp.o \
     WifiBase.o MobilityBase.o EunetMobile.o \
-    TraceBase.o
+    TraceBase.o WifiMacTrace.o WifiPhyTrace.o
 
 OBJS_DCE:= \
     NamedRouters.o EunetRouter.o SimpleRouter.o EunetRouters.o

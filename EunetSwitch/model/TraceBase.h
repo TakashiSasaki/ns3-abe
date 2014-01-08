@@ -3,6 +3,7 @@
 #include "ns3/packet.h"
 
 class TraceBase {
+protected:
 	ns3::Ptr<ns3::Node> ptrNode;
 public:
 	TraceBase(ns3::Node* p_node);

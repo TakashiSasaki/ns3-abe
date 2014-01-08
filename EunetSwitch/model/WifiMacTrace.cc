@@ -1,0 +1,43 @@
+#define NS3_LOG_ENABLE 1
+#include "ns3/log.h"
+NS_LOG_COMPONENT_DEFINE("WifiMacTrace");
+#define NS3_ASSERT_ENABLE 1
+#include "ns3/assert.h"
+#include "ns3/simulator.h"
+#include "ns3/node.h"
+#include "WifiMacTrace.h"
+
+void WifiMacTrace::traceMacTx(ns3::Ptr<const ns3::Packet> ptr_packet) const {
+	std::ostringstream oss;
+	getHex(oss, ptr_packet);
+	NS_LOG_INFO(ns3::Simulator::Now() << "\t" << ptr_packet->GetSize() << " bytes " << "MacTx\t\ton node " << this->ptrNode->GetId() << " " << oss.str());
+}
+
+void WifiMacTrace::traceMacTxDrop(ns3::Ptr<const ns3::Packet> ptr_packet) const {
+	std::ostringstream oss;
+	getHex(oss, ptr_packet);
+	NS_LOG_INFO(ns3::Simulator::Now() << "\t" << ptr_packet->GetSize() << " bytes " << "MacTxDrop\ton node " << this->ptrNode->GetId() << " " << oss.str());
+}
+
+void WifiMacTrace::traceMacPromiscRx(ns3::Ptr<const ns3::Packet> ptr_packet) const {
+	NS_LOG_INFO(ptr_packet->GetSize() << " bytes " << "MacPromiscRx\ton node "<< this->ptrNode->GetId());
+}
+
+void WifiMacTrace::traceMacRx(ns3::Ptr<const ns3::Packet> ptr_packet) const {
+	std::ostringstream oss;
+	getHex(oss, ptr_packet);
+	NS_LOG_INFO(ns3::Simulator::Now() << "\t" << ptr_packet->GetSize() << " bytes " << "MacRx\ton node "<< this->ptrNode->GetId() << " " << oss.str());
+}
+
+void WifiMacTrace::traceMacRxDrop(ns3::Ptr<const ns3::Packet> ptr_packet) const {
+	std::ostringstream oss;
+	getHex(oss, ptr_packet);
+	NS_LOG_INFO(ns3::Simulator::Now() << "\t" << ptr_packet->GetSize() << " bytes " << "MacRxDrop\ton node " << this->ptrNode->GetId() << " " << oss.str());
+}
+
+WifiMacTrace::WifiMacTrace(ns3::Node* p_node) :
+	TraceBase(p_node) {
+}
+
+WifiMacTrace::~WifiMacTrace() {
+}
