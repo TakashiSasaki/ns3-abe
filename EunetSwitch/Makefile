@@ -1,6 +1,5 @@
 vpath %.h container:model:eunet
 vpath %.cc container:model:eunet:test
-vpath %.so ../../build:libs
 .PHONY: test visualize
 
 DCEDIR=$(shell find . -maxdepth 1 -type d -name dce | grep ./dce)
@@ -8,10 +7,12 @@ $(info DCEDIR=$(DCEDIR))
 ifneq ($(DCEDIR),)
     VER:=DCE
     DCE:=DCE
+    vpath %.so dce/build/lib:libs
     $(info DCE directory was detected)
 else
     VER:=STD
     STD:=STD
+    vpath %.so ../../build:libs
     $(info DCE directory was not detedted)
 endif
 
@@ -31,12 +32,12 @@ else
 endif
 
 CXXFLAGS_COMMON:= -Icontainer -Imodel -Iinclude -Ieunet -L. -Llibs -g -pg -O0 -std=c++0x -Wall -Werror
-CXXFLAGS_DCE := -I./dce/build -I./dce/build/include -L./dce/build -L./dce/build/lib -L./dce/build/include/ns3 
+CXXFLAGS_DCE := -I./dce/build/include/ns3-dev -I./dce/build/include -L./dce/build -L./dce/build/lib -L./dce/build/include/ns3 
 CXXFLAGS_STD := -I../../build -L../../build 
 CXXFLAGS:=$(CXXFLAGS_COMMON) $(CXXFLAGS_$(VER))
 
 TEST_RUNNER_STD:=../../utils/test-runner.cc
-TEST_RUNNER_DCE:=dce/sources/ns-3-dce/utils/test-runner.cc
+TEST_RUNNER_DCE:=dce/source/ns-3-dce/utils/test-runner.cc
 
 PWD:=$(shell pwd)
 $(info PWD=$(PWD))
@@ -289,6 +290,9 @@ test-runner: $(TEST_RUNNER_$(VER)) $(NS3LIBS_$(VER)) $(TESTS_$(VER)) libeunet.a
 
 test-so: $(TEST_RUNNER_$(VER)) $(NS3LIBS_$(VER)) $(TESTS_SO_$(VER))
 	g++ -o $@ $(CXXFLAGS) $^
+
+gdb-test-so: test-so
+	$(EXECENV) gdb ./test-so 
 
 run-test-so: test-so
 	#$(EXECENV) ./test-so --stop-on-failure --verbose
