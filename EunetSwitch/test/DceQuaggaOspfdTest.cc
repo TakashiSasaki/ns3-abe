@@ -27,7 +27,6 @@
 #include "ns3/point-to-point-helper.h"
 
 using namespace ns3;
-
 NS_LOG_COMPONENT_DEFINE ("DceQuaggaOspfdTest");
 
 class DceQuaggaOspfdTest: public TestCase {
@@ -43,23 +42,22 @@ private:
 	virtual void DoRun(void);
 }; //class DceQuaggaOspfdTest
 
-static void RunIp (Ptr<Node> node, Time at, std::string str)
-{
-  DceApplicationHelper process;
-  ApplicationContainer apps;
-  process.SetBinary ("ip");
-  process.SetStackSize (1 << 16);
-  process.ResetArguments ();
-  process.ParseArguments (str.c_str ());
-  apps = process.Install (node);
-  apps.Start (at);
+static void RunIp(Ptr<Node> node, Time at, std::string str) {
+	DceApplicationHelper process;
+	ApplicationContainer apps;
+	process.SetBinary("ip");
+	process.SetStackSize(1 << 16);
+	process.ResetArguments();
+	process.ParseArguments(str.c_str());
+	apps = process.Install(node);
+	apps.Start(at);
 }
 
-static void AddAddress (Ptr<Node> node, Time at, const char *name, const char *address)
-{
-  std::ostringstream oss;
-  oss << "-f inet addr add " << address << " dev " << name;
-  RunIp (node, at, oss.str ());
+static void AddAddress(Ptr<Node> node, Time at, const char *name,
+		const char *address) {
+	std::ostringstream oss;
+	oss << "-f inet addr add " << address << " dev " << name;
+	RunIp(node, at, oss.str());
 }
 
 // Parameters
@@ -67,91 +65,84 @@ uint32_t nNodes = 2;
 uint32_t stopTime = 600;
 std::string netStack = "ns3";
 
+void DceQuaggaOspfdTest::DoRun() {
+	//
+	//  Step 1
+	//  Node Basic Configuration
+	//
+	NodeContainer nodes;
+	nodes.Create(nNodes);
 
-void DceQuaggaOspfdTest::DoRun()
-{
-  //
-  //  Step 1
-  //  Node Basic Configuration
-  //
-  NodeContainer nodes;
-  nodes.Create (nNodes);
+	PointToPointHelper pointToPoint;
+	pointToPoint.SetDeviceAttribute("DataRate", StringValue("5Mbps"));
+	pointToPoint.SetChannelAttribute("Delay", StringValue("2ms"));
 
-  PointToPointHelper pointToPoint;
-  pointToPoint.SetDeviceAttribute ("DataRate", StringValue ("5Mbps"));
-  pointToPoint.SetChannelAttribute ("Delay", StringValue ("2ms"));
+	NetDeviceContainer devices;
+	devices = pointToPoint.Install(nodes);
+	DceManagerHelper processManager;
 
-  NetDeviceContainer devices;
-  devices = pointToPoint.Install (nodes);
-  DceManagerHelper processManager;
+	//
+	//
+	// Address Configuration
+	//
+	//
+	if (netStack == "ns3") {
+		Ipv4AddressHelper ipv4AddrHelper;
+		Ipv6AddressHelper ipv6AddrHelper;
+		// Internet stack install
+		InternetStackHelper stack; // IPv4 is required for GlobalRouteMan
+		Ipv4DceRoutingHelper ipv4RoutingHelper;
+		stack.SetRoutingHelper(ipv4RoutingHelper);
+		stack.Install(nodes);
 
-  //
-  //
-  // Address Configuration
-  //
-  //
-  if (netStack == "ns3")
-    {
-      Ipv4AddressHelper ipv4AddrHelper;
-      Ipv6AddressHelper ipv6AddrHelper;
-      // Internet stack install
-      InternetStackHelper stack;    // IPv4 is required for GlobalRouteMan
-      Ipv4DceRoutingHelper ipv4RoutingHelper;
-      stack.SetRoutingHelper (ipv4RoutingHelper);
-      stack.Install (nodes);
+		ipv4AddrHelper.SetBase("10.0.0.0", "255.255.255.0");
+		Ipv4InterfaceContainer interfaces = ipv4AddrHelper.Assign(devices);
+		Ipv4GlobalRoutingHelper::PopulateRoutingTables();
 
-      ipv4AddrHelper.SetBase ("10.0.0.0", "255.255.255.0");
-      Ipv4InterfaceContainer interfaces = ipv4AddrHelper.Assign (devices);
-      Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
+		processManager.SetNetworkStack("ns3::Ns3SocketFdFactory");
+		processManager.Install(nodes);
 
-      processManager.SetNetworkStack ("ns3::Ns3SocketFdFactory");
-      processManager.Install (nodes);
+		QuaggaHelper quagga;
+		quagga.EnableOspf(nodes, "10.0.0.0/24");
+		quagga.EnableOspfDebug(nodes);
+		quagga.EnableZebraDebug(nodes);
+		quagga.Install(nodes);
+	} else if (netStack == "linux") {
+		//      processManager.SetLoader ("ns3::DlmLoaderFactory");
+		processManager.SetTaskManagerAttribute("FiberManagerType", EnumValue(0));
+		processManager.SetNetworkStack("ns3::LinuxSocketFdFactory", "Library",
+				StringValue("liblinux.so"));
+		processManager.Install(nodes);
 
-      QuaggaHelper quagga;
-      quagga.EnableOspf (nodes, "10.0.0.0/24");
-      quagga.EnableOspfDebug (nodes);
-      quagga.EnableZebraDebug (nodes);
-      quagga.Install (nodes);
-    }
-  else if (netStack == "linux")
-    {
-      //      processManager.SetLoader ("ns3::DlmLoaderFactory");
-      processManager.SetTaskManagerAttribute ("FiberManagerType",
-                                              EnumValue (0));
-      processManager.SetNetworkStack ("ns3::LinuxSocketFdFactory",
-                                      "Library", StringValue ("liblinux.so"));
-      processManager.Install (nodes);
+		// IP address configuration
+		AddAddress(nodes.Get(0), Seconds(0.1), "sim0", "10.0.0.1/24");
+		RunIp(nodes.Get(0), Seconds(0.11), "link set lo up");
+		RunIp(nodes.Get(0), Seconds(0.11), "link set sim0 up");
 
-      // IP address configuration
-      AddAddress (nodes.Get (0), Seconds (0.1), "sim0", "10.0.0.1/24");
-      RunIp (nodes.Get (0), Seconds (0.11), "link set lo up");
-      RunIp (nodes.Get (0), Seconds (0.11), "link set sim0 up");
+		AddAddress(nodes.Get(1), Seconds(0.1), "sim0", "10.0.0.2/24");
+		RunIp(nodes.Get(1), Seconds(0.11), "link set lo up");
+		RunIp(nodes.Get(1), Seconds(0.11), "link set sim0 up");
+		RunIp(nodes.Get(0), Seconds(0.2), "link show");
+		RunIp(nodes.Get(0), Seconds(0.3), "route show table all");
+		RunIp(nodes.Get(0), Seconds(0.4), "addr list");
 
-      AddAddress (nodes.Get (1), Seconds (0.1), "sim0", "10.0.0.2/24");
-      RunIp (nodes.Get (1), Seconds (0.11), "link set lo up");
-      RunIp (nodes.Get (1), Seconds (0.11), "link set sim0 up");
-      RunIp (nodes.Get (0), Seconds (0.2), "link show");
-      RunIp (nodes.Get (0), Seconds (0.3), "route show table all");
-      RunIp (nodes.Get (0), Seconds (0.4), "addr list");
+		QuaggaHelper quagga;
+		quagga.EnableOspf(nodes, "10.0.0.0/24");
+		quagga.EnableOspfDebug(nodes);
+		quagga.EnableZebraDebug(nodes);
+		quagga.Install(nodes);
+	}
 
-      QuaggaHelper quagga;
-      quagga.EnableOspf (nodes, "10.0.0.0/24");
-      quagga.EnableOspfDebug (nodes);
-      quagga.EnableZebraDebug (nodes);
-      quagga.Install (nodes);
-    }
+	pointToPoint.EnablePcapAll("dce-quagga-ospfd");
 
-  pointToPoint.EnablePcapAll ("dce-quagga-ospfd");
-
-  //
-  // Step 9
-  // Now It's ready to GO!
-  //
-  if (stopTime != 0)
-    {
-      Simulator::Stop (Seconds (stopTime));
-    }
-  Simulator::Run ();
-  Simulator::Destroy ();
+	//
+	// Step 9
+	// Now It's ready to GO!
+	//
+	if (stopTime != 0) {
+		Simulator::Stop(Seconds(stopTime));
+	}
+	Simulator::Run();
+	Simulator::Destroy();
 }//DceQuaggaOspfdTest::DoRun
 
