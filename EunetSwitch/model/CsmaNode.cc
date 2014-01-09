@@ -37,12 +37,12 @@ CsmaNode::CsmaNode(const uint32_t n_csma_net_devices) :
 
 void CsmaNode::DoInitialize() {
 	NS_LOG_INFO("just calling up");
-	Base::DoInitialize();
+	ns3::Node::DoInitialize();
 }
 
 void CsmaNode::NotifyConstructionCompleted() {
 	NS_LOG_INFO("just calling up");
-	Base::NotifyConstructionCompleted();
+	ns3::Node::NotifyConstructionCompleted();
 }
 
 CsmaNode::~CsmaNode() {

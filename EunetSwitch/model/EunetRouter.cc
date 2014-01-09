@@ -15,9 +15,8 @@ NS_LOG_COMPONENT_DEFINE("EunetRouter");
 NS_OBJECT_ENSURE_REGISTERED(EunetRouter);
 
 ns3::TypeId EunetRouter::GetTypeId(void) {
-	static ns3::TypeId type_id =
-			ns3::TypeId("EunetRouter").SetParent<Base> ().AddConstructor<
-					EunetRouter> ();
+	static ns3::TypeId type_id = ns3::TypeId("EunetRouter").SetParent<
+			SimpleRouter> ().AddConstructor<EunetRouter> ();
 	return type_id;
 }//GetTypeId
 
@@ -35,15 +34,14 @@ EunetRouter::EunetRouter(const unsigned n_ports) :
 		NS_LOG_INFO("attaching terminal " << i << " to corresponding port");
 		this->bring(i, this->eunetTerminals.Get(i), 0);
 	}
-	this->NotifyConstructionCompleted();
 }
 
 void EunetRouter::DoInitialize() {
 	NS_LOG_INFO("just calling up");
-	Base::DoInitialize();
+	SimpleRouter::DoInitialize();
 }
 
 void EunetRouter::NotifyConstructionCompleted() {
 	NS_LOG_INFO("just calling up");
-	Base::NotifyConstructionCompleted();
+	SimpleRouter::NotifyConstructionCompleted();
 }

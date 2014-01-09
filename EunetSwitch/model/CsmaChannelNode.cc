@@ -11,7 +11,7 @@ NS_OBJECT_ENSURE_REGISTERED(CsmaChannelNode);
 
 ns3::TypeId CsmaChannelNode::GetTypeId(void) {
 	static ns3::TypeId type_id =
-			ns3::TypeId("CsmaChannelNode").SetParent<Base> ().AddConstructor<
+			ns3::TypeId("CsmaChannelNode").SetParent<CsmaNode> ().AddConstructor<
 					CsmaChannelNode> ();
 	return type_id;
 }//GetTypeId
@@ -72,9 +72,9 @@ void CsmaChannelNode::setDelay(ns3::TimeValue& delay, const unsigned i_channel) 
 
 void CsmaChannelNode::DoInitialize() {
 	NS_LOG_INFO("just calling up");
-	Base::DoInitialize();
+	CsmaNode::DoInitialize();
 }
 void CsmaChannelNode::NotifyConstructionCompleted() {
 	NS_LOG_INFO("just calling up");
-	Base::NotifyConstructionCompleted();
+	CsmaNode::NotifyConstructionCompleted();
 }

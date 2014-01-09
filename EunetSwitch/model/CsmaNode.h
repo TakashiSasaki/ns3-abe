@@ -6,7 +6,7 @@
 #include "ns3/csma-net-device.h"
 
 class CsmaNode: public ns3::Node {
-	typedef Node Base;
+	//typedef Node Base;
 	const uint32_t nCsmaNetDevices;
 	ns3::ObjectFactory deviceFactory;
 	ns3::ObjectFactory queueFactory;

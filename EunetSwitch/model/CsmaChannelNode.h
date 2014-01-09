@@ -5,7 +5,7 @@
 #include "ns3/csma-channel.h"
 
 class CsmaChannelNode: public CsmaNode {
-	typedef CsmaNode Base;
+	//typedef CsmaNode Base;
 	ns3::ObjectFactory csmaChannelFactory;
 public:
 	static ns3::TypeId GetTypeId(void);

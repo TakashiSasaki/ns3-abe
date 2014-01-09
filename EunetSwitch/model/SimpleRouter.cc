@@ -8,7 +8,7 @@ NS_LOG_COMPONENT_DEFINE("SimpleRouter");
 #include "ns3/type-id.h"
 #include "ns3/bridge-helper.h"
 #include "ns3/dce-module.h"
-#include "ns3/dce-application-helper.h"
+//#include "ns3/dce-application-helper.h"
 #include "ns3/quagga-helper.h"
 #include "ns3/names.h"
 #include "SimpleRouter.h"
@@ -19,9 +19,8 @@ const ns3::DataRate SimpleRouter::defaultlinkDataRate("1000000000bps");
 const ns3::TimeValue SimpleRouter::defaultlinkDelay(ns3::MilliSeconds(1));
 
 ns3::TypeId SimpleRouter::GetTypeId(void) {
-	static ns3::TypeId type_id =
-			ns3::TypeId("SimpleRouter").SetParent<Base> ().AddConstructor<
-					SimpleRouter> ();
+	static ns3::TypeId type_id = ns3::TypeId("SimpleRouter").SetParent<
+			CsmaChannelNode> ().AddConstructor<SimpleRouter> ();
 	return type_id;
 }//GetTypeId
 
@@ -89,28 +88,45 @@ unsigned SimpleRouter::getUnusedlinkPort() {
 
 void SimpleRouter::DoInitialize() {
 	NS_LOG_INFO("just calling up");
-	Base::DoInitialize();
+	CsmaChannelNode::DoInitialize();
 }
 
 void SimpleRouter::NotifyConstructionCompleted() {
+	NS_LOG_INFO("just calling up.");
+	CsmaChannelNode::NotifyConstructionCompleted();
 	ns3::Ptr<SimpleRouter> ptr_this(this, true);
 	const auto n_devices_before = ptr_this->GetNDevices();
+	NS_ASSERT(n_devices_before > 0);
+	NS_LOG_INFO("node " << this->GetId() << " has " << n_devices_before << " device(s)");
 
-	ns3::InternetStackHelper stack; // IPv4 is required for GlobalRouteMan
-	ns3::Ipv4DceRoutingHelper ipv4RoutingHelper;
-	stack.SetRoutingHelper(ipv4RoutingHelper);
-	stack.Install(ptr_this);
+	NS_LOG_INFO("preparing InternetStackHelper");
+	ns3::InternetStackHelper internet_stack_helper; // IPv4 is required for GlobalRouteMan
+	NS_LOG_INFO("preparing Ipv4DceRoutingHelper");
+	ns3::Ipv4DceRoutingHelper ipv4_dce_routing_helper;
+	//ns3::Ipv4GlobalRoutingHelper ipv4_global_routing_helper;
+	NS_LOG_INFO("setting Ipv4DceRoutingHelper to InternetStackHelper");
+	internet_stack_helper.SetRoutingHelper(ipv4_dce_routing_helper);
+	NS_LOG_INFO("installing internet stack on the node");
+	NS_ASSERT(ptr_this != 0);
+	internet_stack_helper.Install(ptr_this);
+	NS_LOG_INFO("internet stack was installed on the node");
 
 	const auto n_devices_after = ptr_this->GetNDevices();
 	NS_ASSERT(n_devices_before +1 == n_devices_after);
 	NS_ASSERT(this->GetDevice(n_devices_before)->GetObject<ns3::LoopbackNetDevice>(ns3::LoopbackNetDevice::GetTypeId()));
 
-	//assignIpAddressToDevice();
-	//Ipv4GlobalRoutingHelper::PopulateRoutingTables();
+	//this->assignIpAddressToDevice();
+	Ipv4AddressHelper ipv4AddrHelper;
+	ipv4AddrHelper.SetBase("10.0.0.0", "255.255.255.0");
+	Ipv4InterfaceContainer interfaces = ipv4AddrHelper.Assign(this->GetDevice(0));
+	NS_LOG_INFO("populating global routing table");;
+	Ipv4GlobalRoutingHelper::PopulateRoutingTables();
 
-	ns3::DceManagerHelper processManager;
-	processManager.SetNetworkStack("ns3::Ns3SocketFdFactory");
-	processManager.Install(ns3::NodeContainer(ptr_this));
+	NS_LOG_INFO("preparing DceManagerHelper");
+	ns3::DceManagerHelper dce_manager_helper;
+	dce_manager_helper.SetNetworkStack("ns3::Ns3SocketFdFactory");
+	NS_LOG_INFO("installing with DceManagerHelper");
+	dce_manager_helper.Install(ns3::NodeContainer(ptr_this));
 
 	ns3::QuaggaHelper quagga;
 	auto all_networks = this->getAllNetworks();
@@ -122,7 +138,6 @@ void SimpleRouter::NotifyConstructionCompleted() {
 	quagga.Install(ns3::NodeContainer(ptr_this));
 
 	NS_LOG_INFO("routing all devices");
-	Base::NotifyConstructionCompleted();
 }//NotifyConstructionCompleted
 
 bool SimpleRouter::isConnectedToSimpleRouter(const unsigned i_port) {

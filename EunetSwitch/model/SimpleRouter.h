@@ -11,7 +11,7 @@
 using namespace ns3;
 
 class SimpleRouter: public CsmaChannelNode {
-	typedef CsmaChannelNode Base;
+	//typedef CsmaChannelNode Base;
 	ns3::DceApplicationHelper dceApplicationHelper;
 	static const ns3::DataRate defaultlinkDataRate;
 	static const ns3::TimeValue defaultlinkDelay;

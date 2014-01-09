@@ -17,7 +17,7 @@
 using namespace ns3;
 
 class EunetRouter: public SimpleRouter {
-	typedef SimpleRouter Base;
+	//typedef SimpleRouter Base;
 	EunetTerminals eunetTerminals;
 
 	static const char* const pcapPrefix;
