@@ -17,6 +17,7 @@
  *
  * Author: Hajime Tazaki <tazaki@nict.go.jp>
  */
+// modified by Takashi SASAKI
 
 #include "ns3/network-module.h"
 #include "ns3/core-module.h"
@@ -27,7 +28,20 @@
 
 using namespace ns3;
 
-NS_LOG_COMPONENT_DEFINE ("DceQuaggaOspfd");
+NS_LOG_COMPONENT_DEFINE ("DceQuaggaOspfdTest");
+
+class DceQuaggaOspfdTest: public TestCase {
+public:
+	DceQuaggaOspfdTest() :
+		ns3::TestCase("DceQuaggaOspfdTest") {
+		//NS_LOG_UNCOND("constructing a test case");
+	}
+	virtual ~DceQuaggaOspfdTest() {
+	}
+
+private:
+	virtual void DoRun(void);
+}; //class DceQuaggaOspfdTest
 
 static void RunIp (Ptr<Node> node, Time at, std::string str)
 {
