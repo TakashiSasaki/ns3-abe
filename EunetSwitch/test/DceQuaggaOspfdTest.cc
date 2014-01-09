@@ -25,6 +25,7 @@
 #include "ns3/dce-module.h"
 #include "ns3/quagga-helper.h"
 #include "ns3/point-to-point-helper.h"
+#include "ns3/csma-helper.h"
 
 using namespace ns3;
 NS_LOG_COMPONENT_DEFINE ("DceQuaggaOspfdTest");
@@ -45,7 +46,6 @@ private:
 // Parameters
 uint32_t nNodes = 2;
 uint32_t stopTime = 20;
-std::string netStack = "ns3";
 
 void DceQuaggaOspfdTest::DoRun() {
 	//
@@ -55,12 +55,17 @@ void DceQuaggaOspfdTest::DoRun() {
 	NodeContainer nodes;
 	nodes.Create(nNodes);
 
+	CsmaHelper csma_helper;
+	csma_helper.SetChannelAttribute("DataRate", StringValue("5Mbps"));
+	csma_helper.SetChannelAttribute("Delay", StringValue("2ms"));
+
 	PointToPointHelper pointToPoint;
 	pointToPoint.SetDeviceAttribute("DataRate", StringValue("5Mbps"));
 	pointToPoint.SetChannelAttribute("Delay", StringValue("2ms"));
 
 	NetDeviceContainer devices;
-	devices = pointToPoint.Install(nodes);
+	devices = csma_helper.Install(nodes);
+	//devices = pointToPoint.Install(nodes);
 	DceManagerHelper processManager;
 
 	//
@@ -69,7 +74,6 @@ void DceQuaggaOspfdTest::DoRun() {
 	//
 	//
 	Ipv4AddressHelper ipv4AddrHelper;
-	Ipv6AddressHelper ipv6AddrHelper;
 	// Internet stack install
 	InternetStackHelper stack; // IPv4 is required for GlobalRouteMan
 	Ipv4DceRoutingHelper ipv4RoutingHelper;
@@ -90,6 +94,7 @@ void DceQuaggaOspfdTest::DoRun() {
 	quagga.Install(nodes);
 
 	pointToPoint.EnablePcapAll("dce-quagga-ospfd");
+	csma_helper.EnablePcapAll("dce-quagga-ospfd");
 
 	//
 	// Step 9
@@ -112,4 +117,3 @@ public:
 };
 
 static DceQuaggaOspfdTestSuite dce_quagga_ospfd_test_suite;
-
