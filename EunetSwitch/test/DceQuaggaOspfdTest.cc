@@ -146,3 +146,14 @@ void DceQuaggaOspfdTest::DoRun() {
 	Simulator::Destroy();
 }//DceQuaggaOspfdTest::DoRun
 
+class DceQuaggaOspfdTestSuite: public TestSuite {
+public:
+	DceQuaggaOspfdTestSuite() :
+		ns3::TestSuite("DceQuaggaOspfd", UNIT) {
+		//NS_LOG_UNCOND("adding a test case");
+		AddTestCase(new DceQuaggaOspfdTest, TestCase::QUICK);
+	}
+};
+
+static DceQuaggaOspfdTestSuite dce_quagga_ospfd_test_suite;
+
