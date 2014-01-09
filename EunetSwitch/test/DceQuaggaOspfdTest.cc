@@ -68,14 +68,8 @@ uint32_t stopTime = 600;
 std::string netStack = "ns3";
 
 
-int main (int argc, char *argv[])
+void DceQuaggaOspfdTest::DoRun()
 {
-  CommandLine cmd;
-  cmd.AddValue ("nNodes", "Number of Router nodes", nNodes);
-  cmd.AddValue ("stopTime", "Time to stop(seconds)", stopTime);
-  cmd.AddValue ("netStack", "What network stack", netStack);
-  cmd.Parse (argc,argv);
-
   //
   //  Step 1
   //  Node Basic Configuration
@@ -159,6 +153,5 @@ int main (int argc, char *argv[])
     }
   Simulator::Run ();
   Simulator::Destroy ();
+}//DceQuaggaOspfdTest::DoRun
 
-  return 0;
-}
