@@ -205,3 +205,6 @@ std::unique_ptr<std::vector<std::string> > SimpleRouter::getAllNetworks() {
 	}//for
 	return p_networks;
 }
+
+void SimpleRouter::enableOspf(const unsigned i_device) {
+}//enableOspf

@@ -13,22 +13,25 @@ NS_LOG_COMPONENT_DEFINE("CsmaInternetNode");
 NS_OBJECT_ENSURE_REGISTERED(CsmaInternetNode);
 
 ns3::TypeId CsmaInternetNode::GetTypeId(void) {
-	static ns3::TypeId type_id =
-			ns3::TypeId("CsmaInternetNode").SetParent<Base> ().AddConstructor<
-					CsmaInternetNode> ();
+	static ns3::TypeId type_id = ns3::TypeId("CsmaInternetNode").SetParent<
+			CsmaChannelNode> ().AddConstructor<CsmaInternetNode> ();
 	return type_id;
 }//GetTypeId
 
 CsmaInternetNode::CsmaInternetNode(const int n_devices) :
-	CsmaChannelNode(n_devices) {
-}
+	CsmaChannelNode(n_devices), isNotifyConstructionCompletedCalled(false),
+			isDoInitializeCalled(false) {
+}// a constructor
 
 CsmaInternetNode::~CsmaInternetNode() {
-	// TODO !CodeTemplates.destructorstub.tododesc!
-}
+	NS_ASSERT(this->isNotifyConstructionCompletedCalled);
+	NS_ASSERT(this->isDoInitializeCalled);
+}// the destructor
 
 void CsmaInternetNode::NotifyConstructionCompleted() {
-	Base::NotifyConstructionCompleted();
+	NS_ASSERT(!this->isNotifyConstructionCompletedCalled);
+	this->isNotifyConstructionCompletedCalled = true;
+	CsmaChannelNode::NotifyConstructionCompleted();
 	const unsigned n_devices_before = this->GetNDevices();
 	//NS_ASSERT(this->GetNDevices() == 1);
 	ns3::InternetStackHelper internet_stack_helper;
@@ -41,7 +44,12 @@ void CsmaInternetNode::NotifyConstructionCompleted() {
 	this->logAllDevices();
 	NS_ASSERT(this->GetNDevices() == n_devices_before+1);
 	NS_ASSERT(this->GetDevice(n_devices_before)->GetObject<ns3::LoopbackNetDevice>(ns3::LoopbackNetDevice::GetTypeId()));
-}
+}//NotifyConstructionCompleted
+
+void CsmaInternetNode::DoInitialize() {
+	NS_ASSERT(!this->isDoInitializeCalled);
+	this->isDoInitializeCalled = true;
+}//DoInitialize
 
 #if 0
 ns3::Ipv4Address CsmaInternetNode::getCsmaNetDeviceAddress() {

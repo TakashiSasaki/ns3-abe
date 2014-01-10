@@ -4,7 +4,8 @@
 #include "CsmaChannelNode.h"
 
 class CsmaInternetNode: public CsmaChannelNode {
-	typedef CsmaChannelNode Base;
+	bool isNotifyConstructionCompletedCalled;
+	bool isDoInitializeCalled;
 public:
 	static ns3::TypeId GetTypeId(void);
 	CsmaInternetNode(const int n_devices = 1);
@@ -22,6 +23,7 @@ public:
 			ns3::Ipv4Mask ipv4_mask);
 protected:
 	virtual void NotifyConstructionCompleted();
+	virtual void DoInitialize();
 private:
 	void logAddress(const ns3::Ipv4Address& ipv4_address);
 };
@@ -35,12 +37,12 @@ ns3::Ipv4Address CsmaInternetNode::getAddress(const unsigned i_device) {
 	ns3::Ptr<T> ptr_net_device = this->getNetDevice<T> (i_device);
 	NS_ASSERT(ptr_net_device != 0);
 	NS_ASSERT(ptr_net_device->GetInstanceTypeId().IsChildOf(ns3::NetDevice::GetTypeId()));
-	const int n_interface = ptr_ipv4->GetInterfaceForDevice(ptr_net_device);
-	NS_ASSERT(n_interface != -1);
-	const auto n_addresses = ptr_ipv4->GetNAddresses();
+	const auto i_interface = ptr_ipv4->GetInterfaceForDevice(ptr_net_device);
+	NS_ASSERT(i_interface != -1);
+	const auto n_addresses = ptr_ipv4->GetNAddresses(i_interface);
 	NS_ASSERT(n_addresses == 1);
 	ns3::Ipv4InterfaceAddress ipv4_interface_address = ptr_ipv4->GetAddress(
-			n_interface, 0);
+			i_interface, 0);
 	ns3::Ipv4Address ipv4_address = ipv4_interface_address.GetLocal();
 	NS_ASSERT(this->GetNDevices()==n_devices_before);
 	return ipv4_address;

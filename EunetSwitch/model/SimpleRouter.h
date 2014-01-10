@@ -33,6 +33,8 @@ public:
 			const unsigned connect_i_link_port);
 	void connectTo(std::string router_name);
 	unsigned getUnusedlinkPort();
+	void enableOspf(const unsigned i_device);
+
 protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();
@@ -41,6 +43,6 @@ private:
 	void assignIpAddressToDevice(unsigned i_net_device, ns3::Ipv4Address,
 			ns3::Ipv4Mask);
 	std::unique_ptr<std::vector<std::string> > getAllNetworks();
-};
+}; // class SimpleRouter
 
 #endif /* SIMPLEROUTER_H_ */
