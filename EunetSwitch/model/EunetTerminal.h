@@ -15,6 +15,7 @@ public:
 protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();
+	virtual void DoDispose();
 };//EunetTerminal
 
 #endif /* EUNETTERMINAL_H_ */

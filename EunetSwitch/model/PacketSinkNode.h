@@ -13,6 +13,8 @@ public:
 protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();
+	virtual void DoDispose();
+protected:
 	static const int PACKET_SINK_UDP_PORT = 9; // Discard port (RFC 863)
 private:
 	ns3::ApplicationContainer packetSink;

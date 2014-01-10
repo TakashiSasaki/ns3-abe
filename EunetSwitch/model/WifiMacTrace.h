@@ -8,7 +8,10 @@ class WifiMacTrace: virtual public TraceBase {
 public:
 	WifiMacTrace(ns3::Node* p_node);
 	virtual ~WifiMacTrace();
-	void DoInitialize();
+protected:
+	virtual void DoInitialize();
+	virtual void NotifyConstructionCompleted();
+	virtual void DoDispose();
 private:
 	void traceMacTx(ns3::Ptr<const ns3::Packet>) const;
 	void traceMacTxDrop(ns3::Ptr<const ns3::Packet>) const;

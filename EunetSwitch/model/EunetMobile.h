@@ -17,6 +17,7 @@ public:
 protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();
+	virtual void DoDispose();
 };//EunetMobile
 
 #endif /* EUNETMOBILE_H_ */

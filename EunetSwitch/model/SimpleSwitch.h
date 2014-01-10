@@ -45,6 +45,7 @@ public:
 protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();
+	virtual void DoDispose();
 private:
 	bool isConnectedToSimpleSwitch(const unsigned i_port);
 };

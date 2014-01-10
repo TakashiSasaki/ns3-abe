@@ -11,6 +11,7 @@ public:
 protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();
+	virtual void DoDispose();
 };
 
 #endif /* WIFONODE_H_ */

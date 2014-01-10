@@ -17,6 +17,7 @@ public:
 protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();
+	virtual void DoDispose();
 private:
 	void installOnOffApplication();
 	static const int ON_OFF_APPLICATION_UDP_PORT = 10009;

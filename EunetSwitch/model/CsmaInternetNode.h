@@ -23,8 +23,9 @@ public:
 	void assignAddress(const unsigned i_device, ns3::Ipv4Address ipv4_address,
 			ns3::Ipv4Mask ipv4_mask);
 protected:
-	virtual void NotifyConstructionCompleted();
 	virtual void DoInitialize();
+	virtual void NotifyConstructionCompleted();
+	virtual void DoDispose();
 private:
 	void logAddress(const ns3::Ipv4Address& ipv4_address);
 };

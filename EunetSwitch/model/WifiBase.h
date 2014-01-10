@@ -26,7 +26,10 @@ public:
 protected:
 	WifiBase(ns3::Node* p_node, const WifiMacTypeString, bool active_probing);
 	virtual ~WifiBase();
-	void DoInitialize();
+protected:
+	virtual void DoInitialize();
+	virtual void NotifyConstructionCompleted();
+	virtual void DoDispose();
 private:
 	void traceMacTx(ns3::Ptr<const ns3::Packet>) const;
 	void traceMacTxDrop(ns3::Ptr<const ns3::Packet>) const;

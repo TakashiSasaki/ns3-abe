@@ -24,6 +24,7 @@ public:
 protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();
+	virtual void DoDispose();
 };
 
 #endif /* CSMACHANNELNODE_H_ */

@@ -84,9 +84,10 @@ public:
 		return this->eunetTerminals.Get(i_downlink_port);
 	}//getTerminal
 
-private:
+protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();
+	virtual void DoDispose();
 };//class EunetSwitch
 
 #endif /* EUNETSWITCH_H_ */
