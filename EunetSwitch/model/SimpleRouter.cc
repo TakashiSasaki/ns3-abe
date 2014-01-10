@@ -186,6 +186,9 @@ std::unique_ptr<std::vector<std::string> > SimpleRouter::getAllNetworks() {
 		if (p_loopback_device)
 			continue;
 		auto i_interface = ptr_ipv4->GetInterfaceForDevice(p_net_device);
+		NS_ASSERT_MSG(i_interface != -1, "IP address is not assigned yet.");
+		if (i_interface == -1)
+			continue;
 		auto n_addresses = ptr_ipv4->GetNAddresses(i_interface);
 		for (unsigned j = 0; n_addresses > j; ++j) {
 			auto ipv4_interface_address = ptr_ipv4->GetAddress(i_interface, j);
