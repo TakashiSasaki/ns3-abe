@@ -20,22 +20,20 @@ const ns3::TimeValue SimpleRouter::defaultlinkDelay(ns3::MilliSeconds(1));
 
 ns3::TypeId SimpleRouter::GetTypeId(void) {
 	static ns3::TypeId type_id = ns3::TypeId("SimpleRouter").SetParent<
-			CsmaChannelNode> ().AddConstructor<SimpleRouter> ();
+			CsmaInternetNode> ().AddConstructor<SimpleRouter> ();
 	return type_id;
 }//GetTypeId
 
 
 SimpleRouter::SimpleRouter(const unsigned n_ports) :
-	CsmaChannelNode(n_ports, defaultlinkDataRate, defaultlinkDelay),
-			isNotifyConstructionCompletedCalled(false), isDoInitializeCalled(
-					false), nlinkPorts(n_ports) {
-	this->setlinkDataRate(defaultlinkDataRate);
-	this->setlinkDelay(defaultlinkDelay);
-	NS_LOG_INFO("constructing SimpleSwitch");
-	for (unsigned i = 0; i < nlinkPorts; ++i) {
-		NS_LOG_INFO("investigating port " << i);
-		NS_ASSERT(!this->isConnectedToSimpleRouter(i));
-	}
+	/*CsmaChannelNode(n_ports, defaultlinkDataRate, defaultlinkDelay),*/
+	isNotifyConstructionCompletedCalled(false), isDoInitializeCalled(false),
+			nlinkPorts(n_ports) {
+	//	NS_LOG_INFO("constructing SimpleSwitch");
+	//	for (unsigned i = 0; i < nlinkPorts; ++i) {
+	//		NS_LOG_INFO("investigating port " << i);
+	//		NS_ASSERT(!this->isConnectedToSimpleRouter(i));
+	//	}
 }
 
 SimpleRouter::~SimpleRouter() {
@@ -93,35 +91,41 @@ void SimpleRouter::DoInitialize() {
 	NS_ASSERT(!this->isDoInitializeCalled);
 	this->isDoInitializeCalled = true;
 	NS_LOG_INFO("just calling up CsmaChannelNode::DoInitialize");
-	CsmaChannelNode::DoInitialize();
+	CsmaInternetNode::DoInitialize();
+	this->setlinkDataRate(defaultlinkDataRate);
+	this->setlinkDelay(defaultlinkDelay);
 }
 
 void SimpleRouter::NotifyConstructionCompleted() {
 	NS_ASSERT(!this->isNotifyConstructionCompletedCalled);
 	this->isNotifyConstructionCompletedCalled = true;
 	NS_LOG_INFO("just calling up CsmaChannelNode::NotifyConstructionCompleted");
-	CsmaChannelNode::NotifyConstructionCompleted();
+	CsmaInternetNode::NotifyConstructionCompleted();
 	NS_LOG_INFO("CsmaChannelNode::NotifyConstructionCompleted finished");
 	ns3::Ptr<SimpleRouter> ptr_this(this, true);
-	const auto n_devices_before = ptr_this->GetNDevices();
-	NS_ASSERT(n_devices_before > 0);
-	NS_LOG_INFO("node " << this->GetId() << " has " << n_devices_before << " device(s)");
+	NS_ASSERT(ptr_this != 0);
+	//const auto n_devices_before = ptr_this->GetNDevices();
+	//NS_ASSERT(n_devices_before > 0);
+	//NS_LOG_INFO("node " << this->GetId() << " has " << n_devices_before << " device(s)");
 
-	NS_LOG_INFO("preparing InternetStackHelper");
-	ns3::InternetStackHelper internet_stack_helper; // IPv4 is required for GlobalRouteMan
+	//NS_LOG_INFO("preparing InternetStackHelper");
+	//ns3::InternetStackHelper internet_stack_helper; // IPv4 is required for GlobalRouteMan
 	NS_LOG_INFO("preparing Ipv4DceRoutingHelper");
 	ns3::Ipv4DceRoutingHelper ipv4_dce_routing_helper;
+	auto ipv4_routing_protocol = ipv4_dce_routing_helper.Create(ptr_this);
 	//ns3::Ipv4GlobalRoutingHelper ipv4_global_routing_helper;
-	NS_LOG_INFO("setting Ipv4DceRoutingHelper to InternetStackHelper");
-	internet_stack_helper.SetRoutingHelper(ipv4_dce_routing_helper);
-	NS_LOG_INFO("installing internet stack on the node");
-	NS_ASSERT(ptr_this != 0);
-	internet_stack_helper.Install(ptr_this);
-	NS_LOG_INFO("internet stack was installed on the node");
+	//NS_LOG_INFO("setting Ipv4DceRoutingHelper to InternetStackHelper");
+	//internet_stack_helper.SetRoutingHelper(ipv4_dce_routing_helper);
+	//NS_LOG_INFO("installing internet stack on the node");
+	//internet_stack_helper.Install(ptr_this);
+	//NS_LOG_INFO("internet stack was installed on the node");
+	auto ptr_ipv4 = ptr_this->GetObject<ns3::Ipv4> ();
+	ptr_ipv4->SetRoutingProtocol(ipv4_routing_protocol);
+	NS_LOG_DEBUG("Ipv4DceRoutingProtocol was installed");
 
-	const auto n_devices_after = ptr_this->GetNDevices();
-	NS_ASSERT(n_devices_before +1 == n_devices_after);
-	NS_ASSERT(this->GetDevice(n_devices_before)->GetObject<ns3::LoopbackNetDevice>(ns3::LoopbackNetDevice::GetTypeId()));
+	//const auto n_devices_after = ptr_this->GetNDevices();
+	//NS_ASSERT(n_devices_before +1 == n_devices_after);
+	//NS_ASSERT(this->GetDevice(n_devices_before)->GetObject<ns3::LoopbackNetDevice>(ns3::LoopbackNetDevice::GetTypeId()));
 
 	//this->assignIpAddressToDevice();
 	//Ipv4AddressHelper ipv4AddrHelper;
@@ -136,18 +140,7 @@ void SimpleRouter::NotifyConstructionCompleted() {
 	dce_manager_helper.SetNetworkStack("ns3::Ns3SocketFdFactory");
 	NS_LOG_INFO("installing with DceManagerHelper");
 	dce_manager_helper.Install(ns3::NodeContainer(ptr_this));
-
-	NS_LOG_INFO("creating QuaggaHelper");
-	ns3::QuaggaHelper quagga;
-	auto all_networks = this->getAllNetworks();
-	for (auto i = all_networks->begin(); i != all_networks->end(); ++i) {
-		quagga.EnableOspf(ns3::NodeContainer(ptr_this), (*i).c_str());
-	}//for
-	quagga.EnableOspfDebug(ns3::NodeContainer(ptr_this));
-	quagga.EnableZebraDebug(ns3::NodeContainer(ptr_this));
-	quagga.Install(ns3::NodeContainer(ptr_this));
-
-	NS_LOG_INFO("routing all devices");
+	NS_LOG_INFO("DceManagerHelper was installed.");
 }//NotifyConstructionCompleted
 
 bool SimpleRouter::isConnectedToSimpleRouter(const unsigned i_port) {
@@ -206,5 +199,29 @@ std::unique_ptr<std::vector<std::string> > SimpleRouter::getAllNetworks() {
 	return p_networks;
 }
 
-void SimpleRouter::enableOspf(const unsigned i_device) {
+void SimpleRouter::enableOspf(const unsigned i_net_device) {
+	NS_LOG_DEBUG("enabling Quagga OSPF routing daemon");
+	const auto ipv4_interface_address = this->getIpv4InterfaceAddress(
+			i_net_device);
+	ns3::QuaggaHelper quagga;
+	//auto all_networks = this->getAllNetworks();
+	//for (auto i = all_networks->begin(); i != all_networks->end(); ++i) {
+	//	quagga.EnableOspf(ns3::NodeContainer(ptr_this), (*i).c_str());
+	//}//for
+	const auto ipv4_address = ipv4_interface_address.GetLocal();
+	const auto ipv4_mask = ipv4_interface_address.GetMask();
+	const auto ipv4_network_address = ipv4_address.CombineMask(ipv4_mask);
+	std::ostringstream oss;
+	ipv4_network_address.Print(oss);
+	oss << '/' << ipv4_mask.GetPrefixLength();
+	NS_LOG_DEBUG("enabling Quagga OSPF to network " << oss.str());
+	ns3::Ptr<SimpleRouter> ptr_this(this, true);
+	quagga.EnableOspf(ns3::NodeContainer(ptr_this), oss.str().c_str());
+	NS_LOG_DEBUG("enabling Quagga OSPF debug");
+	quagga.EnableOspfDebug(ns3::NodeContainer(ptr_this));
+	NS_LOG_DEBUG("enabling Zebra debug");
+	quagga.EnableZebraDebug(ns3::NodeContainer(ptr_this));
+	NS_LOG_DEBUG("installing Quagga OSPF routing daemon");
+	quagga.Install(ns3::NodeContainer(ptr_this));
+	NS_LOG_INFO("Quagga OSPF routing daemon was installed.");
 }//enableOspf

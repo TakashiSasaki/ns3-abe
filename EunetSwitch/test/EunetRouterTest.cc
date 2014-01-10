@@ -10,6 +10,7 @@
 #include "ns3/internet-module.h"
 #include "ns3/internet-stack-helper.h"
 #include "ns3/point-to-point-helper.h"
+#include "ns3/dce-application-helper.h"
 #include "EunetSwitches.h"
 #include "EunetTerminals.h"
 #include "SimpleAp.h"

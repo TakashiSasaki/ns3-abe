@@ -8,9 +8,10 @@ NS_LOG_COMPONENT_DEFINE("EunetRouter");
 #include "ns3/type-id.h"
 #include "ns3/bridge-helper.h"
 #include "ns3/quagga-helper.h"
+#include "ns3/dce-application-helper.h"
 #include "EunetRouter.h"
 #include "SimpleRouter.h"
-#include "CsmaChannelNode.h"
+//#include "CsmaChannelNode.h"
 
 NS_OBJECT_ENSURE_REGISTERED(EunetRouter);
 

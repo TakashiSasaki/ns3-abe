@@ -256,7 +256,8 @@ OBJS_STD:= \
     TraceBase.o WifiMacTrace.o WifiPhyTrace.o
 
 OBJS_DCE:= \
-    NamedRouters.o EunetRouter.o SimpleRouter.o EunetRouters.o
+    EunetRouter.o SimpleRouter.o \
+    # NamedRouters.o EunetRouters.o
 
 libeunet.a : $(OBJS_COMMON) $(OBJS_$(VER))
 	ar r $@ $^

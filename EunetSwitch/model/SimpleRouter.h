@@ -3,14 +3,14 @@
 #include "ns3/nstime.h"
 #include "ns3/core-module.h"
 #include "ns3/internet-module.h"
-#include "ns3/dce-application-helper.h"
-#include "ns3/dce-module.h"
-#include "ns3/quagga-helper.h"
-#include "CsmaChannelNode.h"
-
+//#include "ns3/dce-application-helper.h"
+//#include "ns3/dce-module.h"
+//#include "ns3/quagga-helper.h"
+//#include "CsmaChannelNode.h"
+#include "CsmaInternetNode.h"
 using namespace ns3;
 
-class SimpleRouter: public CsmaChannelNode {
+class SimpleRouter: public CsmaInternetNode {
 	//typedef CsmaChannelNode Base;
 	ns3::DceApplicationHelper dceApplicationHelper;
 	static const ns3::DataRate defaultlinkDataRate;
