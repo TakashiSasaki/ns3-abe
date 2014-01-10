@@ -7,6 +7,7 @@
 class CsmaChannelNode: public CsmaNode {
 	bool isNotifyConstructionCompletedCalled;
 	bool isDoInitializeCalled;
+	bool isDoDisposeCalled;
 	ns3::ObjectFactory csmaChannelFactory;
 public:
 	static ns3::TypeId GetTypeId(void);

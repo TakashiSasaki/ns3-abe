@@ -15,6 +15,14 @@ ns3::TypeId CsmaChannelNode::GetTypeId(void) {
 	return type_id;
 }//GetTypeId
 
+void CsmaChannelNode::DoDispose() {
+	NS_ASSERT(!this->isDoDisposeCalled);
+	this->isDoInitializeCalled = true;
+	NS_ASSERT(this->isNotifyConstructionCompletedCalled);
+	NS_ASSERT(this->isDoInitializeCalled);
+	CsmaChannelNode::DoDispose();
+}//DoDispose
+
 CsmaChannelNode::CsmaChannelNode(const int n_devices,
 		ns3::DataRateValue data_rate, ns3::TimeValue delay) :
 	CsmaNode(n_devices), isNotifyConstructionCompletedCalled(false),
@@ -39,11 +47,6 @@ ns3::Ptr<ns3::CsmaChannel> CsmaChannelNode::getCsmaChannel(unsigned i_channel) {
 	auto ptr_channel = ptr_csma_net_device->GetChannel();
 	auto ptr_csma_channel = ptr_channel->GetObject<ns3::CsmaChannel> ();
 	return ptr_csma_channel;
-}
-
-void CsmaChannelNode::DoDispose() {
-	NS_ASSERT(this->isNotifyConstructionCompletedCalled);
-	NS_ASSERT(this->isDoInitializeCalled);
 }
 
 void CsmaChannelNode::bring(ns3::Ptr<CsmaNode> ptr_newcomer,

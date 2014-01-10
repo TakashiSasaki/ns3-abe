@@ -20,13 +20,15 @@ ns3::TypeId CsmaInternetNode::GetTypeId(void) {
 
 CsmaInternetNode::CsmaInternetNode(const int n_devices) :
 	CsmaChannelNode(n_devices), isNotifyConstructionCompletedCalled(false),
-			isDoInitializeCalled(false) {
+			isDoInitializeCalled(false), isDoDisposeCalled(false) {
 }// a constructor
 
 void CsmaInternetNode::DoDispose() {
+	NS_ASSERT(!this->isDoInitializeCalled);
+	this->isDoInitializeCalled = true;
 	NS_ASSERT(this->isNotifyConstructionCompletedCalled);
 	NS_ASSERT(this->isDoInitializeCalled);
-}// the destructor
+}// DoDispose
 
 void CsmaInternetNode::NotifyConstructionCompleted() {
 	NS_ASSERT(!this->isNotifyConstructionCompletedCalled);

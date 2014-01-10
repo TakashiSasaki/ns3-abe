@@ -6,6 +6,7 @@
 class CsmaInternetNode: public CsmaChannelNode {
 	bool isNotifyConstructionCompletedCalled;
 	bool isDoInitializeCalled;
+	bool isDoDisposeCalled;
 public:
 	static ns3::TypeId GetTypeId(void);
 	CsmaInternetNode(const int n_devices = 1);
