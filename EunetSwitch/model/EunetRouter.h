@@ -17,6 +17,8 @@
 using namespace ns3;
 
 class EunetRouter: public SimpleRouter {
+	bool isNotifyConstructionCompletedCalled;
+	bool isDoInitializeCalled;
 	//typedef SimpleRouter Base;
 	EunetTerminals eunetTerminals;
 
@@ -36,24 +38,25 @@ public:
 
 	void enableAsciiTrace(const int i_port) {
 		ns3::CsmaHelper csma_helper;
-		csma_helper.EnableAscii(EunetRouter::asciiTracePrefix, this->getLinkPort(i_port));
+		csma_helper.EnableAscii(EunetRouter::asciiTracePrefix,
+				this->getLinkPort(i_port));
 	}
 	EunetTerminals& getTerminals() {
-			return this->eunetTerminals;
-			//return this->ncTerminals;
-		}//getTerminals
+		return this->eunetTerminals;
+		//return this->ncTerminals;
+	}//getTerminals
 
-		ns3::NetDeviceContainer getTerminalDevices() {
-			ns3::NetDeviceContainer ndc;
-			for (unsigned i = 0; i < this->eunetTerminals.GetN(); ++i) {
-				ndc.Add(this->eunetTerminals.Get(i)->getCsmaNetDevice(0));
-			}//for
-			return ndc;
-		}//getTerminalDevices
+	ns3::NetDeviceContainer getTerminalDevices() {
+		ns3::NetDeviceContainer ndc;
+		for (unsigned i = 0; i < this->eunetTerminals.GetN(); ++i) {
+			ndc.Add(this->eunetTerminals.Get(i)->getCsmaNetDevice(0));
+		}//for
+		return ndc;
+	}//getTerminalDevices
 
-		ns3::Ptr<EunetTerminal> getTerminal(const int i_downlink_port) {
-			return this->eunetTerminals.Get(i_downlink_port);
-		}//getTerminal
+	ns3::Ptr<EunetTerminal> getTerminal(const int i_downlink_port) {
+		return this->eunetTerminals.Get(i_downlink_port);
+	}//getTerminal
 
 private:
 	virtual void DoInitialize();

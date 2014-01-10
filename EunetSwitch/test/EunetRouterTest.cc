@@ -21,9 +21,10 @@ NS_LOG_COMPONENT_DEFINE ("EunetRouterTest");
 class EunetRouterTestCase: public ns3::TestCase {
 public:
 	EunetRouterTestCase() :
-		ns3::TestCase("EunetRouter") {
+		ns3::TestCase("EunetRouterTestCase") {
 	}
 	virtual ~EunetRouterTestCase() {
+		NS_LOG_DEBUG("destructor called.");
 	}
 
 private:
@@ -72,7 +73,7 @@ void EunetRouterTestCase::DoRun() {
 class EunetRouterTestSuite: public ns3::TestSuite {
 public:
 	EunetRouterTestSuite() :
-		ns3::TestSuite("EunetRouter", UNIT) {
+		ns3::TestSuite("EunetRouterTestSuite", UNIT) {
 		AddTestCase(new EunetRouterTestCase, ns3::TestCase::QUICK);
 	}
 };

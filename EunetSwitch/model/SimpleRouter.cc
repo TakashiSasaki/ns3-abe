@@ -37,6 +37,7 @@ SimpleRouter::SimpleRouter(const unsigned n_ports) :
 }
 
 SimpleRouter::~SimpleRouter() {
+	NS_LOG_DEBUG("destructor called");
 	NS_ASSERT(this->isDoInitializeCalled);
 	NS_ASSERT(this->isNotifyConstructionCompletedCalled);
 }

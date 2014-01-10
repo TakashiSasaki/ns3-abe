@@ -25,16 +25,20 @@ const char* const EunetRouter::pcapPrefix = "EunetRouter";
 const char* const EunetRouter::asciiTracePrefix = "EunetRouter";
 
 EunetRouter::~EunetRouter() {
+	NS_ASSERT(this->isNotifyConstructionCompletedCalled);
+	NS_ASSERT(this->isDoInitializeCalled);
 }
 
 EunetRouter::EunetRouter(const unsigned n_ports) :
-	SimpleRouter(n_ports), eunetTerminals(n_ports) {
+
+	SimpleRouter(n_ports), isNotifyConstructionCompletedCalled(false),
+			isDoInitializeCalled(false), eunetTerminals(n_ports) {
 	NS_LOG_INFO("constructing EunetRouter");
-//	NS_LOG_INFO("attaching " << this->eunetTerminals.GetN() << " terminal(s) to corresponding port(s)");
-//	for (unsigned i = 0; i < this->eunetTerminals.GetN(); ++i) {
-//		NS_LOG_INFO("attaching terminal " << i << " to corresponding port");
-//		this->bring(i, this->eunetTerminals.Get(i), 0);
-//	}
+	//	NS_LOG_INFO("attaching " << this->eunetTerminals.GetN() << " terminal(s) to corresponding port(s)");
+	//	for (unsigned i = 0; i < this->eunetTerminals.GetN(); ++i) {
+	//		NS_LOG_INFO("attaching terminal " << i << " to corresponding port");
+	//		this->bring(i, this->eunetTerminals.Get(i), 0);
+	//	}
 }
 
 void EunetRouter::DoInitialize() {
