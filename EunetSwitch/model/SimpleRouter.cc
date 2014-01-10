@@ -27,7 +27,8 @@ ns3::TypeId SimpleRouter::GetTypeId(void) {
 
 SimpleRouter::SimpleRouter(const unsigned n_ports) :
 	CsmaChannelNode(n_ports, defaultlinkDataRate, defaultlinkDelay),
-			nlinkPorts(n_ports) {
+
+			isNotifyConstructionCompletedCalled(false),nlinkPorts(n_ports){
 	this->setlinkDataRate(defaultlinkDataRate);
 	this->setlinkDelay(defaultlinkDelay);
 	NS_LOG_INFO("constructing SimpleSwitch");
@@ -92,8 +93,11 @@ void SimpleRouter::DoInitialize() {
 }
 
 void SimpleRouter::NotifyConstructionCompleted() {
-	NS_LOG_INFO("just calling up.");
+	NS_ASSERT(!this->isNotifyConstructionCompletedCalled);
+	this->isNotifyConstructionCompletedCalled = true;
+	NS_LOG_INFO("just calling up CsmaChannelNode::NotifyConstructionCompleted");
 	CsmaChannelNode::NotifyConstructionCompleted();
+	NS_LOG_INFO("CsmaChannelNode::NotifyConstructionCompleted finished");
 	ns3::Ptr<SimpleRouter> ptr_this(this, true);
 	const auto n_devices_before = ptr_this->GetNDevices();
 	NS_ASSERT(n_devices_before > 0);
@@ -116,11 +120,12 @@ void SimpleRouter::NotifyConstructionCompleted() {
 	NS_ASSERT(this->GetDevice(n_devices_before)->GetObject<ns3::LoopbackNetDevice>(ns3::LoopbackNetDevice::GetTypeId()));
 
 	//this->assignIpAddressToDevice();
-	Ipv4AddressHelper ipv4AddrHelper;
-	ipv4AddrHelper.SetBase("10.0.0.0", "255.255.255.0");
-	Ipv4InterfaceContainer interfaces = ipv4AddrHelper.Assign(this->GetDevice(0));
-	NS_LOG_INFO("populating global routing table");;
-	Ipv4GlobalRoutingHelper::PopulateRoutingTables();
+	//Ipv4AddressHelper ipv4AddrHelper;
+	//ipv4AddrHelper.SetBase("10.0.0.0", "255.255.255.0");
+	//Ipv4InterfaceContainer interfaces = ipv4AddrHelper.Assign(
+	//		this->GetDevice(0));
+	//NS_LOG_INFO("populating global routing table");;
+	//Ipv4GlobalRoutingHelper::PopulateRoutingTables();
 
 	NS_LOG_INFO("preparing DceManagerHelper");
 	ns3::DceManagerHelper dce_manager_helper;
@@ -128,6 +133,7 @@ void SimpleRouter::NotifyConstructionCompleted() {
 	NS_LOG_INFO("installing with DceManagerHelper");
 	dce_manager_helper.Install(ns3::NodeContainer(ptr_this));
 
+	NS_LOG_INFO("creating QuaggaHelper");
 	ns3::QuaggaHelper quagga;
 	auto all_networks = this->getAllNetworks();
 	for (auto i = all_networks->begin(); i != all_networks->end(); ++i) {

@@ -15,6 +15,7 @@ class SimpleRouter: public CsmaChannelNode {
 	ns3::DceApplicationHelper dceApplicationHelper;
 	static const ns3::DataRate defaultlinkDataRate;
 	static const ns3::TimeValue defaultlinkDelay;
+	bool isNotifyConstructionCompletedCalled;
 
 public:
 	const unsigned nlinkPorts;

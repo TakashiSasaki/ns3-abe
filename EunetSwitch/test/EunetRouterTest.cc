@@ -30,11 +30,31 @@ private:
 };
 
 void EunetRouterTestCase::DoRun() {
-	//auto eunet_router_2 = ns3::CreateObject<EunetRouter>();
+	NS_LOG_DEBUG("creating Node via CreateObject");
+	auto ptr_node = ns3::CreateObject<Node>();
+	NS_ASSERT(ptr_node != 0);
+
+	NS_LOG_DEBUG("creating CsmaNode via CreateObject");
+	auto ptr_csma_node = ns3::CreateObject<CsmaNode>();
+	NS_ASSERT(ptr_csma_node != 0);
+
+	NS_LOG_DEBUG("creating CsmaChannelNode via CreateObject");
+	auto ptr_csma_channel_node = ns3::CreateObject<CsmaChannelNode>();
+	NS_ASSERT(ptr_csma_channel_node != 0);
+
+	NS_LOG_DEBUG("creating SimpleRouter via CreateObject");
+	auto ptr_simple_router = ns3::CreateObject<SimpleRouter>();
+	NS_ASSERT(ptr_simple_router != 0);
+
+	NS_LOG_DEBUG("creating EunetRouter via CreateObject");
+	auto eunet_router_2 = ns3::CreateObject<EunetRouter>();
+	NS_ASSERT(eunet_router_2 != 0);
 
 	//ns3::PacketMetadata::Enable();
+	NS_LOG_DEBUG("creating object factory for EunetRouter");
 	ns3::ObjectFactory object_factory;
 	object_factory.SetTypeId("EunetRouter");
+	NS_LOG_DEBUG("creating EunetRouter via ObjectFactory");
 	ns3::Ptr<EunetRouter> eunet_router(object_factory.Create<EunetRouter> ());
 	eunet_router->getTerminals().assignAddresses();
 	eunet_router->getTerminals().setRemoteOfAtoB(0, 0);
