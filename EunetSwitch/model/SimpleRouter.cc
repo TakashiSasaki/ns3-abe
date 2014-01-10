@@ -27,8 +27,8 @@ ns3::TypeId SimpleRouter::GetTypeId(void) {
 
 SimpleRouter::SimpleRouter(const unsigned n_ports) :
 	CsmaChannelNode(n_ports, defaultlinkDataRate, defaultlinkDelay),
-
-			isNotifyConstructionCompletedCalled(false),nlinkPorts(n_ports){
+			isNotifyConstructionCompletedCalled(false), isDoInitializeCalled(
+					false), nlinkPorts(n_ports) {
 	this->setlinkDataRate(defaultlinkDataRate);
 	this->setlinkDelay(defaultlinkDelay);
 	NS_LOG_INFO("constructing SimpleSwitch");
@@ -39,6 +39,8 @@ SimpleRouter::SimpleRouter(const unsigned n_ports) :
 }
 
 SimpleRouter::~SimpleRouter() {
+	NS_ASSERT(this->isDoInitializeCalled);
+	NS_ASSERT(this->isNotifyConstructionCompletedCalled);
 }
 
 void SimpleRouter::setlinkDataRate(ns3::DataRateValue data_rate) {
@@ -88,7 +90,9 @@ unsigned SimpleRouter::getUnusedlinkPort() {
 }
 
 void SimpleRouter::DoInitialize() {
-	NS_LOG_INFO("just calling up");
+	NS_ASSERT(!this->isDoInitializeCalled);
+	this->isDoInitializeCalled = true;
+	NS_LOG_INFO("just calling up CsmaChannelNode::DoInitialize");
 	CsmaChannelNode::DoInitialize();
 }
 
