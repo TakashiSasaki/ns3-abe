@@ -79,7 +79,8 @@ void CsmaChannelNode::DoInitialize() {
 	this->isDoInitializeCalled = true;
 	NS_LOG_INFO("just calling up CsmaNode::DoInitialize");
 	CsmaNode::DoInitialize();
-}
+}//DoInitialize
+
 void CsmaChannelNode::NotifyConstructionCompleted() {
 	NS_ASSERT(!this->isNotifyConstructionCompletedCalled);
 	this->isNotifyConstructionCompletedCalled = true;

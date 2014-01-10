@@ -17,6 +17,7 @@ class SimpleRouter: public CsmaInternetNode {
 	static const ns3::TimeValue defaultlinkDelay;
 	bool isNotifyConstructionCompletedCalled;
 	bool isDoInitializeCalled;
+	bool isDoDisposeCalled;
 
 public:
 	const unsigned nlinkPorts;

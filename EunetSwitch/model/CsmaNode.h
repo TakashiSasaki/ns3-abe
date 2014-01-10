@@ -18,6 +18,10 @@ public:
 	template<class T>
 	ns3::Ptr<T> getNetDevice(const unsigned i_device = 0);
 	void logAllDevices(const ns3::LogLevel log_level = ns3::LOG_LEVEL_INFO);
+private:
+	bool isNotifyConstructionCompletedCalled;
+	bool isDoInitializeCalled;
+	bool isDoDisposeCalled;
 protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();

@@ -24,8 +24,8 @@ CsmaInternetNode::CsmaInternetNode(const int n_devices) :
 }// a constructor
 
 void CsmaInternetNode::DoDispose() {
-	NS_ASSERT(!this->isDoInitializeCalled);
-	this->isDoInitializeCalled = true;
+	NS_ASSERT(!this->isDoDisposeCalled);
+	this->isDoDisposeCalled = true;
 	NS_ASSERT(this->isNotifyConstructionCompletedCalled);
 	NS_ASSERT(this->isDoInitializeCalled);
 }// DoDispose
@@ -51,6 +51,7 @@ void CsmaInternetNode::NotifyConstructionCompleted() {
 void CsmaInternetNode::DoInitialize() {
 	NS_ASSERT(!this->isDoInitializeCalled);
 	this->isDoInitializeCalled = true;
+	CsmaChannelNode::DoInitialize();
 }//DoInitialize
 
 #if 0

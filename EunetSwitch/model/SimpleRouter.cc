@@ -37,9 +37,12 @@ SimpleRouter::SimpleRouter(const unsigned n_ports) :
 }
 
 void SimpleRouter::DoDispose() {
+	NS_ASSERT(!this->isDoDisposeCalled);
+	this->isDoDisposeCalled = true;
 	NS_ASSERT(this->isDoInitializeCalled);
 	NS_ASSERT(this->isNotifyConstructionCompletedCalled);
-}
+	CsmaInternetNode::DoDispose();
+}//DoDispose
 
 void SimpleRouter::setlinkDataRate(ns3::DataRateValue data_rate) {
 	for (unsigned i = 0; i < nlinkPorts; ++i) {
