@@ -93,3 +93,6 @@ void CsmaInternetNode::assignAddress(const unsigned i_device,
 void CsmaInternetNode::logAddress(const ns3::Ipv4Address& ipv4_address) {
 	NS_LOG_INFO(ipv4_address << " to node " << this->GetId());
 }
+
+template ns3::Ipv4Address CsmaInternetNode::getAddress<ns3::CsmaNetDevice>(
+		const unsigned i_device);
