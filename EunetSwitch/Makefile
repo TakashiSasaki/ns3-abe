@@ -2,6 +2,30 @@ vpath %.h container:model:eunet
 vpath %.cc container:model:eunet:test
 .PHONY: test visualize
 
+
+TESTS_COMMON= \
+    EunetTerminalTest.o \
+    EunetTerminalsTest.o \
+    EunetSwitchesTest.o \
+    EunetSwitchTest.o 
+
+TESTS_STD= \
+    WifiTest.o \
+    #EunetMobileTest.o \
+    #SimpleApTest.o \
+
+TESTS_DCE= \
+    DceQuaggaOspfdTest.o \
+    #EunetRouterTest.o 
+
+#NS_LOG_STD=WifiBase=*:EunetMobile=*:CsmaInternetNode=*:CsmaNode=*:EunetMobileTest=*
+NS_LOG_STD=WifiTest=*:WifiPhyTrace=*:WifiMacTrace=*
+#NS_LOG_DCE=DceQuaggaOspfdTest=**:DceManagerHelper=**:EunetRouterTest=level_debug:SimpleRouter=level_debug
+NS_LOG_DCE=
+#define NS_LOG
+#NS_LOG="NamedRouters=**:EunetRouters=**:EunetRouter=**:SimpleRouter=**:BridgingAp=**:SimpleAp=**:NamedSwitches=**:EunetSwitch=**:EunetSwitches=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"
+#endef
+
 DCEDIR=$(shell find . -maxdepth 1 -type d -name dce | grep ./dce)
 $(info DCEDIR=$(DCEDIR))
 ifneq ($(DCEDIR),)
@@ -70,13 +94,6 @@ ifdef STD
     DCE_ROOT:=
     PYTHONPATH:=../../build/bindings/python:../../src/visualizer:../../../pybindgen-0.16.0.825 
 endif
-
-#NS_LOG_STD=WifiBase=*:EunetMobile=*:CsmaInternetNode=*:CsmaNode=*:EunetMobileTest=*
-NS_LOG_STD=WifiTest=*:WifiPhyTrace=*:WifiMacTrace=*
-NS_LOG_DCE=DceQuaggaOspfdTest=**:DceManagerHelper=**:EunetRouterTest=**:SimpleRouter=**:*
-#define NS_LOG
-#NS_LOG="NamedRouters=**:EunetRouters=**:EunetRouter=**:SimpleRouter=**:BridgingAp=**:SimpleAp=**:NamedSwitches=**:EunetSwitch=**:EunetSwitches=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"
-#endef
 
 
 EXECENV:=LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) DCE_PATH=$(DCE_PATH) DCE_ROOT=$(DCE_ROOT) PYTHONPATH=$(PYTHONPATH) NS_LOG=$(NS_LOG_$(VER))
@@ -226,21 +243,6 @@ TESTS_SO_DCE:= \
     libns3-dev-propagation-test-debug.so \
     libns3-dce-quagga-test.so \
 
-
-TESTS_COMMON= \
-    EunetTerminalTest.o \
-    EunetTerminalsTest.o \
-    EunetSwitchesTest.o \
-    EunetSwitchTest.o 
-
-TESTS_STD= \
-    WifiTest.o \
-    #EunetMobileTest.o \
-    #SimpleApTest.o \
-
-TESTS_DCE= \
-    DceQuaggaOspfdTest.o \
-    EunetRouterTest.o 
 
 OBJS_COMMON:= \
     NamedSwitches.o EunetSwitch.o EunetSwitches.o \
