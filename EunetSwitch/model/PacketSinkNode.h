@@ -7,7 +7,7 @@ class PacketSinkNode: public CsmaInternetNode {
 public:
 	static ns3::TypeId GetTypeId(void);
 	PacketSinkNode();
-	virtual ~PacketSinkNode();
+	virtual ~PacketSinkNode(){};
 	uint32_t getTotalRx();
 	void logTotalRx(const ns3::LogLevel log_level = ns3::LOG_LEVEL_INFO);
 protected:

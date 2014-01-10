@@ -23,7 +23,7 @@ public:
 
 	static ns3::TypeId GetTypeId(void);
 	SimpleRouter(const unsigned n_ports = 48);
-	virtual ~SimpleRouter();
+	virtual ~SimpleRouter(){};
 	void setlinkDataRate(ns3::DataRateValue = defaultlinkDataRate);
 	void setlinkDelay(ns3::TimeValue = defaultlinkDelay);
 	ns3::Ptr<ns3::CsmaNetDevice>
@@ -38,6 +38,7 @@ public:
 protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();
+	virtual void DoDispose();
 private:
 	bool isConnectedToSimpleRouter(const unsigned i_port);
 	void assignIpAddressToDevice(unsigned i_net_device, ns3::Ipv4Address,

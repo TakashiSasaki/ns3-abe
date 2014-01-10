@@ -45,10 +45,6 @@ void CsmaNode::NotifyConstructionCompleted() {
 	ns3::Node::NotifyConstructionCompleted();
 }
 
-CsmaNode::~CsmaNode() {
-	// TODO !CodeTemplates.destructorstub.tododesc!
-}
-
 void CsmaNode::logAllDevices(const ns3::LogLevel log_level) {
 	//TODO: separate this method to other mixin class
 	NS_LOG_INFO("listing all devices installed in a node");

@@ -7,7 +7,7 @@
 class WifiMacTrace: virtual public TraceBase {
 public:
 	WifiMacTrace(ns3::Node* p_node);
-	virtual ~WifiMacTrace();
+	virtual ~WifiMacTrace(){};
 protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();

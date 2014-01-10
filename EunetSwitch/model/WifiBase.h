@@ -25,7 +25,7 @@ public:
 	void bringWifiBase(WifiBase& foreign_node);
 protected:
 	WifiBase(ns3::Node* p_node, const WifiMacTypeString, bool active_probing);
-	virtual ~WifiBase();
+	virtual ~WifiBase(){};
 protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();

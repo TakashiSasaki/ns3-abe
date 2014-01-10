@@ -24,9 +24,6 @@ ns3::TypeId EunetSwitch::GetTypeId(void) {
 const char* const EunetSwitch::pcapPrefix = "EunetSwitch";
 const char* const EunetSwitch::asciiTracePrefix = "EunetSwitch";
 
-EunetSwitch::~EunetSwitch() {
-}
-
 EunetSwitch::EunetSwitch(const unsigned n_downlink_ports,
 		const unsigned n_uplink_ports) :
 	SimpleSwitch(n_downlink_ports, n_uplink_ports), eunetTerminals(

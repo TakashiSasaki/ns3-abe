@@ -12,7 +12,7 @@ public:
 	static ns3::TypeId GetTypeId(void);
 	CsmaChannelNode(const int n_devices = 1, ns3::DataRateValue data_rate =
 			ns3::DataRate(0xffffffff), ns3::TimeValue = ns3::Seconds(0)); // TODO: should support multiple devices
-	virtual ~CsmaChannelNode();
+	virtual ~CsmaChannelNode(){};
 	void bring(ns3::Ptr<CsmaNode> ptr_their_csma_node,
 			const unsigned i_their_csma_device = 0);
 	void bring(const unsigned i_our_csma_device,

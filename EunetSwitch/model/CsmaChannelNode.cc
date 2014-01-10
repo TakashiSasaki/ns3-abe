@@ -41,7 +41,7 @@ ns3::Ptr<ns3::CsmaChannel> CsmaChannelNode::getCsmaChannel(unsigned i_channel) {
 	return ptr_csma_channel;
 }
 
-CsmaChannelNode::~CsmaChannelNode() {
+void CsmaChannelNode::DoDispose() {
 	NS_ASSERT(this->isNotifyConstructionCompletedCalled);
 	NS_ASSERT(this->isDoInitializeCalled);
 }

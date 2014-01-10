@@ -21,10 +21,6 @@ ns3::TypeId PacketSinkNode::GetTypeId(void) {
 PacketSinkNode::PacketSinkNode() {
 }
 
-PacketSinkNode::~PacketSinkNode() {
-	// TODO !CodeTemplates.destructorstub.tododesc!
-}
-
 void PacketSinkNode::DoInitialize() {
 	NS_LOG_INFO("just calling up");
 	Base::DoInitialize();

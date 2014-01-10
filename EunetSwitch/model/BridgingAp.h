@@ -8,7 +8,7 @@ class BridgingAp: public SimpleAp {
 public:
 	static ns3::TypeId GetTypeId(void);
 	BridgingAp();
-	virtual ~BridgingAp();
+	virtual ~BridgingAp(){};
 protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();

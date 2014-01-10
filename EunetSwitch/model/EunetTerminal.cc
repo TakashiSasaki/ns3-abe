@@ -32,8 +32,3 @@ void EunetTerminal::NotifyConstructionCompleted() {
 	Base::NotifyConstructionCompleted();
 	NS_ASSERT(this->GetNDevices() == 2);
 }
-
-EunetTerminal::~EunetTerminal() {
-	// TODO !CodeTemplates.destructorstub.tododesc!
-}
-

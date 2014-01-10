@@ -32,7 +32,7 @@ public:
 	static ns3::TypeId GetTypeId(void);
 	EunetSwitch(const unsigned n_downlink_ports = 48,
 			const unsigned n_uplink_ports = 4);
-	virtual ~EunetSwitch();
+	virtual ~EunetSwitch(){};
 
 #if 0
 	void setAsciiTraceFilename(const std::string& file_name) {

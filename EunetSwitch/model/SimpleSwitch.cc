@@ -37,10 +37,6 @@ SimpleSwitch::SimpleSwitch(const unsigned n_downlink_ports,
 	}
 }
 
-SimpleSwitch::~SimpleSwitch() {
-	// TODO !CodeTemplates.destructorstub.tododesc!
-}
-
 ns3::Ptr<ns3::CsmaNetDevice> SimpleSwitch::getUplinkPort(
 		const unsigned i_uplink_port) {
 	NS_ASSERT(i_uplink_port < nUplinkPorts);

@@ -22,10 +22,6 @@ OnOffNode::OnOffNode(const bool start_at_the_beginning) :
 
 }
 
-OnOffNode::~OnOffNode() {
-	// TODO !CodeTemplates.destructorstub.tododesc!
-}
-
 void OnOffNode::DoInitialize() {
 	Base::DoInitialize();
 }

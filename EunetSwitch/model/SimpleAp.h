@@ -13,7 +13,7 @@ public:
 	static ns3::TypeId GetTypeId(void);
 	SimpleAp();
 	SimpleAp(ns3::Ssid ssid, ns3::Vector position);
-	virtual ~SimpleAp();
+	virtual ~SimpleAp(){};
 protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();

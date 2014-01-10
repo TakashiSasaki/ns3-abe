@@ -28,7 +28,7 @@ class EunetRouter: public SimpleRouter {
 public:
 	static ns3::TypeId GetTypeId(void);
 	EunetRouter(const unsigned n_ports = 48);
-	virtual ~EunetRouter();
+	virtual ~EunetRouter(){};
 
 	void enablePcap(const int i_port, const bool promiscuous = false) {
 		ns3::CsmaHelper csma_helper;

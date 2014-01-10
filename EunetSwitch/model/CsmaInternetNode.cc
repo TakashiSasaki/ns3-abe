@@ -23,7 +23,7 @@ CsmaInternetNode::CsmaInternetNode(const int n_devices) :
 			isDoInitializeCalled(false) {
 }// a constructor
 
-CsmaInternetNode::~CsmaInternetNode() {
+void CsmaInternetNode::DoDispose() {
 	NS_ASSERT(this->isNotifyConstructionCompletedCalled);
 	NS_ASSERT(this->isDoInitializeCalled);
 }// the destructor

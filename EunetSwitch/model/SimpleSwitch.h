@@ -20,7 +20,7 @@ public:
 	static ns3::TypeId GetTypeId(void);
 	SimpleSwitch(const unsigned n_downlink_ports = 4,
 			const unsigned n_uplink_ports = 1);
-	virtual ~SimpleSwitch();
+	virtual ~SimpleSwitch(){};
 	void setDownlinkDataRate(ns3::DataRateValue = defaultDownlinkDataRate);
 	void setDownlinkDelay(ns3::TimeValue = defaultDownlinkDelay);
 	void setUplinkDataRate(ns3::DataRateValue = defaultUplinkDataRate);

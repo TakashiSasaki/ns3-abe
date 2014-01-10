@@ -9,7 +9,7 @@ class CsmaInternetNode: public CsmaChannelNode {
 public:
 	static ns3::TypeId GetTypeId(void);
 	CsmaInternetNode(const int n_devices = 1);
-	virtual ~CsmaInternetNode();
+	virtual ~CsmaInternetNode(){};
 	//ns3::Ipv4Address getCsmaNetDeviceAddress();
 
 	template<class T>

@@ -11,7 +11,7 @@ class EunetTerminal: public OnOffNode {
 public:
 	static ns3::TypeId GetTypeId(void);
 	EunetTerminal();
-	virtual ~EunetTerminal();
+	virtual ~EunetTerminal(){};
 protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();

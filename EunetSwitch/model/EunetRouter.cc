@@ -24,7 +24,7 @@ ns3::TypeId EunetRouter::GetTypeId(void) {
 const char* const EunetRouter::pcapPrefix = "EunetRouter";
 const char* const EunetRouter::asciiTracePrefix = "EunetRouter";
 
-EunetRouter::~EunetRouter() {
+void EunetRouter::DoDispose() {
 	NS_ASSERT(this->isNotifyConstructionCompletedCalled);
 	NS_ASSERT(this->isDoInitializeCalled);
 }

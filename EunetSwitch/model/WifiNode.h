@@ -7,7 +7,7 @@ class WifiNode: public OnOffNode {
 public:
 	static ns3::TypeId GetTypeId(void);
 	WifiNode();
-	virtual ~WifiNode();
+	virtual ~WifiNode(){};
 protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();
