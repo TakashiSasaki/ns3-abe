@@ -37,6 +37,8 @@ ns3::Ipv4Address CsmaInternetNode::getAddress(const unsigned i_device) {
 	NS_ASSERT(ptr_net_device->GetInstanceTypeId().IsChildOf(ns3::NetDevice::GetTypeId()));
 	const int n_interface = ptr_ipv4->GetInterfaceForDevice(ptr_net_device);
 	NS_ASSERT(n_interface != -1);
+	const auto n_addresses = ptr_ipv4->GetNAddresses();
+	NS_ASSERT(n_addresses == 1);
 	ns3::Ipv4InterfaceAddress ipv4_interface_address = ptr_ipv4->GetAddress(
 			n_interface, 0);
 	ns3::Ipv4Address ipv4_address = ipv4_interface_address.GetLocal();
