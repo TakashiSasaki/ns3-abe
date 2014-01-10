@@ -104,3 +104,20 @@ void CsmaInternetNode::logAddress(const ns3::Ipv4Address& ipv4_address) {
 
 template ns3::Ipv4Address CsmaInternetNode::getAddress<ns3::CsmaNetDevice>(
 		const unsigned i_device);
+
+ns3::Ipv4InterfaceAddress CsmaInternetNode::getIpv4InterfaceAddress(
+		const unsigned i_net_device) {
+	NS_ASSERT(this->GetNDevices()>=2);
+	ns3::Ptr<ns3::Ipv4> ptr_ipv4 = this->GetObject<ns3::Ipv4> ();
+	auto ptr_net_device = this->getNetDevice<ns3::NetDevice> (i_net_device);
+	NS_ASSERT(ptr_net_device != 0);
+	NS_ASSERT(ptr_net_device->GetInstanceTypeId().IsChildOf(ns3::NetDevice::GetTypeId()));
+	const auto i_interface = ptr_ipv4->GetInterfaceForDevice(ptr_net_device);
+	NS_ASSERT(i_interface != -1);
+	const auto n_addresses = ptr_ipv4->GetNAddresses(i_interface);
+	NS_ASSERT(n_addresses == 1);
+	ns3::Ipv4InterfaceAddress ipv4_interface_address = ptr_ipv4->GetAddress(
+			i_interface, 0);
+	return ipv4_interface_address;
+}//getIpv4InterfaceAddress
+

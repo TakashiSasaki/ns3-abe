@@ -14,6 +14,7 @@ public:
 
 	template<class T>
 	ns3::Ipv4Address getAddress(const unsigned i_device);
+	ns3::Ipv4InterfaceAddress getIpv4InterfaceAddress(const unsigned i_net_device);
 
 	template<class T>
 	void setAddress(ns3::Ipv4AddressHelper& ipv4_address_helper);
