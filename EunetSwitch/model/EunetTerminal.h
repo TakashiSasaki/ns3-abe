@@ -7,7 +7,6 @@
 #include "OnOffNode.h"
 
 class EunetTerminal: public OnOffNode {
-	typedef OnOffNode Base;
 public:
 	static ns3::TypeId GetTypeId(void);
 	EunetTerminal();

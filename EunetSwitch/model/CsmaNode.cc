@@ -40,6 +40,9 @@ void CsmaNode::DoInitialize() {
 	ns3::Node::DoInitialize();
 }
 
+void CsmaNode::DoDispose(){
+}
+
 void CsmaNode::NotifyConstructionCompleted() {
 	NS_LOG_INFO("just calling up");
 	ns3::Node::NotifyConstructionCompleted();

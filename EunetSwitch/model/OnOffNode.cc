@@ -10,9 +10,8 @@ NS_LOG_COMPONENT_DEFINE("OnOffNode");
 NS_OBJECT_ENSURE_REGISTERED(OnOffNode);
 
 ns3::TypeId OnOffNode::GetTypeId(void) {
-	static ns3::TypeId type_id =
-			ns3::TypeId("OnOffNode").SetParent<Base> ().AddConstructor<
-					OnOffNode> ();
+	static ns3::TypeId type_id = ns3::TypeId("OnOffNode").SetParent<
+			PacketSinkNode> ().AddConstructor<OnOffNode> ();
 	return type_id;
 }//GetTypeId
 
@@ -23,14 +22,17 @@ OnOffNode::OnOffNode(const bool start_at_the_beginning) :
 }
 
 void OnOffNode::DoInitialize() {
-	Base::DoInitialize();
+	PacketSinkNode::DoInitialize();
+}
+
+void OnOffNode::DoDispose(){
 }
 
 void OnOffNode::NotifyConstructionCompleted() {
 	NS_LOG_INFO("notified the completion of OnOffNode");
 	const unsigned n_devices_before = this->GetNDevices();
 	//NS_ASSERT(this->GetNDevices() == 1);
-	Base::NotifyConstructionCompleted();
+	PacketSinkNode::NotifyConstructionCompleted();
 	NS_ASSERT(this->GetNDevices() == n_devices_before+1);
 	NS_LOG_INFO("installing on-off application on node " << this->GetId());
 	ns3::OnOffHelper on_off_helper("ns3::UdpSocketFactory", ns3::Address(

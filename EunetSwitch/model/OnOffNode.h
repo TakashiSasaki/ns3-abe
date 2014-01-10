@@ -3,7 +3,6 @@
 #include "PacketSinkNode.h"
 
 class OnOffNode: public PacketSinkNode {
-	typedef PacketSinkNode Base;
 	ns3::ApplicationContainer onOffApplication;
 	const bool startAtTheBeginning;
 public:

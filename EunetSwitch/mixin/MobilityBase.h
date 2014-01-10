@@ -12,7 +12,6 @@ public:
 protected:
 	MobilityBase(ns3::Node* p_node, const ns3::Vector);
 	virtual ~MobilityBase(){};
-	void DoInitialize();
 protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();

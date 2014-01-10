@@ -10,9 +10,8 @@ NS_LOG_COMPONENT_DEFINE("EunetTerminal");
 NS_OBJECT_ENSURE_REGISTERED(EunetTerminal);
 
 ns3::TypeId EunetTerminal::GetTypeId(void) {
-	static ns3::TypeId type_id =
-			ns3::TypeId("EunetTerminal").SetParent<Base> ().AddConstructor<
-					EunetTerminal> ();
+	static ns3::TypeId type_id = ns3::TypeId("EunetTerminal").SetParent<
+			OnOffNode> ().AddConstructor<EunetTerminal> ();
 	return type_id;
 }//GetTypeId
 
@@ -23,12 +22,15 @@ EunetTerminal::EunetTerminal() {
 }
 
 void EunetTerminal::DoInitialize() {
-	Base::DoInitialize();
+	OnOffNode::DoInitialize();
+}
+
+void EunetTerminal::DoDispose(){
 }
 
 void EunetTerminal::NotifyConstructionCompleted() {
 	NS_LOG_INFO("notified the completion of EunetTerminal");
 	NS_ASSERT(this->GetNDevices() == 1);
-	Base::NotifyConstructionCompleted();
+	OnOffNode::NotifyConstructionCompleted();
 	NS_ASSERT(this->GetNDevices() == 2);
 }

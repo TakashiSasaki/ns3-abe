@@ -3,7 +3,6 @@
 #include "CsmaInternetNode.h"
 
 class PacketSinkNode: public CsmaInternetNode {
-	typedef CsmaInternetNode Base;
 public:
 	static ns3::TypeId GetTypeId(void);
 	PacketSinkNode();

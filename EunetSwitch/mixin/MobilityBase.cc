@@ -11,9 +11,6 @@ MobilityBase::MobilityBase(ns3::Node* p_node,
 	ptrNode(p_node, true), initialPosition(initial_position) {
 }
 
-MobilityBase::~MobilityBase() {
-}
-
 void MobilityBase::DoInitialize() {
 	//auto ptr_node = ns3::Ptr<SimpleAp>(this, true);
 	this->setPosition(this->initialPosition);

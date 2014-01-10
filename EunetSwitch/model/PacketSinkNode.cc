@@ -23,11 +23,14 @@ PacketSinkNode::PacketSinkNode() {
 
 void PacketSinkNode::DoInitialize() {
 	NS_LOG_INFO("just calling up");
-	Base::DoInitialize();
+	CsmaInternetNode::DoInitialize();
+}
+
+void PacketSinkNode::DoDispose(){
 }
 
 void PacketSinkNode::NotifyConstructionCompleted() {
-	Base::NotifyConstructionCompleted();
+	CsmaInternetNode::NotifyConstructionCompleted();
 	const unsigned n_devices_before = this->GetNDevices();
 	//NS_ASSERT(this->GetNDevices() == 2);
 
