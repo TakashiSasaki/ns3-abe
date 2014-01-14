@@ -7,6 +7,7 @@
 //#include "ns3/dce-module.h"
 //#include "ns3/quagga-helper.h"
 //#include "CsmaChannelNode.h"
+#include "init.h"
 #include "CsmaInternetNode.h"
 using namespace ns3;
 
@@ -35,18 +36,10 @@ public:
 	unsigned getUnusedlinkPort();
 	void enableOspf(const unsigned i_device);
 private:
-	bool isNotifyConstructionCompletedCalled;
-	bool isDoInitializeCalled;
-	bool isDoDisposeCalled;
-protected:
-	virtual void DoInitialize();
-	virtual void NotifyConstructionCompleted();
-	virtual void DoDispose();
-private:
 	bool isConnectedToSimpleRouter(const unsigned i_port);
 	void assignIpAddressToDevice(unsigned i_net_device, ns3::Ipv4Address,
 			ns3::Ipv4Mask);
 	std::unique_ptr<std::vector<std::string> > getAllNetworks();
-}; // class SimpleRouter
+DECLARE_DIDDNCC}; // class SimpleRouter
 
 #endif /* SIMPLEROUTER_H_ */

@@ -16,21 +16,21 @@ ns3::TypeId OnOffNode::GetTypeId(void) {
 }//GetTypeId
 
 OnOffNode::OnOffNode(const bool start_at_the_beginning) :
-	startAtTheBeginning(start_at_the_beginning) {
-	// TODO 自動生成されたコンストラクター・スタブ
-
-}
+	startAtTheBeginning(start_at_the_beginning), INIT_DIDDNCC_FLAGS {
+}// the constructor
 
 void OnOffNode::DoInitialize() {
+	ASSERT_DI;
 	PacketSinkNode::DoInitialize();
-}
+}//DoInitialize
 
-void OnOffNode::DoDispose(){
+void OnOffNode::DoDispose() {
+	ASSERT_DD;
 	PacketSinkNode::DoDispose();
-}
+}//DoDispose
 
 void OnOffNode::NotifyConstructionCompleted() {
-	NS_LOG_INFO("notified the completion of OnOffNode");
+	ASSERT_NCC;
 	const unsigned n_devices_before = this->GetNDevices();
 	//NS_ASSERT(this->GetNDevices() == 1);
 	PacketSinkNode::NotifyConstructionCompleted();

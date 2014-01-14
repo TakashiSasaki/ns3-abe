@@ -6,6 +6,7 @@ NS_LOG_COMPONENT_DEFINE("PacketSinkNode");
 #include "ns3/applications-module.h"
 #include "ns3/ipv4.h"
 #include "ns3/internet-module.h"
+#include "init.h"
 #include "CsmaNode.h"
 #include "CsmaChannelNode.h"
 #include "CsmaInternetNode.h"
@@ -18,19 +19,22 @@ ns3::TypeId PacketSinkNode::GetTypeId(void) {
 	return type_id;
 }//GetTypeId
 
-PacketSinkNode::PacketSinkNode() {
+PacketSinkNode::PacketSinkNode() :
+	INIT_DIDDNCC_FLAGS {
 }
 
 void PacketSinkNode::DoInitialize() {
-	NS_LOG_INFO("just calling up");
+	ASSERT_DI;
 	CsmaInternetNode::DoInitialize();
 }
 
-void PacketSinkNode::DoDispose(){
+void PacketSinkNode::DoDispose() {
+	ASSERT_DD;
 	CsmaInternetNode::DoDispose();
-}
+}//DoDispose
 
 void PacketSinkNode::NotifyConstructionCompleted() {
+	ASSERT_NCC;
 	CsmaInternetNode::NotifyConstructionCompleted();
 	const unsigned n_devices_before = this->GetNDevices();
 	//NS_ASSERT(this->GetNDevices() == 2);
@@ -42,7 +46,7 @@ void PacketSinkNode::NotifyConstructionCompleted() {
 	this->packetSink = packet_sink_helper.Install(this);
 	this->packetSink.Start(ns3::Seconds(0.0));
 	NS_ASSERT(this->GetNDevices() == n_devices_before);
-}
+}//NotifyConstructionCompleted
 
 uint32_t PacketSinkNode::getTotalRx() {
 	return this->packetSink.Get(0)->GetObject<ns3::PacketSink> ()->GetTotalRx();

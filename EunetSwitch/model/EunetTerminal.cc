@@ -32,6 +32,7 @@ void EunetTerminal::DoInitialize() {
 
 void EunetTerminal::DoDispose() {
 	NS_ASSERT(!this->isDoDisposeCalled);
+	NS_ASSERT(this->isNotifyConstructionCompletedCalled);
 	this->isDoDisposeCalled = true;
 	OnOffNode::DoDispose();
 }
@@ -39,7 +40,6 @@ void EunetTerminal::DoDispose() {
 void EunetTerminal::NotifyConstructionCompleted() {
 	NS_ASSERT(!this->isNotifyConstructionCompletedCalled);
 	this->isNotifyConstructionCompletedCalled = true;
-	NS_LOG_INFO("notified the completion of EunetTerminal");
 	NS_ASSERT(this->GetNDevices() == 1);
 	OnOffNode::NotifyConstructionCompleted();
 	NS_ASSERT(this->GetNDevices() == 2);

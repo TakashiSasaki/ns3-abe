@@ -27,21 +27,17 @@ ns3::TypeId SimpleRouter::GetTypeId(void) {
 
 SimpleRouter::SimpleRouter(const unsigned n_ports) :
 	/*CsmaChannelNode(n_ports, defaultlinkDataRate, defaultlinkDelay),*/
-	nlinkPorts(n_ports), isNotifyConstructionCompletedCalled(false),
-			isDoInitializeCalled(false), isDoDisposeCalled(false) {
+	nlinkPorts(n_ports), INIT_DIDDNCC_FLAGS {
 	NS_LOG_DEBUG("the constructor of SimpleRouter");
 	//	NS_LOG_INFO("constructing SimpleSwitch");
 	//	for (unsigned i = 0; i < nlinkPorts; ++i) {
 	//		NS_LOG_INFO("investigating port " << i);
 	//		NS_ASSERT(!this->isConnectedToSimpleRouter(i));
 	//	}
-}
+}//the constructor
 
 void SimpleRouter::DoDispose() {
-	NS_ASSERT(!this->isDoDisposeCalled);
-	this->isDoDisposeCalled = true;
-	NS_ASSERT(this->isDoInitializeCalled);
-	NS_ASSERT(this->isNotifyConstructionCompletedCalled);
+	ASSERT_DD
 	CsmaInternetNode::DoDispose();
 }//DoDispose
 
@@ -92,18 +88,14 @@ unsigned SimpleRouter::getUnusedlinkPort() {
 }
 
 void SimpleRouter::DoInitialize() {
-	NS_ASSERT(!this->isDoInitializeCalled);
-	this->isDoInitializeCalled = true;
-	NS_LOG_INFO("just calling up CsmaChannelNode::DoInitialize");
+	ASSERT_DI
 	CsmaInternetNode::DoInitialize();
 	this->setlinkDataRate(defaultlinkDataRate);
 	this->setlinkDelay(defaultlinkDelay);
 }
 
 void SimpleRouter::NotifyConstructionCompleted() {
-	NS_ASSERT(!this->isNotifyConstructionCompletedCalled);
-	this->isNotifyConstructionCompletedCalled = true;
-	NS_LOG_INFO("just calling up CsmaChannelNode::NotifyConstructionCompleted");
+	ASSERT_NCC
 	CsmaInternetNode::NotifyConstructionCompleted();
 	NS_LOG_INFO("CsmaChannelNode::NotifyConstructionCompleted finished");
 	ns3::Ptr<SimpleRouter> ptr_this(this, true);

@@ -27,7 +27,6 @@ void CsmaInternetNode::DoDispose() {
 	NS_ASSERT(!this->isDoDisposeCalled);
 	this->isDoDisposeCalled = true;
 	NS_ASSERT(this->isNotifyConstructionCompletedCalled);
-	NS_ASSERT(this->isDoInitializeCalled);
 	CsmaChannelNode::DoDispose();
 }// DoDispose
 

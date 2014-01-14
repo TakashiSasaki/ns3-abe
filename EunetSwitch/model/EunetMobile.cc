@@ -44,3 +44,9 @@ void EunetMobile::NotifyConstructionCompleted() {
 	OnOffNode::NotifyConstructionCompleted();
 	NS_ASSERT(this->GetNDevices() == 3);
 }//NotifyConstructionCompleted
+
+void EunetMobile::DoDispose() {
+	NS_ASSERT(!this->isDoDisposeCalled);
+	NS_ASSERT(this->isNotifyConstructionCompletedCalled);
+	this->isDoDisposeCalled = true;
+}

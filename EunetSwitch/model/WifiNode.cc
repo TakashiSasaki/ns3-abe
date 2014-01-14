@@ -17,13 +17,12 @@ ns3::TypeId WifiNode::GetTypeId(void) {
 	return type_id;
 }//GetTypeId
 
-WifiNode::WifiNode() {
-}
-
-WifiNode::~WifiNode() {
+WifiNode::WifiNode() :
+	INIT_DIDDNCC_FLAGS {
 }
 
 void WifiNode::DoInitialize() {
+	ASSERT_DI;
 	auto ptr_node = ns3::Ptr<WifiNode>(this, true);
 	NS_LOG_INFO("setting position to " << this->position);
 	ns3::MobilityHelper mobility_helper;
@@ -51,4 +50,9 @@ void WifiNode::DoInitialize() {
 }
 
 void WifiNode::NotifyConstructionCompleted() {
+	ASSERT_NCC;
+}
+
+void WifiNode::DoDispose() {
+	ASSERT_DD;
 }

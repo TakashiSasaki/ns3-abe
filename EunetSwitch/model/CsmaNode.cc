@@ -46,7 +46,6 @@ void CsmaNode::DoInitialize() {
 void CsmaNode::DoDispose() {
 	NS_ASSERT(!this->isDoDisposeCalled);
 	NS_ASSERT(this->isNotifyConstructionCompletedCalled);
-	NS_ASSERT(this->isDoInitializeCalled);
 	this->isDoDisposeCalled = true;
 	ns3::Node::DoDispose();
 }//DoDispose

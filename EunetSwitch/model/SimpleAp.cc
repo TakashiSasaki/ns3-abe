@@ -23,21 +23,17 @@ ns3::TypeId SimpleAp::GetTypeId(void) {
 SimpleAp::SimpleAp() :
 	TraceBase(this), WifiBase(this, WifiBase::ApWifiMac, false), MobilityBase(
 			this, ns3::Vector(
-			/*this->GetId()*/0, 0, 0)) {
+			/*this->GetId()*/0, 0, 0)), INIT_DIDDNCC_FLAGS {
 }
 
 void SimpleAp::DoInitialize() {
-	NS_LOG_INFO("calling up SimpleSwitch::DoInitialize");
+	ASSERT_DI;
 	MobilityBase::DoInitialize();
 	WifiBase::DoInitialize();
 	Base::DoInitialize();
 }
 
 void SimpleAp::NotifyConstructionCompleted() {
-	NS_LOG_INFO("just calling up SimpleSwitch::NotifyConstructionCompleted");
+	ASSERT_NCC;
 	Base::NotifyConstructionCompleted();
-}
-
-SimpleAp::~SimpleAp() {
-	// TODO !CodeTemplates.destructorstub.tododesc!
 }

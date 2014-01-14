@@ -1,6 +1,7 @@
 #ifndef SIMPLESWITCH_H_
 #define SIMPLESWITCH_H_
 #include "ns3/nstime.h"
+#include "init.h"
 #include "CsmaChannelNode.h"
 
 class SimpleSwitch: public CsmaChannelNode {

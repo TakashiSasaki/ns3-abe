@@ -48,12 +48,12 @@ EunetSwitch::EunetSwitch(const unsigned n_downlink_ports,
 void EunetSwitch::DoInitialize() {
 	NS_ASSERT(!this->isDoInitializeCalled);
 	this->isDoInitializeCalled = true;
-	NS_LOG_INFO("just calling up");
 	SimpleSwitch::DoInitialize();
 }//DoInitialize
 
 void EunetSwitch::DoDispose() {
 	NS_ASSERT(!this->isDoDisposeCalled);
+	NS_ASSERT(this->isNotifyConstructionCompletedCalled);
 	this->isDoDisposeCalled = true;
 	SimpleSwitch::DoDispose();
 }//DoDispose
@@ -61,6 +61,5 @@ void EunetSwitch::DoDispose() {
 void EunetSwitch::NotifyConstructionCompleted() {
 	NS_ASSERT(!this->isNotifyConstructionCompletedCalled);
 	this->isNotifyConstructionCompletedCalled = true;
-	NS_LOG_INFO("just calling up");
 	SimpleSwitch::NotifyConstructionCompleted();
 }//NotifyConstructionCompleted

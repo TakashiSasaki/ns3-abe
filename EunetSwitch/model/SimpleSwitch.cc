@@ -26,7 +26,7 @@ SimpleSwitch::SimpleSwitch(const unsigned n_downlink_ports,
 		const unsigned n_uplink_ports) :
 	CsmaChannelNode(n_downlink_ports + n_uplink_ports, defaultDownlinkDataRate,
 			defaultDownlinkDelay), nUplinkPorts(n_uplink_ports),
-			nDownlinkPorts(n_downlink_ports) {
+			nDownlinkPorts(n_downlink_ports), INIT_DIDDNCC_FLAGS {
 	this->setUplinkDataRate(defaultUplinkDataRate);
 	this->setUplinkDelay(defaultUplinkDelay);
 	NS_LOG_INFO("constructing SimpleSwitch");
@@ -121,8 +121,7 @@ void SimpleSwitch::connectSibling(const unsigned i_uplink_port, ns3::Ptr<
 }//connectSibling
 
 void SimpleSwitch::NotifyConstructionCompleted() {
-	NS_ASSERT(!this->isNotifyConstructionCompletedCalled);
-	this->isNotifyConstructionCompletedCalled = true;
+	ASSERT_NCC;
 	NS_LOG_INFO("bridging all devices");
 	CsmaChannelNode::NotifyConstructionCompleted();
 	ns3::NetDeviceContainer ndc;
@@ -139,15 +138,12 @@ void SimpleSwitch::NotifyConstructionCompleted() {
 }//NotifyConstructionCompleted
 
 void SimpleSwitch::DoInitialize() {
-	NS_ASSERT(!this->isDoInitializeCalled);
-	this->isDoInitializeCalled = true;
-	NS_LOG_INFO("just calling up");
+	ASSERT_DI;
 	CsmaChannelNode::DoInitialize();
 }//DoInitialize
 
 void SimpleSwitch::DoDispose() {
-	NS_ASSERT(!this->isDoDisposeCalled);
-	this->isDoDisposeCalled = true;
+	ASSERT_DD;
 	CsmaChannelNode::DoDispose();
 }//DoDispose
 
