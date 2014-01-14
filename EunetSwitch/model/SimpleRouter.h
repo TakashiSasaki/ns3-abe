@@ -7,7 +7,6 @@
 //#include "ns3/dce-module.h"
 //#include "ns3/quagga-helper.h"
 //#include "CsmaChannelNode.h"
-#include "init.h"
 #include "CsmaInternetNode.h"
 using namespace ns3;
 
@@ -40,6 +39,7 @@ private:
 	void assignIpAddressToDevice(unsigned i_net_device, ns3::Ipv4Address,
 			ns3::Ipv4Mask);
 	std::unique_ptr<std::vector<std::string> > getAllNetworks();
-DECLARE_DIDDNCC}; // class SimpleRouter
+DECLARE_DIDDNCC
+}; // class SimpleRouter
 
 #endif /* SIMPLEROUTER_H_ */

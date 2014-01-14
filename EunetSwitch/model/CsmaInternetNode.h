@@ -4,9 +4,6 @@
 #include "CsmaChannelNode.h"
 
 class CsmaInternetNode: public CsmaChannelNode {
-	bool isNotifyConstructionCompletedCalled;
-	bool isDoInitializeCalled;
-	bool isDoDisposeCalled;
 public:
 	static ns3::TypeId GetTypeId(void);
 	CsmaInternetNode(const int n_devices = 1);
@@ -23,12 +20,9 @@ public:
 	void assignAddress(const unsigned i_device, ns3::Ipv4AddressHelper&);
 	void assignAddress(const unsigned i_device, ns3::Ipv4Address ipv4_address,
 			ns3::Ipv4Mask ipv4_mask);
-protected:
-	virtual void DoInitialize();
-	virtual void NotifyConstructionCompleted();
-	virtual void DoDispose();
 private:
 	void logAddress(const ns3::Ipv4Address& ipv4_address);
+DECLARE_DIDDNCC
 };
 
 template<class T>

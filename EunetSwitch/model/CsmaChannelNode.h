@@ -2,7 +2,6 @@
 #define CSMACHANNELNODE_H_
 #include "ns3/node.h"
 #include "ns3/csma-channel.h"
-#include "init.h"
 #include "CsmaNode.h"
 
 class CsmaChannelNode: public CsmaNode {

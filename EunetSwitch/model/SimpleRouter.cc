@@ -96,7 +96,12 @@ void SimpleRouter::DoInitialize() {
 
 void SimpleRouter::NotifyConstructionCompleted() {
 	ASSERT_NCC
+	NS_LOG_INFO(this->GetNDevices() << " devices");
 	CsmaInternetNode::NotifyConstructionCompleted();
+	NS_LOG_INFO(this->GetNDevices() << " devices");
+	for(unsigned i=0;i<this->GetNDevices();++i){
+		NS_LOG_INFO("device " << i << " is " << this->GetDevice(i)->GetInstanceTypeId());
+	}
 	NS_LOG_INFO("CsmaChannelNode::NotifyConstructionCompleted finished");
 	ns3::Ptr<SimpleRouter> ptr_this(this, true);
 	NS_ASSERT(ptr_this != 0);
