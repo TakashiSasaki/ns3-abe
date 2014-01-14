@@ -38,7 +38,7 @@ void CsmaInternetNode::NotifyConstructionCompleted() {
 	//NS_ASSERT(this->GetNDevices() == 1);
 	ns3::InternetStackHelper internet_stack_helper;
 	internet_stack_helper.SetIpv4StackInstall(true);
-	internet_stack_helper.SetIpv6StackInstall(false);
+	internet_stack_helper.SetIpv6StackInstall(true);
 	NS_ASSERT(this->GetNDevices() == n_devices_before);
 	this->logAllDevices();
 	internet_stack_helper.Install(ns3::NodeContainer(this));
@@ -113,6 +113,7 @@ template ns3::Ipv4Address CsmaInternetNode::getAddress<ns3::CsmaNetDevice>(
 template void CsmaInternetNode::assignAddress<ns3::CsmaNetDevice>(
 		ns3::Ipv4AddressHelper&, const unsigned i_port);
 
+#if 0
 ns3::Ipv4InterfaceAddress CsmaInternetNode::getIpv4InterfaceAddress(
 		const unsigned i_net_device) {
 	NS_ASSERT(this->GetNDevices()>=2);
@@ -128,4 +129,7 @@ ns3::Ipv4InterfaceAddress CsmaInternetNode::getIpv4InterfaceAddress(
 			i_interface, 0);
 	return ipv4_interface_address;
 }//getIpv4InterfaceAddress
+#endif
 
+template ns3::Ipv4InterfaceAddress CsmaInternetNode::getIpv4InterfaceAddress<
+		ns3::CsmaNetDevice>(const unsigned i_port);

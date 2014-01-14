@@ -66,7 +66,6 @@ void DceQuaggaOspfdTest::DoRun() {
 	NetDeviceContainer devices;
 	devices = csma_helper.Install(nodes);
 	//devices = pointToPoint.Install(nodes);
-	DceManagerHelper processManager;
 
 	//
 	//
@@ -82,8 +81,9 @@ void DceQuaggaOspfdTest::DoRun() {
 
 	ipv4AddrHelper.SetBase("10.0.0.0", "255.255.255.0");
 	Ipv4InterfaceContainer interfaces = ipv4AddrHelper.Assign(devices);
-	Ipv4GlobalRoutingHelper::PopulateRoutingTables();
+	//Ipv4GlobalRoutingHelper::PopulateRoutingTables();
 
+	DceManagerHelper processManager;
 	processManager.SetNetworkStack("ns3::Ns3SocketFdFactory");
 	processManager.Install(nodes);
 

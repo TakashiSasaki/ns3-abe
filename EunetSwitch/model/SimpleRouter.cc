@@ -84,6 +84,9 @@ void SimpleRouter::NotifyConstructionCompleted() {
 	ASSERT_NCC
 	NS_LOG_INFO(this->GetNDevices() << " devices");
 	CsmaInternetNode::NotifyConstructionCompleted();
+	this->setCsmaChannelDataRateAll(defaultlinkDataRate);
+	this->setCsmaChannelDelayAll(defaultlinkDelay);
+
 	NS_LOG_INFO(this->GetNDevices() << " devices");
 	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
 		NS_LOG_INFO("device " << i << " is " << this->GetDevice(i)->GetInstanceTypeId());
@@ -129,8 +132,6 @@ void SimpleRouter::NotifyConstructionCompleted() {
 	dce_manager_helper.Install(ns3::NodeContainer(ptr_this));
 	NS_LOG_INFO("DceManagerHelper was installed.");
 
-	this->setCsmaChannelDataRateAll(defaultlinkDataRate);
-	this->setCsmaChannelDelayAll(defaultlinkDelay);
 
 }//NotifyConstructionCompleted
 
@@ -190,11 +191,13 @@ std::unique_ptr<std::vector<std::string> > SimpleRouter::getAllNetworks() {
 	return p_networks;
 }
 
-void SimpleRouter::enableOspf(const unsigned i_net_device) {
+void SimpleRouter::enableOspf(const unsigned i_port) {
 	NS_LOG_DEBUG("enabling Quagga OSPF routing daemon");
-	const auto ipv4_interface_address = this->getIpv4InterfaceAddress(
-			i_net_device);
-	ns3::QuaggaHelper quagga;
+	NS_ASSERT_MSG(this->getNDevices<ns3::CsmaNetDevice>() == this->nlinkPorts,
+			this->getNDevices<ns3::CsmaNetDevice>()<< " device(s) " << this->nlinkPorts << " ports");
+	const auto ipv4_interface_address = this->getIpv4InterfaceAddress<
+			ns3::CsmaNetDevice> (i_port);
+	ns3::QuaggaHelper quagga_helper;
 	//auto all_networks = this->getAllNetworks();
 	//for (auto i = all_networks->begin(); i != all_networks->end(); ++i) {
 	//	quagga.EnableOspf(ns3::NodeContainer(ptr_this), (*i).c_str());
@@ -207,12 +210,12 @@ void SimpleRouter::enableOspf(const unsigned i_net_device) {
 	oss << '/' << ipv4_mask.GetPrefixLength();
 	NS_LOG_DEBUG("enabling Quagga OSPF to network " << oss.str());
 	ns3::Ptr<SimpleRouter> ptr_this(this, true);
-	quagga.EnableOspf(ns3::NodeContainer(ptr_this), oss.str().c_str());
+	quagga_helper.EnableOspf(ns3::NodeContainer(ptr_this), oss.str().c_str());
 	NS_LOG_DEBUG("enabling Quagga OSPF debug");
-	quagga.EnableOspfDebug(ns3::NodeContainer(ptr_this));
+	quagga_helper.EnableOspfDebug(ns3::NodeContainer(ptr_this));
 	NS_LOG_DEBUG("enabling Zebra debug");
-	quagga.EnableZebraDebug(ns3::NodeContainer(ptr_this));
+	quagga_helper.EnableZebraDebug(ns3::NodeContainer(ptr_this));
 	NS_LOG_DEBUG("installing Quagga OSPF routing daemon");
-	quagga.Install(ns3::NodeContainer(ptr_this));
+	quagga_helper.Install(ns3::NodeContainer(ptr_this));
 	NS_LOG_INFO("Quagga OSPF routing daemon was installed.");
 }//enableOspf

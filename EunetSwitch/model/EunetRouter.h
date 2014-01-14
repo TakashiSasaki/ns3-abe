@@ -24,7 +24,7 @@ class EunetRouter: public SimpleRouter {
 
 public:
 	static ns3::TypeId GetTypeId(void);
-	EunetRouter(const unsigned n_ports = 48);
+	EunetRouter(const unsigned n_ports = 1);
 	virtual ~EunetRouter() {
 	}
 	;

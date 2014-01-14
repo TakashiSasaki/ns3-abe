@@ -20,7 +20,7 @@ public:
 	const unsigned nlinkPorts;
 
 	static ns3::TypeId GetTypeId(void);
-	SimpleRouter(const unsigned n_ports = 48);
+	SimpleRouter(const unsigned n_ports = 1);
 	virtual ~SimpleRouter() {
 	}
 	;

@@ -62,18 +62,25 @@ void EunetRouterTestCase::DoRun() {
 	ipv4_address_helper.SetBase("10.0.1.0", "255.255.255.0");
 	ptr_eunet_router_1->assignAddress<ns3::CsmaNetDevice> (ipv4_address_helper,
 			0);
+	ptr_eunet_router_2->assignAddress<ns3::CsmaNetDevice> (ipv4_address_helper,
+			0);
+
+	ptr_eunet_router_1->enableOspf(0);
+	ptr_eunet_router_1->enablePcap(0);
+	ptr_eunet_router_2->enableOspf(0);
+	ptr_eunet_router_2->enablePcap(0);
 
 	//ns3::PacketMetadata::Enable();
-	ptr_eunet_router_1->getTerminals().assignAddresses();
-	ptr_eunet_router_1->getTerminals().setRemoteOfAtoB(0, 0);
-	ptr_eunet_router_1->getTerminals().setRemoteOfAtoB(1, 0);
-	ptr_eunet_router_1->getTerminals().Get(1)->startAt(ns3::Seconds(0.0));
+	//ptr_eunet_router_1->getTerminals().assignAddresses();
+	//ptr_eunet_router_1->getTerminals().setRemoteOfAtoB(0, 0);
+	//ptr_eunet_router_1->getTerminals().setRemoteOfAtoB(1, 0);
+	//ptr_eunet_router_1->getTerminals().Get(1)->startAt(ns3::Seconds(0.0));
 
 	NS_LOG_INFO("Run Simulation.");
-	ns3::Simulator::Stop(ns3::Seconds(0.1));
+	ns3::Simulator::Stop(ns3::Seconds(10.0));
 	ns3::Simulator::Run();
 	ns3::Simulator::Destroy();
-	NS_LOG_INFO("Done.");
+	//NS_LOG_INFO("Done.");
 	//eunet_router->getTerminals().logTotalRx();
 }
 
