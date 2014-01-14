@@ -17,9 +17,11 @@ public:
 	virtual ~CsmaNode() {
 	}
 	;
-	ns3::Ptr<ns3::CsmaNetDevice> getCsmaNetDevice(const unsigned i_device = 0);
+	//ns3::Ptr<ns3::CsmaNetDevice> getCsmaNetDevice(const unsigned i_device = 0);
 	template<class T>
 	ns3::Ptr<T> getNetDevice(const unsigned i_device = 0);
+	template<class T>
+	unsigned getNDevices();
 	void logAllDevices(const ns3::LogLevel log_level = ns3::LOG_LEVEL_INFO);
 private:
 	uint32_t countCsmaNetDevices();
@@ -43,4 +45,14 @@ ns3::Ptr<T> CsmaNode::getNetDevice(const unsigned i_device) {
 	NS_FATAL_ERROR("no " << T::GetTypeId());
 }
 
+template<class T>
+unsigned CsmaNode::getNDevices() {
+	unsigned count = 0;
+	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
+		if (this->GetInstanceTypeId() == T::GetTypeId()) {
+			++count;
+		}//if
+	}//for
+	return count;
+}//getNDevices
 #endif /* CSMANODE_H_ */

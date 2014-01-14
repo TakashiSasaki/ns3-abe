@@ -76,6 +76,7 @@ void CsmaNode::logAllDevices(const ns3::LogLevel log_level) {
 	}
 }//logAllDevices
 
+#if 0
 ns3::Ptr<ns3::CsmaNetDevice> CsmaNode::getCsmaNetDevice(const unsigned i_device) {
 	//NS_ASSERT(this->countCsmaNetDevices()==1);
 	unsigned j = 0;
@@ -93,6 +94,7 @@ ns3::Ptr<ns3::CsmaNetDevice> CsmaNode::getCsmaNetDevice(const unsigned i_device)
 	}//for
 	NS_FATAL_ERROR("no CsmaNetDevice");
 }//getCsmaNetDevice
+#endif
 
 uint32_t CsmaNode::countCsmaNetDevices() {
 	uint32_t n_csma_net_devices = 0;

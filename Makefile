@@ -1,12 +1,15 @@
 .PHONY: build help clean all
 
+test:
+	make -j -C EunetSwitch $@
+
 all:
-	make -C DifsWifiMac $@
-	make -C EunetSwitch $@
-	make -C factorial $@
-	make -C HelloGprof $@
-	make -C HelloNsLog $@
-	make -C wifi-multihop-test $@
+	make -j -C DifsWifiMac $@
+	make -j -C EunetSwitch $@
+	make -j -C factorial $@
+	make -j -C HelloGprof $@
+	make -j -C HelloNsLog $@
+	make -j -C wifi-multihop-test $@
 
 clean:
 	make -C DifsWifiMac $@

@@ -78,13 +78,13 @@ void CsmaInternetNode::assignAddress(
 	this->assignAddress(0, ipv4_address_helper);
 }//assignAddress
 
-void CsmaInternetNode::assignAddress(const unsigned i_device,
+void CsmaInternetNode::assignAddress(const unsigned i_port,
 		ns3::Ipv4AddressHelper& ipv4_address_helper) {
 	NS_ASSERT(this->GetNDevices()==2);
-	ipv4_address_helper.Assign(ns3::NetDeviceContainer(this->getCsmaNetDevice(
-			i_device)));
+	ipv4_address_helper.Assign(ns3::NetDeviceContainer(this->getNetDevice<
+			ns3::CsmaNetDevice> (i_port)));
 	//this->setRemote(this);
-	NS_LOG_INFO(this->getAddress<ns3::CsmaNetDevice>(i_device) << " node " << this->GetId());
+	NS_LOG_INFO(this->getAddress<ns3::CsmaNetDevice>(i_port) << " node " << this->GetId());
 }//assignAddress
 
 void CsmaInternetNode::assignAddress(const unsigned i_device,

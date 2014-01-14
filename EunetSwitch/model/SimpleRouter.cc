@@ -55,7 +55,7 @@ void SimpleRouter::setlinkDelay(ns3::TimeValue delay) {
 
 ns3::Ptr<ns3::CsmaNetDevice> SimpleRouter::getLinkPort(const unsigned i_port) {
 	NS_ASSERT(i_port < nlinkPorts);
-	auto p = this->getCsmaNetDevice(i_port);
+	auto p = this->getNetDevice<ns3::CsmaNetDevice> (i_port);
 	return p;
 }//getlinkPort
 
@@ -90,8 +90,6 @@ unsigned SimpleRouter::getUnusedlinkPort() {
 void SimpleRouter::DoInitialize() {
 	ASSERT_DI
 	CsmaInternetNode::DoInitialize();
-	this->setlinkDataRate(defaultlinkDataRate);
-	this->setlinkDelay(defaultlinkDelay);
 }
 
 void SimpleRouter::NotifyConstructionCompleted() {
@@ -99,7 +97,7 @@ void SimpleRouter::NotifyConstructionCompleted() {
 	NS_LOG_INFO(this->GetNDevices() << " devices");
 	CsmaInternetNode::NotifyConstructionCompleted();
 	NS_LOG_INFO(this->GetNDevices() << " devices");
-	for(unsigned i=0;i<this->GetNDevices();++i){
+	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
 		NS_LOG_INFO("device " << i << " is " << this->GetDevice(i)->GetInstanceTypeId());
 	}
 	NS_LOG_INFO("CsmaChannelNode::NotifyConstructionCompleted finished");
@@ -142,6 +140,10 @@ void SimpleRouter::NotifyConstructionCompleted() {
 	NS_LOG_INFO("installing with DceManagerHelper");
 	dce_manager_helper.Install(ns3::NodeContainer(ptr_this));
 	NS_LOG_INFO("DceManagerHelper was installed.");
+
+	this->setlinkDataRate(defaultlinkDataRate);
+	this->setlinkDelay(defaultlinkDelay);
+
 }//NotifyConstructionCompleted
 
 bool SimpleRouter::isConnectedToSimpleRouter(const unsigned i_port) {

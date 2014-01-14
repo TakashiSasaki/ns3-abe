@@ -22,19 +22,19 @@ CsmaChannelNode::CsmaChannelNode(const int n_devices,
 	this->csmaChannelFactory.SetTypeId("ns3::CsmaChannel");
 	this->csmaChannelFactory.Set("DataRate", data_rate);
 	this->csmaChannelFactory.Set("Delay", delay);
-	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
+	for (unsigned i = 0; i < this->getNDevices<ns3::CsmaNetDevice> (); ++i) {
 		ns3::Ptr<ns3::CsmaChannel>
 				ptr_csma_channel =
 						this->csmaChannelFactory.Create()->GetObject<
 								ns3::CsmaChannel> ();
 		NS_LOG_INFO("attaching a channel to device #" << i);
-		this->getCsmaNetDevice(i)->Attach(ptr_csma_channel);
+		this->getNetDevice<ns3::CsmaNetDevice> (i)->Attach(ptr_csma_channel);
 	}//for
 }
 
-ns3::Ptr<ns3::CsmaChannel> CsmaChannelNode::getCsmaChannel(unsigned i_channel) {
-	NS_ASSERT(i_channel < this->GetNDevices());
-	auto ptr_csma_net_device = this->getCsmaNetDevice(i_channel);
+ns3::Ptr<ns3::CsmaChannel> CsmaChannelNode::getCsmaChannel(unsigned i_port) {
+	NS_ASSERT(i_port < this->getNDevices<ns3::CsmaNetDevice>());
+	auto ptr_csma_net_device = this->getNetDevice<ns3::CsmaNetDevice> (i_port);
 	auto ptr_channel = ptr_csma_net_device->GetChannel();
 	auto ptr_csma_channel = ptr_channel->GetObject<ns3::CsmaChannel> ();
 	return ptr_csma_channel;
@@ -48,7 +48,7 @@ void CsmaChannelNode::bring(ns3::Ptr<CsmaNode> ptr_newcomer,
 void CsmaChannelNode::bring(const unsigned i_our_csma_device,
 		ns3::Ptr<CsmaNode> ptr_their_node, const unsigned i_their_csma_device) {
 	auto ptr_our_csma_channel = this->getCsmaChannel(i_our_csma_device);
-	auto their_csma_device = ptr_their_node->getCsmaNetDevice(
+	auto their_csma_device = ptr_their_node->getNetDevice<ns3::CsmaNetDevice> (
 			i_their_csma_device);
 	//auto ptr_newcomer_device = ptr_newcomer->getCsmaNetDevice();
 	their_csma_device->Attach(ptr_our_csma_channel);

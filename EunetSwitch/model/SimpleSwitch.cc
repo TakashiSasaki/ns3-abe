@@ -39,14 +39,15 @@ SimpleSwitch::SimpleSwitch(const unsigned n_downlink_ports,
 ns3::Ptr<ns3::CsmaNetDevice> SimpleSwitch::getUplinkPort(
 		const unsigned i_uplink_port) {
 	NS_ASSERT(i_uplink_port < nUplinkPorts);
-	auto p = this->getCsmaNetDevice(this->nDownlinkPorts + i_uplink_port);
+	auto p = this->getNetDevice<ns3::CsmaNetDevice> (this->nDownlinkPorts
+			+ i_uplink_port);
 	return p;
 }//getUplinkPort
 
 ns3::Ptr<ns3::CsmaNetDevice> SimpleSwitch::getDownlinkPort(
 		const unsigned i_downlink_port) {
 	NS_ASSERT(i_downlink_port < nDownlinkPorts);
-	auto p = this->getCsmaNetDevice(i_downlink_port);
+	auto p = this->getNetDevice<ns3::CsmaNetDevice> (i_downlink_port);
 	return p;
 }//getDownlinkPort
 
@@ -126,7 +127,7 @@ void SimpleSwitch::NotifyConstructionCompleted() {
 	CsmaChannelNode::NotifyConstructionCompleted();
 	ns3::NetDeviceContainer ndc;
 	for (unsigned i = 0; i < nUplinkPorts + nDownlinkPorts; ++i) {
-		auto ptr_csma_net_device = this->getCsmaNetDevice(i);
+		auto ptr_csma_net_device = this->getNetDevice<ns3::CsmaNetDevice> (i);
 		ndc.Add(ptr_csma_net_device);
 	}
 	ns3::BridgeHelper bridge_helper;
