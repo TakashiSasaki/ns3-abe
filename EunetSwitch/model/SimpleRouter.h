@@ -24,8 +24,6 @@ public:
 	virtual ~SimpleRouter() {
 	}
 	;
-	void setlinkDataRate(ns3::DataRateValue = defaultlinkDataRate);
-	void setlinkDelay(ns3::TimeValue = defaultlinkDelay);
 	ns3::Ptr<ns3::CsmaNetDevice>
 	getLinkPort(const unsigned i_link_port);
 	void connectTo(const unsigned i_link_port,
