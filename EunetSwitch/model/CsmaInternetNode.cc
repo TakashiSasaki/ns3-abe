@@ -73,6 +73,7 @@ ns3::Ipv4Address CsmaInternetNode::getCsmaNetDeviceAddress() {
 }//getCsmaNetDeviceAddress
 #endif
 
+#if 0
 void CsmaInternetNode::assignAddress(
 		ns3::Ipv4AddressHelper& ipv4_address_helper) {
 	this->assignAddress(0, ipv4_address_helper);
@@ -82,10 +83,11 @@ void CsmaInternetNode::assignAddress(const unsigned i_port,
 		ns3::Ipv4AddressHelper& ipv4_address_helper) {
 	NS_ASSERT(this->GetNDevices()==2);
 	ipv4_address_helper.Assign(ns3::NetDeviceContainer(this->getNetDevice<
-			ns3::CsmaNetDevice> (i_port)));
+					ns3::CsmaNetDevice> (i_port)));
 	//this->setRemote(this);
 	NS_LOG_INFO(this->getAddress<ns3::CsmaNetDevice>(i_port) << " node " << this->GetId());
 }//assignAddress
+#endif
 
 void CsmaInternetNode::assignAddress(const unsigned i_device,
 		ns3::Ipv4Address ipv4_address, ns3::Ipv4Mask ipv4_mask) {
@@ -107,6 +109,9 @@ void CsmaInternetNode::logAddress(const ns3::Ipv4Address& ipv4_address) {
 
 template ns3::Ipv4Address CsmaInternetNode::getAddress<ns3::CsmaNetDevice>(
 		const unsigned i_device);
+
+template void CsmaInternetNode::assignAddress<ns3::CsmaNetDevice>(
+		ns3::Ipv4AddressHelper&, const unsigned i_port);
 
 ns3::Ipv4InterfaceAddress CsmaInternetNode::getIpv4InterfaceAddress(
 		const unsigned i_net_device) {

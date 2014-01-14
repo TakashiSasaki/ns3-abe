@@ -20,7 +20,7 @@ TESTS_DCE= \
 
 #NS_LOG_STD=WifiBase=*:EunetMobile=*:CsmaInternetNode=*:CsmaNode=*:EunetMobileTest=*
 NS_LOG_STD=WifiTest=*:WifiPhyTrace=*:WifiMacTrace=*
-NS_LOG_DCE=DceManagerHelper=**:EunetRouterTest=**:SimpleRouter=**
+NS_LOG_DCE=DceManagerHelper=**:EunetRouterTest=**:SimpleRouter=**:CsmaInternetNode=**
 #NS_LOG_DCE=DceQuaggaOspfdTest=**:DceManagerHelper=**:EunetRouterTest=**:SimpleRouter=level_debug
 #NS_LOG_DCE=CsmaNode=**
 #define NS_LOG

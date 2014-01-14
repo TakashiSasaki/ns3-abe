@@ -7,17 +7,20 @@ class CsmaInternetNode: public CsmaChannelNode {
 public:
 	static ns3::TypeId GetTypeId(void);
 	CsmaInternetNode(const int n_devices = 1);
-	virtual ~CsmaInternetNode(){};
+	virtual ~CsmaInternetNode() {
+	}
+	;
 	//ns3::Ipv4Address getCsmaNetDeviceAddress();
 
 	template<class T>
 	ns3::Ipv4Address getAddress(const unsigned i_device);
-	ns3::Ipv4InterfaceAddress getIpv4InterfaceAddress(const unsigned i_net_device);
+	ns3::Ipv4InterfaceAddress getIpv4InterfaceAddress(
+			const unsigned i_net_device);
 
+	//void setAddress(ns3::Ipv4AddressHelper& ipv4_address_helper);
 	template<class T>
-	void setAddress(ns3::Ipv4AddressHelper& ipv4_address_helper);
-	void assignAddress(ns3::Ipv4AddressHelper&); //deprecated
-	void assignAddress(const unsigned i_device, ns3::Ipv4AddressHelper&);
+	void assignAddress(ns3::Ipv4AddressHelper&, const unsigned i_port);
+	//void assignAddress(const unsigned i_device, ns3::Ipv4AddressHelper&);
 	void assignAddress(const unsigned i_device, ns3::Ipv4Address ipv4_address,
 			ns3::Ipv4Mask ipv4_mask);
 private:
@@ -46,13 +49,17 @@ ns3::Ipv4Address CsmaInternetNode::getAddress(const unsigned i_device) {
 }
 
 template<class T>
-void CsmaInternetNode::setAddress(ns3::Ipv4AddressHelper& ipv4_address_helper) {
-	NS_ASSERT(this->GetNDevices()>=2);
-	ipv4_address_helper.Assign(
-			ns3::NetDeviceContainer(this->getNetDevice<T> ()));
+void CsmaInternetNode::assignAddress(
+		ns3::Ipv4AddressHelper& ipv4_address_helper, const unsigned i_port) {
+	NS_ASSERT(this->getNDevices<T>() > i_port);
+	//NS_ASSERT(this->GetNDevices()>=2);
+	auto ptr_net_device = this->getNetDevice<T> (i_port);
+	ipv4_address_helper.Assign(ns3::NetDeviceContainer(ptr_net_device));
 	//this->setRemote(this);
-	//NS_LOG_INFO(this->getAddress<T> () << " node " << this->GetId());
-	this->logAddress(this->getAddress<T> ());
+	NS_LOG_INFO("node " << this->GetId() << " device "
+			<< ptr_net_device->GetIfIndex() << " " << ptr_net_device->GetInstanceTypeId() << " "
+			<< i_port << " to " << this->getAddress<T> (i_port));
+	//this->logAddress(this->getAddress<T> ());
 }
 
 #endif /* CSMAINTERNETNODE_H_ */

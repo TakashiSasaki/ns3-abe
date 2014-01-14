@@ -2,6 +2,7 @@
 #include <fstream>
 #define NS3_LOG_ENABLE 1
 #include "ns3/log.h"
+NS_LOG_COMPONENT_DEFINE ("EunetRouterTest");
 #include "ns3/core-module.h"
 #include "ns3/network-module.h"
 #include "ns3/applications-module.h"
@@ -16,7 +17,6 @@
 #include "SimpleAp.h"
 #include "EunetRouter.h"
 //using namespace ns3;
-NS_LOG_COMPONENT_DEFINE ("EunetRouterTest");
 
 class EunetRouterTestCase: public ns3::TestCase {
 public:
@@ -54,20 +54,21 @@ void EunetRouterTestCase::DoRun() {
 	NS_ASSERT(ptr_simple_router != 0);
 
 	NS_LOG_DEBUG("creating EunetRouter via CreateObject");
-	auto eunet_router_2 = ns3::CreateObject<EunetRouter>();
-	NS_ASSERT(eunet_router_2 != 0);
-#if 0
+	auto ptr_eunet_router_1 = ns3::CreateObject<EunetRouter>();
+	auto ptr_eunet_router_2 = ns3::CreateObject<EunetRouter>();
+	NS_ASSERT(ptr_eunet_router_1 != 0 && ptr_eunet_router_2 != 0);
+
+	Ipv4AddressHelper ipv4_address_helper;
+	ipv4_address_helper.SetBase("10.0.1.0", "255.255.255.0");
+	ptr_eunet_router_1->assignAddress<ns3::CsmaNetDevice> (ipv4_address_helper,
+			0);
+
 	//ns3::PacketMetadata::Enable();
-	NS_LOG_DEBUG("creating object factory for EunetRouter");
-	//ns3::ObjectFactory object_factory;
-	object_factory.SetTypeId("EunetRouter");
-	NS_LOG_DEBUG("creating EunetRouter via ObjectFactory");
-	ns3::Ptr<EunetRouter> eunet_router(object_factory.Create<EunetRouter> ());
-	eunet_router->getTerminals().assignAddresses();
-	eunet_router->getTerminals().setRemoteOfAtoB(0, 0);
-	eunet_router->getTerminals().setRemoteOfAtoB(1, 0);
-	eunet_router->getTerminals().Get(1)->startAt(ns3::Seconds(0.0));
-#endif
+	ptr_eunet_router_1->getTerminals().assignAddresses();
+	ptr_eunet_router_1->getTerminals().setRemoteOfAtoB(0, 0);
+	ptr_eunet_router_1->getTerminals().setRemoteOfAtoB(1, 0);
+	ptr_eunet_router_1->getTerminals().Get(1)->startAt(ns3::Seconds(0.0));
+
 	NS_LOG_INFO("Run Simulation.");
 	ns3::Simulator::Stop(ns3::Seconds(0.1));
 	ns3::Simulator::Run();
