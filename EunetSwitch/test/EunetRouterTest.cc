@@ -32,35 +32,33 @@ private:
 };
 
 void EunetRouterTestCase::DoRun() {
-#if 0
 	NS_LOG_INFO("creating Node via CreateObject");
 	auto ptr_node = ns3::CreateObject<Node>();
 	NS_ASSERT(ptr_node != 0);
-#endif
 
-	NS_LOG_INFO("creating CsmaNode via CreateObject");
+	NS_LOG_INFO("creating CsmaNode via ObjectFactory");
 	auto object_factory = ns3::ObjectFactory();
 	object_factory.SetTypeId(CsmaNode::GetTypeId());
 	//auto ptr_csma_node = ns3::CreateObject<CsmaNode>();
 	auto ptr_csma_node = object_factory.Create();
 	NS_ASSERT(ptr_csma_node != 0);
 
-#if 0
-	NS_LOG_INFO("creating CsmaChannelNode via CreateObject");
-	auto ptr_csma_channel_node = ns3::CreateObject<CsmaChannelNode>();
+	NS_LOG_INFO("creating CsmaChannelNode via ObjectFactory");
+	//auto ptr_csma_channel_node = ns3::CreateObject<CsmaChannelNode>();
+	object_factory.SetTypeId(CsmaChannelNode::GetTypeId());
+	auto ptr_csma_channel_node = object_factory.Create();
 	NS_ASSERT(ptr_csma_channel_node != 0);
 
 	NS_LOG_INFO("creating SimpleRouter via CreateObject");
 	auto ptr_simple_router = ns3::CreateObject<SimpleRouter>();
 	NS_ASSERT(ptr_simple_router != 0);
 
-
 	NS_LOG_DEBUG("creating EunetRouter via CreateObject");
 	auto eunet_router_2 = ns3::CreateObject<EunetRouter>();
 	NS_ASSERT(eunet_router_2 != 0);
 	//ns3::PacketMetadata::Enable();
 	NS_LOG_DEBUG("creating object factory for EunetRouter");
-	ns3::ObjectFactory object_factory;
+	//ns3::ObjectFactory object_factory;
 	object_factory.SetTypeId("EunetRouter");
 	NS_LOG_DEBUG("creating EunetRouter via ObjectFactory");
 	ns3::Ptr<EunetRouter> eunet_router(object_factory.Create<EunetRouter> ());
@@ -74,7 +72,6 @@ void EunetRouterTestCase::DoRun() {
 	//ns3::Simulator::Destroy();
 	NS_LOG_INFO("Done.");
 	eunet_router->getTerminals().logTotalRx();
-#endif
 }
 
 class EunetRouterTestSuite: public ns3::TestSuite {

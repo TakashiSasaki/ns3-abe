@@ -17,8 +17,7 @@ ns3::TypeId CsmaNode::GetTypeId(void) {
 }//GetTypeId
 
 CsmaNode::CsmaNode(const uint32_t n_csma_net_devices) :
-	nCsmaNetDevices(n_csma_net_devices), isNotifyConstructionCompletedCalled(
-			false), isDoInitializeCalled(false), isDoDisposeCalled(false) {
+	nCsmaNetDevices(n_csma_net_devices), INIT_DIDDNCC_FLAGS {
 	NS_LOG_INFO("constructing CsmaNode with " << n_csma_net_devices << " devices");
 	this->deviceFactory.SetTypeId("ns3::CsmaNetDevice");
 	this->queueFactory.SetTypeId("ns3::DropTailQueue");
@@ -37,23 +36,18 @@ CsmaNode::CsmaNode(const uint32_t n_csma_net_devices) :
 }// the constructor
 
 void CsmaNode::DoInitialize() {
-	NS_ASSERT(!this->isDoInitializeCalled);
-	this->isDoInitializeCalled = true;
-	NS_LOG_INFO("just calling up Node::DoInitialize");
+	ASSERT_DI;
 	ns3::Node::DoInitialize();
 }//DoInitialize
 
 void CsmaNode::DoDispose() {
-	NS_ASSERT(!this->isDoDisposeCalled);
-	NS_ASSERT(this->isNotifyConstructionCompletedCalled);
-	this->isDoDisposeCalled = true;
+	NS_LOG_INFO("disposing CsmaNode " << this->GetId());
+	ASSERT_DD;
 	ns3::Node::DoDispose();
 }//DoDispose
 
 void CsmaNode::NotifyConstructionCompleted() {
-	NS_ASSERT(!this->isNotifyConstructionCompletedCalled);
-	this->isNotifyConstructionCompletedCalled = true;
-	NS_LOG_INFO("just calling up");
+	ASSERT_NCC;
 	ns3::Node::NotifyConstructionCompleted();
 }//NotifyConstructionCompleted
 
