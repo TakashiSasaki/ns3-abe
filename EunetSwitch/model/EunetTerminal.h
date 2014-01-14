@@ -13,14 +13,7 @@ public:
 	virtual ~EunetTerminal() {
 	}
 	;
-private:
-	bool isNotifyConstructionCompletedCalled;
-	bool isDoInitializeCalled;
-	bool isDoDisposeCalled;
-protected:
-	virtual void DoInitialize();
-	virtual void NotifyConstructionCompleted();
-	virtual void DoDispose();
+DECLARE_DIDDNCC
 };//EunetTerminal
 
 #endif /* EUNETTERMINAL_H_ */

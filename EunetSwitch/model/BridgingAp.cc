@@ -24,22 +24,21 @@ ns3::TypeId BridgingAp::GetTypeId(void) {
 }//GetTypeId
 
 BridgingAp::BridgingAp() :
-	TraceBase(this) {
-	// TODO 自動生成されたコンストラクター・スタブ
-
-}
-
-BridgingAp::~BridgingAp() {
-	// TODO !CodeTemplates.destructorstub.tododesc!
+	TraceBase(this), INIT_DIDDNCC_FLAGS {
 }
 
 void BridgingAp::DoInitialize() {
-	NS_LOG_INFO("calling up SimpleAp::DoInitialize");
-	Base::DoInitialize();
+	ASSERT_DI;
+	SimpleAp::DoInitialize();
+}
+
+void BridgingAp::DoDispose() {
+	ASSERT_DD;
+	SimpleAp::DoDispose();
 }
 
 void BridgingAp::NotifyConstructionCompleted() {
-	NS_LOG_INFO("bridging over CsmaNetDevice and WifiNetDevice");
+	ASSERT_NCC;
 	ns3::Ptr<ns3::BridgeNetDevice> ptr_bridge_net_device = this->getNetDevice<
 			ns3::BridgeNetDevice> ();
 	NS_ASSERT(ptr_bridge_net_device != 0);
@@ -48,5 +47,5 @@ void BridgingAp::NotifyConstructionCompleted() {
 	NS_ASSERT(ptr_wifi_net_device != 0);
 	ptr_bridge_net_device->AddBridgePort(ptr_wifi_net_device);
 	NS_LOG_INFO("just calling up SimpleAp::NotifyConstructionCompleted");
-	Base::NotifyConstructionCompleted();
+	SimpleAp::NotifyConstructionCompleted();
 }

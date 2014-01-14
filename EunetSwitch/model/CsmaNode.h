@@ -4,6 +4,7 @@
 #include "ns3/net-device-container.h"
 #include "ns3/object-factory.h"
 #include "ns3/csma-net-device.h"
+#include "init.h"
 
 class CsmaNode: public ns3::Node {
 	//typedef Node Base;
@@ -21,15 +22,8 @@ public:
 	ns3::Ptr<T> getNetDevice(const unsigned i_device = 0);
 	void logAllDevices(const ns3::LogLevel log_level = ns3::LOG_LEVEL_INFO);
 private:
-	bool isNotifyConstructionCompletedCalled;
-	bool isDoInitializeCalled;
-	bool isDoDisposeCalled;
-protected:
-	virtual void DoInitialize();
-	virtual void NotifyConstructionCompleted();
-	virtual void DoDispose();
-private:
 	uint32_t countCsmaNetDevices();
+DECLARE_DIDDNCC
 };
 
 template<class T>

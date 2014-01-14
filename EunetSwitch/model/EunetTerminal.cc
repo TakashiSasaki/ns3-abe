@@ -16,8 +16,8 @@ ns3::TypeId EunetTerminal::GetTypeId(void) {
 }//GetTypeId
 
 EunetTerminal::EunetTerminal() :
-	isNotifyConstructionCompletedCalled(false), isDoInitializeCalled(false),
-			isDoDisposeCalled(false) {
+	INIT_DIDDNCC_FLAGS
+{
 	NS_LOG_INFO("the constructor of EunetTerminal");
 	NS_ASSERT(this->GetNDevices() == 1);
 	//this->installInternetStack();
@@ -25,21 +25,17 @@ EunetTerminal::EunetTerminal() :
 }
 
 void EunetTerminal::DoInitialize() {
-	NS_ASSERT(!this->isDoInitializeCalled);
-	this->isDoInitializeCalled = true;
+	ASSERT_DI;
 	OnOffNode::DoInitialize();
 }
 
 void EunetTerminal::DoDispose() {
-	NS_ASSERT(!this->isDoDisposeCalled);
-	NS_ASSERT(this->isNotifyConstructionCompletedCalled);
-	this->isDoDisposeCalled = true;
+	ASSERT_DD;
 	OnOffNode::DoDispose();
 }
 
 void EunetTerminal::NotifyConstructionCompleted() {
-	NS_ASSERT(!this->isNotifyConstructionCompletedCalled);
-	this->isNotifyConstructionCompletedCalled = true;
+	ASSERT_NCC;
 	NS_ASSERT(this->GetNDevices() == 1);
 	OnOffNode::NotifyConstructionCompleted();
 	NS_ASSERT(this->GetNDevices() == 2);

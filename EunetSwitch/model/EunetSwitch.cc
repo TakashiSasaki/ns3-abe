@@ -26,8 +26,7 @@ const char* const EunetSwitch::asciiTracePrefix = "EunetSwitch";
 EunetSwitch::EunetSwitch(const unsigned n_downlink_ports,
 		const unsigned n_uplink_ports) :
 	SimpleSwitch(n_downlink_ports, n_uplink_ports), eunetTerminals(
-			n_downlink_ports), isNotifyConstructionCompletedCalled(false),
-			isDoInitializeCalled(false), isDoDisposeCalled(false) {
+			n_downlink_ports), INIT_DIDDNCC_FLAGS {
 	NS_LOG_INFO("constructing EunetSwitch");
 	//ns3::Simulator::Schedule(ns3::Seconds(0.0), ns3::MakeCallback(&bridgeAllPorts, this));
 #if 0
@@ -46,20 +45,16 @@ EunetSwitch::EunetSwitch(const unsigned n_downlink_ports,
 }//a constructor
 
 void EunetSwitch::DoInitialize() {
-	NS_ASSERT(!this->isDoInitializeCalled);
-	this->isDoInitializeCalled = true;
+	ASSERT_DI;
 	SimpleSwitch::DoInitialize();
 }//DoInitialize
 
 void EunetSwitch::DoDispose() {
-	NS_ASSERT(!this->isDoDisposeCalled);
-	NS_ASSERT(this->isNotifyConstructionCompletedCalled);
-	this->isDoDisposeCalled = true;
+	ASSERT_DD;
 	SimpleSwitch::DoDispose();
 }//DoDispose
 
 void EunetSwitch::NotifyConstructionCompleted() {
-	NS_ASSERT(!this->isNotifyConstructionCompletedCalled);
-	this->isNotifyConstructionCompletedCalled = true;
+	ASSERT_NCC;
 	SimpleSwitch::NotifyConstructionCompleted();
 }//NotifyConstructionCompleted

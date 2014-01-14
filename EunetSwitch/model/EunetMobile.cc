@@ -21,22 +21,18 @@ ns3::TypeId EunetMobile::GetTypeId(void) {
 
 EunetMobile::EunetMobile() :
 	TraceBase(this), MobilityBase(this, ns3::Vector(0, /*this->GetId()*/0, 0)),
-			WifiBase(this, WifiBase::StaWifiMac, true),
-			isNotifyConstructionCompletedCalled(false), isDoInitializeCalled(
-					false), isDoDisposeCalled(false) {
+			WifiBase(this, WifiBase::StaWifiMac, true), INIT_DIDDNCC_FLAGS {
 }// the default constructor
 
 void EunetMobile::DoInitialize() {
-	NS_ASSERT(!this->isDoInitializeCalled);
-	this->isDoInitializeCalled = true;
+	ASSERT_DI
 	MobilityBase::DoInitialize();
 	WifiBase::DoInitialize();
 	OnOffNode::DoInitialize();
 }//DoInitialize
 
 void EunetMobile::NotifyConstructionCompleted() {
-	NS_ASSERT(!this->isNotifyConstructionCompletedCalled);
-	this->isNotifyConstructionCompletedCalled = true;
+	ASSERT_NCC
 	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
 		NS_LOG_INFO(this->GetDevice(i)->GetTypeId().GetName());
 	}//for
@@ -46,7 +42,6 @@ void EunetMobile::NotifyConstructionCompleted() {
 }//NotifyConstructionCompleted
 
 void EunetMobile::DoDispose() {
-	NS_ASSERT(!this->isDoDisposeCalled);
-	NS_ASSERT(this->isNotifyConstructionCompletedCalled);
-	this->isDoDisposeCalled = true;
+	ASSERT_DD;
+	EunetMobile::DoDispose();
 }

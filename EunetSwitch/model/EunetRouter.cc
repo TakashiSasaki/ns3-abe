@@ -25,16 +25,12 @@ const char* const EunetRouter::pcapPrefix = "EunetRouter";
 const char* const EunetRouter::asciiTracePrefix = "EunetRouter";
 
 void EunetRouter::DoDispose() {
-	NS_ASSERT(!this->isDoDisposeCalled);
-	this->isDoDisposeCalled = true;
-	NS_ASSERT(this->isNotifyConstructionCompletedCalled);
+	ASSERT_DD;
 	SimpleRouter::DoDispose();
 }//DoDispose
 
 EunetRouter::EunetRouter(const unsigned n_ports) :
-	SimpleRouter(n_ports), eunetTerminals(n_ports),
-			isNotifyConstructionCompletedCalled(false), isDoInitializeCalled(
-					false), isDoDisposeCalled(false) {
+	SimpleRouter(n_ports), eunetTerminals(n_ports), INIT_DIDDNCC_FLAGS {
 	NS_LOG_INFO("constructing EunetRouter");
 	//	NS_LOG_INFO("attaching " << this->eunetTerminals.GetN() << " terminal(s) to corresponding port(s)");
 	//	for (unsigned i = 0; i < this->eunetTerminals.GetN(); ++i) {
@@ -44,15 +40,11 @@ EunetRouter::EunetRouter(const unsigned n_ports) :
 }// the constructor
 
 void EunetRouter::DoInitialize() {
-	NS_ASSERT(!this->isDoInitializeCalled);
-	this->isDoInitializeCalled = true;
-	NS_LOG_INFO("just calling up");
+	ASSERT_DI;
 	SimpleRouter::DoInitialize();
 }//DoInitialize
 
 void EunetRouter::NotifyConstructionCompleted() {
-	NS_ASSERT(!this->isNotifyConstructionCompletedCalled);
-	this->isNotifyConstructionCompletedCalled = true;
-	NS_LOG_INFO("just calling up");
+	ASSERT_NCC;
 	SimpleRouter::NotifyConstructionCompleted();
 }//NotifyConstructionCompleted

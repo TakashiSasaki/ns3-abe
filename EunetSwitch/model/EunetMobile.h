@@ -15,14 +15,7 @@ public:
 	virtual ~EunetMobile() {
 	}
 	;
-private:
-	bool isNotifyConstructionCompletedCalled;
-	bool isDoInitializeCalled;
-	bool isDoDisposeCalled;
-protected:
-	virtual void DoInitialize();
-	virtual void NotifyConstructionCompleted();
-	virtual void DoDispose();
+DECLARE_DIDDNCC
 };//EunetMobile
 
 #endif /* EUNETMOBILE_H_ */

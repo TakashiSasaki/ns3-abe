@@ -85,14 +85,7 @@ public:
 		return this->eunetTerminals.Get(i_downlink_port);
 	}//getTerminal
 
-private:
-	bool isNotifyConstructionCompletedCalled;
-	bool isDoInitializeCalled;
-	bool isDoDisposeCalled;
-protected:
-	virtual void DoInitialize();
-	virtual void NotifyConstructionCompleted();
-	virtual void DoDispose();
+DECLARE_DIDDNCC
 };//class EunetSwitch
 
 #endif /* EUNETSWITCH_H_ */
