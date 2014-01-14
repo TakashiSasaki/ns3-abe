@@ -49,7 +49,7 @@ template<class T>
 unsigned CsmaNode::getNDevices() {
 	unsigned count = 0;
 	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
-		if (this->GetInstanceTypeId() == T::GetTypeId()) {
+		if (this->GetDevice(i)->GetInstanceTypeId() == T::GetTypeId()) {
 			++count;
 		}//if
 	}//for

@@ -19,8 +19,8 @@ public:
 			ns3::Ptr<CsmaNode> ptr_their_csma_node,
 			const unsigned i_their_csma_device = 0);
 	ns3::Ptr<ns3::CsmaChannel> getCsmaChannel(unsigned i_channel);
-	void setDataRate(ns3::DataRateValue&, const unsigned i_channel = 0);
-	void setDelay(ns3::TimeValue&, const unsigned i_channel = 0);
+	void setCsmaChannelDataRate(ns3::DataRateValue&, const unsigned i_channel = 0);
+	void setCsmaChannelDelay(ns3::TimeValue&, const unsigned i_channel = 0);
 DECLARE_DIDDNCC
 };
 

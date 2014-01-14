@@ -53,25 +53,25 @@ ns3::Ptr<ns3::CsmaNetDevice> SimpleSwitch::getDownlinkPort(
 
 void SimpleSwitch::setDownlinkDataRate(ns3::DataRateValue data_rate) {
 	for (unsigned i = 0; i < nDownlinkPorts; ++i) {
-		this->setDataRate(data_rate, i);
+		this->setCsmaChannelDataRate(data_rate, i);
 	}
 }
 
 void SimpleSwitch::setDownlinkDelay(ns3::TimeValue delay) {
 	for (unsigned i = 0; i < nDownlinkPorts; ++i) {
-		this->setDelay(delay, i);
+		this->setCsmaChannelDelay(delay, i);
 	}
 }
 
 void SimpleSwitch::setUplinkDataRate(ns3::DataRateValue data_rate) {
 	for (unsigned i = 0; i < nUplinkPorts; ++i) {
-		this->setDataRate(data_rate, nDownlinkPorts + i);
+		this->setCsmaChannelDataRate(data_rate, nDownlinkPorts + i);
 	}
 }
 
 void SimpleSwitch::setUplinkDelay(ns3::TimeValue delay) {
 	for (unsigned i = 0; i < nUplinkPorts; ++i) {
-		this->setDelay(delay, nDownlinkPorts + i);
+		this->setCsmaChannelDelay(delay, nDownlinkPorts + i);
 	}
 }
 

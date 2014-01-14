@@ -42,14 +42,14 @@ void SimpleRouter::DoDispose() {
 }//DoDispose
 
 void SimpleRouter::setlinkDataRate(ns3::DataRateValue data_rate) {
-	for (unsigned i = 0; i < nlinkPorts; ++i) {
-		this->setDataRate(data_rate, i);
-	}
+	for (unsigned i = 0; i < this->getNDevices<ns3::CsmaNetDevice> (); ++i) {
+		this->setCsmaChannelDataRate(data_rate, i);
+	}//for
 }
 
 void SimpleRouter::setlinkDelay(ns3::TimeValue delay) {
-	for (unsigned i = 0; i < nlinkPorts; ++i) {
-		this->setDelay(delay, i);
+	for (unsigned i = 0; i < this->getNDevices<ns3::CsmaNetDevice> (); ++i) {
+		this->setCsmaChannelDelay(delay, i);
 	}
 }
 
