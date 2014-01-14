@@ -14,32 +14,33 @@ NS_OBJECT_ENSURE_REGISTERED(EunetMobile);
 
 ns3::TypeId EunetMobile::GetTypeId(void) {
 	static ns3::TypeId type_id =
-			ns3::TypeId("EunetMobile").SetParent<Base> ().AddConstructor<
+			ns3::TypeId("EunetMobile").SetParent<OnOffNode> ().AddConstructor<
 					EunetMobile> ();
 	return type_id;
 }//GetTypeId
 
 EunetMobile::EunetMobile() :
 	TraceBase(this), MobilityBase(this, ns3::Vector(0, /*this->GetId()*/0, 0)),
-			WifiBase(this, WifiBase::StaWifiMac, true) {
+			WifiBase(this, WifiBase::StaWifiMac, true),
+			isNotifyConstructionCompletedCalled(false), isDoInitializeCalled(
+					false), isDoDisposeCalled(false) {
 }// the default constructor
 
 void EunetMobile::DoInitialize() {
+	NS_ASSERT(!this->isDoInitializeCalled);
+	this->isDoInitializeCalled = true;
 	MobilityBase::DoInitialize();
 	WifiBase::DoInitialize();
-	Base::DoInitialize();
-}
+	OnOffNode::DoInitialize();
+}//DoInitialize
 
 void EunetMobile::NotifyConstructionCompleted() {
+	NS_ASSERT(!this->isNotifyConstructionCompletedCalled);
+	this->isNotifyConstructionCompletedCalled = true;
 	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
 		NS_LOG_INFO(this->GetDevice(i)->GetTypeId().GetName());
 	}//for
 	NS_ASSERT(this->GetNDevices() == 2);
-	Base::NotifyConstructionCompleted();
+	OnOffNode::NotifyConstructionCompleted();
 	NS_ASSERT(this->GetNDevices() == 3);
-}
-
-EunetMobile::~EunetMobile() {
-	// TODO !CodeTemplates.destructorstub.tododesc!
-}
-
+}//NotifyConstructionCompleted

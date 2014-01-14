@@ -15,20 +15,30 @@ ns3::TypeId EunetTerminal::GetTypeId(void) {
 	return type_id;
 }//GetTypeId
 
-EunetTerminal::EunetTerminal() {
+EunetTerminal::EunetTerminal() :
+	isNotifyConstructionCompletedCalled(false), isDoInitializeCalled(false),
+			isDoDisposeCalled(false) {
+	NS_LOG_INFO("the constructor of EunetTerminal");
 	NS_ASSERT(this->GetNDevices() == 1);
 	//this->installInternetStack();
 	//this->installPacketSink();
 }
 
 void EunetTerminal::DoInitialize() {
+	NS_ASSERT(!this->isDoInitializeCalled);
+	this->isDoInitializeCalled = true;
 	OnOffNode::DoInitialize();
 }
 
-void EunetTerminal::DoDispose(){
+void EunetTerminal::DoDispose() {
+	NS_ASSERT(!this->isDoDisposeCalled);
+	this->isDoDisposeCalled = true;
+	OnOffNode::DoDispose();
 }
 
 void EunetTerminal::NotifyConstructionCompleted() {
+	NS_ASSERT(!this->isNotifyConstructionCompletedCalled);
+	this->isNotifyConstructionCompletedCalled = true;
 	NS_LOG_INFO("notified the completion of EunetTerminal");
 	NS_ASSERT(this->GetNDevices() == 1);
 	OnOffNode::NotifyConstructionCompleted();

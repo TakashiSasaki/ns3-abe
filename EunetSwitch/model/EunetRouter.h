@@ -17,9 +17,6 @@
 using namespace ns3;
 
 class EunetRouter: public SimpleRouter {
-	bool isNotifyConstructionCompletedCalled;
-	bool isDoInitializeCalled;
-	//typedef SimpleRouter Base;
 	EunetTerminals eunetTerminals;
 
 	static const char* const pcapPrefix;
@@ -28,7 +25,9 @@ class EunetRouter: public SimpleRouter {
 public:
 	static ns3::TypeId GetTypeId(void);
 	EunetRouter(const unsigned n_ports = 48);
-	virtual ~EunetRouter(){};
+	virtual ~EunetRouter() {
+	}
+	;
 
 	void enablePcap(const int i_port, const bool promiscuous = false) {
 		ns3::CsmaHelper csma_helper;
@@ -58,6 +57,10 @@ public:
 		return this->eunetTerminals.Get(i_downlink_port);
 	}//getTerminal
 
+private:
+	bool isNotifyConstructionCompletedCalled;
+	bool isDoInitializeCalled;
+	bool isDoDisposeCalled;
 protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();

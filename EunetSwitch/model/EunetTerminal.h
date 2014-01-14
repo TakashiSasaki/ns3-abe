@@ -10,7 +10,13 @@ class EunetTerminal: public OnOffNode {
 public:
 	static ns3::TypeId GetTypeId(void);
 	EunetTerminal();
-	virtual ~EunetTerminal(){};
+	virtual ~EunetTerminal() {
+	}
+	;
+private:
+	bool isNotifyConstructionCompletedCalled;
+	bool isDoInitializeCalled;
+	bool isDoDisposeCalled;
 protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();

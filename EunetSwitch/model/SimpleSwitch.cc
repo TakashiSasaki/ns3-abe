@@ -16,9 +16,8 @@ const ns3::DataRate SimpleSwitch::defaultDownlinkDataRate("1000000000bps");
 const ns3::TimeValue SimpleSwitch::defaultDownlinkDelay(ns3::MilliSeconds(1));
 
 ns3::TypeId SimpleSwitch::GetTypeId(void) {
-	static ns3::TypeId type_id =
-			ns3::TypeId("SimpleSwitch").SetParent<Base> ().AddConstructor<
-					SimpleSwitch> ();
+	static ns3::TypeId type_id = ns3::TypeId("SimpleSwitch").SetParent<
+			CsmaChannelNode> ().AddConstructor<SimpleSwitch> ();
 	return type_id;
 }//GetTypeId
 
@@ -122,8 +121,10 @@ void SimpleSwitch::connectSibling(const unsigned i_uplink_port, ns3::Ptr<
 }//connectSibling
 
 void SimpleSwitch::NotifyConstructionCompleted() {
+	NS_ASSERT(!this->isNotifyConstructionCompletedCalled);
+	this->isNotifyConstructionCompletedCalled = true;
 	NS_LOG_INFO("bridging all devices");
-	Base::NotifyConstructionCompleted();
+	CsmaChannelNode::NotifyConstructionCompleted();
 	ns3::NetDeviceContainer ndc;
 	for (unsigned i = 0; i < nUplinkPorts + nDownlinkPorts; ++i) {
 		auto ptr_csma_net_device = this->getCsmaNetDevice(i);
@@ -135,12 +136,20 @@ void SimpleSwitch::NotifyConstructionCompleted() {
 	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
 		NS_LOG_INFO(this->GetDevice(i)->GetTypeId() << ", " << this->GetDevice(i)->GetInstanceTypeId());
 	}
-}
+}//NotifyConstructionCompleted
 
 void SimpleSwitch::DoInitialize() {
+	NS_ASSERT(!this->isDoInitializeCalled);
+	this->isDoInitializeCalled = true;
 	NS_LOG_INFO("just calling up");
-	Base::DoInitialize();
-}
+	CsmaChannelNode::DoInitialize();
+}//DoInitialize
+
+void SimpleSwitch::DoDispose() {
+	NS_ASSERT(!this->isDoDisposeCalled);
+	this->isDoDisposeCalled = true;
+	CsmaChannelNode::DoDispose();
+}//DoDispose
 
 bool SimpleSwitch::isConnectedToSimpleSwitch(const unsigned i_port) {
 	ns3::Ptr<ns3::CsmaChannel> ptr_csma_channel = this->getCsmaChannel(i_port);

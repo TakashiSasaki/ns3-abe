@@ -4,7 +4,6 @@
 #include "CsmaChannelNode.h"
 
 class SimpleSwitch: public CsmaChannelNode {
-	typedef CsmaChannelNode Base;
 	//	const int nDownlinkBps;
 	//	const int nDownlinkDelayMilliseconds;
 	//	const int nUplinkBps;
@@ -20,7 +19,9 @@ public:
 	static ns3::TypeId GetTypeId(void);
 	SimpleSwitch(const unsigned n_downlink_ports = 4,
 			const unsigned n_uplink_ports = 1);
-	virtual ~SimpleSwitch(){};
+	virtual ~SimpleSwitch() {
+	}
+	;
 	void setDownlinkDataRate(ns3::DataRateValue = defaultDownlinkDataRate);
 	void setDownlinkDelay(ns3::TimeValue = defaultDownlinkDelay);
 	void setUplinkDataRate(ns3::DataRateValue = defaultUplinkDataRate);
@@ -42,6 +43,10 @@ public:
 			const unsigned i_sibling_uplink_port);
 	unsigned getUnusedUplinkPort();
 	unsigned getUnusedDownlinkPort();
+private:
+	bool isNotifyConstructionCompletedCalled;
+	bool isDoInitializeCalled;
+	bool isDoDisposeCalled;
 protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();

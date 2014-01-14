@@ -9,11 +9,16 @@
 #include "OnOffNode.h"
 
 class EunetMobile: public OnOffNode, public MobilityBase, public WifiBase {
-	typedef OnOffNode Base;
 public:
 	static ns3::TypeId GetTypeId(void);
 	EunetMobile();
-	virtual ~EunetMobile(){};
+	virtual ~EunetMobile() {
+	}
+	;
+private:
+	bool isNotifyConstructionCompletedCalled;
+	bool isDoInitializeCalled;
+	bool isDoDisposeCalled;
 protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();

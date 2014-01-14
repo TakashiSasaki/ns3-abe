@@ -13,7 +13,9 @@ class CsmaNode: public ns3::Node {
 public:
 	static ns3::TypeId GetTypeId(void);
 	CsmaNode(const uint32_t n_csma_net_devices = 0);
-	virtual ~CsmaNode(){};
+	virtual ~CsmaNode() {
+	}
+	;
 	ns3::Ptr<ns3::CsmaNetDevice> getCsmaNetDevice(const unsigned i_device = 0);
 	template<class T>
 	ns3::Ptr<T> getNetDevice(const unsigned i_device = 0);

@@ -27,6 +27,7 @@ void PacketSinkNode::DoInitialize() {
 }
 
 void PacketSinkNode::DoDispose(){
+	CsmaInternetNode::DoDispose();
 }
 
 void PacketSinkNode::NotifyConstructionCompleted() {

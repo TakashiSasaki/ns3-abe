@@ -11,7 +11,7 @@ NS_LOG_COMPONENT_DEFINE("EunetTerminals");
 #include "EunetTerminals.h"
 
 EunetTerminals::EunetTerminals(const unsigned n_terminals) {
-	NS_LOG_INFO("constructing EunetTerminals with " << n_terminals << "terminals");
+	NS_LOG_INFO("constructing EunetTerminals with " << n_terminals << " terminals");
 	ns3::ObjectFactory object_factory;
 	object_factory.SetTypeId("EunetTerminal");
 	for (unsigned i = 0; i < n_terminals; ++i) {

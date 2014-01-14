@@ -37,14 +37,16 @@ CsmaNode::CsmaNode(const uint32_t n_csma_net_devices) :
 }// the constructor
 
 void CsmaNode::DoInitialize() {
-	NS_ASSERT(!this->isDoDisposeCalled);
-	this->isDoDisposeCalled = true;
-	NS_LOG_INFO("just calling up");
+	NS_ASSERT(!this->isDoInitializeCalled);
+	this->isDoInitializeCalled = true;
+	NS_LOG_INFO("just calling up Node::DoInitialize");
 	ns3::Node::DoInitialize();
 }//DoInitialize
 
 void CsmaNode::DoDispose() {
 	NS_ASSERT(!this->isDoDisposeCalled);
+	NS_ASSERT(this->isNotifyConstructionCompletedCalled);
+	NS_ASSERT(this->isDoInitializeCalled);
 	this->isDoDisposeCalled = true;
 	ns3::Node::DoDispose();
 }//DoDispose

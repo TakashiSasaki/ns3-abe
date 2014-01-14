@@ -15,16 +15,15 @@ class SimpleRouter: public CsmaInternetNode {
 	ns3::DceApplicationHelper dceApplicationHelper;
 	static const ns3::DataRate defaultlinkDataRate;
 	static const ns3::TimeValue defaultlinkDelay;
-	bool isNotifyConstructionCompletedCalled;
-	bool isDoInitializeCalled;
-	bool isDoDisposeCalled;
 
 public:
 	const unsigned nlinkPorts;
 
 	static ns3::TypeId GetTypeId(void);
 	SimpleRouter(const unsigned n_ports = 48);
-	virtual ~SimpleRouter(){};
+	virtual ~SimpleRouter() {
+	}
+	;
 	void setlinkDataRate(ns3::DataRateValue = defaultlinkDataRate);
 	void setlinkDelay(ns3::TimeValue = defaultlinkDelay);
 	ns3::Ptr<ns3::CsmaNetDevice>
@@ -35,7 +34,10 @@ public:
 	void connectTo(std::string router_name);
 	unsigned getUnusedlinkPort();
 	void enableOspf(const unsigned i_device);
-
+private:
+	bool isNotifyConstructionCompletedCalled;
+	bool isDoInitializeCalled;
+	bool isDoDisposeCalled;
 protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();

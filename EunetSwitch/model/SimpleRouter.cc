@@ -27,8 +27,9 @@ ns3::TypeId SimpleRouter::GetTypeId(void) {
 
 SimpleRouter::SimpleRouter(const unsigned n_ports) :
 	/*CsmaChannelNode(n_ports, defaultlinkDataRate, defaultlinkDelay),*/
-	isNotifyConstructionCompletedCalled(false), isDoInitializeCalled(false),
-			nlinkPorts(n_ports) {
+	nlinkPorts(n_ports), isNotifyConstructionCompletedCalled(false),
+			isDoInitializeCalled(false), isDoDisposeCalled(false) {
+	NS_LOG_DEBUG("the constructor of SimpleRouter");
 	//	NS_LOG_INFO("constructing SimpleSwitch");
 	//	for (unsigned i = 0; i < nlinkPorts; ++i) {
 	//		NS_LOG_INFO("investigating port " << i);

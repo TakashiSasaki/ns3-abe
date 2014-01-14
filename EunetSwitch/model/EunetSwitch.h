@@ -22,7 +22,6 @@ namespace std {
 #include "SimpleSwitch.h"
 
 class EunetSwitch: public SimpleSwitch {
-	typedef SimpleSwitch Base;
 	EunetTerminals eunetTerminals;
 	//ns3::Ptr<ns3::OutputStreamWrapper> oswAsciiTrace;
 	static const char* const pcapPrefix;
@@ -32,7 +31,9 @@ public:
 	static ns3::TypeId GetTypeId(void);
 	EunetSwitch(const unsigned n_downlink_ports = 48,
 			const unsigned n_uplink_ports = 4);
-	virtual ~EunetSwitch(){};
+	virtual ~EunetSwitch() {
+	}
+	;
 
 #if 0
 	void setAsciiTraceFilename(const std::string& file_name) {
@@ -84,6 +85,10 @@ public:
 		return this->eunetTerminals.Get(i_downlink_port);
 	}//getTerminal
 
+private:
+	bool isNotifyConstructionCompletedCalled;
+	bool isDoInitializeCalled;
+	bool isDoDisposeCalled;
 protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();

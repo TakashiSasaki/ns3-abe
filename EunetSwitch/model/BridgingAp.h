@@ -9,6 +9,10 @@ public:
 	static ns3::TypeId GetTypeId(void);
 	BridgingAp();
 	virtual ~BridgingAp(){};
+private:
+	bool isNotifyConstructionCompletedCalled;
+	bool isDoInitializeCalled;
+	bool isDoDisposeCalled;
 protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();

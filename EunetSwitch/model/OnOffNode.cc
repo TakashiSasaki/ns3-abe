@@ -26,6 +26,7 @@ void OnOffNode::DoInitialize() {
 }
 
 void OnOffNode::DoDispose(){
+	PacketSinkNode::DoDispose();
 }
 
 void OnOffNode::NotifyConstructionCompleted() {
