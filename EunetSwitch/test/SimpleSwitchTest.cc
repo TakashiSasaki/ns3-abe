@@ -60,6 +60,8 @@ void SimpleSwitchTestCase::DoRun() {
 	ptr_simple_switch_2->Initialize();
 	NS_ASSERT(ptr_simple_switch_2->getNDevices<ns3::CsmaNetDevice>() == 52);
 
+	ptr_simple_switch_2->bring(0, ptr_simple_switch_1, 0);
+
 	Simulator::Stop(Seconds(10.0));
 	Simulator::Run();
 	Simulator::Destroy();
