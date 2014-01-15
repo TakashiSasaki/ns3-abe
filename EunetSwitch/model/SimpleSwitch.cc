@@ -40,6 +40,7 @@ ns3::TypeId SimpleSwitch::GetTypeId(void) {
 
 SimpleSwitch::SimpleSwitch(/*const unsigned n_downlink_ports,
  const unsigned n_uplink_ports*/) :
+	nUplinkPorts(0), nDownlinkPorts(0),
 	/*CsmaChannelNode(n_downlink_ports + n_uplink_ports, defaultDownlinkDataRate,
 	 defaultDownlinkDelay), nUplinkPorts(n_uplink_ports),
 	 nDownlinkPorts(n_downlink_ports), */INIT_DIDDNCC_FLAGS {
@@ -61,6 +62,7 @@ void SimpleSwitch::NotifyConstructionCompleted() {
 
 void SimpleSwitch::DoInitialize() {
 	ASSERT_DI;
+	NS_ASSERT(this->GetNDevices()==0);
 	this->setNPorts(this->nDownlinkPorts + this->nUplinkPorts);
 	CsmaChannelNode::DoInitialize();
 	NS_ASSERT (this->getNPorts() == this->getNDevices<ns3::CsmaNetDevice>() );

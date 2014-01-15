@@ -30,7 +30,7 @@ void EunetRouter::DoDispose() {
 }//DoDispose
 
 EunetRouter::EunetRouter() :
-	SimpleRouter(), eunetTerminals(0), INIT_DIDDNCC_FLAGS {
+	INIT_DIDDNCC_FLAGS {
 	NS_LOG_INFO("constructing EunetRouter");
 	//	NS_LOG_INFO("attaching " << this->eunetTerminals.GetN() << " terminal(s) to corresponding port(s)");
 	//	for (unsigned i = 0; i < this->eunetTerminals.GetN(); ++i) {

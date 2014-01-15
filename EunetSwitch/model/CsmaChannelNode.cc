@@ -28,12 +28,16 @@ CsmaChannelNode::CsmaChannelNode() :
 
 void CsmaChannelNode::NotifyConstructionCompleted() {
 	ASSERT_NCC;
+	NS_ASSERT(this->GetNDevices()==0);
 	CsmaNode::NotifyConstructionCompleted();
+	NS_ASSERT(this->GetNDevices()==0);
 }
 
 void CsmaChannelNode::DoInitialize() {
 	ASSERT_DI;
+	NS_ASSERT_MSG(this->GetNDevices()==0, "GetNDevices=" << this->GetNDevices() << " getNPorts=" << this->getNPorts());
 	CsmaNode::DoInitialize();
+	NS_ASSERT(this->GetNDevices()==this->getNPorts());
 	NS_LOG_INFO("constructing CsmaChannelNode with " << this->getNPorts() << " ports");
 	this->csmaChannelFactory.SetTypeId("ns3::CsmaChannel");
 	this->csmaChannelFactory.Set("DataRate", ns3::DataRateValue(

@@ -19,14 +19,21 @@ EunetTerminal::EunetTerminal() :
 	INIT_DIDDNCC_FLAGS
 {
 	NS_LOG_INFO("the constructor of EunetTerminal");
-	NS_ASSERT(this->GetNDevices() == 1);
 	//this->installInternetStack();
 	//this->installPacketSink();
 }
 
+void EunetTerminal::NotifyConstructionCompleted() {
+	ASSERT_NCC;
+	//NS_ASSERT_MSG(this->GetNDevices() == 1, this->GetNDevices() << " " << this->getNDevices<ns3::CsmaNetDevice>());
+	OnOffNode::NotifyConstructionCompleted();
+	//NS_ASSERT(this->GetNDevices() == 2);
+}
 void EunetTerminal::DoInitialize() {
 	ASSERT_DI;
+	NS_ASSERT(this->GetNDevices()==0);
 	OnOffNode::DoInitialize();
+	NS_ASSERT_MSG(this->GetNDevices() == 1, this->GetNDevices() << ' ' << this->getNDevices<ns3::CsmaNetDevice>());
 }
 
 void EunetTerminal::DoDispose() {
@@ -34,9 +41,3 @@ void EunetTerminal::DoDispose() {
 	OnOffNode::DoDispose();
 }
 
-void EunetTerminal::NotifyConstructionCompleted() {
-	ASSERT_NCC;
-	NS_ASSERT(this->GetNDevices() == 1);
-	OnOffNode::NotifyConstructionCompleted();
-	NS_ASSERT(this->GetNDevices() == 2);
-}

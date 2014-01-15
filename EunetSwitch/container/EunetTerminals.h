@@ -5,10 +5,11 @@
 #include "EunetTerminal.h"
 
 class EunetTerminals: public ns3::NodeContainer {
-	typedef ns3::NodeContainer Base;
+	//typedef ns3::NodeContainer Base;
 
 public:
-	EunetTerminals(const unsigned n_terminals = 3);
+	EunetTerminals();
+	void initialize(const uint32_t n_terminals);
 	void assignAddresses(const char* network_address = "10.0.0.0",
 			const char* netmask = "255.0.0.0");
 	void assignAddresses(ns3::Ipv4AddressHelper&);

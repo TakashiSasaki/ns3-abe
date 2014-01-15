@@ -7,6 +7,7 @@ NS_LOG_COMPONENT_DEFINE("CsmaNode");
 #include "ns3/ipv4-interface.h"
 #include "ns3/ipv4-l3-protocol.h"
 #include "ns3/uinteger.h"
+#include "ns3/loopback-net-device.h"
 #include "CsmaNode.h"
 NS_OBJECT_ENSURE_REGISTERED(CsmaNode);
 
@@ -28,14 +29,23 @@ CsmaNode::CsmaNode() :
 }
 void CsmaNode::NotifyConstructionCompleted() {
 	ASSERT_NCC;
+	NS_LOG_INFO("GetNDevices=" << this->GetNDevices());
+	NS_ASSERT(this->GetNDevices()==0);
 	ns3::Node::NotifyConstructionCompleted();
+	NS_ASSERT(this->GetNDevices()==0);
+	NS_LOG_INFO("GetNDevices=" << this->GetNDevices());
 }
 void CsmaNode::DoInitialize() {
 	NS_LOG_DEBUG("CsmaNode::DoInitialize");
 	ASSERT_DI;
+	NS_LOG_INFO("1 GetNDevices=" << this->GetNDevices());
+	NS_ASSERT_MSG (this->getNDevices<ns3::LoopbackNetDevice>()==0, this->getNDevices<ns3::LoopbackNetDevice>());
+	NS_LOG_INFO("2 GetNDevices=" << this->GetNDevices());
 	ns3::Node::DoInitialize();
+	NS_LOG_INFO("3 GetNDevices=" << this->GetNDevices());
 	NS_LOG_INFO("constructing CsmaNode with " << this->nCsmaNetDevices << " devices");
-	NS_ASSERT(this->GetNDevices()==0);
+	NS_ASSERT_MSG(this->GetNDevices()==0, "devices=" << this->GetNDevices() << " csma="
+			<< this->getNDevices<ns3::CsmaNetDevice>() << " loopback=" <<this->getNDevices<ns3::LoopbackNetDevice>() );
 	for (uint32_t i = 0; i < this->nCsmaNetDevices; ++i) {
 		ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device =
 				this->deviceFactory.Create<ns3::CsmaNetDevice> ();
@@ -59,7 +69,7 @@ void CsmaNode::setNPorts(uint32_t n_ports) {
 	this->nCsmaNetDevices = n_ports;
 }
 
-uint32_t CsmaNode::getNPorts(void) const{
+uint32_t CsmaNode::getNPorts(void) const {
 	return this->nCsmaNetDevices;
 }
 

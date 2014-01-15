@@ -1,6 +1,8 @@
 #define NS3_LOG_ENABLE 1
 #include "ns3/log.h"
 NS_LOG_COMPONENT_DEFINE("EunetSwitchesTest");
+#define NS3_ASSERT_ENABLE 1
+#include "ns3/assert.h"
 #include "ns3/test.h"
 #include "ns3/simulator.h"
 #include "ns3/internet-stack-helper.h"

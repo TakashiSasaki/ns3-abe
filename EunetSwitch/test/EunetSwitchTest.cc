@@ -2,6 +2,9 @@
 #include <fstream>
 #define NS3_LOG_ENABLE 1
 #include "ns3/log.h"
+NS_LOG_COMPONENT_DEFINE ("EunetSwitchTest");
+#define NS3_ASSERT_ENABLE 1
+#include "ns3/assert.h"
 #include "ns3/core-module.h"
 #include "ns3/network-module.h"
 #include "ns3/applications-module.h"
@@ -11,29 +14,34 @@
 #include "ns3/internet-stack-helper.h"
 #include "EunetSwitches.h"
 #include "EunetTerminals.h"
-#include "SimpleAp.h"
+//#include "SimpleAp.h"
 //using namespace ns3;
-NS_LOG_COMPONENT_DEFINE ("EunetSwitchTest");
 
 class EunetSwitchTestCase: public ns3::TestCase {
 public:
 	EunetSwitchTestCase() :
-		ns3::TestCase("EunetSwitch") {
+		ns3::TestCase("EunetSwitchTestCase") {
 	}
 	virtual ~EunetSwitchTestCase() {
 	}
 
 private:
 	virtual void DoRun(void) {
+		auto ptr_node = ns3::CreateObject<ns3::Node>();
+		NS_ASSERT(ptr_node->GetNDevices()==0);
+
 		ns3::PacketMetadata::Enable();
 		ns3::ObjectFactory object_factory;
 		object_factory.SetTypeId("EunetSwitch");
 		ns3::Ptr<EunetSwitch> eunet_switch(
 				object_factory.Create<EunetSwitch> ());
+		eunet_switch->Initialize();
+		NS_ASSERT_MSG(eunet_switch->getNDownlinkPorts() == eunet_switch->getTerminals().GetN(),
+				eunet_switch->getNDownlinkPorts()<< ' ' << eunet_switch->getTerminals().GetN());
 		eunet_switch->getTerminals().assignAddresses();
 		eunet_switch->getTerminals().setRemoteOfAtoB(0, 0);
 		eunet_switch->getTerminals().setRemoteOfAtoB(1, 0);
-		eunet_switch->getTerminals().Get(1)->startAt(ns3::Seconds(0.0));
+		//eunet_switch->getTerminals().Get(1)->startAt(ns3::Seconds(0.0));
 		NS_LOG_INFO("Run Simulation.");
 		ns3::Simulator::Stop(ns3::Seconds(0.1));
 		ns3::Simulator::Run();
@@ -46,7 +54,7 @@ private:
 class EunetSwitchTestSuite: public ns3::TestSuite {
 public:
 	EunetSwitchTestSuite() :
-		ns3::TestSuite("EunetSwitch", UNIT) {
+		ns3::TestSuite("EunetSwitchTestSuire", UNIT) {
 		AddTestCase(new EunetSwitchTestCase, ns3::TestCase::QUICK);
 	}
 };

@@ -44,19 +44,17 @@ EunetSwitch::EunetSwitch(/*const unsigned n_downlink_ports,
 void EunetSwitch::DoInitialize() {
 	ASSERT_DI;
 	SimpleSwitch::DoInitialize();
-	this->pEunetTerminals = std::unique_ptr<EunetTerminals>(new EunetTerminals(
-			this->getNDownlinkPorts()));
-	NS_LOG_INFO("attaching " << this->pEunetTerminals->GetN() << " terminal(s) to corresponding port(s)");
-	for (unsigned i = 0; i < this->pEunetTerminals->GetN(); ++i) {
+	this->eunetTerminals.initialize(this->getNDownlinkPorts());
+	NS_LOG_INFO("attaching " << this->eunetTerminals.GetN() << " terminal(s) to corresponding port(s)");
+	for (unsigned i = 0; i < this->eunetTerminals.GetN(); ++i) {
 		NS_LOG_INFO("attaching terminal " << i << " to corresponding port");
-		this->bring(i, this->pEunetTerminals->Get(i), 0);
+		this->bring(i, this->eunetTerminals.Get(i), 0);
 	}//for
 }//DoInitialize
 
 void EunetSwitch::DoDispose() {
 	ASSERT_DD;
 	SimpleSwitch::DoDispose();
-	this->pEunetTerminals = NULL;
 }//DoDispose
 
 void EunetSwitch::NotifyConstructionCompleted() {

@@ -1,32 +1,18 @@
 #define NS3_LOG_ENABLE 1
 #include "ns3/log.h"
+NS_LOG_COMPONENT_DEFINE("EunetTerminals");
 #define NS3_ASSERT_ENABLE 1
 #include "ns3/assert.h"
 #include "ns3/csma-helper.h"
 #include "ns3/ipv4-address-helper.h"
 #include "ns3/internet-stack-helper.h"
 #include "ns3/mobility-helper.h"
-NS_LOG_COMPONENT_DEFINE("EunetTerminals");
+#include "ns3/csma-net-device.h"
+#include "ns3/loopback-net-device.h"
 #include "EunetTerminal.h"
 #include "EunetTerminals.h"
 
-EunetTerminals::EunetTerminals(const unsigned n_terminals) {
-	NS_LOG_INFO("constructing EunetTerminals with " << n_terminals << " terminals");
-	ns3::ObjectFactory object_factory;
-	object_factory.SetTypeId("EunetTerminal");
-	for (unsigned i = 0; i < n_terminals; ++i) {
-		NS_LOG_INFO("creating EunetTerminal node " << i);
-		ns3::Ptr<EunetTerminal> ptr_eunet_terminal = object_factory.Create<
-				EunetTerminal> ();
-		NS_LOG_INFO(ptr_eunet_terminal->GetNDevices() << " device(s)");
-		//auto ptr_eunet_terminal = object_factory.Create<EunetTerminal> ();
-		//ns3::Ptr<ns3::Node> ptr_eunet_terminal(
-		//		ns3::CreateObject<EunetTerminal>());
-		NS_ASSERT(ptr_eunet_terminal->GetNDevices()==2);
-		//ptr_eunet_terminal->assignAddress(ipv4_address_helper);
-		this->Add(ptr_eunet_terminal);
-	}//for
-	NS_ASSERT(n_terminals == this->GetN());
+EunetTerminals::EunetTerminals() {
 #if 0
 	for (unsigned i = 0; i < this->GetN(); ++i) {
 		NS_LOG_INFO("getting source EunetTerminal");
@@ -39,13 +25,35 @@ EunetTerminals::EunetTerminals(const unsigned n_terminals) {
 		ptr_source->stopAt(ns3::Seconds(2.0));
 	}
 #endif
+}// a constructor
+
+void EunetTerminals::initialize(const uint32_t n_terminals) {
+	NS_LOG_INFO("constructing EunetTerminals with " << n_terminals << " terminals");
+	ns3::ObjectFactory object_factory;
+	object_factory.SetTypeId("EunetTerminal");
+	for (unsigned i = 0; i < n_terminals; ++i) {
+		NS_LOG_INFO("creating EunetTerminal node " << i);
+		ns3::Ptr<EunetTerminal> ptr_eunet_terminal = object_factory.Create<
+				EunetTerminal> ();
+		ptr_eunet_terminal->Initialize();
+		NS_LOG_INFO(ptr_eunet_terminal->GetNDevices() << " device(s)");
+		//auto ptr_eunet_terminal = object_factory.Create<EunetTerminal> ();
+		//ns3::Ptr<ns3::Node> ptr_eunet_terminal(
+		//		ns3::CreateObject<EunetTerminal>());
+		NS_ASSERT_MSG(ptr_eunet_terminal->GetNDevices()==2,
+				"devices=" <<
+				ptr_eunet_terminal->GetNDevices() << " csma=" <<
+				ptr_eunet_terminal->getNDevices<ns3::CsmaNetDevice>() << " loopback="
+				<< ptr_eunet_terminal->getNDevices<ns3::LoopbackNetDevice>());
+		//ptr_eunet_terminal->assignAddress(ipv4_address_helper);
+		this->Add(ptr_eunet_terminal);
+	}//for
+	NS_ASSERT(n_terminals == this->GetN());
 
 	ns3::MobilityHelper mobility_helper;
 	mobility_helper.SetMobilityModel("ns3::ConstantPositionMobilityModel");
 	mobility_helper.Install(*this);
-
-}// a constructor
-
+}
 
 void EunetTerminals::assignAddresses(const char* network_address,
 		const char* netmask) {
@@ -59,7 +67,7 @@ void EunetTerminals::assignAddresses(
 		ns3::Ipv4AddressHelper& ipv4_address_helper) {
 	for (unsigned i = 0; i < this->GetN(); ++i) {
 		NS_ASSERT(this->Get(i)-> GetNDevices()==2);
-		this->Get(i)->assignAddress<ns3::CsmaNetDevice>(ipv4_address_helper, 0);
+		this->Get(i)->assignAddress<ns3::CsmaNetDevice> (ipv4_address_helper, 0);
 	}//for
 }//assignAddresses
 
@@ -68,7 +76,8 @@ EunetTerminals::~EunetTerminals() {
 }
 
 ns3::Ptr<EunetTerminal> EunetTerminals::Get(const int i_eunet_terminal) {
-	auto ptr = Base::Get(i_eunet_terminal)->GetObject<EunetTerminal> ();
+	auto ptr = ns3::NodeContainer::Get(i_eunet_terminal)->GetObject<
+			EunetTerminal> ();
 	NS_ASSERT(ptr->GetNDevices()==2);
 	return ptr;
 }
@@ -108,5 +117,6 @@ void EunetTerminals::setRemoteOfAtoB(const unsigned i_eunet_terminal_a,
 		const unsigned i_eunet_terminal_b) {
 	auto a = this->Get(i_eunet_terminal_a);
 	auto b = this->Get(i_eunet_terminal_b);
-	a->setRemote<ns3::CsmaNetDevice> (b);
+	auto ipv4_address = b->getAddress<ns3::CsmaNetDevice> (0);
+	a->setRemote(ipv4_address);
 }

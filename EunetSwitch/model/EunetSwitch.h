@@ -22,7 +22,9 @@ namespace std {
 #include "SimpleSwitch.h"
 
 class EunetSwitch: public SimpleSwitch {
-	std::unique_ptr<EunetTerminals> pEunetTerminals;
+	//std::unique_ptr<EunetTerminals> pEunetTerminals;
+	EunetTerminals eunetTerminals;
+	uint32_t nTerminals;
 
 	//ns3::Ptr<ns3::OutputStreamWrapper> oswAsciiTrace;
 	static const char* const pcapPrefix;
@@ -31,7 +33,7 @@ class EunetSwitch: public SimpleSwitch {
 public:
 	static ns3::TypeId GetTypeId(void);
 	EunetSwitch(/*const unsigned n_downlink_ports = 48,
-			const unsigned n_uplink_ports = 4*/);
+	 const unsigned n_uplink_ports = 4*/);
 	virtual ~EunetSwitch() {
 	}
 	;
@@ -70,21 +72,21 @@ public:
 	}
 
 	EunetTerminals& getTerminals() {
-		return *(this->pEunetTerminals);
+		return eunetTerminals;
 		//return this->ncTerminals;
 	}//getTerminals
 
 	ns3::NetDeviceContainer getTerminalDevices() {
 		ns3::NetDeviceContainer ndc;
-		for (unsigned i = 0; i < this->pEunetTerminals->GetN(); ++i) {
-			ndc.Add(this->pEunetTerminals->Get(i)->getNetDevice<
+		for (unsigned i = 0; i < this->eunetTerminals.GetN(); ++i) {
+			ndc.Add(this->eunetTerminals.Get(i)->getNetDevice<
 					ns3::CsmaNetDevice> (0));
 		}//for
 		return ndc;
 	}//getTerminalDevices
 
 	ns3::Ptr<EunetTerminal> getTerminal(const int i_downlink_port) {
-		return this->pEunetTerminals->Get(i_downlink_port);
+		return this->eunetTerminals.Get(i_downlink_port);
 	}//getTerminal
 
 DECLARE_DIDDNCC

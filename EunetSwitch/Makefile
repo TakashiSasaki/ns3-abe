@@ -15,7 +15,8 @@ TESTS_STD= \
     #SimpleApTest.o \
 
 TESTS_DCE= \
-	SimpleSwitchTest.o
+	SimpleSwitchTest.o \
+	EunetSwitchTest.o
     #EunetRouterTest.o \
     #DceQuaggaOspfdTest.o
 
@@ -23,7 +24,7 @@ TESTS_DCE= \
 NS_LOG_STD=WifiTest=*:WifiPhyTrace=*:WifiMacTrace=*
 #NS_LOG_DCE=DceManagerHelper=**:EunetRouterTest=**:SimpleRouter=**:CsmaInternetNode=**
 #NS_LOG_DCE=DceQuaggaOspfdTest=**:DceManagerHelper=**:EunetRouterTest=**:SimpleRouter=level_debug
-NS_LOG_DCE=SimpleSwitchTest=**:SimpleSwitch=**:CsmaChannelNode=**:CsmaNode=**
+NS_LOG_DCE=SimpleSwitchTest=**:SimpleSwitch=**:CsmaChannelNode=**:CsmaNode=**:EunetSwitchTest=**
 #define NS_LOG
 #NS_LOG="NamedRouters=**:EunetRouters=**:EunetRouter=**:SimpleRouter=**:BridgingAp=**:SimpleAp=**:NamedSwitches=**:EunetSwitch=**:EunetSwitches=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"
 #endef

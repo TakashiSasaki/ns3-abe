@@ -5,6 +5,7 @@
 #include "ns3/object-factory.h"
 #include "ns3/csma-net-device.h"
 #include "ns3/uinteger.h"
+#include "ns3/application.h"
 #include "init.h"
 
 class CsmaNode: public ns3::Node {
@@ -26,6 +27,8 @@ public:
 	void logAllDevices(const ns3::LogLevel log_level = ns3::LOG_LEVEL_INFO);
 	void setNPorts(uint32_t);
 	uint32_t getNPorts() const;
+	template<class T>
+	ns3::Ptr<T> getApplication();
 private:
 	uint32_t countCsmaNetDevices();
 DECLARE_DIDDNCC
@@ -58,4 +61,15 @@ unsigned CsmaNode::getNDevices() {
 	}//for
 	return count;
 }//getNDevices
+
+template<class T>
+ns3::Ptr<T> CsmaNode::getApplication() {
+	for (unsigned i = 0; this->GetNApplications(); ++i) {
+		auto ptr_application = this->GetApplication(i);
+		if (ptr_application->GetInstanceTypeId() == T::GetTypeId()) {
+			return ptr_application->GetObject<T> ();
+		}//if
+	}//for
+	return NULL;
+}//getApplication
 #endif /* CSMANODE_H_ */
