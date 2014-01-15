@@ -74,7 +74,7 @@ ns3::Ipv4InterfaceAddress CsmaInternetNode::getIpv4InterfaceAddress(
 	NS_ASSERT(ptr_net_device != 0);
 	NS_ASSERT(ptr_net_device->GetInstanceTypeId().IsChildOf(ns3::NetDevice::GetTypeId()));
 	const auto i_interface = ptr_ipv4->GetInterfaceForDevice(ptr_net_device);
-	NS_ASSERT(i_interface != -1);
+	NS_ASSERT_MSG(i_interface != -1, "maybe IPv4 address is not assigned yet.");
 	const auto n_addresses = ptr_ipv4->GetNAddresses(i_interface);
 	NS_ASSERT(n_addresses == 1);
 	ns3::Ipv4InterfaceAddress ipv4_interface_address = ptr_ipv4->GetAddress(
