@@ -54,6 +54,33 @@ SimpleSwitch::SimpleSwitch(/*const unsigned n_downlink_ports,
 #endif
 }// the constructor
 
+void SimpleSwitch::NotifyConstructionCompleted() {
+	ASSERT_NCC;
+	CsmaChannelNode::NotifyConstructionCompleted();
+}
+
+void SimpleSwitch::DoInitialize() {
+	ASSERT_DI;
+	CsmaChannelNode::DoInitialize();
+	NS_LOG_INFO("bridging all devices");
+	ns3::NetDeviceContainer ndc;
+	for (unsigned i = 0; i < nUplinkPorts + nDownlinkPorts; ++i) {
+		auto ptr_csma_net_device = this->getNetDevice<ns3::CsmaNetDevice> (i);
+		ndc.Add(ptr_csma_net_device);
+	}
+	ns3::BridgeHelper bridge_helper;
+	bridge_helper.Install(this, ndc);
+	//this->logAllDevices();
+	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
+		NS_LOG_INFO(this->GetDevice(i)->GetTypeId() << ", " << this->GetDevice(i)->GetInstanceTypeId());
+	}
+}
+
+void SimpleSwitch::DoDispose() {
+	ASSERT_DD;
+	CsmaChannelNode::DoDispose();
+}
+
 void SimpleSwitch::setNDownlinkPorts(uint32_t n_downlink_ports) {
 	NS_ASSERT(!this->isDoInitializeCalled);
 	this->nDownlinkPorts = n_downlink_ports;
@@ -168,32 +195,11 @@ void SimpleSwitch::connectSibling(const unsigned i_uplink_port, ns3::Ptr<
 	NS_ASSERT(sibling_switch->isConnectedToSimpleSwitch(sibling_switch->nDownlinkPorts+i_sibling_uplink_port));
 }//connectSibling
 
-void SimpleSwitch::NotifyConstructionCompleted() {
-	ASSERT_NCC;
-	CsmaChannelNode::NotifyConstructionCompleted();
-}//NotifyConstructionCompleted
+//NotifyConstructionCompleted
 
-void SimpleSwitch::DoInitialize() {
-	ASSERT_DI;
-	CsmaChannelNode::DoInitialize();
-	NS_LOG_INFO("bridging all devices");
-	ns3::NetDeviceContainer ndc;
-	for (unsigned i = 0; i < nUplinkPorts + nDownlinkPorts; ++i) {
-		auto ptr_csma_net_device = this->getNetDevice<ns3::CsmaNetDevice> (i);
-		ndc.Add(ptr_csma_net_device);
-	}
-	ns3::BridgeHelper bridge_helper;
-	bridge_helper.Install(this, ndc);
-	//this->logAllDevices();
-	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
-		NS_LOG_INFO(this->GetDevice(i)->GetTypeId() << ", " << this->GetDevice(i)->GetInstanceTypeId());
-	}
-}//DoInitialize
+//DoInitialize
 
-void SimpleSwitch::DoDispose() {
-	ASSERT_DD;
-	CsmaChannelNode::DoDispose();
-}//DoDispose
+//DoDispose
 
 bool SimpleSwitch::isConnectedToSimpleSwitch(const unsigned i_port) {
 	this->Initialize();
