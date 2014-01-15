@@ -17,10 +17,10 @@ class SimpleRouter: public CsmaInternetNode {
 	static const ns3::TimeValue defaultlinkDelay;
 
 public:
-	const unsigned nlinkPorts;
+	//const unsigned nlinkPorts;
 
 	static ns3::TypeId GetTypeId(void);
-	SimpleRouter(const unsigned n_ports = 1);
+	SimpleRouter();
 	virtual ~SimpleRouter() {
 	}
 	;

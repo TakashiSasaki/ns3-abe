@@ -25,9 +25,9 @@ ns3::TypeId SimpleRouter::GetTypeId(void) {
 }//GetTypeId
 
 
-SimpleRouter::SimpleRouter(const unsigned n_ports) :
+SimpleRouter::SimpleRouter() :
 	/*CsmaChannelNode(n_ports, defaultlinkDataRate, defaultlinkDelay),*/
-	nlinkPorts(n_ports), INIT_DIDDNCC_FLAGS {
+	INIT_DIDDNCC_FLAGS {
 	NS_LOG_DEBUG("the constructor of SimpleRouter");
 	//	NS_LOG_INFO("constructing SimpleSwitch");
 	//	for (unsigned i = 0; i < nlinkPorts; ++i) {
@@ -41,11 +41,13 @@ void SimpleRouter::DoDispose() {
 	CsmaInternetNode::DoDispose();
 }//DoDispose
 
+#if 0
 ns3::Ptr<ns3::CsmaNetDevice> SimpleRouter::getLinkPort(const unsigned i_port) {
 	NS_ASSERT(i_port < nlinkPorts);
 	auto p = this->getNetDevice<ns3::CsmaNetDevice> (i_port);
 	return p;
 }//getlinkPort
+#endif
 
 void SimpleRouter::connectTo(const unsigned i_link_port,
 		ns3::Ptr<SimpleRouter> connect_router,
@@ -66,6 +68,7 @@ void SimpleRouter::connectTo(std::string connect_router_name) {
 			connect_unused_link_port);
 }//connectTo
 
+#if 0
 unsigned SimpleRouter::getUnusedlinkPort() {
 	for (unsigned i = 0; i < this->nlinkPorts; ++i) {
 		if (!this->isConnectedToSimpleRouter(i)) {
@@ -74,6 +77,7 @@ unsigned SimpleRouter::getUnusedlinkPort() {
 	}//for
 	NS_FATAL_ERROR("no unused downlink port");
 }
+#endif
 
 void SimpleRouter::DoInitialize() {
 	ASSERT_DI
@@ -131,7 +135,6 @@ void SimpleRouter::NotifyConstructionCompleted() {
 	NS_LOG_INFO("installing with DceManagerHelper");
 	dce_manager_helper.Install(ns3::NodeContainer(ptr_this));
 	NS_LOG_INFO("DceManagerHelper was installed.");
-
 
 }//NotifyConstructionCompleted
 
@@ -193,8 +196,8 @@ std::unique_ptr<std::vector<std::string> > SimpleRouter::getAllNetworks() {
 
 void SimpleRouter::enableOspf(const unsigned i_port) {
 	NS_LOG_DEBUG("enabling Quagga OSPF routing daemon");
-	NS_ASSERT_MSG(this->getNDevices<ns3::CsmaNetDevice>() == this->nlinkPorts,
-			this->getNDevices<ns3::CsmaNetDevice>()<< " device(s) " << this->nlinkPorts << " ports");
+	NS_ASSERT_MSG(this->getNDevices<ns3::CsmaNetDevice>() == this->getNPorts(),
+			this->getNDevices<ns3::CsmaNetDevice>()<< " device(s) " << this->getNPorts() << " ports");
 	const auto ipv4_interface_address = this->getIpv4InterfaceAddress<
 			ns3::CsmaNetDevice> (i_port);
 	ns3::QuaggaHelper quagga_helper;

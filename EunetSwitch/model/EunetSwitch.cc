@@ -1,3 +1,4 @@
+#include <memory>
 #define NS3_LOG_ENABLE 1
 #include "ns3/log.h"
 NS_LOG_COMPONENT_DEFINE("EunetSwitch");
@@ -9,6 +10,7 @@ NS_LOG_COMPONENT_DEFINE("EunetSwitch");
 #include "ns3/inet-socket-address.h"
 #include "EunetSwitch.h"
 #include "EunetTerminal.h"
+#include "EunetTerminals.h"
 #include "SimpleSwitch.h"
 
 NS_OBJECT_ENSURE_REGISTERED(EunetSwitch);
@@ -23,10 +25,10 @@ ns3::TypeId EunetSwitch::GetTypeId(void) {
 const char* const EunetSwitch::pcapPrefix = "EunetSwitch";
 const char* const EunetSwitch::asciiTracePrefix = "EunetSwitch";
 
-EunetSwitch::EunetSwitch(const unsigned n_downlink_ports,
-		const unsigned n_uplink_ports) :
-	SimpleSwitch(n_downlink_ports, n_uplink_ports), eunetTerminals(
-			n_downlink_ports), INIT_DIDDNCC_FLAGS {
+EunetSwitch::EunetSwitch(/*const unsigned n_downlink_ports,
+ const unsigned n_uplink_ports*/) :
+	SimpleSwitch(/*n_downlink_ports, n_uplink_ports), eunetTerminals(
+	 n_downlink_ports*/), INIT_DIDDNCC_FLAGS {
 	NS_LOG_INFO("constructing EunetSwitch");
 	//ns3::Simulator::Schedule(ns3::Seconds(0.0), ns3::MakeCallback(&bridgeAllPorts, this));
 #if 0
@@ -37,21 +39,24 @@ EunetSwitch::EunetSwitch(const unsigned n_downlink_ports,
 	}
 #endif
 
-	NS_LOG_INFO("attaching " << this->eunetTerminals.GetN() << " terminal(s) to corresponding port(s)");
-	for (unsigned i = 0; i < this->eunetTerminals.GetN(); ++i) {
-		NS_LOG_INFO("attaching terminal " << i << " to corresponding port");
-		this->bring(i, this->eunetTerminals.Get(i), 0);
-	}
 }//a constructor
 
 void EunetSwitch::DoInitialize() {
 	ASSERT_DI;
 	SimpleSwitch::DoInitialize();
+	this->pEunetTerminals = std::unique_ptr<EunetTerminals>(new EunetTerminals(
+			this->getNDownlinkPorts()));
+	NS_LOG_INFO("attaching " << this->pEunetTerminals->GetN() << " terminal(s) to corresponding port(s)");
+	for (unsigned i = 0; i < this->pEunetTerminals->GetN(); ++i) {
+		NS_LOG_INFO("attaching terminal " << i << " to corresponding port");
+		this->bring(i, this->pEunetTerminals->Get(i), 0);
+	}//for
 }//DoInitialize
 
 void EunetSwitch::DoDispose() {
 	ASSERT_DD;
 	SimpleSwitch::DoDispose();
+	this->pEunetTerminals = NULL;
 }//DoDispose
 
 void EunetSwitch::NotifyConstructionCompleted() {

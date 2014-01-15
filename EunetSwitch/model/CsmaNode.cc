@@ -6,21 +6,41 @@ NS_LOG_COMPONENT_DEFINE("CsmaNode");
 #include "ns3/queue.h"
 #include "ns3/ipv4-interface.h"
 #include "ns3/ipv4-l3-protocol.h"
+#include "ns3/uinteger.h"
 #include "CsmaNode.h"
 NS_OBJECT_ENSURE_REGISTERED(CsmaNode);
 
 ns3::TypeId CsmaNode::GetTypeId(void) {
 	static ns3::TypeId type_id =
 			ns3::TypeId("CsmaNode").SetParent<ns3::Node> ().AddConstructor<
-					CsmaNode> ();
+					CsmaNode> (). AddAttribute("nPorts",
+					"the number of CSMA port", ns3::UintegerValue(1),
+					ns3::MakeUintegerAccessor(&CsmaNode::getNPorts,
+							&CsmaNode::setNPorts), ns3::MakeUintegerChecker<
+							uint32_t>());
 	return type_id;
 }//GetTypeId
 
-CsmaNode::CsmaNode(const uint32_t n_csma_net_devices) :
-	nCsmaNetDevices(n_csma_net_devices), INIT_DIDDNCC_FLAGS {
-	NS_LOG_INFO("constructing CsmaNode with " << n_csma_net_devices << " devices");
+void CsmaNode::setNPorts(uint32_t n_ports) {
+	NS_ASSERT(!this->isDoDisposeCalled);
+	this->nCsmaNetDevices = n_ports;
+}
+
+uint32_t CsmaNode::getNPorts(void) const{
+	return this->nCsmaNetDevices;
+}
+
+CsmaNode::CsmaNode() :
+	nCsmaNetDevices(0), INIT_DIDDNCC_FLAGS {
 	this->deviceFactory.SetTypeId("ns3::CsmaNetDevice");
 	this->queueFactory.SetTypeId("ns3::DropTailQueue");
+}// the constructor
+
+void CsmaNode::DoInitialize() {
+	NS_LOG_UNCOND("CsmaNode::DoInitialize");
+	ASSERT_DI;
+	ns3::Node::DoInitialize();
+	NS_LOG_INFO("constructing CsmaNode with " << this->nCsmaNetDevices << " devices");
 	NS_ASSERT(this->GetNDevices()==0);
 	for (uint32_t i = 0; i < this->nCsmaNetDevices; ++i) {
 		ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device =
@@ -33,11 +53,6 @@ CsmaNode::CsmaNode(const uint32_t n_csma_net_devices) :
 	}//for
 	NS_ASSERT(this->GetNDevices()==this->nCsmaNetDevices);
 	NS_LOG_INFO("constructed with " << this->GetNDevices() << " devices");
-}// the constructor
-
-void CsmaNode::DoInitialize() {
-	ASSERT_DI;
-	ns3::Node::DoInitialize();
 }//DoInitialize
 
 void CsmaNode::DoDispose() {

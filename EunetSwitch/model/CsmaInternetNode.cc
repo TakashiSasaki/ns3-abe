@@ -19,8 +19,7 @@ ns3::TypeId CsmaInternetNode::GetTypeId(void) {
 }//GetTypeId
 
 CsmaInternetNode::CsmaInternetNode(const int n_devices) :
-	CsmaChannelNode(n_devices), isNotifyConstructionCompletedCalled(false),
-			isDoInitializeCalled(false), isDoDisposeCalled(false) {
+	CsmaChannelNode(), INIT_DIDDNCC_FLAGS {
 }// a constructor
 
 void CsmaInternetNode::DoDispose() {

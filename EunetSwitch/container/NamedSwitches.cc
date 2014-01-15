@@ -2,6 +2,7 @@
 #include "ns3/log.h"
 NS_LOG_COMPONENT_DEFINE("NamedSwitches");
 #define NS3_ASSERT_ENABLE 1
+#include "ns3/object-factory.h"
 #include "ns3/assert.h"
 #include "ns3/ipv4-address-helper.h"
 #include "ns3/names.h"
@@ -15,7 +16,10 @@ NamedSwitches::NamedSwitches(const std::string base_ip_address,
 
 void NamedSwitches::addEunetSwitch(std::string name,
 		const unsigned n_downlink_ports) {
-	auto ptr_eunet_switch(ns3::CreateObject<EunetSwitch>(n_downlink_ports));
+	ns3::ObjectFactory object_factory;
+	object_factory.SetTypeId(EunetSwitch::GetTypeId());
+	object_factory.Set("nDownlinkPorts", ns3::UintegerValue(n_downlink_ports));
+	auto ptr_eunet_switch(object_factory.Create());
 	ns3::Names::Add(name, ptr_eunet_switch);
 }
 

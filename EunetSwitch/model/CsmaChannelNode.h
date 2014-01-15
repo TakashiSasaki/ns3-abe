@@ -6,10 +6,11 @@
 
 class CsmaChannelNode: public CsmaNode {
 	ns3::ObjectFactory csmaChannelFactory;
+	ns3::DataRate csmaChannelDataRate;
+	ns3::Time csmaChannelDelay;
 public:
 	static ns3::TypeId GetTypeId(void);
-	CsmaChannelNode(const int n_devices = 1, ns3::DataRateValue data_rate =
-			ns3::DataRate(0xffffffff), ns3::TimeValue = ns3::Seconds(0)); // TODO: should support multiple devices
+	CsmaChannelNode();
 	virtual ~CsmaChannelNode() {
 	}
 	;

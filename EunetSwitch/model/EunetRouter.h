@@ -24,15 +24,15 @@ class EunetRouter: public SimpleRouter {
 
 public:
 	static ns3::TypeId GetTypeId(void);
-	EunetRouter(const unsigned n_ports = 1);
+	EunetRouter();
 	virtual ~EunetRouter() {
 	}
 	;
 
 	void enablePcap(const int i_port, const bool promiscuous = false) {
 		ns3::CsmaHelper csma_helper;
-		csma_helper.EnablePcap(EunetRouter::pcapPrefix, this->getLinkPort(
-				i_port), promiscuous);
+		csma_helper.EnablePcap(EunetRouter::pcapPrefix, this->getNetDevice<
+				ns3::CsmaNetDevice> (i_port), promiscuous);
 	}
 
 	void enableAsciiTrace(const int i_port) {

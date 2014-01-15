@@ -4,16 +4,17 @@
 #include "ns3/net-device-container.h"
 #include "ns3/object-factory.h"
 #include "ns3/csma-net-device.h"
+#include "ns3/uinteger.h"
 #include "init.h"
 
 class CsmaNode: public ns3::Node {
 	//typedef Node Base;
-	const uint32_t nCsmaNetDevices;
+	uint32_t nCsmaNetDevices;
 	ns3::ObjectFactory deviceFactory;
 	ns3::ObjectFactory queueFactory;
 public:
 	static ns3::TypeId GetTypeId(void);
-	CsmaNode(const uint32_t n_csma_net_devices = 0);
+	CsmaNode();
 	virtual ~CsmaNode() {
 	}
 	;
@@ -23,6 +24,8 @@ public:
 	template<class T>
 	unsigned getNDevices();
 	void logAllDevices(const ns3::LogLevel log_level = ns3::LOG_LEVEL_INFO);
+	void setNPorts(uint32_t);
+	uint32_t getNPorts() const;
 private:
 	uint32_t countCsmaNetDevices();
 DECLARE_DIDDNCC
