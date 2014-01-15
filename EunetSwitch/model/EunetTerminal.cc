@@ -33,7 +33,7 @@ void EunetTerminal::DoInitialize() {
 	ASSERT_DI;
 	NS_ASSERT(this->GetNDevices()==0);
 	OnOffNode::DoInitialize();
-	NS_ASSERT_MSG(this->GetNDevices() == 1, this->GetNDevices() << ' ' << this->getNDevices<ns3::CsmaNetDevice>());
+	NS_ASSERT_MSG(this->GetNDevices() == 2, "GetNDevices=" << this->GetNDevices() << " csma=" << this->getNDevices<ns3::CsmaNetDevice>() << " loopback=" << this->getNDevices<ns3::LoopbackNetDevice>());
 }
 
 void EunetTerminal::DoDispose() {

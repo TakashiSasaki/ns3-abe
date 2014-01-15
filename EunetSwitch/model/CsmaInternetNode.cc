@@ -33,6 +33,13 @@ void CsmaInternetNode::NotifyConstructionCompleted() {
 	NS_ASSERT(!this->isNotifyConstructionCompletedCalled);
 	this->isNotifyConstructionCompletedCalled = true;
 	CsmaChannelNode::NotifyConstructionCompleted();
+}//NotifyConstructionCompleted
+
+void CsmaInternetNode::DoInitialize() {
+	NS_ASSERT(!this->isDoInitializeCalled);
+	this->isDoInitializeCalled = true;
+	NS_ASSERT(this->GetNDevices()==0);
+	CsmaChannelNode::DoInitialize();
 	const unsigned n_devices_before = this->GetNDevices();
 	//NS_ASSERT(this->GetNDevices() == 1);
 	ns3::InternetStackHelper internet_stack_helper;
@@ -45,12 +52,6 @@ void CsmaInternetNode::NotifyConstructionCompleted() {
 	this->logAllDevices();
 	NS_ASSERT(this->GetNDevices() == n_devices_before+1);
 	NS_ASSERT(this->GetDevice(n_devices_before)->GetObject<ns3::LoopbackNetDevice>(ns3::LoopbackNetDevice::GetTypeId()));
-}//NotifyConstructionCompleted
-
-void CsmaInternetNode::DoInitialize() {
-	NS_ASSERT(!this->isDoInitializeCalled);
-	this->isDoInitializeCalled = true;
-	CsmaChannelNode::DoInitialize();
 }//DoInitialize
 
 #if 0

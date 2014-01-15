@@ -25,17 +25,8 @@ PacketSinkNode::PacketSinkNode() :
 
 void PacketSinkNode::DoInitialize() {
 	ASSERT_DI;
+	NS_ASSERT(this->GetNDevices()==0);
 	CsmaInternetNode::DoInitialize();
-}
-
-void PacketSinkNode::DoDispose() {
-	ASSERT_DD;
-	CsmaInternetNode::DoDispose();
-}//DoDispose
-
-void PacketSinkNode::NotifyConstructionCompleted() {
-	ASSERT_NCC;
-	CsmaInternetNode::NotifyConstructionCompleted();
 	const unsigned n_devices_before = this->GetNDevices();
 	//NS_ASSERT(this->GetNDevices() == 2);
 
@@ -46,13 +37,23 @@ void PacketSinkNode::NotifyConstructionCompleted() {
 	this->packetSink = packet_sink_helper.Install(this);
 	this->packetSink.Start(ns3::Seconds(0.0));
 	NS_ASSERT(this->GetNDevices() == n_devices_before);
+}//DoInitialize
+
+void PacketSinkNode::DoDispose() {
+	ASSERT_DD;
+	CsmaInternetNode::DoDispose();
+}//DoDispose
+
+void PacketSinkNode::NotifyConstructionCompleted() {
+	ASSERT_NCC;
+	CsmaInternetNode::NotifyConstructionCompleted();
 }//NotifyConstructionCompleted
 
 uint32_t PacketSinkNode::getTotalRx() {
 	return this->packetSink.Get(0)->GetObject<ns3::PacketSink> ()->GetTotalRx();
-}
+}//getTotalRx
 
 void PacketSinkNode::logTotalRx(ns3::LogLevel log_level) {
 	NS_LOG(ns3::LOG_LEVEL_INFO, "node " << this->GetId() << " have received " << this->getTotalRx() << " bytes");
-}
+}//logTotalRx
 
