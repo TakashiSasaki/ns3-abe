@@ -26,6 +26,33 @@ CsmaChannelNode::CsmaChannelNode() :
 	CsmaNode(), INIT_DIDDNCC_FLAGS {
 }
 
+void CsmaChannelNode::NotifyConstructionCompleted() {
+	ASSERT_NCC;
+	CsmaNode::NotifyConstructionCompleted();
+}
+
+void CsmaChannelNode::DoInitialize() {
+	ASSERT_DI;
+	CsmaNode::DoInitialize();
+	NS_LOG_INFO("constructing CsmaChannelNode with " << this->getNPorts() << " ports");
+	this->csmaChannelFactory.SetTypeId("ns3::CsmaChannel");
+	this->csmaChannelFactory.Set("DataRate", ns3::DataRateValue(
+			this->csmaChannelDataRate));
+	this->csmaChannelFactory.Set("Delay",
+			ns3::TimeValue(this->csmaChannelDelay));
+	for (unsigned i = 0; i < this->getNDevices<ns3::CsmaNetDevice> (); ++i) {
+		ns3::Ptr<ns3::CsmaChannel>
+				ptr_csma_channel =
+						this->csmaChannelFactory.Create()->GetObject<
+								ns3::CsmaChannel> ();
+		NS_LOG_INFO("attaching a channel to device #" << i);
+		this->getNetDevice<ns3::CsmaNetDevice> (i)->Attach(ptr_csma_channel);
+	}//for
+}
+void CsmaChannelNode::DoDispose() {
+	ASSERT_DD;
+	CsmaNode::DoDispose();
+}
 ns3::Ptr<ns3::CsmaChannel> CsmaChannelNode::getCsmaChannel(unsigned i_port) {
 	NS_ASSERT_MSG((i_port < this->getNDevices<ns3::CsmaNetDevice>()), "node " << this->GetId() << " has " << this->getNDevices<ns3::CsmaNetDevice>() << " " << ns3::CsmaNetDevice::GetTypeId() << " devices, while port " << i_port << " is specified.");
 	auto ptr_csma_net_device = this->getNetDevice<ns3::CsmaNetDevice> (i_port);
@@ -73,32 +100,7 @@ void CsmaChannelNode::setCsmaChannelDelayAll(const ns3::TimeValue& delay) {
 	}
 }
 
-void CsmaChannelNode::DoInitialize() {
-	ASSERT_DI;
-	CsmaNode::DoInitialize();
-	NS_LOG_INFO("constructing CsmaChannelNode with " << this->getNPorts() << " ports");
-	this->csmaChannelFactory.SetTypeId("ns3::CsmaChannel");
-	this->csmaChannelFactory.Set("DataRate", ns3::DataRateValue(
-			this->csmaChannelDataRate));
-	this->csmaChannelFactory.Set("Delay",
-			ns3::TimeValue(this->csmaChannelDelay));
-	for (unsigned i = 0; i < this->getNDevices<ns3::CsmaNetDevice> (); ++i) {
-		ns3::Ptr<ns3::CsmaChannel>
-				ptr_csma_channel =
-						this->csmaChannelFactory.Create()->GetObject<
-								ns3::CsmaChannel> ();
-		NS_LOG_INFO("attaching a channel to device #" << i);
-		this->getNetDevice<ns3::CsmaNetDevice> (i)->Attach(ptr_csma_channel);
-	}//for
-}//DoInitialize
+//DoInitialize
 
-void CsmaChannelNode::DoDispose() {
-	ASSERT_DD;
-	CsmaNode::DoDispose();
-}//DoDispose
-
-void CsmaChannelNode::NotifyConstructionCompleted() {
-	ASSERT_NCC;
-	CsmaNode::NotifyConstructionCompleted();
-}
+//DoDispose
 

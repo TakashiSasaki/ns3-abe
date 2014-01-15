@@ -21,23 +21,17 @@ ns3::TypeId CsmaNode::GetTypeId(void) {
 	return type_id;
 }//GetTypeId
 
-void CsmaNode::setNPorts(uint32_t n_ports) {
-	NS_ASSERT(!this->isDoDisposeCalled);
-	this->nCsmaNetDevices = n_ports;
-}
-
-uint32_t CsmaNode::getNPorts(void) const{
-	return this->nCsmaNetDevices;
-}
-
 CsmaNode::CsmaNode() :
 	nCsmaNetDevices(0), INIT_DIDDNCC_FLAGS {
 	this->deviceFactory.SetTypeId("ns3::CsmaNetDevice");
 	this->queueFactory.SetTypeId("ns3::DropTailQueue");
-}// the constructor
-
+}
+void CsmaNode::NotifyConstructionCompleted() {
+	ASSERT_NCC;
+	ns3::Node::NotifyConstructionCompleted();
+}
 void CsmaNode::DoInitialize() {
-	NS_LOG_UNCOND("CsmaNode::DoInitialize");
+	NS_LOG_DEBUG("CsmaNode::DoInitialize");
 	ASSERT_DI;
 	ns3::Node::DoInitialize();
 	NS_LOG_INFO("constructing CsmaNode with " << this->nCsmaNetDevices << " devices");
@@ -53,18 +47,29 @@ void CsmaNode::DoInitialize() {
 	}//for
 	NS_ASSERT(this->GetNDevices()==this->nCsmaNetDevices);
 	NS_LOG_INFO("constructed with " << this->GetNDevices() << " devices");
-}//DoInitialize
-
+}
 void CsmaNode::DoDispose() {
 	NS_LOG_INFO("disposing CsmaNode " << this->GetId());
 	ASSERT_DD;
 	ns3::Node::DoDispose();
-}//DoDispose
+}
+void CsmaNode::setNPorts(uint32_t n_ports) {
+	NS_LOG_INFO("n_ports = " << n_ports);
+	NS_ASSERT(!this->isDoInitializeCalled);
+	this->nCsmaNetDevices = n_ports;
+}
 
-void CsmaNode::NotifyConstructionCompleted() {
-	ASSERT_NCC;
-	ns3::Node::NotifyConstructionCompleted();
-}//NotifyConstructionCompleted
+uint32_t CsmaNode::getNPorts(void) const{
+	return this->nCsmaNetDevices;
+}
+
+// the constructor
+
+//DoInitialize
+
+//DoDispose
+
+//NotifyConstructionCompleted
 
 void CsmaNode::logAllDevices(const ns3::LogLevel log_level) {
 	//TODO: separate this method to other mixin class

@@ -61,36 +61,62 @@ void SimpleSwitch::NotifyConstructionCompleted() {
 
 void SimpleSwitch::DoInitialize() {
 	ASSERT_DI;
+	this->setNPorts(this->nDownlinkPorts + this->nUplinkPorts);
 	CsmaChannelNode::DoInitialize();
+	NS_ASSERT (this->getNPorts() == this->getNDevices<ns3::CsmaNetDevice>() );
+	NS_ASSERT_MSG(this->getNPorts() == this->getNUplinkPorts() + this->getNDownlinkPorts(), "node " << this->GetId() << " has " << this->getNDevices<ns3::CsmaNetDevice>() << " CsmaNetDevice(s)");
 	NS_LOG_INFO("bridging all devices");
+
+	for (unsigned i = 0; i < this->nUplinkPorts; ++i) {
+		this->getUplinkPort(i)->GetChannel()->SetAttribute("DataRate",
+				ns3::DataRateValue(this->uplinkDataRate));
+		this->getUplinkPort(i)->GetChannel()->SetAttribute("Delay",
+				ns3::TimeValue(this->uplinkDelay));
+	}//for
+
+	for (unsigned i = 0; i < this->nDownlinkPorts; ++i) {
+		this->getDownlinkPort(i)->GetChannel()->SetAttribute("DataRate",
+				ns3::DataRateValue(this->downlinkDataRate));
+		this->getDownlinkPort(i)->GetChannel()->SetAttribute("Delay",
+				ns3::TimeValue(this->downlinkDelay));
+	}//for
+
 	ns3::NetDeviceContainer ndc;
 	for (unsigned i = 0; i < nUplinkPorts + nDownlinkPorts; ++i) {
 		auto ptr_csma_net_device = this->getNetDevice<ns3::CsmaNetDevice> (i);
 		ndc.Add(ptr_csma_net_device);
-	}
+	}//for
+
 	ns3::BridgeHelper bridge_helper;
 	bridge_helper.Install(this, ndc);
 	//this->logAllDevices();
 	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
 		NS_LOG_INFO(this->GetDevice(i)->GetTypeId() << ", " << this->GetDevice(i)->GetInstanceTypeId());
-	}
-}
+	}//for
+}//DoInitialize
 
 void SimpleSwitch::DoDispose() {
 	ASSERT_DD;
 	CsmaChannelNode::DoDispose();
-}
+}//DoDispose
 
 void SimpleSwitch::setNDownlinkPorts(uint32_t n_downlink_ports) {
+	NS_LOG_INFO("n_downlink_ports = " << n_downlink_ports);
 	NS_ASSERT(!this->isDoInitializeCalled);
 	this->nDownlinkPorts = n_downlink_ports;
 	this->setNPorts(this->nUplinkPorts + this->nDownlinkPorts);
+	NS_ASSERT_MSG(this->getNPorts() == (this->getNDownlinkPorts() + this->getNUplinkPorts()),
+			this->getNPorts() << " " << this->getNDownlinkPorts() << " " << this->getNUplinkPorts());
 }
 
 void SimpleSwitch::setNUplinkPorts(uint32_t n_uplink_ports) {
+	NS_LOG_INFO("n_uplink_ports = " << n_uplink_ports);
 	NS_ASSERT(!this->isDoInitializeCalled);
 	this->nUplinkPorts = n_uplink_ports;
 	this->setNPorts(this->nUplinkPorts + this->nDownlinkPorts);
+	//NS_ASSERT(this->getNPorts() == (this->getNDownlinkPorts() + this->getNUplinkPorts()));
+	NS_ASSERT_MSG(this->getNPorts() == (this->getNDownlinkPorts() + this->getNUplinkPorts()),
+			this->getNPorts() << " " << this->getNDownlinkPorts() << " " << this->getNUplinkPorts());
 }
 
 uint32_t SimpleSwitch::getNDownlinkPorts() const {
