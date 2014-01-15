@@ -100,6 +100,15 @@ void EunetTerminals::logTotalRx(ns3::LogLevel log_level) {
 	}
 }
 
+unsigned EunetTerminals::getTotalRx() {
+	unsigned count = 0;
+	for (auto i = this->Begin(); i != this->End(); ++i) {
+		auto total_rx = (*i)->GetObject<EunetTerminal> ()->getTotalRx();
+		count += total_rx;
+	}//for
+	return count;
+}//getTotalRx
+
 void EunetTerminals::bringAtoB(const unsigned i_eunet_terminal_a,
 		const unsigned i_eunet_terminal_b) {
 	NS_ASSERT(i_eunet_terminal_a < this->GetN());

@@ -14,8 +14,6 @@ NS_LOG_COMPONENT_DEFINE ("EunetSwitchTest");
 #include "ns3/internet-stack-helper.h"
 #include "EunetSwitches.h"
 #include "EunetTerminals.h"
-//#include "SimpleAp.h"
-//using namespace ns3;
 
 class EunetSwitchTestCase: public ns3::TestCase {
 public:
@@ -43,18 +41,19 @@ private:
 		eunet_switch->getTerminals().setRemoteOfAtoB(1, 0);
 		//eunet_switch->getTerminals().Get(1)->startAt(ns3::Seconds(0.0));
 		NS_LOG_INFO("Run Simulation.");
-		ns3::Simulator::Stop(ns3::Seconds(0.1));
+		ns3::Simulator::Stop(ns3::Seconds(0.2));
 		ns3::Simulator::Run();
 		ns3::Simulator::Destroy();
 		NS_LOG_INFO("Done.");
 		eunet_switch->getTerminals().logTotalRx();
+		NS_ASSERT_MSG (eunet_switch->getTerminals().getTotalRx()==48640, eunet_switch->getTerminals().getTotalRx());
 	}//DoRun
 };
 
 class EunetSwitchTestSuite: public ns3::TestSuite {
 public:
 	EunetSwitchTestSuite() :
-		ns3::TestSuite("EunetSwitchTestSuire", UNIT) {
+		ns3::TestSuite("EunetSwitchTestSuite", UNIT) {
 		AddTestCase(new EunetSwitchTestCase, ns3::TestCase::QUICK);
 	}
 };
