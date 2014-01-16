@@ -18,7 +18,7 @@ public:
 	;
 	void startAt(ns3::Time start_seconds = ns3::Seconds(0.0));
 	void stopAt(ns3::Time stop_seconds = ns3::Seconds(10.0));
-	void setRemote(ns3::Ipv4Address&);
+	void setRemote(const ns3::Ipv4Address&);
 private:
 	void installOnOffApplication();
 	static const int ON_OFF_APPLICATION_UDP_PORT = 10009;

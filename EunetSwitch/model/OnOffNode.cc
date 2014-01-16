@@ -110,7 +110,7 @@ void OnOffNode::stopAt(ns3::Time stop_seconds) {
 }//stopOnOffApplication
 #endif
 
-void OnOffNode::setRemote(ns3::Ipv4Address& ipv4_address) {
+void OnOffNode::setRemote(const ns3::Ipv4Address& ipv4_address) {
 	auto on_off_application = this->getApplication<ns3::OnOffApplication>();
 	on_off_application->SetAttribute("Remote", ns3::AddressValue(
 			ns3::InetSocketAddress(ipv4_address, PACKET_SINK_UDP_PORT)));

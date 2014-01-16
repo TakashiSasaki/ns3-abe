@@ -36,7 +36,6 @@ private:
 		internet_stack_helper.Install(ptr_node);
 		NS_ASSERT_MSG(ptr_node->GetNDevices() == 1, ptr_node->GetNDevices());
 
-
 		object_factory.SetTypeId("CsmaNode");
 		ns3::Ptr<CsmaNode> ptr_csma_node(object_factory.Create<CsmaNode> ());
 		NS_ASSERT(ptr_csma_node->GetNDevices() == 0);
@@ -66,13 +65,24 @@ private:
 		ptr_eunet_terminal_3->Initialize();
 		NS_ASSERT_MSG(ptr_eunet_terminal_3->GetNDevices() == 2, ptr_eunet_terminal->GetNDevices());
 
-		ptr_eunet_terminal_2->enablePcap<ns3::CsmaNetDevice>(0);
-		ptr_eunet_terminal_3->enablePcap<ns3::CsmaNetDevice>(0);
+		ptr_eunet_terminal_2->enablePcap<ns3::CsmaNetDevice> (0);
+		ptr_eunet_terminal_3->enablePcap<ns3::CsmaNetDevice> (0);
+
+		ptr_eunet_terminal_2->assignAddress(0, "10.0.0.2", "255.0.0.0");
+		NS_ASSERT(ptr_eunet_terminal_2->getAddress<ns3::CsmaNetDevice>(0) == "10.0.0.2");
+		ptr_eunet_terminal_3->assignAddress(0, "10.0.0.3", "255.0.0.0");
+		NS_ASSERT(ptr_eunet_terminal_3->getAddress<ns3::CsmaNetDevice>(0) == "10.0.0.3");
+
+		ptr_eunet_terminal_2->bring(0, ptr_eunet_terminal_3, 0);
+		ptr_eunet_terminal_2->setRemote(ptr_eunet_terminal_3->getAddress<
+				ns3::CsmaNetDevice> (0));
 
 		NS_LOG_INFO("Run Simulation.");
-		ns3::Simulator::Stop(ns3::Seconds(0.1));
+		ns3::Simulator::Stop(ns3::Seconds(10.11));
 		ns3::Simulator::Run();
 		ns3::Simulator::Destroy();
+		NS_ASSERT(ptr_eunet_terminal_2->getTotalRx() == 0);
+		NS_ASSERT(ptr_eunet_terminal_3->getTotalRx() == 979968);
 		NS_LOG_INFO("Done.");
 	}//DoRun
 };
