@@ -27,6 +27,10 @@ EunetTerminals::EunetTerminals() {
 #endif
 }// a constructor
 
+EunetTerminals::~EunetTerminals() {
+	// TODO !CodeTemplates.destructorstub.tododesc!
+}
+
 void EunetTerminals::initialize(const uint32_t n_terminals) {
 	NS_LOG_INFO("constructing EunetTerminals with " << n_terminals << " terminals");
 	ns3::ObjectFactory object_factory;
@@ -70,10 +74,6 @@ void EunetTerminals::assignAddresses(
 		this->Get(i)->assignAddress<ns3::CsmaNetDevice> (ipv4_address_helper, 0);
 	}//for
 }//assignAddresses
-
-EunetTerminals::~EunetTerminals() {
-	// TODO !CodeTemplates.destructorstub.tododesc!
-}
 
 ns3::Ptr<EunetTerminal> EunetTerminals::Get(const int i_eunet_terminal) {
 	auto ptr = ns3::NodeContainer::Get(i_eunet_terminal)->GetObject<

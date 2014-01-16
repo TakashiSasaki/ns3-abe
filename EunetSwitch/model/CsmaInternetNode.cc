@@ -29,6 +29,7 @@ void CsmaInternetNode::DoDispose() {
 
 void CsmaInternetNode::NotifyConstructionCompleted() {
 	ASSERT_NCC;
+	NS_ASSERT(this->GetNDevices()==0);
 	CsmaChannelNode::NotifyConstructionCompleted();
 }//NotifyConstructionCompleted
 
