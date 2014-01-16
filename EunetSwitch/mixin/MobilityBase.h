@@ -11,7 +11,7 @@ public:
 	void setPosition(const ns3::Vector& position);
 protected:
 	MobilityBase(ns3::Node* p_node, const ns3::Vector);
-	virtual ~MobilityBase(){};
+	virtual ~MobilityBase();
 protected:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();

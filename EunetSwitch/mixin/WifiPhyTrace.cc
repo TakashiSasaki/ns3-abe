@@ -15,7 +15,6 @@ WifiPhyTrace::WifiPhyTrace(ns3::Node* p_node) :
 }
 
 WifiPhyTrace::~WifiPhyTrace() {
-	// TODO !CodeTemplates.destructorstub.tododesc!
 }
 
 void WifiPhyTrace::tracePhyTxBegin(ns3::Ptr<const ns3::Packet> ptr_packet) const {
@@ -92,4 +91,10 @@ void WifiPhyTrace::DoInitialize() {
 		ptr_wifi_phy->TraceConnectWithoutContext("PhyRxDrop",
 				ns3::MakeCallback(&WifiPhyTrace::tracePhyRxDrop, this));
 	}//for
+}
+
+void WifiPhyTrace::DoDispose() {
+}
+
+void WifiPhyTrace::NotifyConstructionCompleted() {
 }

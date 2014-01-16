@@ -69,3 +69,10 @@ void WifiMacTrace::DoInitialize() {
 				ns3::MakeCallback(&WifiMacTrace::traceMacRxDrop, this));
 	}//for
 }
+
+void WifiMacTrace::DoDispose() {
+}
+
+void WifiMacTrace::NotifyConstructionCompleted(){
+
+}

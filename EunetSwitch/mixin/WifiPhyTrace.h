@@ -8,8 +8,8 @@
 class WifiPhyTrace: virtual public TraceBase {
 public:
 	WifiPhyTrace(ns3::Node* p_node);
-	virtual ~WifiPhyTrace(){};
-protected:
+	virtual ~WifiPhyTrace();
+public:
 	virtual void DoInitialize();
 	virtual void NotifyConstructionCompleted();
 	virtual void DoDispose();

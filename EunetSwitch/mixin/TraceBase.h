@@ -7,7 +7,7 @@ protected:
 	ns3::Ptr<ns3::Node> ptrNode;
 	TraceBase(ns3::Node* p_node);
 public:
-	virtual ~TraceBase(){};
+	virtual ~TraceBase();
 protected:
 	static void getHex(std::ostream&, ns3::Ptr<const ns3::Packet> ptr_packet);
 };

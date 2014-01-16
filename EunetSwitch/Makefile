@@ -1,6 +1,6 @@
 vpath %.h container:model:eunet:test:mixin
 vpath %.cc container:model:eunet:test:mixin
-.PHONY: test visualize
+.PHONY: test visualize build-visualize run-visualize
 
 
 TESTS_COMMON= \
@@ -23,7 +23,8 @@ TESTS_DCE= \
     #DceQuaggaOspfdTest.o
 
 #NS_LOG_STD=WifiBase=*:EunetMobile=*:CsmaInternetNode=*:CsmaNode=*:EunetMobileTest=*
-NS_LOG_STD=WifiTest=*:WifiPhyTrace=*:WifiMacTrace=*
+#NS_LOG_STD=WifiTest=*:WifiPhyTrace=*:WifiMacTrace=*
+NS_LOG_STD=*
 #NS_LOG_DCE=DceManagerHelper=**:EunetRouterTest=**:SimpleRouter=**:CsmaInternetNode=**
 #NS_LOG_DCE=DceQuaggaOspfdTest=**:DceManagerHelper=**:EunetRouterTest=**:SimpleRouter=level_debug
 NS_LOG_DCE=SimpleSwitchTest=**:SimpleSwitch=**:CsmaChannelNode=**:CsmaNode=**:EunetSwitchTest=**:EunetTerminalTest=**:EunetTerminal=**:PacketSinkNode=**:OnOffNode=**:CsmaInternetNode=**:EunetTerminalsTest=**
@@ -252,7 +253,8 @@ TESTS_SO_DCE:= \
 OBJS_COMMON:= \
     NamedSwitches.o EunetSwitch.o EunetSwitches.o \
     EunetTerminal.o EunetTerminals.o CsmaNode.o CsmaChannelNode.o \
-    CsmaInternetNode.o PacketSinkNode.o OnOffNode.o SimpleSwitch.o 
+    CsmaInternetNode.o PacketSinkNode.o OnOffNode.o SimpleSwitch.o \
+    WifiMacTrace.o
 
 OBJS_STD:= \
     SimpleAp.o BridgingAp.o \
@@ -267,10 +269,10 @@ libeunet.a : $(OBJS_COMMON) $(OBJS_$(VER))
 	ar r $@ $^
 
         
-build-visualize: EunetSwitchTest.o libeunet.a $(NS3LIBS) visualize.cc
-	g++ -o $@ $(CXXFLAGS) $^
+build-visualize: EunetSwitchTest.o libeunet.a $(NS3LIBS_$(VER)) visualize.cc
+	g++ -o visualize $(CXXFLAGS) $^
 
-run-visualize:
+visualize: build-visualize
 	$(EXECENV) ./visualize --SimulatorImplementationType=ns3::VisualSimulatorImpl
 
 gmon.out: EunetSwitchTest
@@ -313,7 +315,7 @@ test: test-runner
 	#$(EXECENV) $(NS_LOG) ./test-runner --verbose --xml --tempdir=testpy-output/2014-01-06-04-35-10-CUT --out=process-manager.xml
 
 EunetTerminalTestSuite: test-runner
-	$(EXECENV) ./test-runner --suite=$@
+	$(EXECENV) ./test-runner --suite=$@ 
 
 #build this target first to use DCE feature
 install-dce-quagga: build-dce-quagga test-dce-quagga copy-shared-library copy-include-files
