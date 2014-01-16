@@ -7,6 +7,7 @@ NS_LOG_COMPONENT_DEFINE("EunetSwitchesTest");
 #include "ns3/simulator.h"
 #include "ns3/internet-stack-helper.h"
 #include "ns3/netanim-module.h"
+#include "ns3/csma-net-device.h"
 #include "EunetSwitches.h"
 
 class EunetSwitchesTestCase: public ns3::TestCase {
@@ -25,8 +26,9 @@ private:
 		auto source_terminal = source_switch->getTerminal(5);
 		auto dest_switch = eunet_switches.getEunetSwitch(0, 0);
 		auto dest_terminal = dest_switch->getTerminal(5);
-		source_terminal->setRemote<ns3::CsmaNetDevice> (dest_terminal);
-		source_terminal->startAt(ns3::Seconds(0.0));
+		source_terminal->setRemote(
+				dest_terminal->getAddress<ns3::CsmaNetDevice> (0));
+		//source_terminal->startAt(ns3::Seconds(0.0));
 		source_switch->enableAsciiTraceDownlink(5);
 		source_switch->enablePcapDownlink(5);
 		dest_switch->enableAsciiTraceDownlink(5);

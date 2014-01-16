@@ -24,7 +24,7 @@ TESTS_DCE= \
 
 #NS_LOG_STD=WifiBase=*:EunetMobile=*:CsmaInternetNode=*:CsmaNode=*:EunetMobileTest=*
 #NS_LOG_STD=WifiTest=*:WifiPhyTrace=*:WifiMacTrace=*
-NS_LOG_STD=*
+NS_LOG_STD=EunetTerminalTest=**
 #NS_LOG_DCE=DceManagerHelper=**:EunetRouterTest=**:SimpleRouter=**:CsmaInternetNode=**
 #NS_LOG_DCE=DceQuaggaOspfdTest=**:DceManagerHelper=**:EunetRouterTest=**:SimpleRouter=level_debug
 NS_LOG_DCE=SimpleSwitchTest=**:SimpleSwitch=**:CsmaChannelNode=**:CsmaNode=**:EunetSwitchTest=**:EunetTerminalTest=**:EunetTerminal=**:PacketSinkNode=**:OnOffNode=**:CsmaInternetNode=**:EunetTerminalsTest=**
@@ -296,7 +296,7 @@ clean:
 	-rm -f container/*.o model/*.o test/*.o *.o
 	-rm -f *.a
 
-test-runner: $(TEST_RUNNER_$(VER)) $(NS3LIBS_$(VER)) $(TESTS_$(VER)) libeunet.a 
+test-runner: $(TEST_RUNNER_$(VER)) $(NS3LIBS_$(VER)) $(TESTS_COMMON) $(TESTS_$(VER)) libeunet.a 
 	g++ -o $@ $(CXXFLAGS) $^
 
 test-so: $(TEST_RUNNER_$(VER)) $(NS3LIBS_$(VER)) $(TESTS_SO_$(VER))

@@ -7,6 +7,8 @@ NS_LOG_COMPONENT_DEFINE("EunetTerminalTest");
 #include "ns3/simulator.h"
 #include "ns3/internet-stack-helper.h"
 #include "ns3/loopback-net-device.h"
+#include "ns3/global-value.h"
+#include "ns3/string.h"
 #include "EunetTerminal.h"
 
 class EunetTerminalTestCase: public ns3::TestCase {
@@ -20,6 +22,9 @@ public:
 
 private:
 	virtual void DoRun(void) {
+		NS_LOG_DEBUG("--SimulatorImplementationType=ns3::VisualSimulatorImpl");
+		ns3::GlobalValue::Bind("SimulatorImplementationType", ns3::StringValue(
+		"ns3::VisualSimulatorImpl"));
 		ns3::PacketMetadata::Enable();
 		ns3::ObjectFactory object_factory;
 
