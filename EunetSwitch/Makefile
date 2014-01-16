@@ -17,7 +17,8 @@ TESTS_STD= \
 TESTS_DCE= \
 	SimpleSwitchTest.o \
 	EunetSwitchTest.o \
-	EunetTerminalTest.o
+	EunetTerminalTest.o \
+	EunetTerminalsTest.o
     #EunetRouterTest.o \
     #DceQuaggaOspfdTest.o
 
@@ -25,7 +26,7 @@ TESTS_DCE= \
 NS_LOG_STD=WifiTest=*:WifiPhyTrace=*:WifiMacTrace=*
 #NS_LOG_DCE=DceManagerHelper=**:EunetRouterTest=**:SimpleRouter=**:CsmaInternetNode=**
 #NS_LOG_DCE=DceQuaggaOspfdTest=**:DceManagerHelper=**:EunetRouterTest=**:SimpleRouter=level_debug
-NS_LOG_DCE=SimpleSwitchTest=**:SimpleSwitch=**:CsmaChannelNode=**:CsmaNode=**:EunetSwitchTest=**:EunetTerminalTest=**:EunetTerminal=**:PacketSinkNode=**:OnOffNode=**:CsmaInternetNode=**
+NS_LOG_DCE=SimpleSwitchTest=**:SimpleSwitch=**:CsmaChannelNode=**:CsmaNode=**:EunetSwitchTest=**:EunetTerminalTest=**:EunetTerminal=**:PacketSinkNode=**:OnOffNode=**:CsmaInternetNode=**:EunetTerminalsTest=**
 #define NS_LOG
 #NS_LOG="NamedRouters=**:EunetRouters=**:EunetRouter=**:SimpleRouter=**:BridgingAp=**:SimpleAp=**:NamedSwitches=**:EunetSwitch=**:EunetSwitches=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"
 #endef

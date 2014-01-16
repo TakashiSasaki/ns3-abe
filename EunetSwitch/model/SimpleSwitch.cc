@@ -266,3 +266,31 @@ unsigned SimpleSwitch::getUnusedUplinkPort() {
 	}//for
 	NS_FATAL_ERROR("no unused uplink port");
 }
+
+void SimpleSwitch::SimpleSwitch::enableAsciiTraceDownlink(
+		const int i_downlink_port) {
+	ns3::CsmaHelper csma_helper;
+	csma_helper.EnableAscii(this->GetInstanceTypeId().GetName(),
+			this->getDownlinkPort(i_downlink_port));
+}
+
+void SimpleSwitch::enableAsciiTraceUplink(const int i_uplink_port) {
+	ns3::CsmaHelper csma_helper;
+	csma_helper.EnableAscii(this->GetInstanceTypeId().GetName(),
+			this->getUplinkPort(i_uplink_port));
+}
+
+void SimpleSwitch::enablePcapDownlink(const int i_downlink_port,
+		const bool promiscuous) {
+	ns3::CsmaHelper csma_helper;
+	csma_helper.EnablePcap(this->GetInstanceTypeId().GetName(),
+			this->getDownlinkPort(i_downlink_port), promiscuous);
+}
+
+void SimpleSwitch::enablePcapUplink(const int i_uplink_port,
+		const bool promiscuous) {
+	ns3::CsmaHelper csma_helper;
+	csma_helper.EnablePcap(this->GetInstanceTypeId().GetName(),
+			this->getUplinkPort(i_uplink_port), promiscuous);
+}
+

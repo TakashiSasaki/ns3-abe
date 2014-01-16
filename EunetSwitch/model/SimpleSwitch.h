@@ -23,7 +23,7 @@ public:
 
 	static ns3::TypeId GetTypeId(void);
 	SimpleSwitch(/*const unsigned n_downlink_ports = 4,
-			const unsigned n_uplink_ports = 1*/);
+	 const unsigned n_uplink_ports = 1*/);
 	virtual ~SimpleSwitch() {
 	}
 	;
@@ -40,11 +40,10 @@ public:
 	void setDownlinkDelay(ns3::Time downlink_delay);
 	ns3::Time getDownlinkDelay() const;
 
-
-//	void setDownlinkDataRate(ns3::DataRateValue = defaultDownlinkDataRate);
-//	void setDownlinkDelay(ns3::TimeValue = defaultDownlinkDelay);
-//	void setUplinkDataRate(ns3::DataRateValue = defaultUplinkDataRate);
-//	void setUplinkDelay(ns3::TimeValue = defaultUplinkDelay);
+	//	void setDownlinkDataRate(ns3::DataRateValue = defaultDownlinkDataRate);
+	//	void setDownlinkDelay(ns3::TimeValue = defaultDownlinkDelay);
+	//	void setUplinkDataRate(ns3::DataRateValue = defaultUplinkDataRate);
+	//	void setUplinkDelay(ns3::TimeValue = defaultUplinkDelay);
 	ns3::Ptr<ns3::CsmaNetDevice>
 	getUplinkPort(const unsigned i_uplink_port);
 	ns3::Ptr<ns3::CsmaNetDevice>
@@ -62,6 +61,12 @@ public:
 			const unsigned i_sibling_uplink_port);
 	unsigned getUnusedUplinkPort();
 	unsigned getUnusedDownlinkPort();
+	void enableAsciiTraceDownlink(const int i_downlink_port);
+	void enableAsciiTraceUplink(const int i_uplink_port);
+	void enablePcapDownlink(const int i_downlink_port, const bool promiscuous =
+			false);
+	void enablePcapUplink(const int i_uplink_port, const bool promiscuous =
+			false);
 private:
 	bool isNotifyConstructionCompletedCalled;
 	bool isDoInitializeCalled;

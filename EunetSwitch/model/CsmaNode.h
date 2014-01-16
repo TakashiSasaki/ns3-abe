@@ -32,6 +32,8 @@ public:
 	ns3::Ptr<T> getApplication();
 	template<class T>
 	void enablePcap(const int i_port, const bool promiscuous = false);
+	template<class T>
+	void enableAsciiTrace(const unsigned i_port);
 private:
 	uint32_t countCsmaNetDevices();
 DECLARE_DIDDNCC
@@ -89,5 +91,12 @@ void CsmaNode::enablePcap(const int i_port, const bool promiscuous) {
 	csma_helper.EnablePcap(oss.str(), this->getNetDevice<T> (i_port),
 			promiscuous);
 }//enablePcap
+
+template<class T>
+void CsmaNode::enableAsciiTrace(const unsigned i_port) {
+	ns3::CsmaHelper csma_helper;
+	csma_helper.EnableAscii(this->GetInstanceTypeId().GetName(),
+			this->getNetDevice<T> (i_port));
+}//enableAsciiTrace
 
 #endif /* CSMANODE_H_ */

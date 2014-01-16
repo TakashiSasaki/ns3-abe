@@ -140,3 +140,6 @@ uint32_t CsmaNode::countCsmaNetDevices() {
 template
 void CsmaNode::enablePcap<ns3::CsmaNetDevice>(const int i_port,
 		const bool promiscous);
+
+template
+void CsmaNode::enableAsciiTrace<ns3::CsmaNetDevice>(const unsigned i_port);

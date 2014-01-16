@@ -45,32 +45,6 @@ public:
 	}//createFileStream
 #endif
 
-	void enableAsciiTraceDownlink(const int i_downlink_port) {
-		ns3::CsmaHelper csma_helper;
-		csma_helper.EnableAscii(asciiTracePrefix, this->getDownlinkPort(
-				i_downlink_port));
-	}
-
-	void enableAsciiTraceUplink(const int i_uplink_port) {
-		ns3::CsmaHelper csma_helper;
-		csma_helper.EnableAscii(asciiTracePrefix, this->getUplinkPort(
-				i_uplink_port));
-	}
-
-	void enablePcapDownlink(const int i_downlink_port, const bool promiscuous =
-			false) {
-		ns3::CsmaHelper csma_helper;
-		csma_helper.EnablePcap(EunetSwitch::pcapPrefix, this->getDownlinkPort(
-				i_downlink_port), promiscuous);
-	}
-
-	void enablePcapUplink(const int i_uplink_port, const bool promiscuous =
-			false) {
-		ns3::CsmaHelper csma_helper;
-		csma_helper.EnablePcap(EunetSwitch::pcapPrefix, this->getUplinkPort(
-				i_uplink_port), promiscuous);
-	}
-
 	EunetTerminals& getTerminals() {
 		return eunetTerminals;
 		//return this->ncTerminals;
