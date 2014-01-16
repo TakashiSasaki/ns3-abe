@@ -38,6 +38,10 @@ ns3::Ipv4Address CsmaInternetNode::getAddress(const unsigned i_device) {
 	NS_ASSERT(ptr_net_device != 0);
 	NS_ASSERT(ptr_net_device->GetInstanceTypeId().IsChildOf(ns3::NetDevice::GetTypeId()));
 	const auto i_interface = ptr_ipv4->GetInterfaceForDevice(ptr_net_device);
+	if (i_interface == -1) {
+		NS_FATAL_ERROR("node " << this->GetId() << " " << T::GetTypeId() << " " << i_device <<
+				" has no IPv4 interface.");
+	}
 	NS_ASSERT(i_interface != -1);
 	const auto n_addresses = ptr_ipv4->GetNAddresses(i_interface);
 	NS_ASSERT(n_addresses == 1);

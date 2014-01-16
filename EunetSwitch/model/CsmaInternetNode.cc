@@ -86,18 +86,22 @@ void CsmaInternetNode::assignAddress(const unsigned i_port,
 }//assignAddress
 #endif
 
-void CsmaInternetNode::assignAddress(const unsigned i_device,
+void CsmaInternetNode::assignAddress(const unsigned i_port,
 		ns3::Ipv4Address ipv4_address, ns3::Ipv4Mask ipv4_mask) {
 	ns3::Ptr<CsmaInternetNode> ptr_this(this, true);
 	auto ptr_ipv4 = ptr_this->GetObject<ns3::Ipv4> ();
-	const auto ptr_net_device = this->GetDevice(i_device);
-	const int32_t n_interface = ptr_ipv4->GetInterfaceForDevice(ptr_net_device);
-	NS_ASSERT(n_interface >= 1);
+	const auto ptr_net_device = this->getNetDevice<ns3::CsmaNetDevice> (i_port);
+	NS_ASSERT(ptr_net_device != 0);
+	int32_t i_interface = ptr_ipv4->GetInterfaceForDevice(ptr_net_device);
+	//NS_ASSERT_MSG(i_interface != -1, i_interface);
+	if (i_interface == -1) {
+		i_interface = ptr_ipv4->AddInterface(ptr_net_device);
+	}//if
 	const auto mask = ipv4_mask.Get();
 	ns3::Ipv4InterfaceAddress ipv4_interface_address(ipv4_address, mask);
-	ptr_ipv4->AddAddress(n_interface, ipv4_interface_address);
-	ptr_ipv4->SetMetric(n_interface, 1);
-	ptr_ipv4->SetUp(n_interface);
+	ptr_ipv4->AddAddress(i_interface, ipv4_interface_address);
+	ptr_ipv4->SetMetric(i_interface, 1);
+	ptr_ipv4->SetUp(i_interface);
 }//assignAddress
 
 void CsmaInternetNode::logAddress(const ns3::Ipv4Address& ipv4_address) {
