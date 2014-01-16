@@ -66,6 +66,9 @@ private:
 		ptr_eunet_terminal_3->Initialize();
 		NS_ASSERT_MSG(ptr_eunet_terminal_3->GetNDevices() == 2, ptr_eunet_terminal->GetNDevices());
 
+		ptr_eunet_terminal_2->enablePcap<ns3::CsmaNetDevice>(0);
+		ptr_eunet_terminal_3->enablePcap<ns3::CsmaNetDevice>(0);
+
 		NS_LOG_INFO("Run Simulation.");
 		ns3::Simulator::Stop(ns3::Seconds(0.1));
 		ns3::Simulator::Run();

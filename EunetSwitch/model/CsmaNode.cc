@@ -137,3 +137,6 @@ uint32_t CsmaNode::countCsmaNetDevices() {
 	}//for
 	return n_csma_net_devices;
 }
+template
+void CsmaNode::enablePcap<ns3::CsmaNetDevice>(const int i_port,
+		const bool promiscous);

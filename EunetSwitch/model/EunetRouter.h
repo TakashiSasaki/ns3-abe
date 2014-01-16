@@ -29,12 +29,6 @@ public:
 	}
 	;
 
-	void enablePcap(const int i_port, const bool promiscuous = false) {
-		ns3::CsmaHelper csma_helper;
-		csma_helper.EnablePcap(EunetRouter::pcapPrefix, this->getNetDevice<
-				ns3::CsmaNetDevice> (i_port), promiscuous);
-	}
-
 	void enableAsciiTrace(const int i_port) {
 		ns3::CsmaHelper csma_helper;
 		csma_helper.EnableAscii(EunetRouter::asciiTracePrefix,
