@@ -6,6 +6,8 @@ NS_LOG_COMPONENT_DEFINE("SimpleSwitch");
 #include "ns3/type-id.h"
 #include "ns3/bridge-helper.h"
 #include "ns3/names.h"
+#include "UplinkNetDevice.h"
+#include "DownlinkNetDevice.h"
 #include "SimpleSwitch.h"
 
 NS_OBJECT_ENSURE_REGISTERED( SimpleSwitch);
@@ -70,17 +72,25 @@ void SimpleSwitch::DoInitialize() {
 	NS_LOG_INFO("bridging all devices");
 
 	for (unsigned i = 0; i < this->nUplinkPorts; ++i) {
+		this->addCsmaChannel<UplinkNetDevice> (i, this->uplinkDataRate,
+				this->uplinkDelay);
+#if 0
 		this->getUplinkPort(i)->GetChannel()->SetAttribute("DataRate",
 				ns3::DataRateValue(this->uplinkDataRate));
 		this->getUplinkPort(i)->GetChannel()->SetAttribute("Delay",
 				ns3::TimeValue(this->uplinkDelay));
+#endif
 	}//for
 
 	for (unsigned i = 0; i < this->nDownlinkPorts; ++i) {
+		this->addCsmaChannel<DownlinkNetDevice> (i, this->downlinkDataRate,
+				this->downlinkDelay);
+#if 0
 		this->getDownlinkPort(i)->GetChannel()->SetAttribute("DataRate",
 				ns3::DataRateValue(this->downlinkDataRate));
 		this->getDownlinkPort(i)->GetChannel()->SetAttribute("Delay",
 				ns3::TimeValue(this->downlinkDelay));
+#endif
 	}//for
 
 	ns3::NetDeviceContainer ndc;

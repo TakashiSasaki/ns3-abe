@@ -53,10 +53,12 @@ void CsmaChannelNode::DoInitialize() {
 		this->getNetDevice<ns3::CsmaNetDevice> (i)->Attach(ptr_csma_channel);
 	}//for
 }
+
 void CsmaChannelNode::DoDispose() {
 	ASSERT_DD;
 	CsmaNode::DoDispose();
 }
+
 ns3::Ptr<ns3::CsmaChannel> CsmaChannelNode::getCsmaChannel(unsigned i_port) {
 	NS_ASSERT_MSG((i_port < this->getNDevices<ns3::CsmaNetDevice>()), "node " << this->GetId() << " has " << this->getNDevices<ns3::CsmaNetDevice>() << " " << ns3::CsmaNetDevice::GetTypeId() << " devices, while port " << i_port << " is specified.");
 	auto ptr_csma_net_device = this->getNetDevice<ns3::CsmaNetDevice> (i_port);
