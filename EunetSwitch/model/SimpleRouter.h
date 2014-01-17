@@ -3,7 +3,7 @@
 #include "ns3/nstime.h"
 #include "ns3/core-module.h"
 #include "ns3/internet-module.h"
-//#include "ns3/dce-application-helper.h"
+#include "ns3/dce-application-helper.h"
 //#include "ns3/dce-module.h"
 //#include "ns3/quagga-helper.h"
 //#include "CsmaChannelNode.h"
