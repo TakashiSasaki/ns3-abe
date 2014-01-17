@@ -36,8 +36,8 @@ DECLARE_DIDDNCC
 template<class T>
 void CsmaChannelNode::addCsmaChannel(const unsigned i_port,
 		const ns3::DataRate& data_rate, const ns3::Time& delay) {
-	ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device = this->getNetDevice<
-			ns3::CsmaNetDevice> (i_port);
+	ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device = this->getNetDevice<T> (
+			i_port);
 	ns3::Ptr<ns3::CsmaChannel> ptr_csma_channel =
 			this->csmaChannelFactory.Create()->GetObject<ns3::CsmaChannel> ();
 	//NS_LOG_INFO("attaching a channel to device #" << i);

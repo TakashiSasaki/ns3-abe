@@ -55,10 +55,14 @@ void SimpleSwitchTestCase::DoRun() {
 	NS_ASSERT(4==ptr_simple_switch_1->getNUplinkPorts());
 	//NS_ASSERT_MSG(52 == ptr_simple_switch_1->getNPorts(), "getNports() " << ptr_simple_switch_1->getNPorts());
 	ptr_simple_switch_1->Initialize();
-	NS_ASSERT(ptr_simple_switch_1->getNDevices<ns3::CsmaNetDevice>() == 52);
+	NS_ASSERT_MSG(ptr_simple_switch_1->getNDevices<ns3::CsmaNetDevice>() == 1, ptr_simple_switch_1->getNDevices<ns3::CsmaNetDevice>());
+	NS_ASSERT_MSG(ptr_simple_switch_1->getNDevices<UplinkNetDevice>() == 4, ptr_simple_switch_1->getNDevices<ns3::CsmaNetDevice>());
+	NS_ASSERT_MSG(ptr_simple_switch_1->getNDevices<DownlinkNetDevice>() == 48, ptr_simple_switch_1->getNDevices<ns3::CsmaNetDevice>());
 	auto ptr_simple_switch_2 = object_factory.Create<SimpleSwitch> ();
 	ptr_simple_switch_2->Initialize();
-	NS_ASSERT(ptr_simple_switch_2->getNDevices<ns3::CsmaNetDevice>() == 52);
+	NS_ASSERT_MSG(ptr_simple_switch_2->getNDevices<ns3::CsmaNetDevice>() == 1, ptr_simple_switch_2->getNDevices<ns3::CsmaNetDevice>());
+	NS_ASSERT_MSG(ptr_simple_switch_2->getNDevices<UplinkNetDevice>() == 4, ptr_simple_switch_2->getNDevices<ns3::CsmaNetDevice>());
+	NS_ASSERT_MSG(ptr_simple_switch_2->getNDevices<DownlinkNetDevice>() == 48, ptr_simple_switch_2->getNDevices<ns3::CsmaNetDevice>());
 
 	ptr_simple_switch_2->bring(0, ptr_simple_switch_1, 0);
 

@@ -65,19 +65,24 @@ void SimpleSwitch::NotifyConstructionCompleted() {
 void SimpleSwitch::DoInitialize() {
 	ASSERT_DI;
 	NS_ASSERT(this->GetNDevices()==0);
-	this->setNPorts(this->nDownlinkPorts + this->nUplinkPorts);
+	//this->setNPorts(this->nDownlinkPorts + this->nUplinkPorts);
 	CsmaChannelNode::DoInitialize();
-	NS_ASSERT (this->getNPorts() == this->getNDevices<ns3::CsmaNetDevice>() );
-	NS_ASSERT_MSG(this->getNPorts() == this->getNUplinkPorts() + this->getNDownlinkPorts(), "node " << this->GetId() << " has " << this->getNDevices<ns3::CsmaNetDevice>() << " CsmaNetDevice(s)");
+	//NS_ASSERT (this->getNPorts() == this->getNDevices<ns3::CsmaNetDevice>() );
+	//NS_ASSERT_MSG(this->getNPorts() == this->getNUplinkPorts() + this->getNDownlinkPorts(), "node " << this->GetId() << " has " << this->getNDevices<ns3::CsmaNetDevice>() << " CsmaNetDevice(s)");
 	NS_LOG_INFO("bridging all devices");
 
+	NS_LOG_DEBUG(this->getNDevices<ns3::CsmaNetDevice>() << " " << this->getNDevices<UplinkNetDevice> () << " " << this->getNDevices<DownlinkNetDevice> ());
 	for (unsigned i = 0; i < this->nUplinkPorts; ++i) {
 		this->addCsmaNetDevice<UplinkNetDevice> ();
 	}//for
 
+	NS_LOG_DEBUG(this->getNDevices<ns3::CsmaNetDevice>() << " " << this->getNDevices<UplinkNetDevice> () << " " << this->getNDevices<DownlinkNetDevice> ());
+
 	for (unsigned i = 0; i < this->nDownlinkPorts; ++i) {
 		this->addCsmaNetDevice<DownlinkNetDevice> ();
 	}//for
+
+	NS_LOG_DEBUG(this->getNDevices<ns3::CsmaNetDevice>() << " " << this->getNDevices<UplinkNetDevice> () << " " << this->getNDevices<DownlinkNetDevice> ());
 
 	for (unsigned i = 0; i < this->nUplinkPorts; ++i) {
 		this->addCsmaChannel<UplinkNetDevice> (i, this->uplinkDataRate,
@@ -90,10 +95,10 @@ void SimpleSwitch::DoInitialize() {
 	}//for
 
 	ns3::NetDeviceContainer ndc;
-	for (unsigned i = 0; i < nUplinkPorts + nDownlinkPorts; ++i) {
-		auto ptr_csma_net_device = this->getNetDevice<ns3::CsmaNetDevice> (i);
-		ndc.Add(ptr_csma_net_device);
-	}//for
+	ndc.Add(this->getNetDevices<ns3::CsmaNetDevice> ());
+	ndc.Add(this->getNetDevices<UplinkNetDevice> ());
+	ndc.Add(this->getNetDevices<DownlinkNetDevice> ());
+	NS_ASSERT_MSG(ndc.GetN() == this->GetNDevices(), ndc.GetN() << " " << this->GetNDevices());
 
 	ns3::BridgeHelper bridge_helper;
 	bridge_helper.Install(this, ndc);

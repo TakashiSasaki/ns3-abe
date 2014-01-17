@@ -136,3 +136,6 @@ void CsmaNode::enableAsciiTrace<ns3::CsmaNetDevice>(const unsigned i_port);
 
 template
 ns3::Ptr<ns3::CsmaNetDevice> CsmaNode::addCsmaNetDevice<ns3::CsmaNetDevice>();
+
+template
+ns3::NetDeviceContainer CsmaNode::getNetDevices<ns3::CsmaNetDevice>();

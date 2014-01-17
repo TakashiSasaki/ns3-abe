@@ -3,6 +3,8 @@
 #include "ns3/nstime.h"
 #include "init.h"
 #include "CsmaChannelNode.h"
+#include "UplinkNetDevice.h"
+#include "DownlinkNetDevice.h"
 
 class SimpleSwitch: public CsmaChannelNode {
 	//	const int nDownlinkBps;
