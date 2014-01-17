@@ -36,7 +36,7 @@ void CsmaNode::NotifyConstructionCompleted() {
 	NS_LOG_INFO("GetNDevices=" << this->GetNDevices());
 }
 void CsmaNode::DoInitialize() {
-	NS_LOG_DEBUG("CsmaNode::DoInitialize");
+	NS_LOG_INFO("CsmaNode::DoInitialize");
 	ASSERT_DI;
 	NS_LOG_INFO("1 GetNDevices=" << this->GetNDevices());
 	NS_ASSERT_MSG (this->getNDevices<ns3::LoopbackNetDevice>()==0, this->getNDevices<ns3::LoopbackNetDevice>());

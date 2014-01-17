@@ -15,7 +15,6 @@ public:
 	void assignAddresses(ns3::Ipv4AddressHelper&);
 	virtual ~EunetTerminals();
 	ns3::Ptr<EunetTerminal> Get(const int i_eunet_terminal);
-	void logTotalRx(ns3::LogLevel log_level = ns3::LOG_LEVEL_INFO);
 	unsigned getTotalRx();
 	void bringAtoB(const unsigned i_eunet_terminal_a,
 			const unsigned i_eunet_terminal_b);

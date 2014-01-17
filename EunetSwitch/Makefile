@@ -27,7 +27,16 @@ TESTS_DCE= \
 NS_LOG_STD=EunetTerminalTest=**
 #NS_LOG_DCE=DceManagerHelper=**:EunetRouterTest=**:SimpleRouter=**:CsmaInternetNode=**
 #NS_LOG_DCE=DceQuaggaOspfdTest=**:DceManagerHelper=**:EunetRouterTest=**:SimpleRouter=level_debug
-NS_LOG_DCE=SimpleSwitch=**:CsmaChannelNode=**:CsmaNode=**:EunetSwitchTest=**:EunetTerminal=**:PacketSinkNode=**:OnOffNode=**:CsmaInternetNode=**
+NS_LOG_DCE:=SimpleSwitch=debug\|prefix_func\|prefix_time
+NS_LOG_DCE:=$(NS_LOG_DCE):CsmaChannelNode=debug\|prefix_func\|prefix_time
+NS_LOG_DCE:=$(NS_LOG_DCE):CsmaNode=debug\|prefix_func\|prefix_time
+NS_LOG_DCE:=$(NS_LOG_DCE):EunetSwitchTest=debug\|prefix_func\|prefix_time
+NS_LOG_DCE:=$(NS_LOG_DCE):EunetTerminal=debug\|prefix_func\|prefix_time
+NS_LOG_DCE:=$(NS_LOG_DCE):PacketSinkNode=debug\|prefix_func\|prefix_time
+NS_LOG_DCE:=$(NS_LOG_DCE):OnOffNode=debug\|prefix_func\|prefix_time
+NS_LOG_DCE:=$(NS_LOG_DCE):CsmaInternetNode=debug\|prefix_func\|prefix_time
+NS_LOG_DCE:=$(NS_LOG_DCE):EunetTerminalTest=debug\|prefix_func\|prefix_time
+NS_LOG_DCE:=$(NS_LOG_DCE):SimpleSwitchTest=debug\|prefix_func\|prefix_time
 #define NS_LOG
 #NS_LOG="NamedRouters=**:EunetRouters=**:EunetRouter=**:SimpleRouter=**:BridgingAp=**:SimpleAp=**:NamedSwitches=**:EunetSwitch=**:EunetSwitches=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"
 #endef
@@ -311,11 +320,12 @@ run-test-so: test-so
 	$(EXECENV) ./test-so --verbose
 
 test: test-runner
-	$(EXECENV) ./test-runner
-	#$(EXECENV) ./test-runner --stop-on-failure
-	#$(EXECENV) $(NS_LOG) ./test-runner --verbose --xml --tempdir=testpy-output/2014-01-06-04-35-10-CUT --out=process-manager.xml
+	$(EXECENV) ./test-runner --verbose --test-type=unit
 
 EunetTerminalTestSuite: test-runner
+	#$(EXECENV) ./test-runner --suite=$@ --verbose --test-type=performance
+
+SimpleSwitchTestSuite: test-runner
 	$(EXECENV) ./test-runner --suite=$@ --verbose
 
 #build this target first to use DCE feature

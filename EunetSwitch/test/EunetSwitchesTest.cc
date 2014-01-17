@@ -41,8 +41,8 @@ private:
 		ns3::Simulator::Run();
 		ns3::Simulator::Destroy();
 		NS_LOG_INFO("Done.");
-		source_terminal->logTotalRx();
-		dest_terminal->logTotalRx();
+		NS_LOG_INFO("source node received " << source_switch->getTerminals().getTotalRx() << " bytes");
+		NS_LOG_INFO("dest node received " << dest_switch->getTerminals().getTotalRx() << " bytes");
 	}//DoRun
 };
 

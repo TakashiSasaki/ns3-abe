@@ -12,9 +12,10 @@ NS_LOG_COMPONENT_DEFINE("EunetTerminalTest");
 #include "EunetTerminal.h"
 
 class EunetTerminalTestCase: public ns3::TestCase {
+	const bool isVisual;
 public:
-	EunetTerminalTestCase() :
-		ns3::TestCase("EunetTerminalTestCase") {
+	EunetTerminalTestCase(const bool is_visual = false) :
+		ns3::TestCase("EunetTerminalTestCase"), isVisual(is_visual) {
 		//NS_LOG_UNCOND("constructing a test case");
 	}
 	virtual ~EunetTerminalTestCase() {
@@ -22,11 +23,12 @@ public:
 
 private:
 	virtual void DoRun(void) {
-#ifdef VISUALIZE
-		NS_LOG_DEBUG("--SimulatorImplementationType=ns3::VisualSimulatorImpl");
-		ns3::GlobalValue::Bind("SimulatorImplementationType", ns3::StringValue(
-		"ns3::VisualSimulatorImpl"));
-#endif
+		if (this->isVisual) {
+			NS_LOG_DEBUG("--SimulatorImplementationType=ns3::VisualSimulatorImpl");
+			ns3::GlobalValue::Bind("SimulatorImplementationType", ns3::StringValue(
+					"ns3::VisualSimulatorImpl"));
+		}//if
+
 		ns3::PacketMetadata::Enable();
 		ns3::ObjectFactory object_factory;
 
@@ -74,8 +76,8 @@ private:
 
 		ptr_eunet_terminal_2->enablePcap<ns3::CsmaNetDevice> (0);
 		ptr_eunet_terminal_3->enablePcap<ns3::CsmaNetDevice> (0);
-		ptr_eunet_terminal_2->enableAsciiTrace<ns3::CsmaNetDevice>(0);
-		ptr_eunet_terminal_3->enableAsciiTrace<ns3::CsmaNetDevice>(0);
+		ptr_eunet_terminal_2->enableAsciiTrace<ns3::CsmaNetDevice> (0);
+		ptr_eunet_terminal_3->enableAsciiTrace<ns3::CsmaNetDevice> (0);
 
 		ptr_eunet_terminal_2->assignAddress(0, "10.0.0.2", "255.0.0.0");
 		NS_ASSERT(ptr_eunet_terminal_2->getAddress<ns3::CsmaNetDevice>(0) == "10.0.0.2");
@@ -98,12 +100,22 @@ private:
 
 class EunetTerminalTestSuite: public ns3::TestSuite {
 public:
-	EunetTerminalTestSuite() :
-		ns3::TestSuite("EunetTerminalTestSuite", UNIT) {
+	EunetTerminalTestSuite(ns3::TestSuite::Type type) :
+		ns3::TestSuite("EunetTerminalTestSuite", type) {
+		switch (type) {
+		case UNIT:
+			AddTestCase(new EunetTerminalTestCase, ns3::TestCase::QUICK);
+			break;
+		case PERFORMANCE:
+			AddTestCase(new EunetTerminalTestCase(true), ns3::TestCase::QUICK);
+			break;
+		default:
+			break;
+		}
 		//NS_LOG_UNCOND("adding a test case");
-		AddTestCase(new EunetTerminalTestCase, ns3::TestCase::QUICK);
 	}
 };
 
-static EunetTerminalTestSuite eunet_terminal_test_suite;
-
+static EunetTerminalTestSuite eunet_terminal_test_suite(ns3::TestSuite::UNIT);
+static EunetTerminalTestSuite eunet_terminal_test_suite_visual(
+		ns3::TestSuite::Type::PERFORMANCE);

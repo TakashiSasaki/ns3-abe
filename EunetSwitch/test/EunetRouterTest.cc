@@ -21,9 +21,10 @@ NS_LOG_COMPONENT_DEFINE ("EunetRouterTest");
 //using namespace ns3;
 
 class EunetRouterTestCase: public ns3::TestCase {
+	bool isVisual = false;
 public:
-	EunetRouterTestCase() :
-		ns3::TestCase("EunetRouterTestCase") {
+	EunetRouterTestCase(const bool is_visual = false) :
+		ns3::TestCase("EunetRouterTestCase"), isVisual(is_visual) {
 	}
 	virtual ~EunetRouterTestCase() {
 		NS_LOG_DEBUG("destructor called.");
@@ -34,6 +35,11 @@ private:
 };
 
 void EunetRouterTestCase::DoRun() {
+	if (this->isVisual) {
+		NS_LOG_DEBUG("--SimulatorImplementationType=ns3::VisualSimulatorImpl");
+		ns3::GlobalValue::Bind("SimulatorImplementationType", ns3::StringValue(
+				"ns3::VisualSimulatorImpl"));
+	}//if
 	NS_LOG_INFO("creating Node via CreateObject");
 	auto ptr_node = ns3::CreateObject<Node>();
 	NS_ASSERT(ptr_node != 0);
@@ -90,8 +96,13 @@ class EunetRouterTestSuite: public ns3::TestSuite {
 public:
 	EunetRouterTestSuite() :
 		ns3::TestSuite("EunetRouterTestSuite", UNIT) {
-		AddTestCase(new EunetRouterTestCase, ns3::TestCase::QUICK);
-	}
+		const char* p_ns_visual = getenv("NS_VISUAL");
+		if(p_ns_visual == NULL){
+			AddTestCase(new EunetRouterTestCase, ns3::TestCase::QUICK);
+		} else {
+			AddTestCase(new EunetRouterTestCase(true), ns3::TestCase::TAKES_FOREVER);
+		}//if
+	}// the constructor
 };
 
 static EunetRouterTestSuite eunet_router_test_suite;

@@ -65,13 +65,13 @@ void SimpleSwitchTestCase::DoRun() {
 	Simulator::Stop(Seconds(10.0));
 	Simulator::Run();
 	Simulator::Destroy();
-}//DceQuaggaOspfdTest::DoRun
+}//DoRun
 
 class SimpleSwitchTestSuite: public TestSuite {
 public:
 	SimpleSwitchTestSuite() :
 		ns3::TestSuite("SimpleSwitchTestSuite", UNIT) {
-		//NS_LOG_UNCOND("adding a test case");
+		NS_LOG_UNCOND("adding a test case");
 		AddTestCase(new SimpleSwitchTestCase(), TestCase::QUICK);
 	}
 };
