@@ -139,3 +139,6 @@ void CsmaNode::enablePcap<ns3::CsmaNetDevice>(const int i_port,
 
 template
 void CsmaNode::enableAsciiTrace<ns3::CsmaNetDevice>(const unsigned i_port);
+
+template
+ns3::Ptr<ns3::CsmaNetDevice> CsmaNode::addCsmaNetDevice<ns3::CsmaNetDevice>();

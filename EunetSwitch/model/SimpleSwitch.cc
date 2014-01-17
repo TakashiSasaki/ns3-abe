@@ -74,23 +74,11 @@ void SimpleSwitch::DoInitialize() {
 	for (unsigned i = 0; i < this->nUplinkPorts; ++i) {
 		this->addCsmaChannel<UplinkNetDevice> (i, this->uplinkDataRate,
 				this->uplinkDelay);
-#if 0
-		this->getUplinkPort(i)->GetChannel()->SetAttribute("DataRate",
-				ns3::DataRateValue(this->uplinkDataRate));
-		this->getUplinkPort(i)->GetChannel()->SetAttribute("Delay",
-				ns3::TimeValue(this->uplinkDelay));
-#endif
 	}//for
 
 	for (unsigned i = 0; i < this->nDownlinkPorts; ++i) {
 		this->addCsmaChannel<DownlinkNetDevice> (i, this->downlinkDataRate,
 				this->downlinkDelay);
-#if 0
-		this->getDownlinkPort(i)->GetChannel()->SetAttribute("DataRate",
-				ns3::DataRateValue(this->downlinkDataRate));
-		this->getDownlinkPort(i)->GetChannel()->SetAttribute("Delay",
-				ns3::TimeValue(this->downlinkDelay));
-#endif
 	}//for
 
 	ns3::NetDeviceContainer ndc;
@@ -101,7 +89,7 @@ void SimpleSwitch::DoInitialize() {
 
 	ns3::BridgeHelper bridge_helper;
 	bridge_helper.Install(this, ndc);
-	//this->logAllDevices();
+
 	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
 		NS_LOG_INFO(this->GetDevice(i)->GetTypeId() << ", " << this->GetDevice(i)->GetInstanceTypeId());
 	}//for

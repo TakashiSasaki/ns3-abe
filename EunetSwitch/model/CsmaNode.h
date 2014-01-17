@@ -33,6 +33,9 @@ public:
 	void enableAsciiTrace(const unsigned i_port);
 	template<class T>
 	ns3::NetDeviceContainer getNetDevices();
+protected:
+	template<class T>
+	ns3::Ptr<T> addCsmaNetDevice();
 private:
 	uint32_t countCsmaNetDevices();
 DECLARE_DIDDNCC
@@ -108,5 +111,16 @@ ns3::NetDeviceContainer CsmaNode::getNetDevices() {
 	}//for
 	return ndc;
 }//getNDevices
+
+template<class T>
+ns3::Ptr<T> CsmaNode::addCsmaNetDevice() {
+	ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device =
+			this->deviceFactory.Create<T> ();
+	ptr_csma_net_device->SetAddress(ns3::Mac48Address::Allocate());
+	this->AddDevice(ptr_csma_net_device);
+	ns3::Ptr<ns3::Queue> ptr_queue = this->queueFactory.Create<ns3::Queue> ();
+	ptr_csma_net_device->SetQueue(ptr_queue);
+	return ptr_csma_net_device;
+}
 
 #endif /* CSMANODE_H_ */
