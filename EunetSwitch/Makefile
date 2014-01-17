@@ -315,7 +315,7 @@ test: test-runner
 	#$(EXECENV) $(NS_LOG) ./test-runner --verbose --xml --tempdir=testpy-output/2014-01-06-04-35-10-CUT --out=process-manager.xml
 
 EunetTerminalTestSuite: test-runner
-	$(EXECENV) ./test-runner --suite=$@ 
+	$(EXECENV) ./test-runner --suite=$@ --verbose
 
 #build this target first to use DCE feature
 install-dce-quagga: build-dce-quagga test-dce-quagga copy-shared-library copy-include-files
