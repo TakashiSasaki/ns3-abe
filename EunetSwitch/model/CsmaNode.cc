@@ -51,13 +51,7 @@ void CsmaNode::DoInitialize() {
 	NS_ASSERT_MSG(this->GetNDevices()==0, "devices=" << this->GetNDevices() << " csma="
 			<< this->getNDevices<ns3::CsmaNetDevice>() << " loopback=" <<this->getNDevices<ns3::LoopbackNetDevice>() );
 	for (uint32_t i = 0; i < this->nCsmaNetDevices; ++i) {
-		ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device =
-				this->deviceFactory.Create<ns3::CsmaNetDevice> ();
-		ptr_csma_net_device->SetAddress(ns3::Mac48Address::Allocate());
-		this->AddDevice(ptr_csma_net_device);
-		ns3::Ptr<ns3::Queue> ptr_queue =
-				this->queueFactory.Create<ns3::Queue> ();
-		ptr_csma_net_device->SetQueue(ptr_queue);
+		this->addCsmaNetDevice<ns3::CsmaNetDevice> ();
 	}//for
 	NS_ASSERT(this->GetNDevices()==this->nCsmaNetDevices);
 	NS_LOG_INFO("constructed with " << this->GetNDevices() << " devices");
