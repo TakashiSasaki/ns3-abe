@@ -27,7 +27,7 @@ TESTS_DCE= \
 NS_LOG_STD=EunetTerminalTest=**
 #NS_LOG_DCE=DceManagerHelper=**:EunetRouterTest=**:SimpleRouter=**:CsmaInternetNode=**
 #NS_LOG_DCE=DceQuaggaOspfdTest=**:DceManagerHelper=**:EunetRouterTest=**:SimpleRouter=level_debug
-NS_LOG_DCE=SimpleSwitchTest=**:SimpleSwitch=**:CsmaChannelNode=**:CsmaNode=**:EunetSwitchTest=**:EunetTerminalTest=**:EunetTerminal=**:PacketSinkNode=**:OnOffNode=**:CsmaInternetNode=**:EunetTerminalsTest=**
+NS_LOG_DCE=SimpleSwitch=**:CsmaChannelNode=**:CsmaNode=**:EunetSwitchTest=**:EunetTerminal=**:PacketSinkNode=**:OnOffNode=**:CsmaInternetNode=**
 #define NS_LOG
 #NS_LOG="NamedRouters=**:EunetRouters=**:EunetRouter=**:SimpleRouter=**:BridgingAp=**:SimpleAp=**:NamedSwitches=**:EunetSwitch=**:EunetSwitches=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"
 #endef
@@ -91,7 +91,7 @@ ifdef DCE
     $(info DCE_PATH=$(DCE_PATH))
     DCE_ROOT:=$(PWD)/dce/source/ns-3-dce/build:$(PWD)/dce/build
     $(info DCE_ROOT=$(DCE_ROOT))
-    PYTHONPATH:=
+    PYTHONPATH:=dce/build/lib64/python2.6/site-packages
 endif
 
 ifdef STD
@@ -177,6 +177,7 @@ NS3LIBS_DCE=\
     $(SOPREFIXDEV)stats-debug.so \
     $(SOPREFIXDEV)topology-read-debug.so \
     $(SOPREFIXDEV)uan-debug.$(SOSUFFIX) \
+    $(SOPREFIXDEV)visualizer-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)virtual-net-device-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)wave-debug.$(SOSUFFIX) \
     $(SOPREFIXDEV)wifi-debug.$(SOSUFFIX) \
