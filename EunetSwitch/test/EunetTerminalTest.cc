@@ -84,7 +84,8 @@ private:
 		ptr_eunet_terminal_3->assignAddress(0, "10.0.0.3", "255.0.0.0");
 		NS_ASSERT(ptr_eunet_terminal_3->getAddress<ns3::CsmaNetDevice>(0) == "10.0.0.3");
 
-		ptr_eunet_terminal_2->bring(0, ptr_eunet_terminal_3, 0);
+		ptr_eunet_terminal_2->bring<ns3::CsmaNetDevice, ns3::CsmaNetDevice> (0,
+				ptr_eunet_terminal_3, 0);
 		ptr_eunet_terminal_2->setRemote(ptr_eunet_terminal_3->getAddress<
 				ns3::CsmaNetDevice> (0));
 

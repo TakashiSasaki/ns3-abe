@@ -48,7 +48,8 @@ void EunetSwitch::DoInitialize() {
 	NS_LOG_INFO("attaching " << this->eunetTerminals.GetN() << " terminal(s) to corresponding port(s)");
 	for (unsigned i = 0; i < this->eunetTerminals.GetN(); ++i) {
 		NS_LOG_INFO("attaching terminal " << i << " to corresponding port");
-		this->bring(i, this->eunetTerminals.Get(i), 0);
+		this->bring<DownlinkNetDevice, ns3::CsmaNetDevice> (i,
+				this->eunetTerminals.Get(i), 0);
 	}//for
 }//DoInitialize
 

@@ -52,7 +52,8 @@ ns3::Ptr<ns3::CsmaNetDevice> SimpleRouter::getLinkPort(const unsigned i_port) {
 void SimpleRouter::connectTo(const unsigned i_link_port,
 		ns3::Ptr<SimpleRouter> connect_router,
 		const unsigned connect_i_link_port) {
-	this->bring(i_link_port, connect_router, connect_i_link_port);
+	this->bring<ns3::CsmaNetDevice, ns3::CsmaNetDevice> (i_link_port,
+			connect_router, connect_i_link_port);
 	NS_ASSERT(this->isConnectedToSimpleRouter(i_link_port));
 	NS_ASSERT(connect_router->isConnectedToSimpleRouter(connect_i_link_port));
 }//connectTo
@@ -138,6 +139,7 @@ void SimpleRouter::NotifyConstructionCompleted() {
 
 }//NotifyConstructionCompleted
 
+#if 0
 bool SimpleRouter::isConnectedToSimpleRouter(const unsigned i_port) {
 	ns3::Ptr<ns3::CsmaChannel> ptr_csma_channel = this->getCsmaChannel(i_port);
 	NS_LOG_INFO("SimpleRouter "<< this->GetId() << " port " << i_port
@@ -145,7 +147,7 @@ bool SimpleRouter::isConnectedToSimpleRouter(const unsigned i_port) {
 	for (unsigned i = 0; i < ptr_csma_channel->GetNDevices(); ++i) {
 		NS_LOG_INFO("inspecting port " << i);
 		ns3::Ptr<ns3::NetDevice> ptr_net_device =
-				ptr_csma_channel->GetDevice(i);
+		ptr_csma_channel->GetDevice(i);
 		NS_LOG_INFO("expecting NetDevice .. " << ptr_net_device->GetTypeId());
 		ns3::Ptr<ns3::Node> ptr_node = ptr_net_device->GetNode();
 		NS_LOG_INFO("expecting Node .. " << ptr_node->GetTypeId());
@@ -153,7 +155,7 @@ bool SimpleRouter::isConnectedToSimpleRouter(const unsigned i_port) {
 			continue;
 		}//if
 		ns3::Ptr<SimpleRouter> ptr_simple_router = ptr_node->GetObject<
-				SimpleRouter> ();
+		SimpleRouter> ();
 		NS_LOG_INFO("expecting SimpleRouter .. " << ptr_simple_router->GetTypeId());
 		if (ptr_simple_router) {
 			return true;
@@ -161,6 +163,7 @@ bool SimpleRouter::isConnectedToSimpleRouter(const unsigned i_port) {
 	}//for
 	return false;
 }//isConnectedToSimpleRouter
+#endif
 
 std::unique_ptr<std::vector<std::string> > SimpleRouter::getAllNetworks() {
 	std::unique_ptr<std::vector<std::string> > p_networks(new std::vector<

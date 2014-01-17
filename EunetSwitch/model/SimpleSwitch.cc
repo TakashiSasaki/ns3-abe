@@ -117,19 +117,19 @@ void SimpleSwitch::setNDownlinkPorts(uint32_t n_downlink_ports) {
 	NS_LOG_INFO("n_downlink_ports = " << n_downlink_ports);
 	NS_ASSERT(!this->isDoInitializeCalled);
 	this->nDownlinkPorts = n_downlink_ports;
-	this->setNPorts(this->nUplinkPorts + this->nDownlinkPorts);
-	NS_ASSERT_MSG(this->getNPorts() == (this->getNDownlinkPorts() + this->getNUplinkPorts()),
-			this->getNPorts() << " " << this->getNDownlinkPorts() << " " << this->getNUplinkPorts());
+	//this->setNPorts(this->nUplinkPorts + this->nDownlinkPorts);
+	//NS_ASSERT_MSG(this->getNPorts() == (this->getNDownlinkPorts() + this->getNUplinkPorts()),
+	//		this->getNPorts() << " " << this->getNDownlinkPorts() << " " << this->getNUplinkPorts());
 }
 
 void SimpleSwitch::setNUplinkPorts(uint32_t n_uplink_ports) {
 	NS_LOG_INFO("n_uplink_ports = " << n_uplink_ports);
 	NS_ASSERT(!this->isDoInitializeCalled);
 	this->nUplinkPorts = n_uplink_ports;
-	this->setNPorts(this->nUplinkPorts + this->nDownlinkPorts);
+	//this->setNPorts(this->nUplinkPorts + this->nDownlinkPorts);
 	//NS_ASSERT(this->getNPorts() == (this->getNDownlinkPorts() + this->getNUplinkPorts()));
-	NS_ASSERT_MSG(this->getNPorts() == (this->getNDownlinkPorts() + this->getNUplinkPorts()),
-			this->getNPorts() << " " << this->getNDownlinkPorts() << " " << this->getNUplinkPorts());
+	//NS_ASSERT_MSG(this->getNPorts() == (this->getNDownlinkPorts() + this->getNUplinkPorts()),
+	//		this->getNPorts() << " " << this->getNDownlinkPorts() << " " << this->getNUplinkPorts());
 }
 
 uint32_t SimpleSwitch::getNDownlinkPorts() const {
@@ -171,24 +171,23 @@ void SimpleSwitch::setUplinkDelay(ns3::Time uplink_delay) {
 ns3::Ptr<ns3::CsmaNetDevice> SimpleSwitch::getUplinkPort(
 		const unsigned i_uplink_port) {
 	NS_ASSERT(i_uplink_port < nUplinkPorts);
-	auto p = this->getNetDevice<ns3::CsmaNetDevice> (this->nDownlinkPorts
-			+ i_uplink_port);
+	auto p = this->getNetDevice<UplinkNetDevice> (i_uplink_port);
 	return p;
 }//getUplinkPort
 
 ns3::Ptr<ns3::CsmaNetDevice> SimpleSwitch::getDownlinkPort(
 		const unsigned i_downlink_port) {
 	NS_ASSERT(i_downlink_port < nDownlinkPorts);
-	auto p = this->getNetDevice<ns3::CsmaNetDevice> (i_downlink_port);
+	auto p = this->getNetDevice<DownlinkNetDevice> (i_downlink_port);
 	return p;
 }//getDownlinkPort
 
 void SimpleSwitch::connectUpTo(const unsigned i_uplink_port, ns3::Ptr<
 		SimpleSwitch> upstream_switch, const unsigned i_downlink_port) {
-	this->bring(nDownlinkPorts + i_uplink_port, upstream_switch,
-			i_downlink_port);
-	NS_ASSERT(this->isConnectedToSimpleSwitch(this->nDownlinkPorts+i_uplink_port));
-	NS_ASSERT(upstream_switch->isConnectedToSimpleSwitch(i_downlink_port));
+	this->bring<UplinkNetDevice, DownlinkNetDevice> (i_uplink_port,
+			upstream_switch, i_downlink_port);
+	NS_ASSERT((this->isConnectedTo<UplinkNetDevice, SimpleSwitch>(i_uplink_port)));
+	NS_ASSERT((upstream_switch->isConnectedTo<DownlinkNetDevice, SimpleSwitch>(i_downlink_port)));
 }//connectUpTo
 
 void SimpleSwitch::connectUpTo(std::string upstream_switch_name) {
@@ -204,10 +203,10 @@ void SimpleSwitch::connectUpTo(std::string upstream_switch_name) {
 
 void SimpleSwitch::connectDownTo(const unsigned i_downlink_port, ns3::Ptr<
 		SimpleSwitch> downstream_switch, const unsigned i_uplink_port) {
-	this->bring(i_downlink_port, downstream_switch,
-			downstream_switch->nDownlinkPorts + i_uplink_port);
-	NS_ASSERT(this->isConnectedToSimpleSwitch(i_downlink_port));
-	NS_ASSERT(downstream_switch->isConnectedToSimpleSwitch(downstream_switch->nDownlinkPorts+i_uplink_port));
+	this->bring<DownlinkNetDevice, UplinkNetDevice> (i_downlink_port,
+			downstream_switch, i_uplink_port);
+	NS_ASSERT((this->isConnectedTo<DownlinkNetDevice,SimpleSwitch>(i_downlink_port)));
+	NS_ASSERT((downstream_switch->isConnectedTo<UplinkNetDevice, SimpleSwitch>(i_uplink_port)));
 }//connectDownTo
 
 void SimpleSwitch::connectDownTo(std::string downstream_switch_name) {
@@ -221,12 +220,12 @@ void SimpleSwitch::connectDownTo(std::string downstream_switch_name) {
 			unused_uplink_port);
 }//connectDownTo
 
-void SimpleSwitch::connectSibling(const unsigned i_uplink_port, ns3::Ptr<
-		SimpleSwitch> sibling_switch, const unsigned i_sibling_uplink_port) {
-	this->bring(nDownlinkPorts + i_uplink_port, sibling_switch,
-			sibling_switch->nDownlinkPorts + i_sibling_uplink_port);
-	NS_ASSERT(this->isConnectedToSimpleSwitch(this->nDownlinkPorts+i_uplink_port));
-	NS_ASSERT(sibling_switch->isConnectedToSimpleSwitch(sibling_switch->nDownlinkPorts+i_sibling_uplink_port));
+void SimpleSwitch::connectSibling(const unsigned i_our_port, ns3::Ptr<
+		SimpleSwitch> sibling_switch, const unsigned i_their_port) {
+	this->bring<ns3::CsmaNetDevice, ns3::CsmaNetDevice> (i_our_port,
+			sibling_switch, +i_their_port);
+	NS_ASSERT((this->isConnectedTo<ns3::CsmaNetDevice, SimpleSwitch>(i_our_port)));
+	NS_ASSERT((sibling_switch->isConnectedTo<ns3::CsmaNetDevice, SimpleSwitch>(+i_their_port)));
 }//connectSibling
 
 //NotifyConstructionCompleted
@@ -235,34 +234,10 @@ void SimpleSwitch::connectSibling(const unsigned i_uplink_port, ns3::Ptr<
 
 //DoDispose
 
-bool SimpleSwitch::isConnectedToSimpleSwitch(const unsigned i_port) {
-	ns3::Ptr<ns3::CsmaChannel> ptr_csma_channel = this->getCsmaChannel(i_port);
-	NS_LOG_INFO("SimpleSwitch "<< this->GetId() << " port " << i_port
-			<< " channel is attached to " << ptr_csma_channel->GetNDevices()<< " devices ");
-	for (unsigned i = 0; i < ptr_csma_channel->GetNDevices(); ++i) {
-		NS_LOG_INFO("inspecting port " << i);
-		ns3::Ptr<ns3::NetDevice> ptr_net_device =
-				ptr_csma_channel->GetDevice(i);
-		NS_LOG_INFO("expecting NetDevice .. " << ptr_net_device->GetTypeId());
-		ns3::Ptr<ns3::Node> ptr_node = ptr_net_device->GetNode();
-		NS_LOG_INFO("expecting Node .. " << ptr_node->GetTypeId());
-		if (ptr_node->GetId() == this->GetId()) {
-			continue;
-		}//if
-		ns3::Ptr<SimpleSwitch> ptr_simple_switch = ptr_node->GetObject<
-				SimpleSwitch> ();
-		NS_LOG_INFO("expecting SimpleSwitch .. " << ptr_simple_switch->GetTypeId());
-		if (ptr_simple_switch) {
-			return true;
-		}//if
-	}//for
-	return false;
-}//isConnectedToSimpleSwitch
-
 
 unsigned SimpleSwitch::getUnusedDownlinkPort() {
 	for (unsigned i = 0; i < this->nDownlinkPorts; ++i) {
-		if (!this->isConnectedToSimpleSwitch(i)) {
+		if (!this->isConnectedTo<DownlinkNetDevice, SimpleSwitch> (i)) {
 			return i;
 		}//if
 	}//for
@@ -271,7 +246,7 @@ unsigned SimpleSwitch::getUnusedDownlinkPort() {
 
 unsigned SimpleSwitch::getUnusedUplinkPort() {
 	for (unsigned i = 0; i < this->nUplinkPorts; ++i) {
-		if (!this->isConnectedToSimpleSwitch(this->nDownlinkPorts + i)) {
+		if (!this->isConnectedTo<UplinkNetDevice, SimpleSwitch> (i)) {
 			return i;
 		}//if
 	}//for
@@ -305,3 +280,9 @@ void SimpleSwitch::enablePcapUplink(const int i_uplink_port,
 			this->getUplinkPort(i_uplink_port), promiscuous);
 }
 
+template bool SimpleSwitch::isConnectedTo<ns3::CsmaNetDevice, SimpleSwitch>(
+		const unsigned);
+template bool SimpleSwitch::isConnectedTo<DownlinkNetDevice, SimpleSwitch>(
+		const unsigned);
+template bool SimpleSwitch::isConnectedTo<UplinkNetDevice, SimpleSwitch>(
+		const unsigned);

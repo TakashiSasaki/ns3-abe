@@ -41,7 +41,9 @@ void SimpleSwitchTestCase::DoRun() {
 			"1Gbps"));
 	NS_LOG_UNCOND(ptr_simple_switch->getNDevices<ns3::CsmaNetDevice>());
 	ptr_simple_switch->Initialize();
-	NS_ASSERT(ptr_simple_switch->getNDevices<ns3::CsmaNetDevice>() == 52);
+	NS_ASSERT_MSG(ptr_simple_switch->getNDevices<ns3::CsmaNetDevice>() == 1, ptr_simple_switch->getNDevices<ns3::CsmaNetDevice>());
+	NS_ASSERT_MSG(ptr_simple_switch->getNDevices<DownlinkNetDevice>() == 48, ptr_simple_switch->getNDevices<DownlinkNetDevice>());
+	NS_ASSERT_MSG(ptr_simple_switch->getNDevices<UplinkNetDevice>() == 4, ptr_simple_switch->getNDevices<UplinkNetDevice>());
 
 	ns3::ObjectFactory object_factory;
 	object_factory.SetTypeId(SimpleSwitch::GetTypeId());
@@ -64,7 +66,8 @@ void SimpleSwitchTestCase::DoRun() {
 	NS_ASSERT_MSG(ptr_simple_switch_2->getNDevices<UplinkNetDevice>() == 4, ptr_simple_switch_2->getNDevices<ns3::CsmaNetDevice>());
 	NS_ASSERT_MSG(ptr_simple_switch_2->getNDevices<DownlinkNetDevice>() == 48, ptr_simple_switch_2->getNDevices<ns3::CsmaNetDevice>());
 
-	ptr_simple_switch_2->bring(0, ptr_simple_switch_1, 0);
+	ptr_simple_switch_2->bring<ns3::CsmaNetDevice, ns3::CsmaNetDevice> (0,
+			ptr_simple_switch_1, 0);
 
 	Simulator::Stop(Seconds(10.0));
 	Simulator::Run();

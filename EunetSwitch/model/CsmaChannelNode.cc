@@ -59,31 +59,16 @@ void CsmaChannelNode::DoDispose() {
 	CsmaNode::DoDispose();
 }
 
-ns3::Ptr<ns3::CsmaChannel> CsmaChannelNode::getCsmaChannel(unsigned i_port) {
-	NS_ASSERT_MSG((i_port < this->getNDevices<ns3::CsmaNetDevice>()), "node " << this->GetId() << " has " << this->getNDevices<ns3::CsmaNetDevice>() << " " << ns3::CsmaNetDevice::GetTypeId() << " devices, while port " << i_port << " is specified.");
-	auto ptr_csma_net_device = this->getNetDevice<ns3::CsmaNetDevice> (i_port);
-	auto ptr_channel = ptr_csma_net_device->GetChannel();
-	auto ptr_csma_channel = ptr_channel->GetObject<ns3::CsmaChannel> ();
-	return ptr_csma_channel;
-}
-
 void CsmaChannelNode::bring(ns3::Ptr<CsmaNode> ptr_newcomer,
 		const unsigned i_their_csma_device) {
-	this->bring(0, ptr_newcomer, i_their_csma_device);
-}
-
-void CsmaChannelNode::bring(const unsigned i_our_csma_device,
-		ns3::Ptr<CsmaNode> ptr_their_node, const unsigned i_their_csma_device) {
-	auto ptr_our_csma_channel = this->getCsmaChannel(i_our_csma_device);
-	auto their_csma_device = ptr_their_node->getNetDevice<ns3::CsmaNetDevice> (
+	this->bring<ns3::CsmaNetDevice, ns3::CsmaNetDevice> (0, ptr_newcomer,
 			i_their_csma_device);
-	//auto ptr_newcomer_device = ptr_newcomer->getCsmaNetDevice();
-	their_csma_device->Attach(ptr_our_csma_channel);
 }
 
 void CsmaChannelNode::setCsmaChannelDataRate(
 		const ns3::DataRateValue& data_rate, const unsigned i_channel) {
-	auto ptr_csma_channel = this->getCsmaChannel(i_channel);
+	auto ptr_csma_channel =
+			this->getCsmaChannel<ns3::CsmaNetDevice> (i_channel);
 	ptr_csma_channel->SetAttribute("DataRate", data_rate);
 }
 
@@ -96,7 +81,7 @@ void CsmaChannelNode::setCsmaChannelDataRateAll(
 
 void CsmaChannelNode::setCsmaChannelDelay(const ns3::TimeValue& delay,
 		const unsigned i_channel) {
-	auto p = this->getCsmaChannel(i_channel);
+	auto p = this->getCsmaChannel<ns3::CsmaNetDevice> (i_channel);
 	p->SetAttribute("Delay", delay);
 }
 
@@ -109,3 +94,12 @@ void CsmaChannelNode::setCsmaChannelDelayAll(const ns3::TimeValue& delay) {
 template void CsmaChannelNode::addCsmaChannel<ns3::CsmaNetDevice>(
 		const unsigned i_port, const ns3::DataRate& data_rate,
 		const ns3::Time& delay);
+
+template
+ns3::Ptr<ns3::CsmaChannel> CsmaChannelNode::getCsmaChannel<ns3::CsmaNetDevice>(
+		unsigned i_port);
+
+template
+void CsmaChannelNode::bring<ns3::CsmaNetDevice, ns3::CsmaNetDevice>(
+		const unsigned i_our_csma_device, ns3::Ptr<CsmaNode> ptr_their_node,
+		const unsigned i_their_csma_device);

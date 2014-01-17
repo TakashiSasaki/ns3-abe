@@ -37,6 +37,7 @@ NS_LOG_DCE:=$(NS_LOG_DCE):OnOffNode=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):CsmaInternetNode=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):EunetTerminalTest=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):SimpleSwitchTest=debug\|prefix_func\|prefix_time
+NS_LOG_DCE:=$(NS_LOG_DCE):EunetSwitches=debug\|prefix_func\|prefix_time
 #define NS_LOG
 #NS_LOG="NamedRouters=**:EunetRouters=**:EunetRouter=**:SimpleRouter=**:BridgingAp=**:SimpleAp=**:NamedSwitches=**:EunetSwitch=**:EunetSwitches=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"
 #endef

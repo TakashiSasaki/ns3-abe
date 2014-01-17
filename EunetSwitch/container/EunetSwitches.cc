@@ -25,7 +25,7 @@ EunetSwitches::EunetSwitches(const unsigned depth, const unsigned width) :
 	NS_ASSERT(this->GetN() == countTriangle(nDepth));
 	for (unsigned d = 1; d < nDepth; ++d) {
 		for (unsigned w = 0; w < pow(width, d); ++w) {
-			NS_LOG_INFO("connecting EunetSwitch "
+			NS_LOG_DEBUG("connecting EunetSwitch "
 					<< d << "," << w << " (" << countTriangle(d)+w << ") to "
 					<< d-1 << "," << w/width << " (" << countTriangle(d-1) + w/width << ")" << ", " << w%width );
 			ns3::Ptr<EunetSwitch> p_from = this->getEunetSwitch(
