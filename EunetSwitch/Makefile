@@ -1,5 +1,5 @@
-vpath %.h container:model:eunet:test:mixin
-vpath %.cc container:model:eunet:test:mixin
+vpath %.h container:model:eunet:test:mixin:device
+vpath %.cc container:model:eunet:test:mixin:device
 .PHONY: test visualize build-visualize run-visualize
 
 
@@ -264,7 +264,7 @@ OBJS_COMMON:= \
     NamedSwitches.o EunetSwitch.o EunetSwitches.o \
     EunetTerminal.o EunetTerminals.o CsmaNode.o CsmaChannelNode.o \
     CsmaInternetNode.o PacketSinkNode.o OnOffNode.o SimpleSwitch.o \
-    WifiMacTrace.o
+    WifiMacTrace.o DownlinkNetDevice.o UplinkNetDevice.o
 
 OBJS_STD:= \
     SimpleAp.o BridgingAp.o \

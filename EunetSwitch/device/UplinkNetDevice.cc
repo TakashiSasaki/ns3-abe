@@ -1,17 +1,13 @@
-/*
- * UplinkNetDevice.cc
- *
- *  Created on: 2014/01/17
- *      Author: sasaki
- */
-
+#define NS3_LOG_ENABLE 1
+#include "ns3/log.h"
+NS_LOG_COMPONENT_DEFINE("UplinkNetDevice");
+#define NS3_ASSERT_ENABLE 1
+#include "ns3/assert.h"
 #include "UplinkNetDevice.h"
+NS_OBJECT_ENSURE_REGISTERED(UplinkNetDevice);
 
 UplinkNetDevice::UplinkNetDevice() {
-	// TODO 自動生成されたコンストラクター・スタブ
-
 }
 
 UplinkNetDevice::~UplinkNetDevice() {
-	// TODO !CodeTemplates.destructorstub.tododesc!
 }

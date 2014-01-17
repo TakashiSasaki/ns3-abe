@@ -1,21 +1,10 @@
-/*
- * UplinkNetDevice.h
- *
- *  Created on: 2014/01/17
- *      Author: sasaki
- */
-
 #ifndef UPLINKNETDEVICE_H_
 #define UPLINKNETDEVICE_H_
+#include "ns3/csma-net-device.h"
 
-class UplinkNetDevice {
+class UplinkNetDevice : public ns3::CsmaNetDevice{
 public:
-	UplinkNetDevice();
-	virtual ~UplinkNetDevice();
-};
-
-class UplinkNetDevice {
-public:
+	static ns3::TypeId GetTypeId(void);
 	UplinkNetDevice();
 	virtual ~UplinkNetDevice();
 };

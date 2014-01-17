@@ -1,15 +1,10 @@
-/*
- * DownlinkNetDevice.h
- *
- *  Created on: 2014/01/17
- *      Author: sasaki
- */
-
 #ifndef DOWNLINKNETDEVICE_H_
 #define DOWNLINKNETDEVICE_H_
+#include "ns3/csma-net-device.h"
 
-class DownlinkNetDevice {
+class DownlinkNetDevice : public ns3::CsmaNetDevice {
 public:
+	static ns3::TypeId GetTypeId(void);
 	DownlinkNetDevice();
 	virtual ~DownlinkNetDevice();
 };
