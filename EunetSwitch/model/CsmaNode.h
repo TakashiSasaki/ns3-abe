@@ -98,4 +98,15 @@ void CsmaNode::enableAsciiTrace(const unsigned i_port) {
 			this->getNetDevice<T> (i_port));
 }//enableAsciiTrace
 
+template<class T>
+ns3::NetDeviceContainer CsmaNode::getNetDevices() {
+	ns3::NetDeviceContainer ndc;
+	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
+		if (this->GetDevice(i)->GetInstanceTypeId() == T::GetTypeId()) {
+			ndc.Add(this->GetDevice(i));
+		}//if
+	}//for
+	return ndc;
+}//getNDevices
+
 #endif /* CSMANODE_H_ */
