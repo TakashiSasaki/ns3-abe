@@ -11,6 +11,9 @@ NS_LOG_COMPONENT_DEFINE("Eunet");
 #include "DownlinkNetDevice.h"
 
 Eunet::Eunet() {
+	this->eunetRouterFactory.SetTypeId(EunetRouter::GetTypeId());
+	this->eunetSwitchFactory.SetTypeId(EunetSwitch::GetTypeId());
+	this->eunetTerminalFactory.SetTypeId(EunetTerminal::GetTypeId());
 }// a constructor
 
 Eunet::~Eunet() {

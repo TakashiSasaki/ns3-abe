@@ -28,7 +28,18 @@ template<class SrcNodeT, class SrcDeviceT, class DstNodeT, class DstDeviceT>
 void Eunet::connect(std::string src_name, std::string dst_name) {
 	NS_ASSERT((SrcNodeT::GetTypeId()==EunetSwitch::GetTypeId())
 			|| (SrcNodeT::GetTypeId()==EunetRouter::GetTypeId()));
-	auto ptr_src = ns3::Names::Find<SrcNodeT>(src_name);
+	ns3::Ptr<CsmaChannelNode> ptr_src = ns3::Names::Find<SrcNodeT>(src_name);
+	if (ptr_src == NULL) {
+		auto ptr_node = ns3::CreateObject<SrcNodeT>();
+		NS_ASSERT(ptr_node != NULL);
+		this->Add(ptr_node);
+	}//if
+	ns3::Ptr<CsmaChannelNode> ptr_dst = ns3::Names::Find<DstNodeT>(dst_name);
+	if (ptr_dst == NULL) {
+		auto ptr_node = ns3::CreateObject<DstNodeT>();
+		NS_ASSERT(ptr_node != NULL);
+		this->Add(ptr_node);
+	}//if
 }
 
 #endif /* EUNET_H_ */
