@@ -7,14 +7,6 @@
 #include "DownlinkNetDevice.h"
 
 class SimpleSwitch: public CsmaChannelNode {
-	//	const int nDownlinkBps;
-	//	const int nDownlinkDelayMilliseconds;
-	//	const int nUplinkBps;
-	//	const int nUplinkDelayMilliseconds;
-	//static const ns3::DataRate defaultUplinkDataRate;
-	//static const ns3::DataRate defaultDownlinkDataRate;
-	//static const ns3::TimeValue defaultUplinkDelay;
-	//static const ns3::TimeValue defaultDownlinkDelay;
 	ns3::DataRate uplinkDataRate;
 	ns3::Time uplinkDelay;
 	ns3::DataRate downlinkDataRate;
@@ -24,11 +16,8 @@ class SimpleSwitch: public CsmaChannelNode {
 public:
 
 	static ns3::TypeId GetTypeId(void);
-	SimpleSwitch(/*const unsigned n_downlink_ports = 4,
-	 const unsigned n_uplink_ports = 1*/);
-	virtual ~SimpleSwitch() {
-	}
-	;
+	SimpleSwitch();
+	virtual ~SimpleSwitch();
 	void setNUplinkPorts(uint32_t n_uplink_ports);
 	uint32_t getNUplinkPorts() const;
 	void setNDownlinkPorts(uint32_t n_downlink_ports);
@@ -42,10 +31,6 @@ public:
 	void setDownlinkDelay(ns3::Time downlink_delay);
 	ns3::Time getDownlinkDelay() const;
 
-	//	void setDownlinkDataRate(ns3::DataRateValue = defaultDownlinkDataRate);
-	//	void setDownlinkDelay(ns3::TimeValue = defaultDownlinkDelay);
-	//	void setUplinkDataRate(ns3::DataRateValue = defaultUplinkDataRate);
-	//	void setUplinkDelay(ns3::TimeValue = defaultUplinkDelay);
 	ns3::Ptr<ns3::CsmaNetDevice>
 	getUplinkPort(const unsigned i_uplink_port);
 	ns3::Ptr<ns3::CsmaNetDevice>
@@ -70,16 +55,9 @@ public:
 	void enablePcapUplink(const int i_uplink_port, const bool promiscuous =
 			false);
 private:
-	bool isNotifyConstructionCompletedCalled;
-	bool isDoInitializeCalled;
-	bool isDoDisposeCalled;
-protected:
-	virtual void DoInitialize();
-	virtual void NotifyConstructionCompleted();
-	virtual void DoDispose();
-private:
 	template<class D, class N>
 	bool isConnectedTo(const unsigned i_port);
+DECLARE_DIDDNCC
 };
 
 template<class D, class N>

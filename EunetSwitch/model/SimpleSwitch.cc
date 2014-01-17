@@ -9,13 +9,7 @@ NS_LOG_COMPONENT_DEFINE("SimpleSwitch");
 #include "UplinkNetDevice.h"
 #include "DownlinkNetDevice.h"
 #include "SimpleSwitch.h"
-
 NS_OBJECT_ENSURE_REGISTERED(SimpleSwitch);
-
-//const ns3::DataRate SimpleSwitch::defaultUplinkDataRate("1000000000bps");
-//const ns3::TimeValue SimpleSwitch::defaultUplinkDelay(ns3::MilliSeconds(1));
-//const ns3::DataRate SimpleSwitch::defaultDownlinkDataRate("1000000000bps");
-//const ns3::TimeValue SimpleSwitch::defaultDownlinkDelay(ns3::MilliSeconds(1));
 
 ns3::TypeId SimpleSwitch::GetTypeId(void) {
 	static ns3::TypeId type_id = ns3::TypeId("SimpleSwitch").SetParent<
@@ -40,22 +34,12 @@ ns3::TypeId SimpleSwitch::GetTypeId(void) {
 }//GetTypeId
 
 
-SimpleSwitch::SimpleSwitch(/*const unsigned n_downlink_ports,
- const unsigned n_uplink_ports*/) :
-	nUplinkPorts(0), nDownlinkPorts(0),
-	/*CsmaChannelNode(n_downlink_ports + n_uplink_ports, defaultDownlinkDataRate,
-	 defaultDownlinkDelay), nUplinkPorts(n_uplink_ports),
-	 nDownlinkPorts(n_downlink_ports), */INIT_DIDDNCC_FLAGS {
-	//this->setUplinkDataRate(defaultUplinkDataRate);
-	//this->setUplinkDelay(defaultUplinkDelay);
-#if 0
-	NS_LOG_INFO("constructing SimpleSwitch");
-	for (unsigned i = 0; i < nDownlinkPorts + nUplinkPorts; ++i) {
-		NS_LOG_INFO("investigating port " << i);
-		NS_ASSERT(!this->isConnectedToSimpleSwitch(i));
-	}
-#endif
+SimpleSwitch::SimpleSwitch() :
+	nUplinkPorts(0), nDownlinkPorts(0), INIT_DIDDNCC_FLAGS {
 }// the constructor
+
+SimpleSwitch::~SimpleSwitch() {
+}
 
 void SimpleSwitch::NotifyConstructionCompleted() {
 	ASSERT_NCC;
@@ -227,13 +211,6 @@ void SimpleSwitch::connectSibling(const unsigned i_our_port, ns3::Ptr<
 	NS_ASSERT((this->isConnectedTo<ns3::CsmaNetDevice, SimpleSwitch>(i_our_port)));
 	NS_ASSERT((sibling_switch->isConnectedTo<ns3::CsmaNetDevice, SimpleSwitch>(+i_their_port)));
 }//connectSibling
-
-//NotifyConstructionCompleted
-
-//DoInitialize
-
-//DoDispose
-
 
 unsigned SimpleSwitch::getUnusedDownlinkPort() {
 	for (unsigned i = 0; i < this->nDownlinkPorts; ++i) {
