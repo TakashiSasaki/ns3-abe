@@ -15,6 +15,9 @@ EunetSwitches::EunetSwitches(const unsigned depth, const unsigned width) :
 		for (unsigned j = 0; j < pow(width, i); ++j) {
 			NS_LOG_INFO("creating EunetSwitch at depth "<< i << " and width " << j);
 			auto p(ns3::CreateObject<EunetSwitch>());
+			p->SetAttribute("nDownlinkPorts", ns3::UintegerValue(48));
+			p->SetAttribute("nUplinkPorts", ns3::UintegerValue(48));
+			p->Initialize();
 			this->Add(p);
 		}//for
 		//this->switches.push_back(switches);
@@ -46,6 +49,9 @@ EunetSwitches::EunetSwitches(const unsigned depth, const unsigned width) :
 	mobility_helper.Install(*this);
 
 }// a constructor
+
+EunetSwitches::~EunetSwitches(){
+}
 
 ns3::Ptr<EunetSwitch> EunetSwitches::getEunetSwitch(unsigned i_depth,
 		unsigned i_width) {

@@ -11,9 +11,8 @@ class EunetSwitches: public ns3::NodeContainer {
 	//EunetSwitch rootSwitch;
 	//std::vector<std::vector<ns3::Ptr<EunetSwitch> > > switches;
 public:
-	EunetSwitches(const unsigned depth = 1, const unsigned width = 1);
-	virtual ~EunetSwitches() {
-	}
+	EunetSwitches(const unsigned depth, const unsigned width);
+	virtual ~EunetSwitches();
 
 	ns3::Ptr<EunetSwitch> getEunetSwitch(unsigned i_depth, unsigned i_width);
 
