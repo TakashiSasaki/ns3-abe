@@ -15,20 +15,16 @@ ns3::TypeId SimpleSwitch::GetTypeId(void) {
 	static ns3::TypeId type_id = ns3::TypeId("SimpleSwitch").SetParent<
 			CsmaChannelNode> ().AddConstructor<SimpleSwitch> () .AddAttribute(
 			"nDownlinkPorts", "nDownlinkPorts", ns3::UintegerValue(4),
-			ns3::MakeUintegerAccessor(&SimpleSwitch::getNDownlinkPorts,
-					&SimpleSwitch::setNDownlinkPorts),
+			ns3::MakeUintegerAccessor(&SimpleSwitch::nDownlinkPorts),
 			ns3::MakeUintegerChecker<uint32_t>()) .AddAttribute("nUplinkPorts",
 			"nUplinkPorts", ns3::UintegerValue(1), ns3::MakeUintegerAccessor(
-					&SimpleSwitch::getNUplinkPorts,
-					&SimpleSwitch::setNUplinkPorts), ns3::MakeUintegerChecker<
+					&SimpleSwitch::nUplinkPorts), ns3::MakeUintegerChecker<
 					uint32_t>()) .AddAttribute("uplinkDataRate",
 			"uplinkDataRate", ns3::DataRateValue(1000000000),
-			ns3::MakeDataRateAccessor(&SimpleSwitch::getUplinkDataRate,
-					&SimpleSwitch::setUplinkDataRate),
+			ns3::MakeDataRateAccessor(&SimpleSwitch::uplinkDataRate),
 			ns3::MakeDataRateChecker()).AddAttribute("downlinkDataRate",
 			"downlinkDataRate", ns3::DataRateValue(1000000000),
-			ns3::MakeDataRateAccessor(&SimpleSwitch::getDownlinkDataRate,
-					&SimpleSwitch::setDownlinkDataRate),
+			ns3::MakeDataRateAccessor(&SimpleSwitch::downlinkDataRate),
 			ns3::MakeDataRateChecker());
 	return type_id;
 }//GetTypeId
@@ -97,6 +93,7 @@ void SimpleSwitch::DoDispose() {
 	CsmaChannelNode::DoDispose();
 }//DoDispose
 
+#if 0
 void SimpleSwitch::setNDownlinkPorts(uint32_t n_downlink_ports) {
 	NS_LOG_INFO("n_downlink_ports = " << n_downlink_ports);
 	NS_ASSERT(!this->isDoInitializeCalled);
@@ -151,6 +148,7 @@ void SimpleSwitch::setUplinkDelay(ns3::Time uplink_delay) {
 	NS_ASSERT(!this->isDoInitializeCalled);
 	this->uplinkDelay = uplink_delay;
 }
+#endif
 
 ns3::Ptr<ns3::CsmaNetDevice> SimpleSwitch::getUplinkPort(
 		const unsigned i_uplink_port) {

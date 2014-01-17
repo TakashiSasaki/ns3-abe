@@ -34,8 +34,11 @@ private:
 		ns3::Ptr<EunetSwitch> eunet_switch(
 				object_factory.Create<EunetSwitch> ());
 		eunet_switch->Initialize();
-		NS_ASSERT_MSG(eunet_switch->getNDownlinkPorts() == eunet_switch->getTerminals().GetN(),
-				eunet_switch->getNDownlinkPorts()<< ' ' << eunet_switch->getTerminals().GetN());
+
+		ns3::UintegerValue uv_downlink_ports;
+		eunet_switch->GetAttribute("nDownlinkPorts", uv_downlink_ports);
+		NS_ASSERT_MSG(uv_downlink_ports.Get() == eunet_switch->getTerminals().GetN(),
+				uv_downlink_ports.Get()<< ' ' << eunet_switch->getTerminals().GetN());
 		eunet_switch->getTerminals().assignAddresses();
 		eunet_switch->getTerminals().setRemoteOfAtoB(0, 0);
 		eunet_switch->getTerminals().setRemoteOfAtoB(1, 0);

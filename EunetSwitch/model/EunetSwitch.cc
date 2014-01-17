@@ -44,7 +44,7 @@ EunetSwitch::EunetSwitch(/*const unsigned n_downlink_ports,
 void EunetSwitch::DoInitialize() {
 	ASSERT_DI;
 	SimpleSwitch::DoInitialize();
-	this->eunetTerminals.initialize(this->getNDownlinkPorts());
+	this->eunetTerminals.initialize(this->nDownlinkPorts);
 	NS_LOG_INFO("attaching " << this->eunetTerminals.GetN() << " terminal(s) to corresponding port(s)");
 	for (unsigned i = 0; i < this->eunetTerminals.GetN(); ++i) {
 		NS_LOG_INFO("attaching terminal " << i << " to corresponding port");

@@ -53,8 +53,12 @@ void SimpleSwitchTestCase::DoRun() {
 	object_factory.Set("downlinkDataRate", ns3::StringValue("1Gbps"));
 	ns3::Ptr<SimpleSwitch> ptr_simple_switch_1 = object_factory.Create<
 			SimpleSwitch> ();
-	NS_ASSERT(48==ptr_simple_switch_1->getNDownlinkPorts());
-	NS_ASSERT(4==ptr_simple_switch_1->getNUplinkPorts());
+	ns3::UintegerValue uv_uplink_ports;
+	ptr_simple_switch_1 ->GetAttribute("nDownlinkPorts", uv_uplink_ports);
+	NS_ASSERT(48==uv_uplink_ports.Get());
+	ns3::UintegerValue uv_downlink_ports;
+	ptr_simple_switch_1->GetAttribute("nUplinkPorts", uv_downlink_ports);
+	NS_ASSERT(4==uv_downlink_ports.Get());
 	//NS_ASSERT_MSG(52 == ptr_simple_switch_1->getNPorts(), "getNports() " << ptr_simple_switch_1->getNPorts());
 	ptr_simple_switch_1->Initialize();
 	NS_ASSERT_MSG(ptr_simple_switch_1->getNDevices<ns3::CsmaNetDevice>() == 1, ptr_simple_switch_1->getNDevices<ns3::CsmaNetDevice>());
