@@ -10,7 +10,7 @@ NS_LOG_COMPONENT_DEFINE("SimpleSwitch");
 #include "DownlinkNetDevice.h"
 #include "SimpleSwitch.h"
 
-NS_OBJECT_ENSURE_REGISTERED( SimpleSwitch);
+NS_OBJECT_ENSURE_REGISTERED(SimpleSwitch);
 
 //const ns3::DataRate SimpleSwitch::defaultUplinkDataRate("1000000000bps");
 //const ns3::TimeValue SimpleSwitch::defaultUplinkDelay(ns3::MilliSeconds(1));
@@ -70,6 +70,14 @@ void SimpleSwitch::DoInitialize() {
 	NS_ASSERT (this->getNPorts() == this->getNDevices<ns3::CsmaNetDevice>() );
 	NS_ASSERT_MSG(this->getNPorts() == this->getNUplinkPorts() + this->getNDownlinkPorts(), "node " << this->GetId() << " has " << this->getNDevices<ns3::CsmaNetDevice>() << " CsmaNetDevice(s)");
 	NS_LOG_INFO("bridging all devices");
+
+	for (unsigned i = 0; i < this->nUplinkPorts; ++i) {
+		this->addCsmaNetDevice<UplinkNetDevice> ();
+	}//for
+
+	for (unsigned i = 0; i < this->nDownlinkPorts; ++i) {
+		this->addCsmaNetDevice<DownlinkNetDevice> ();
+	}//for
 
 	for (unsigned i = 0; i < this->nUplinkPorts; ++i) {
 		this->addCsmaChannel<UplinkNetDevice> (i, this->uplinkDataRate,

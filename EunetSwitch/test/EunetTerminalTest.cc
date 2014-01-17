@@ -93,7 +93,7 @@ private:
 		ns3::Simulator::Run();
 		ns3::Simulator::Destroy();
 		NS_ASSERT_MSG(ptr_eunet_terminal_2->getTotalRx() == 0, ptr_eunet_terminal_2->getTotalRx());
-		NS_ASSERT_MSG(ptr_eunet_terminal_3->getTotalRx() == 980480, ptr_eunet_terminal_3->getTotalRx());
+		NS_ASSERT_MSG(ptr_eunet_terminal_3->getTotalRx() == 980992, ptr_eunet_terminal_3->getTotalRx());
 		NS_LOG_INFO("Done.");
 	}//DoRun
 };//EunetTerminalTestCase

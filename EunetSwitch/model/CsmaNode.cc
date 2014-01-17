@@ -24,8 +24,8 @@ ns3::TypeId CsmaNode::GetTypeId(void) {
 
 CsmaNode::CsmaNode() :
 	nCsmaNetDevices(0), INIT_DIDDNCC_FLAGS {
-	this->deviceFactory.SetTypeId("ns3::CsmaNetDevice");
-	this->queueFactory.SetTypeId("ns3::DropTailQueue");
+	//this->deviceFactory.SetTypeId("ns3::CsmaNetDevice");
+	//this->queueFactory.SetTypeId("ns3::DropTailQueue");
 }
 
 CsmaNode::~CsmaNode() {

@@ -7,12 +7,14 @@
 #include "ns3/uinteger.h"
 #include "ns3/application.h"
 #include "ns3/csma-helper.h"
+#include "ns3/queue.h"
+#include "ns3/drop-tail-queue.h"
 #include "init.h"
 
 class CsmaNode: public ns3::Node {
 	uint32_t nCsmaNetDevices;
-	ns3::ObjectFactory deviceFactory;
-	ns3::ObjectFactory queueFactory;
+	//static ns3::ObjectFactory deviceFactory;
+	//static ns3::ObjectFactory queueFactory;
 public:
 	static ns3::TypeId GetTypeId(void);
 	CsmaNode();
@@ -114,13 +116,16 @@ ns3::NetDeviceContainer CsmaNode::getNetDevices() {
 
 template<class T>
 ns3::Ptr<T> CsmaNode::addCsmaNetDevice() {
-	ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device =
-			this->deviceFactory.Create<T> ();
+	//this->deviceFactory.SetTypeId(T::GetTypeId());
+	//auto ptr_t = this->deviceFactory.Create<T> ();
+	auto ptr_t = ns3::CreateObject<T>();
+	ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device(ptr_t);
 	ptr_csma_net_device->SetAddress(ns3::Mac48Address::Allocate());
 	this->AddDevice(ptr_csma_net_device);
-	ns3::Ptr<ns3::Queue> ptr_queue = this->queueFactory.Create<ns3::Queue> ();
+	//ns3::Ptr<ns3::Queue> ptr_queue = this->queueFactory.Create<ns3::Queue> ();
+	ns3::Ptr<ns3::Queue> ptr_queue = ns3::CreateObject<ns3::DropTailQueue>();
 	ptr_csma_net_device->SetQueue(ptr_queue);
-	return ptr_csma_net_device;
+	return ptr_t;
 }
 
 #endif /* CSMANODE_H_ */
