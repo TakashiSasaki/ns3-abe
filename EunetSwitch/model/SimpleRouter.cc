@@ -88,8 +88,8 @@ void SimpleRouter::NotifyConstructionCompleted() {
 	ASSERT_NCC
 	NS_LOG_INFO(this->GetNDevices() << " devices");
 	CsmaInternetNode::NotifyConstructionCompleted();
-	this->setCsmaChannelDataRateAll(defaultlinkDataRate);
-	this->setCsmaChannelDelayAll(defaultlinkDelay);
+	//this->setCsmaChannelDataRateAll(defaultlinkDataRate);
+	//this->setCsmaChannelDelayAll(defaultlinkDelay);
 
 	NS_LOG_INFO(this->GetNDevices() << " devices");
 	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
