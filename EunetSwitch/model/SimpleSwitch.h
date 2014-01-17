@@ -19,20 +19,6 @@ public:
 	static ns3::TypeId GetTypeId(void);
 	SimpleSwitch();
 	virtual ~SimpleSwitch();
-	/*
-	 void setNUplinkPorts(uint32_t n_uplink_ports);
-	 uint32_t getNUplinkPorts() const;
-	 void setNDownlinkPorts(uint32_t n_downlink_ports);
-	 uint32_t getNDownlinkPorts() const;
-	 void setUplinkDataRate(ns3::DataRate uplink_data_rate);
-	 ns3::DataRate getUplinkDataRate() const;
-	 void setDownlinkDataRate(ns3::DataRate downlink_data_rate);
-	 ns3::DataRate getDownlinkDataRate() const;
-	 void setUplinkDelay(ns3::Time uplink_delay);
-	 ns3::Time getUplinkDelay() const;
-	 void setDownlinkDelay(ns3::Time downlink_delay);
-	 ns3::Time getDownlinkDelay() const;
-	 */
 
 	ns3::Ptr<ns3::CsmaNetDevice>
 	getUplinkPort(const unsigned i_uplink_port);

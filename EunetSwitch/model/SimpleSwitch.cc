@@ -93,63 +93,6 @@ void SimpleSwitch::DoDispose() {
 	CsmaChannelNode::DoDispose();
 }//DoDispose
 
-#if 0
-void SimpleSwitch::setNDownlinkPorts(uint32_t n_downlink_ports) {
-	NS_LOG_INFO("n_downlink_ports = " << n_downlink_ports);
-	NS_ASSERT(!this->isDoInitializeCalled);
-	this->nDownlinkPorts = n_downlink_ports;
-	//this->setNPorts(this->nUplinkPorts + this->nDownlinkPorts);
-	//NS_ASSERT_MSG(this->getNPorts() == (this->getNDownlinkPorts() + this->getNUplinkPorts()),
-	//		this->getNPorts() << " " << this->getNDownlinkPorts() << " " << this->getNUplinkPorts());
-}
-
-void SimpleSwitch::setNUplinkPorts(uint32_t n_uplink_ports) {
-	NS_LOG_INFO("n_uplink_ports = " << n_uplink_ports);
-	NS_ASSERT(!this->isDoInitializeCalled);
-	this->nUplinkPorts = n_uplink_ports;
-	//this->setNPorts(this->nUplinkPorts + this->nDownlinkPorts);
-	//NS_ASSERT(this->getNPorts() == (this->getNDownlinkPorts() + this->getNUplinkPorts()));
-	//NS_ASSERT_MSG(this->getNPorts() == (this->getNDownlinkPorts() + this->getNUplinkPorts()),
-	//		this->getNPorts() << " " << this->getNDownlinkPorts() << " " << this->getNUplinkPorts());
-}
-
-uint32_t SimpleSwitch::getNDownlinkPorts() const {
-	return this->nDownlinkPorts;
-}
-
-uint32_t SimpleSwitch::getNUplinkPorts() const {
-	return this->nUplinkPorts;
-}
-
-void SimpleSwitch::setDownlinkDataRate(ns3::DataRate downlink_data_rate) {
-	NS_ASSERT(!this->isDoInitializeCalled);
-	this->downlinkDataRate = downlink_data_rate;
-}
-
-ns3::DataRate SimpleSwitch::getDownlinkDataRate() const {
-	return this->downlinkDataRate;
-}
-
-void SimpleSwitch::setDownlinkDelay(ns3::Time downlink_delay) {
-	NS_ASSERT(!this->isDoInitializeCalled);
-	this->downlinkDelay = downlink_delay;
-}
-
-void SimpleSwitch::setUplinkDataRate(ns3::DataRate uplink_data_rate) {
-	NS_ASSERT(!this->isDoInitializeCalled);
-	this->uplinkDataRate = uplink_data_rate;
-}
-
-ns3::DataRate SimpleSwitch::getUplinkDataRate() const {
-	return this->downlinkDataRate;
-}
-
-void SimpleSwitch::setUplinkDelay(ns3::Time uplink_delay) {
-	NS_ASSERT(!this->isDoInitializeCalled);
-	this->uplinkDelay = uplink_delay;
-}
-#endif
-
 ns3::Ptr<ns3::CsmaNetDevice> SimpleSwitch::getUplinkPort(
 		const unsigned i_uplink_port) {
 	NS_ASSERT(i_uplink_port < nUplinkPorts);
