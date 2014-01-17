@@ -265,7 +265,8 @@ OBJS_COMMON:= \
     NamedSwitches.o EunetSwitch.o EunetSwitches.o \
     EunetTerminal.o EunetTerminals.o CsmaNode.o CsmaChannelNode.o \
     CsmaInternetNode.o PacketSinkNode.o OnOffNode.o SimpleSwitch.o \
-    WifiMacTrace.o DownlinkNetDevice.o UplinkNetDevice.o
+    WifiMacTrace.o DownlinkNetDevice.o UplinkNetDevice.o \
+    Eunet.o
 
 OBJS_STD:= \
     SimpleAp.o BridgingAp.o \

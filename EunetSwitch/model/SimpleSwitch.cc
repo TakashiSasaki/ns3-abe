@@ -116,12 +116,10 @@ void SimpleSwitch::connectUpTo(const unsigned i_uplink_port, ns3::Ptr<
 }//connectUpTo
 
 void SimpleSwitch::connectUpTo(std::string upstream_switch_name) {
-	ns3::Ptr<ns3::Node> ptr_node = ns3::Names::Find<ns3::Node>(
-			upstream_switch_name);
+	auto ptr_node = ns3::Names::Find<ns3::Node>(upstream_switch_name);
 	auto ptr_upstream_switch = ptr_node->GetObject<SimpleSwitch> ();
-	const unsigned unused_uplink_port = this->getUnusedUplinkPort();
-	const unsigned unused_downlink_port =
-			ptr_upstream_switch->getUnusedDownlinkPort();
+	auto unused_uplink_port = this->getUnusedUplinkPort();
+	auto unused_downlink_port = ptr_upstream_switch->getUnusedDownlinkPort();
 	this->connectUpTo(unused_uplink_port, ptr_upstream_switch,
 			unused_downlink_port);
 }//connectUpTo
@@ -135,12 +133,10 @@ void SimpleSwitch::connectDownTo(const unsigned i_downlink_port, ns3::Ptr<
 }//connectDownTo
 
 void SimpleSwitch::connectDownTo(std::string downstream_switch_name) {
-	ns3::Ptr<ns3::Node> ptr_node = ns3::Names::Find<ns3::Node>(
-			downstream_switch_name);
+	auto ptr_node = ns3::Names::Find<ns3::Node>(downstream_switch_name);
 	auto ptr_downstream_switch = ptr_node->GetObject<SimpleSwitch> ();
-	const unsigned unused_downlink_port = this->getUnusedDownlinkPort();
-	const unsigned unused_uplink_port =
-			ptr_downstream_switch->getUnusedUplinkPort();
+	auto unused_downlink_port = this->getUnusedDownlinkPort();
+	auto unused_uplink_port = ptr_downstream_switch->getUnusedUplinkPort();
 	this->connectDownTo(unused_downlink_port, ptr_downstream_switch,
 			unused_uplink_port);
 }//connectDownTo
