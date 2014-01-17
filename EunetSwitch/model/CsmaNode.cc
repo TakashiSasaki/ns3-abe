@@ -27,6 +27,10 @@ CsmaNode::CsmaNode() :
 	this->deviceFactory.SetTypeId("ns3::CsmaNetDevice");
 	this->queueFactory.SetTypeId("ns3::DropTailQueue");
 }
+
+CsmaNode::~CsmaNode() {
+}
+
 void CsmaNode::NotifyConstructionCompleted() {
 	ASSERT_NCC;
 	NS_LOG_INFO("GetNDevices=" << this->GetNDevices());
@@ -72,14 +76,6 @@ void CsmaNode::setNPorts(uint32_t n_ports) {
 uint32_t CsmaNode::getNPorts(void) const {
 	return this->nCsmaNetDevices;
 }
-
-// the constructor
-
-//DoInitialize
-
-//DoDispose
-
-//NotifyConstructionCompleted
 
 void CsmaNode::logAllDevices(const ns3::LogLevel log_level) {
 	//TODO: separate this method to other mixin class

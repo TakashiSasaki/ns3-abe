@@ -10,19 +10,16 @@
 #include "init.h"
 
 class CsmaNode: public ns3::Node {
-	//typedef Node Base;
 	uint32_t nCsmaNetDevices;
 	ns3::ObjectFactory deviceFactory;
 	ns3::ObjectFactory queueFactory;
 public:
 	static ns3::TypeId GetTypeId(void);
 	CsmaNode();
-	virtual ~CsmaNode() {
-	}
-	;
+	virtual ~CsmaNode();
 	//ns3::Ptr<ns3::CsmaNetDevice> getCsmaNetDevice(const unsigned i_device = 0);
 	template<class T>
-	ns3::Ptr<T> getNetDevice(const unsigned i_device = 0);
+	ns3::Ptr<T> getNetDevice(const unsigned i_port = 0);
 	template<class T>
 	unsigned getNDevices();
 	void logAllDevices(const ns3::LogLevel log_level = ns3::LOG_LEVEL_INFO);
@@ -34,13 +31,15 @@ public:
 	void enablePcap(const int i_port, const bool promiscuous = false);
 	template<class T>
 	void enableAsciiTrace(const unsigned i_port);
+	template<class T>
+	ns3::NetDeviceContainer getNetDevices();
 private:
 	uint32_t countCsmaNetDevices();
 DECLARE_DIDDNCC
 };
 
 template<class T>
-ns3::Ptr<T> CsmaNode::getNetDevice(const unsigned i_device) {
+ns3::Ptr<T> CsmaNode::getNetDevice(const unsigned i_port) {
 	//NS_ASSERT(this->countCsmaNetDevices()==1);
 	unsigned j = 0;
 	bool has_device_T = false;
@@ -48,7 +47,7 @@ ns3::Ptr<T> CsmaNode::getNetDevice(const unsigned i_device) {
 		//NS_LOG(log_level, this->GetDevice(i)->GetTypeId() << ", " << this->GetDevice(i)->GetInstanceTypeId());
 		if (this->GetDevice(i)->GetInstanceTypeId() == T::GetTypeId()) {
 			has_device_T = true;
-			if (j == i_device) {
+			if (j == i_port) {
 				return this->GetDevice(i)->GetObject<T> (T::GetTypeId());
 
 			}//if
