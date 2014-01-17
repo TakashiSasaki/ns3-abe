@@ -104,7 +104,6 @@ void CsmaChannelNode::setCsmaChannelDelayAll(const ns3::TimeValue& delay) {
 	}
 }
 
-//DoInitialize
-
-//DoDispose
-
+template void CsmaChannelNode::addCsmaChannel<ns3::CsmaNetDevice>(
+		const unsigned i_port, const ns3::DataRate& data_rate,
+		const ns3::Time& delay);

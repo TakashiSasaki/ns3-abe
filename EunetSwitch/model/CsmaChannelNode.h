@@ -17,7 +17,7 @@ class CsmaChannelNode: public CsmaNode {
 public:
 	static ns3::TypeId GetTypeId(void);
 	CsmaChannelNode();
-	virtual ~CsmaChannelNode()	 {
+	virtual ~CsmaChannelNode() {
 	}
 	;
 	void bring(ns3::Ptr<CsmaNode> ptr_their_csma_node,
@@ -26,7 +26,23 @@ public:
 			ns3::Ptr<CsmaNode> ptr_their_csma_node,
 			const unsigned i_their_csma_device = 0);
 	ns3::Ptr<ns3::CsmaChannel> getCsmaChannel(unsigned i_channel);
+protected:
+	template<class T>
+	void addCsmaChannel(const unsigned i_port, const ns3::DataRate& data_rate,
+			const ns3::Time& delay);
 DECLARE_DIDDNCC
 };
+
+template<class T>
+void CsmaChannelNode::addCsmaChannel(const unsigned i_port,
+		const ns3::DataRate& data_rate, const ns3::Time& delay) {
+	ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device = this->getNetDevice<
+			ns3::CsmaNetDevice> (i_port);
+	ns3::Ptr<ns3::CsmaChannel> ptr_csma_channel =
+			this->csmaChannelFactory.Create()->GetObject<ns3::CsmaChannel> ();
+	//NS_LOG_INFO("attaching a channel to device #" << i);
+	//this->getNetDevice<ns3::CsmaNetDevice> (i)->Attach(ptr_csma_channel);
+	ptr_csma_net_device->Attach(ptr_csma_channel);
+}//addCsmaChannel
 
 #endif /* CSMACHANNELNODE_H_ */
