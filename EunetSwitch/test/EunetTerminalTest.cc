@@ -22,9 +22,11 @@ public:
 
 private:
 	virtual void DoRun(void) {
+#ifdef VISUALIZE
 		NS_LOG_DEBUG("--SimulatorImplementationType=ns3::VisualSimulatorImpl");
 		ns3::GlobalValue::Bind("SimulatorImplementationType", ns3::StringValue(
 		"ns3::VisualSimulatorImpl"));
+#endif
 		ns3::PacketMetadata::Enable();
 		ns3::ObjectFactory object_factory;
 
