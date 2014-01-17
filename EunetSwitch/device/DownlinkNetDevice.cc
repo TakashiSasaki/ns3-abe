@@ -8,9 +8,8 @@ NS_LOG_COMPONENT_DEFINE("DownlinkNetDevice");
 NS_OBJECT_ENSURE_REGISTERED(DownlinkNetDevice);
 
 ns3::TypeId DownlinkNetDevice::GetTypeId(void) {
-	static ns3::TypeId type_id = ns3::TypeId("DownlinkNetDevice");
-	type_id.SetParent<ns3::CsmaNetDevice> ();
-	type_id.AddConstructor<DownlinkNetDevice> ();
+	static ns3::TypeId type_id = ns3::TypeId("DownlinkNetDevice").SetParent<
+			ns3::CsmaNetDevice> ().AddConstructor<DownlinkNetDevice> ();
 	return type_id;
 }//GetTypeId
 

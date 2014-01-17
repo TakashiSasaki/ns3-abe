@@ -70,7 +70,7 @@ else
     EXECENV:=LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) DCE_PATH=$(DCE_PATH) DCE_ROOT=$(DCE_ROOT) 
 endif
 
-CXXFLAGS_COMMON:= -Icontainer -Imodel -Iinclude -Ieunet -Imixin -L. -Llibs -g -pg -O0 -std=c++0x -Wall -Werror
+CXXFLAGS_COMMON:= -Icontainer -Imodel -Iinclude -Ieunet -Imixin -Idevice -L. -Llibs -g -pg -O0 -std=c++0x -Wall -Werror
 CXXFLAGS_DCE := -I./dce/build/include/ns3-dev -I./dce/build/include -L./dce/build -L./dce/build/lib -L./dce/build/include/ns3 
 CXXFLAGS_STD := -I../../build -L../../build 
 CXXFLAGS:=$(CXXFLAGS_COMMON) $(CXXFLAGS_$(VER))
