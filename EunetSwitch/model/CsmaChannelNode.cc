@@ -103,3 +103,6 @@ template
 void CsmaChannelNode::bring<ns3::CsmaNetDevice, ns3::CsmaNetDevice>(
 		const unsigned i_our_csma_device, ns3::Ptr<CsmaNode> ptr_their_node,
 		const unsigned i_their_csma_device);
+
+template
+ns3::Ptr<ns3::CsmaNetDevice> CsmaChannelNode::getUnusedPort() const;

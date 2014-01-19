@@ -20,4 +20,5 @@ Eunet::~Eunet() {
 }
 
 template void Eunet::connect<EunetSwitch, UplinkNetDevice, EunetSwitch,
-		DownlinkNetDevice>(std::string src_name, std::string dst_name);
+		DownlinkNetDevice>(std::string src_name, std::string dst_name,
+		bool use_source_channel);
