@@ -22,7 +22,6 @@ namespace std {
 #include "SimpleSwitch.h"
 
 class EunetSwitch: public SimpleSwitch {
-	EunetTerminals eunetTerminals;
 	uint32_t nTerminals;
 	bool dontAttachTerminals;
 
@@ -31,6 +30,7 @@ class EunetSwitch: public SimpleSwitch {
 	static const char* const asciiTracePrefix;
 
 public:
+	EunetTerminals eunetTerminals;
 	static ns3::TypeId GetTypeId(void);
 	EunetSwitch();
 	virtual ~EunetSwitch();
