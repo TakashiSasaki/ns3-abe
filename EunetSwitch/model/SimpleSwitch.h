@@ -20,10 +20,6 @@ public:
 	SimpleSwitch();
 	virtual ~SimpleSwitch();
 
-	//ns3::Ptr<ns3::CsmaNetDevice>
-	//getUplinkPort(const unsigned i_uplink_port);
-	//ns3::Ptr<ns3::CsmaNetDevice>
-	//getDownlinkPort(const unsigned i_downlink_port);
 	void connectUpTo(const unsigned i_uplink_port,
 			ns3::Ptr<SimpleSwitch> upstream_switch,
 			const unsigned i_downlink_port);

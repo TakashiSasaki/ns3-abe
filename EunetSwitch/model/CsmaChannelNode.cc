@@ -26,6 +26,9 @@ CsmaChannelNode::CsmaChannelNode() :
 	CsmaNode(), INIT_DIDDNCC_FLAGS {
 }
 
+CsmaChannelNode::~CsmaChannelNode(){
+}
+
 void CsmaChannelNode::NotifyConstructionCompleted() {
 	ASSERT_NCC;
 	NS_ASSERT(this->GetNDevices()==0);

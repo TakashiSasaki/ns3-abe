@@ -17,9 +17,7 @@ class CsmaChannelNode: public CsmaNode {
 public:
 	static ns3::TypeId GetTypeId(void);
 	CsmaChannelNode();
-	virtual ~CsmaChannelNode() {
-	}
-	;
+	virtual ~CsmaChannelNode();
 	void bring(ns3::Ptr<CsmaNode> ptr_their_csma_node,
 			const unsigned i_their_csma_device = 0);
 	template<class T, class U>

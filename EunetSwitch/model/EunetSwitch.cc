@@ -41,6 +41,9 @@ EunetSwitch::EunetSwitch(/*const unsigned n_downlink_ports,
 
 }//a constructor
 
+EunetSwitch::~EunetSwitch() {
+}
+
 void EunetSwitch::DoInitialize() {
 	ASSERT_DI;
 	SimpleSwitch::DoInitialize();

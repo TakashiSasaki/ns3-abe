@@ -22,7 +22,6 @@ namespace std {
 #include "SimpleSwitch.h"
 
 class EunetSwitch: public SimpleSwitch {
-	//std::unique_ptr<EunetTerminals> pEunetTerminals;
 	EunetTerminals eunetTerminals;
 	uint32_t nTerminals;
 
@@ -32,18 +31,8 @@ class EunetSwitch: public SimpleSwitch {
 
 public:
 	static ns3::TypeId GetTypeId(void);
-	EunetSwitch(/*const unsigned n_downlink_ports = 48,
-	 const unsigned n_uplink_ports = 4*/);
-	virtual ~EunetSwitch() {
-	}
-	;
-
-#if 0
-	void setAsciiTraceFilename(const std::string& file_name) {
-		ns3::AsciiTraceHelper ascii_trace_helper;
-		this->oswAsciiTrace = ascii_trace_helper.CreateFileStream(file_name);
-	}//createFileStream
-#endif
+	EunetSwitch();
+	virtual ~EunetSwitch();
 
 	EunetTerminals& getTerminals() {
 		return eunetTerminals;

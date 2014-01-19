@@ -45,10 +45,7 @@ void SimpleSwitch::NotifyConstructionCompleted() {
 void SimpleSwitch::DoInitialize() {
 	ASSERT_DI;
 	NS_ASSERT(this->GetNDevices()==0);
-	//this->setNPorts(this->nDownlinkPorts + this->nUplinkPorts);
 	CsmaChannelNode::DoInitialize();
-	//NS_ASSERT (this->getNPorts() == this->getNDevices<ns3::CsmaNetDevice>() );
-	//NS_ASSERT_MSG(this->getNPorts() == this->getNUplinkPorts() + this->getNDownlinkPorts(), "node " << this->GetId() << " has " << this->getNDevices<ns3::CsmaNetDevice>() << " CsmaNetDevice(s)");
 	NS_LOG_INFO("bridging all devices");
 
 	NS_LOG_DEBUG(this->getNDevices<ns3::CsmaNetDevice>() << " " << this->getNDevices<UplinkNetDevice> () << " " << this->getNDevices<DownlinkNetDevice> ());
@@ -92,22 +89,6 @@ void SimpleSwitch::DoDispose() {
 	ASSERT_DD;
 	CsmaChannelNode::DoDispose();
 }//DoDispose
-
-#if 0
-ns3::Ptr<ns3::CsmaNetDevice> SimpleSwitch::getUplinkPort(
-		const unsigned i_uplink_port) {
-	NS_ASSERT(i_uplink_port < nUplinkPorts);
-	auto p = this->getNetDevice<UplinkNetDevice> (i_uplink_port);
-	return p;
-}//getUplinkPort
-
-ns3::Ptr<ns3::CsmaNetDevice> SimpleSwitch::getDownlinkPort(
-		const unsigned i_downlink_port) {
-	NS_ASSERT(i_downlink_port < nDownlinkPorts);
-	auto p = this->getNetDevice<DownlinkNetDevice> (i_downlink_port);
-	return p;
-}//getDownlinkPort
-#endif
 
 void SimpleSwitch::connectUpTo(const unsigned i_uplink_port, ns3::Ptr<
 		SimpleSwitch> upstream_switch, const unsigned i_downlink_port) {
