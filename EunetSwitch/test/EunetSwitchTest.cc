@@ -49,8 +49,8 @@ private:
 		ns3::Simulator::Destroy();
 		NS_LOG_INFO("Done.");
 		//eunet_switch->getTerminals().logTotalRx();
-		NS_LOG_INFO(eunet_switch->getTerminals().getTotalRx() << " bytes received over EunetTerminals");
-		NS_ASSERT_MSG (eunet_switch->getTerminals().getTotalRx()==40960, eunet_switch->getTerminals().getTotalRx());
+		NS_LOG_INFO(eunet_switch->getTerminals().getTotalRx() << " bytes received among all EunetTerminals");
+		NS_ASSERT_MSG (eunet_switch->getTerminals().getTotalRx()==16384, eunet_switch->getTerminals().getTotalRx());
 	}//DoRun
 };
 

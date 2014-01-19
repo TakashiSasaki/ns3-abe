@@ -18,7 +18,7 @@ ns3::TypeId OnOffNode::GetTypeId(void) {
 					ns3::TypeId("OnOffNode").SetParent<PacketSinkNode> ().AddConstructor<
 							OnOffNode> () .AddAttribute("onOffStartTime",
 							"onOffStartTime",
-							ns3::TimeValue(ns3::Seconds(0.0)),
+							ns3::TimeValue(ns3::Seconds(0)),
 							ns3::MakeTimeAccessor(&OnOffNode::onOffStartTime),
 							ns3::MakeTimeChecker()).AddAttribute(
 							"onOffStopTime", "onOffStopTime",
@@ -32,7 +32,7 @@ ns3::TypeId OnOffNode::GetTypeId(void) {
 							ns3::MakeDataRateAccessor(&OnOffNode::onOffDataRate),
 							ns3::MakeDataRateChecker()) .AddAttribute(
 							"onOffRemoteAddress", "onOffRemoteAddress",
-							ns3::StringValue("127.0.0.1"),
+							ns3::StringValue("0.0.0.0"),
 							ns3::MakeStringAccessor(&OnOffNode::onOffRemote),
 							ns3::MakeStringChecker());
 	return type_id;
