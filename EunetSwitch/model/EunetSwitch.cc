@@ -65,3 +65,30 @@ void EunetSwitch::NotifyConstructionCompleted() {
 	ASSERT_NCC;
 	SimpleSwitch::NotifyConstructionCompleted();
 }//NotifyConstructionCompleted
+
+void EunetSwitch::attachTerminals() {
+	for (unsigned i = 0; i < this->nDownlinkPorts; ++i) {
+		ns3::Ptr<DownlinkNetDevice> ptr_downlink_port = this->getNetDevice<
+				DownlinkNetDevice> (i);
+		ns3::Ptr<ns3::CsmaChannel> ptr_downlink_channel =
+				ptr_downlink_port->GetChannel()->GetObject<ns3::CsmaChannel> ();
+		ns3::Ptr<ns3::CsmaNetDevice>
+				ptr_terminal_port = this->eunetTerminals.Get(i)->getNetDevice<
+						ns3::CsmaNetDevice> ();
+		ptr_terminal_port->Attach(ptr_downlink_channel);
+	}//for
+}
+
+void EunetSwitch::detachTerminals() {
+	for (unsigned i = 0; i < this->nDownlinkPorts; ++i) {
+		ns3::Ptr<DownlinkNetDevice> ptr_downlink_port = this->getNetDevice<
+				DownlinkNetDevice> (i);
+		ns3::Ptr<ns3::CsmaChannel> ptr_downlink_channel =
+				ptr_downlink_port->GetChannel()->GetObject<ns3::CsmaChannel> ();
+		ns3::Ptr<ns3::CsmaNetDevice>
+				ptr_terminal_port = this->eunetTerminals.Get(i)->getNetDevice<
+						ns3::CsmaNetDevice> ();
+		ptr_downlink_channel->Detach(ptr_terminal_port);
+	}//for
+}
+

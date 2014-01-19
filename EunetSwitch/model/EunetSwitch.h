@@ -34,6 +34,9 @@ public:
 	EunetSwitch();
 	virtual ~EunetSwitch();
 
+	void attachTerminals();
+	void detachTerminals();
+
 	EunetTerminals& getTerminals() {
 		return eunetTerminals;
 		//return this->ncTerminals;
