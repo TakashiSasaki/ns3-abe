@@ -50,7 +50,7 @@ private:
 		NS_LOG_INFO("Done.");
 		//eunet_switch->getTerminals().logTotalRx();
 		NS_LOG_INFO(eunet_switch->getTerminals().getTotalRx() << " bytes received among all EunetTerminals");
-		NS_ASSERT_MSG (eunet_switch->getTerminals().getTotalRx()==16896, eunet_switch->getTerminals().getTotalRx());
+		NS_ASSERT_MSG (eunet_switch->getTerminals().getTotalRx()==16384, eunet_switch->getTerminals().getTotalRx());
 	}//DoRun
 };
 

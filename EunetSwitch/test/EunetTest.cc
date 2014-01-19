@@ -96,13 +96,31 @@ void EunetTestCase::DoRun() {
 	// attaching corresponding CSMA channel to EunetTerminals
 	eunet.attachEunetTerminals();
 
+	/*
+	 *  routing between network 1 and 2 via router r1 with OSPF.
+	 *
+	 *OnOffApplication
+	 *   t125           t133
+	 *     |                |
+	 *   s12---s11------s13
+	 *            |
+	 *          r1 OSPF
+	 *            |
+	 *   s22---s21---s23
+	 *     |             |
+	 *   t225        t233
+	 *            PacketSink
+	 *
+	 */
+	eunet.addEunetRouter("r1");
+
 	Simulator::Stop(Seconds(this->stopTime));
 	Simulator::Run();
 	Simulator::Destroy();
 	NS_ASSERT_MSG(t133->getTotalRx() == 0, t133->getTotalRx());
-	NS_ASSERT_MSG(t125->getTotalRx() == 340480, t225->getTotalRx());
+	NS_ASSERT_MSG(t125->getTotalRx() == 340992, t125->getTotalRx());
 	NS_ASSERT_MSG(t233->getTotalRx() == 0, t133->getTotalRx());
-	NS_ASSERT_MSG(t225->getTotalRx() == 340992, t225->getTotalRx());
+	NS_ASSERT_MSG(t225->getTotalRx() == 340480, t225->getTotalRx());
 }
 
 class EunetTestSuite: public TestSuite {

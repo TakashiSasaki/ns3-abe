@@ -45,6 +45,15 @@ ns3::Ptr<EunetSwitch> Eunet::addEunetSwitch(std::string name,
 	return ptr_eunet_switch;
 }
 
+ns3::Ptr<EunetRouter> Eunet::addEunetRouter(std::string name) {
+	ns3::Ptr<EunetRouter> ptr_eunet_router = this->eunetRouterFactory.Create<
+			EunetRouter> ();
+	ptr_eunet_router->Initialize();
+	this->Add(ptr_eunet_router);
+	ns3::Names::Add(name, ptr_eunet_router);
+	return ptr_eunet_router;
+}
+
 ns3::Ptr<ns3::CsmaChannel> Eunet::connectUpTo(const std::string& src_name,
 		const std::string& dst_name, Eunet::ActiveChannel active_channel) {
 	return this->connect<EunetSwitch, UplinkNetDevice, EunetSwitch,

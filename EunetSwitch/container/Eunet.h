@@ -41,6 +41,8 @@ public:
 			const ns3::Time& uplink_delay = ns3::MilliSeconds(1),
 			const ns3::Time& downlink_delay = ns3::MilliSeconds(1));
 
+	ns3::Ptr<EunetRouter> addEunetRouter(std::string name);
+
 	void attachEunetTerminals();
 private:
 };
