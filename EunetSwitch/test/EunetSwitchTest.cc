@@ -19,6 +19,7 @@ class EunetSwitchTestCase: public ns3::TestCase {
 public:
 	EunetSwitchTestCase() :
 		ns3::TestCase("EunetSwitchTestCase") {
+		ns3::PacketMetadata::Enable();
 	}
 	virtual ~EunetSwitchTestCase() {
 	}
@@ -28,7 +29,6 @@ private:
 		auto ptr_node = ns3::CreateObject<ns3::Node>();
 		NS_ASSERT(ptr_node->GetNDevices()==0);
 
-		ns3::PacketMetadata::Enable();
 		ns3::ObjectFactory object_factory;
 		object_factory.SetTypeId("EunetSwitch");
 		ns3::Ptr<EunetSwitch> eunet_switch(
@@ -50,7 +50,7 @@ private:
 		NS_LOG_INFO("Done.");
 		//eunet_switch->getTerminals().logTotalRx();
 		NS_LOG_INFO(eunet_switch->getTerminals().getTotalRx() << " bytes received over EunetTerminals");
-		NS_ASSERT_MSG (eunet_switch->getTerminals().getTotalRx()==41472, eunet_switch->getTerminals().getTotalRx());
+		NS_ASSERT_MSG (eunet_switch->getTerminals().getTotalRx()==40960, eunet_switch->getTerminals().getTotalRx());
 	}//DoRun
 };
 
