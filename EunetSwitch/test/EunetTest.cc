@@ -25,8 +25,14 @@ private:
 void EunetTestCase::DoRun() {
 	Eunet eunet;
 
-	eunet.addEunetSwitch("キャンパス間接続L2", 4, 64, ns3::DataRate("10Gbps"),
-			ns3::DataRate("1Gbps"));
+	eunet.addEunetSwitch("s11", 4, 24, ns3::DataRate("10Gbps"), ns3::DataRate(
+			"1Gbps"));
+	eunet.addEunetSwitch("s12", 4, 24, ns3::DataRate("10Gbps"), ns3::DataRate(
+			"1Gbps"));
+	eunet.addEunetSwitch("s13", 4, 24, ns3::DataRate("10Gbps"), ns3::DataRate(
+			"1Gbps"));
+	eunet.connectDownTo("s11", "s12");
+	eunet.connectDownTo("s11", "s13");
 
 	Simulator::Stop(Seconds(this->stopTime));
 	Simulator::Run();
