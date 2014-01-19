@@ -46,6 +46,8 @@ ns3::Ptr<EunetSwitch> Eunet::addEunetSwitch(std::string name,
 }
 
 ns3::Ptr<EunetRouter> Eunet::addEunetRouter(std::string name) {
+	this->eunetRouterFactory.Set("nPorts", ns3::UintegerValue(24));
+	this->eunetRouterFactory.Create<EunetRouter> ();
 	ns3::Ptr<EunetRouter> ptr_eunet_router = this->eunetRouterFactory.Create<
 			EunetRouter> ();
 	ptr_eunet_router->Initialize();
@@ -54,16 +56,51 @@ ns3::Ptr<EunetRouter> Eunet::addEunetRouter(std::string name) {
 	return ptr_eunet_router;
 }
 
-ns3::Ptr<ns3::CsmaChannel> Eunet::connectUpTo(const std::string& src_name,
+ns3::NetDeviceContainer Eunet::connectUpTo(const std::string& src_name,
 		const std::string& dst_name, Eunet::ActiveChannel active_channel) {
 	return this->connect<EunetSwitch, UplinkNetDevice, EunetSwitch,
 			DownlinkNetDevice> (src_name, dst_name, active_channel);
 }
 
-ns3::Ptr<ns3::CsmaChannel> Eunet::connectDownTo(const std::string& src_name,
+ns3::NetDeviceContainer Eunet::connectDownTo(const std::string& src_name,
 		const std::string& dst_name, Eunet::ActiveChannel active_channel) {
 	return this->connect<EunetSwitch, DownlinkNetDevice, EunetSwitch,
 			DownlinkNetDevice> (src_name, dst_name, active_channel);
+}
+
+ns3::NetDeviceContainer Eunet::connectToRouter(std::string src_name,
+		std::string dst_name, ns3::Ipv4Address dst_address,
+		ns3::Ipv4Mask dst_mask, Eunet::ActiveChannel active_channel) {
+	auto ndc = connect<EunetSwitch, ns3::CsmaNetDevice, EunetRouter,
+			ns3::CsmaNetDevice> (src_name, dst_name, DST);
+	ns3::Ptr<ns3::CsmaNetDevice> ptr_dst_net_device = ndc.Get(1)->GetObject<
+			ns3::CsmaNetDevice> ();
+	ns3::Ptr<EunetRouter> ptr_dst_node =
+			ptr_dst_net_device->GetNode()->GetObject<EunetRouter> ();
+	ptr_dst_node->assignAddress(ptr_dst_net_device->GetIfIndex(), dst_address,
+			dst_mask);
+	return ndc;
+}
+
+ns3::NetDeviceContainer Eunet::connectRouters(std::string src_name,
+		std::string dst_name, ns3::Ipv4Address src_address,
+		ns3::Ipv4Address dst_address, ns3::Ipv4Mask ipv4_mask,
+		Eunet::ActiveChannel active_channel) {
+	auto ndc = connect<EunetRouter, ns3::CsmaNetDevice, EunetRouter,
+			ns3::CsmaNetDevice> (src_name, dst_name, active_channel);
+	ns3::Ptr<ns3::CsmaNetDevice> ptr_src_dev = ndc.Get(0)->GetObject<
+			ns3::CsmaNetDevice> ();
+	ns3::Ptr<ns3::CsmaNetDevice> ptr_dst_dev = ndc.Get(1)->GetObject<
+			ns3::CsmaNetDevice> ();
+	ns3::Ptr<EunetRouter> ptr_src_node = ptr_src_dev->GetNode()->GetObject<
+			EunetRouter> ();
+	ns3::Ptr<EunetRouter> ptr_dst_node = ptr_dst_dev->GetNode()->GetObject<
+			EunetRouter> ();
+	ptr_src_node->assignAddress(ptr_src_dev->GetIfIndex(), src_address,
+			ipv4_mask);
+	ptr_dst_node->assignAddress(ptr_dst_dev->GetIfIndex(), dst_address,
+			ipv4_mask);
+	return ndc;
 }
 
 void Eunet::attachEunetTerminals() {

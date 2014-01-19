@@ -20,13 +20,23 @@ public:
 	Eunet();
 	virtual ~Eunet();
 
-	template<class SrcNodeT, class SrcDeviceT, class DstNodeT, class DstDeviceT>
-	ns3::Ptr<ns3::CsmaChannel> connect(const std::string& src_name,
+	template<class SrcNodeT = CsmaChannelNode,
+			class SrcDeviceT = ns3::CsmaNetDevice,
+			class DstNodeT = CsmaChannelNode,
+			class DstDeviceT = ns3::CsmaNetDevice>
+	ns3::NetDeviceContainer connect(const std::string& src_name,
 			const std::string& dst_name, Eunet::ActiveChannel = SRC);
-	ns3::Ptr<ns3::CsmaChannel> connectUpTo(const std::string& src_name,
+	ns3::NetDeviceContainer connectUpTo(const std::string& src_name,
 			const std::string& dst_name, Eunet::ActiveChannel = SRC);
-	ns3::Ptr<ns3::CsmaChannel> connectDownTo(const std::string& src_name,
+	ns3::NetDeviceContainer connectDownTo(const std::string& src_name,
 			const std::string& dst_name, ActiveChannel = SRC);
+	ns3::NetDeviceContainer connectToRouter(std::string src_name,
+			std::string dst_name, ns3::Ipv4Address dst_address,
+			ns3::Ipv4Mask dst_mask, ActiveChannel = SRC);
+	ns3::NetDeviceContainer connectRouters(std::string src_name,
+			std::string dst_name, ns3::Ipv4Address src_address,
+			ns3::Ipv4Address dst_address, ns3::Ipv4Mask ipv4_mask,
+			ActiveChannel = SRC);
 
 	template<class NodeT, class DeviceT>
 	void enablePcap(const unsigned i_port);
@@ -75,7 +85,7 @@ void Eunet::connectNew(std::string src_name, std::string dst_name,
 #endif
 
 template<class SrcNodeT, class SrcDeviceT, class DstNodeT, class DstDeviceT>
-ns3::Ptr<ns3::CsmaChannel> Eunet::connect(const std::string& src_name,
+ns3::NetDeviceContainer Eunet::connect(const std::string& src_name,
 		const std::string& dst_name, Eunet::ActiveChannel active_channel) {
 	//NS_ASSERT((SrcNodeT::GetTypeId()==EunetSwitch::GetTypeId())	|| (SrcNodeT::GetTypeId()==EunetRouter::GetTypeId()));
 	ns3::Ptr<CsmaChannelNode> ptr_src = ns3::Names::Find<SrcNodeT>(src_name);
@@ -95,10 +105,20 @@ ns3::Ptr<ns3::CsmaChannel> Eunet::connect(const std::string& src_name,
 	switch (active_channel) {
 	case SRC:
 		ptr_dst_port->Attach(ptr_src_channel);
-		return ptr_src_channel;
+		{
+			ns3::NetDeviceContainer ndc;
+			ndc.Add(ptr_src_port);
+			ndc.Add(ptr_dst_port);
+			return ndc;
+		}
 	case DST:
 		ptr_src_port->Attach(ptr_dst_channel);
-		return ptr_dst_channel;
+		{
+			ns3::NetDeviceContainer ndc;
+			ndc.Add(ptr_src_port);
+			ndc.Add(ptr_dst_port);
+			return ndc;
+		}
 	default:
 		NS_FATAL_ERROR("only SRC and DST are supported.");
 	}//switch
