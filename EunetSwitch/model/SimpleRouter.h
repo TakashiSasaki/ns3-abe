@@ -4,20 +4,15 @@
 #include "ns3/core-module.h"
 #include "ns3/internet-module.h"
 #include "ns3/dce-application-helper.h"
-//#include "ns3/dce-module.h"
-//#include "ns3/quagga-helper.h"
-//#include "CsmaChannelNode.h"
 #include "CsmaInternetNode.h"
 using namespace ns3;
 
 class SimpleRouter: public CsmaInternetNode {
-	//typedef CsmaChannelNode Base;
 	ns3::DceApplicationHelper dceApplicationHelper;
 	static const ns3::DataRate defaultlinkDataRate;
 	static const ns3::TimeValue defaultlinkDelay;
 
 public:
-	//const unsigned nlinkPorts;
 
 	static ns3::TypeId GetTypeId(void);
 	SimpleRouter();
@@ -33,7 +28,7 @@ public:
 	unsigned getUnusedlinkPort();
 	void enableOspf(const unsigned i_device);
 private:
-	bool isConnectedToSimpleRouter(const unsigned i_port);
+	//bool isConnectedToSimpleRouter(const unsigned i_port);
 	void assignIpAddressToDevice(unsigned i_net_device, ns3::Ipv4Address,
 			ns3::Ipv4Mask);
 	std::unique_ptr<std::vector<std::string> > getAllNetworks();

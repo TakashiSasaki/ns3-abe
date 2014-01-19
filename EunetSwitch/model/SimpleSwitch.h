@@ -34,12 +34,15 @@ public:
 			false);
 	void enablePcapUplink(const int i_uplink_port, const bool promiscuous =
 			false);
-private:
+#if 0
+protected:
 	template<class D, class N>
 	bool isConnectedTo(const unsigned i_port);
+#endif
 DECLARE_DIDDNCC
 };
 
+#if 0
 template<class D, class N>
 bool SimpleSwitch::isConnectedTo(const unsigned i_port) {
 	ns3::Ptr<ns3::CsmaChannel> ptr_csma_channel = this->getCsmaChannel<D> (
@@ -50,7 +53,7 @@ bool SimpleSwitch::isConnectedTo(const unsigned i_port) {
 	for (unsigned i = 0; i < ptr_csma_channel->GetNDevices(); ++i) {
 		NS_LOG_INFO("inspecting port " << i);
 		ns3::Ptr<ns3::NetDevice> ptr_net_device =
-				ptr_csma_channel->GetDevice(i);
+		ptr_csma_channel->GetDevice(i);
 		NS_LOG_INFO("expecting NetDevice .. " << ptr_net_device->GetTypeId());
 		auto ptr_node = ptr_net_device->GetNode();
 		NS_LOG_INFO("expecting Node .. " << ptr_node->GetTypeId());
@@ -66,6 +69,6 @@ bool SimpleSwitch::isConnectedTo(const unsigned i_port) {
 	}//for
 	return false;
 }//isConnectedToSimpleSwitch
-
+#endif
 
 #endif /* SIMPLESWITCH_H_ */

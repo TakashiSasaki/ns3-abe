@@ -54,19 +54,22 @@ void SimpleRouter::connectTo(const unsigned i_link_port,
 		const unsigned connect_i_link_port) {
 	this->bring<ns3::CsmaNetDevice, ns3::CsmaNetDevice> (i_link_port,
 			connect_router, connect_i_link_port);
-	NS_ASSERT(this->isConnectedToSimpleRouter(i_link_port));
-	NS_ASSERT(connect_router->isConnectedToSimpleRouter(connect_i_link_port));
+	NS_ASSERT((this->isConnectedTo<ns3::CsmaNetDevice, SimpleRouter>(i_link_port)));
+	NS_ASSERT((connect_router->isConnectedTo<ns3::CsmaNetDevice, SimpleRouter>(connect_i_link_port)));
 }//connectTo
 
 void SimpleRouter::connectTo(std::string connect_router_name) {
 	ns3::Ptr<ns3::Node> ptr_node = ns3::Names::Find<ns3::Node>(
 			connect_router_name);
-	auto ptr_connect_router = ptr_node->GetObject<SimpleRouter> ();
-	const unsigned unused_link_port = this->getUnusedlinkPort();
-	const unsigned connect_unused_link_port =
-			ptr_connect_router->getUnusedlinkPort();
-	this->connectTo(unused_link_port, ptr_connect_router,
-			connect_unused_link_port);
+	auto ptr_connect_router = ns3::Names::Find<SimpleRouter>(
+			connect_router_name);
+	auto ptr_unused_our_port = this->getUnusedPort<ns3::CsmaNetDevice> ();
+	auto ptr_unused_their_port = ptr_connect_router->getUnusedPort<
+			ns3::CsmaNetDevice> ();
+	ptr_unused_their_port->Attach(
+			ptr_unused_their_port->GetChannel()->GetObject<ns3::CsmaChannel> ());
+	//this->connectTo(unused_link_port, ptr_connect_router,
+	//connect_unused_link_port);
 }//connectTo
 
 #if 0

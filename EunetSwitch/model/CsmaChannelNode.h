@@ -32,6 +32,8 @@ protected:
 	template<class T>
 	void addCsmaChannel(const unsigned i_port, const ns3::DataRate& data_rate,
 			const ns3::Time& delay);
+	template<class D, class N>
+	bool isConnectedTo(const unsigned i_port);
 DECLARE_DIDDNCC
 };
 
@@ -73,14 +75,16 @@ ns3::Ptr<NetDeviceT> CsmaChannelNode::getUnusedPort() const {
 	NS_ASSERT(NetDeviceT::GetTypeId().IsChildOf(ns3::NetDevice::GetTypeId()));
 	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
 		ns3::Ptr<ns3::NetDevice> ptr_net_device = this->GetDevice(i);
-		NS_LOG_DEBUG("inspecting ns3::NetDevice" << ptr_net_device << " actual type is " << ptr_net_device->GetInstanceTypeId());
+		NS_LOG_DEBUG("inspecting ns3::NetDevice" << ptr_net_device
+				<< " actual type is " << ptr_net_device->GetInstanceTypeId());
 		if (ptr_net_device->GetInstanceTypeId() == NetDeviceT::GetTypeId()) {
 			ns3::Ptr<ns3::Channel> ptr_channel = ptr_net_device->GetChannel();
 			bool has_remote_net_device = false;
 			for (unsigned j = 0; j < ptr_channel->GetNDevices(); ++j) {
 				ns3::Ptr<ns3::NetDevice> ptr_remote_net_device =
 						ptr_channel->GetDevice(j);
-				NS_LOG_DEBUG("remote device " << ptr_remote_net_device << " " << ptr_remote_net_device->GetInstanceTypeId());
+				NS_LOG_DEBUG("remote device " << ptr_remote_net_device << " "
+						<< ptr_remote_net_device->GetInstanceTypeId());
 				if (ptr_remote_net_device == ptr_net_device) {
 					continue;
 				} else {
@@ -95,6 +99,33 @@ ns3::Ptr<NetDeviceT> CsmaChannelNode::getUnusedPort() const {
 	}//for
 	NS_LOG_DEBUG("no unused port of " << NetDeviceT::GetTypeId());
 	return NULL;
+}
+
+template<class D, class N>
+bool CsmaChannelNode::isConnectedTo(const unsigned i_port) {
+	ns3::Ptr<ns3::CsmaChannel> ptr_csma_channel = this->getCsmaChannel<D> (
+			i_port);
+	NS_LOG_INFO("node=" << this->GetId() << " port=" << i_port
+			<< " channel is attached to " << ptr_csma_channel->GetNDevices()
+			<< " devices ");
+	for (unsigned i = 0; i < ptr_csma_channel->GetNDevices(); ++i) {
+		NS_LOG_INFO("inspecting port " << i);
+		ns3::Ptr<ns3::NetDevice> ptr_net_device =
+				ptr_csma_channel->GetDevice(i);
+		NS_LOG_INFO("expecting NetDevice .. " << ptr_net_device->GetTypeId());
+		auto ptr_node = ptr_net_device->GetNode();
+		NS_LOG_INFO("expecting Node .. " << ptr_node->GetTypeId());
+		if (ptr_node->GetId() == this->GetId()) {
+			continue;
+		}//if
+		ns3::Ptr<N> ptr_n = ptr_node->GetObject<N> ();
+		NS_LOG_INFO("expecting " << N::GetTypeId() << " .. "
+				<< ptr_node->GetTypeId());
+		if (ptr_n) {
+			return true;
+		}//if
+	}//for
+	return false;
 }
 
 #endif /* CSMACHANNELNODE_H_ */

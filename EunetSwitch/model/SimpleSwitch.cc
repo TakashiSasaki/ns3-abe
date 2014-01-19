@@ -25,7 +25,13 @@ ns3::TypeId SimpleSwitch::GetTypeId(void) {
 			ns3::MakeDataRateChecker()).AddAttribute("downlinkDataRate",
 			"downlinkDataRate", ns3::DataRateValue(1000000000),
 			ns3::MakeDataRateAccessor(&SimpleSwitch::downlinkDataRate),
-			ns3::MakeDataRateChecker());
+			ns3::MakeDataRateChecker()) .AddAttribute("uplinkDelay",
+			"uplinkDelay", ns3::TimeValue(ns3::MilliSeconds(1)),
+			ns3::MakeTimeAccessor(&SimpleSwitch::uplinkDelay),
+			ns3::MakeTimeChecker()).AddAttribute("downlinkDelay",
+			"downlinkDelay", ns3::TimeValue(ns3::MilliSeconds(1)),
+			ns3::MakeTimeAccessor(&SimpleSwitch::downlinkDelay),
+			ns3::MakeTimeChecker());
 	return type_id;
 }//GetTypeId
 
@@ -154,9 +160,20 @@ void SimpleSwitch::enablePcapUplink(const int i_uplink_port,
 			this->getNetDevice<UplinkNetDevice> (i_uplink_port), promiscuous);
 }
 
+#if 0
 template bool SimpleSwitch::isConnectedTo<ns3::CsmaNetDevice, SimpleSwitch>(
 		const unsigned);
 template bool SimpleSwitch::isConnectedTo<DownlinkNetDevice, SimpleSwitch>(
 		const unsigned);
 template bool SimpleSwitch::isConnectedTo<UplinkNetDevice, SimpleSwitch>(
 		const unsigned);
+#endif
+template
+bool CsmaChannelNode::isConnectedTo<ns3::CsmaNetDevice, SimpleSwitch>(
+		const unsigned i_port);
+template
+bool CsmaChannelNode::isConnectedTo<UplinkNetDevice, SimpleSwitch>(
+		const unsigned i_port);
+template
+bool CsmaChannelNode::isConnectedTo<DownlinkNetDevice, SimpleSwitch>(
+		const unsigned i_port);
