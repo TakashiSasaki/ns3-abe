@@ -46,8 +46,9 @@ OnOffNode::OnOffNode(const bool start_at_the_beginning) :
 
 void OnOffNode::DoInitialize() {
 	ASSERT_DI;
-	NS_ASSERT(this->GetNDevices()==0);
+	NS_ASSERT(this->GetNDevices()==1);
 	PacketSinkNode::DoInitialize();
+	NS_ASSERT_MSG(this->GetNDevices()==2,this->GetNDevices());
 	ns3::OnOffHelper on_off_helper("ns3::UdpSocketFactory", ns3::Address(
 			ns3::InetSocketAddress(ns3::Ipv4Address(this->onOffRemote.c_str()),
 					PACKET_SINK_UDP_PORT)));

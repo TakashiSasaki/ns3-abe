@@ -26,7 +26,7 @@ CsmaChannelNode::CsmaChannelNode() :
 	CsmaNode(), INIT_DIDDNCC_FLAGS {
 }
 
-CsmaChannelNode::~CsmaChannelNode(){
+CsmaChannelNode::~CsmaChannelNode() {
 }
 
 void CsmaChannelNode::NotifyConstructionCompleted() {
@@ -38,9 +38,9 @@ void CsmaChannelNode::NotifyConstructionCompleted() {
 
 void CsmaChannelNode::DoInitialize() {
 	ASSERT_DI;
-	NS_ASSERT_MSG(this->GetNDevices()==0, "GetNDevices=" << this->GetNDevices() << " getNPorts=" << this->getNPorts());
+	//NS_ASSERT_MSG(this->GetNDevices()==1, "GetNDevices=" << this->GetNDevices() << " getNPorts=" << this->getNPorts());
 	CsmaNode::DoInitialize();
-	NS_ASSERT(this->GetNDevices()==this->getNPorts());
+	NS_ASSERT(this->getNDevices<ns3::CsmaNetDevice>()==this->getNPorts());
 	NS_LOG_INFO("constructing CsmaChannelNode with " << this->getNPorts() << " ports");
 	this->csmaChannelFactory.SetTypeId("ns3::CsmaChannel");
 	this->csmaChannelFactory.Set("DataRate", ns3::DataRateValue(
@@ -108,4 +108,4 @@ void CsmaChannelNode::bring<ns3::CsmaNetDevice, ns3::CsmaNetDevice>(
 		const unsigned i_their_csma_device);
 
 template
-ns3::Ptr<ns3::CsmaNetDevice> CsmaChannelNode::getUnusedPort() ;
+ns3::Ptr<ns3::CsmaNetDevice> CsmaChannelNode::getUnusedPort();

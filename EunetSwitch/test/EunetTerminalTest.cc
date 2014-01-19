@@ -54,7 +54,7 @@ private:
 		object_factory.SetTypeId("EunetTerminal");
 		ns3::Ptr<EunetTerminal> ptr_eunet_terminal(object_factory.Create<
 				EunetTerminal> ());
-		NS_ASSERT_MSG(ptr_eunet_terminal->GetNDevices() == 0, ptr_eunet_terminal->GetNDevices());
+		NS_ASSERT_MSG(ptr_eunet_terminal->GetNDevices() == 1, ptr_eunet_terminal->GetNDevices());
 		ptr_eunet_terminal->Initialize();
 		NS_ASSERT_MSG(ptr_eunet_terminal->GetNDevices() == 2, ptr_eunet_terminal->GetNDevices());
 		NS_ASSERT_MSG(ptr_eunet_terminal->getNDevices<ns3::CsmaNetDevice>()==1, ptr_eunet_terminal->getNDevices<ns3::CsmaNetDevice>());
@@ -62,7 +62,7 @@ private:
 
 		ns3::Ptr<EunetTerminal> ptr_eunet_terminal_2(object_factory.Create<
 				EunetTerminal> ());
-		NS_ASSERT_MSG(ptr_eunet_terminal_2->GetNDevices() == 0, ptr_eunet_terminal->GetNDevices());
+		NS_ASSERT_MSG(ptr_eunet_terminal_2->GetNDevices() == 1, ptr_eunet_terminal->GetNDevices());
 		ptr_eunet_terminal_2->Initialize();
 		NS_ASSERT_MSG(ptr_eunet_terminal_2->GetNDevices() == 2, ptr_eunet_terminal->GetNDevices());
 
@@ -70,7 +70,7 @@ private:
 		object_factory_2.SetTypeId("EunetTerminal");
 		ns3::Ptr<EunetTerminal> ptr_eunet_terminal_3(object_factory_2.Create<
 				EunetTerminal> ());
-		NS_ASSERT_MSG(ptr_eunet_terminal_3->GetNDevices() == 0, ptr_eunet_terminal->GetNDevices());
+		NS_ASSERT_MSG(ptr_eunet_terminal_3->GetNDevices() == 1, ptr_eunet_terminal->GetNDevices());
 		ptr_eunet_terminal_3->Initialize();
 		NS_ASSERT_MSG(ptr_eunet_terminal_3->GetNDevices() == 2, ptr_eunet_terminal->GetNDevices());
 

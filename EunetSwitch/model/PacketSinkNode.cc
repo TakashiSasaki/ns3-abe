@@ -25,9 +25,9 @@ PacketSinkNode::PacketSinkNode() :
 
 void PacketSinkNode::DoInitialize() {
 	ASSERT_DI;
-	NS_ASSERT(this->GetNDevices()==0);
+	NS_ASSERT(this->GetNDevices()==1);
 	CsmaInternetNode::DoInitialize();
-	NS_ASSERT(this->GetNDevices()==2);
+	NS_ASSERT_MSG(this->GetNDevices()==2, this->GetNDevices());
 	const unsigned n_devices_before = this->GetNDevices();
 	//NS_ASSERT(this->GetNDevices() == 2);
 
@@ -47,9 +47,9 @@ void PacketSinkNode::DoDispose() {
 
 void PacketSinkNode::NotifyConstructionCompleted() {
 	ASSERT_NCC;
-	NS_ASSERT(this->GetNDevices()==0);
+	NS_ASSERT_MSG(this->GetNDevices()==0, this->GetNDevices());
 	CsmaInternetNode::NotifyConstructionCompleted();
-	NS_ASSERT(this->GetNDevices()==0);
+	NS_ASSERT_MSG(this->GetNDevices()==1, this->GetNDevices());
 }//NotifyConstructionCompleted
 
 uint32_t PacketSinkNode::getTotalRx() {

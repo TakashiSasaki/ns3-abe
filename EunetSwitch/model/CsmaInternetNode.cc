@@ -31,12 +31,6 @@ void CsmaInternetNode::NotifyConstructionCompleted() {
 	ASSERT_NCC;
 	NS_ASSERT(this->GetNDevices()==0);
 	CsmaChannelNode::NotifyConstructionCompleted();
-}//NotifyConstructionCompleted
-
-void CsmaInternetNode::DoInitialize() {
-	ASSERT_DI;
-	NS_ASSERT(this->GetNDevices()==0);
-	CsmaChannelNode::DoInitialize();
 	const unsigned n_devices_before = this->GetNDevices();
 	//NS_ASSERT(this->GetNDevices() == 1);
 	ns3::InternetStackHelper internet_stack_helper;
@@ -49,6 +43,26 @@ void CsmaInternetNode::DoInitialize() {
 	this->logAllDevices();
 	NS_ASSERT(this->GetNDevices() == n_devices_before+1);
 	NS_ASSERT(this->GetDevice(n_devices_before)->GetObject<ns3::LoopbackNetDevice>(ns3::LoopbackNetDevice::GetTypeId()));
+}//NotifyConstructionCompleted
+
+void CsmaInternetNode::DoInitialize() {
+	ASSERT_DI;
+	NS_ASSERT(this->GetNDevices()==1);
+	CsmaChannelNode::DoInitialize();
+#if 0
+	const unsigned n_devices_before = this->GetNDevices();
+	//NS_ASSERT(this->GetNDevices() == 1);
+	ns3::InternetStackHelper internet_stack_helper;
+	internet_stack_helper.SetIpv4StackInstall(true);
+	internet_stack_helper.SetIpv6StackInstall(true);
+	NS_ASSERT(this->GetNDevices() == n_devices_before);
+	this->logAllDevices();
+	internet_stack_helper.Install(ns3::NodeContainer(this));
+	NS_LOG_INFO("InternetStackHelper::Install finished");
+	this->logAllDevices();
+	NS_ASSERT(this->GetNDevices() == n_devices_before+1);
+	NS_ASSERT(this->GetDevice(n_devices_before)->GetObject<ns3::LoopbackNetDevice>(ns3::LoopbackNetDevice::GetTypeId()));
+#endif
 }//DoInitialize
 
 #if 0

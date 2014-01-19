@@ -118,6 +118,7 @@ void SimpleRouter::NotifyConstructionCompleted() {
 	//internet_stack_helper.Install(ptr_this);
 	//NS_LOG_INFO("internet stack was installed on the node");
 	auto ptr_ipv4 = ptr_this->GetObject<ns3::Ipv4> ();
+	NS_ASSERT_MSG(ptr_ipv4 != 0, ptr_ipv4);
 	ptr_ipv4->SetRoutingProtocol(ipv4_routing_protocol);
 	NS_LOG_DEBUG("Ipv4DceRoutingProtocol was installed");
 

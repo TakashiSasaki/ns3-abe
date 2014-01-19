@@ -43,17 +43,18 @@ void CsmaNode::DoInitialize() {
 	NS_LOG_INFO("CsmaNode::DoInitialize");
 	ASSERT_DI;
 	NS_LOG_INFO("1 GetNDevices=" << this->GetNDevices());
-	NS_ASSERT_MSG (this->getNDevices<ns3::LoopbackNetDevice>()==0, this->getNDevices<ns3::LoopbackNetDevice>());
-	NS_LOG_INFO("2 GetNDevices=" << this->GetNDevices());
+	//NS_ASSERT_MSG (this->getNDevices<ns3::LoopbackNetDevice>()==0, this->getNDevices<ns3::LoopbackNetDevice>());
+	//NS_LOG_INFO("2 GetNDevices=" << this->GetNDevices());
 	ns3::Node::DoInitialize();
 	NS_LOG_INFO("3 GetNDevices=" << this->GetNDevices());
 	NS_LOG_INFO("constructing CsmaNode with " << this->nCsmaNetDevices << " devices");
-	NS_ASSERT_MSG(this->GetNDevices()==0, "devices=" << this->GetNDevices() << " csma="
-			<< this->getNDevices<ns3::CsmaNetDevice>() << " loopback=" <<this->getNDevices<ns3::LoopbackNetDevice>() );
+	NS_ASSERT_MSG((this->getNDevices<ns3::CsmaNetDevice>()==0), (this->getNDevices<ns3::CsmaNetDevice>()));
+	//NS_ASSERT_MSG(this->GetNDevices()==1, "devices=" << this->GetNDevices() << " csma="
+	//		<< this->getNDevices<ns3::CsmaNetDevice>() << " loopback=" <<this->getNDevices<ns3::LoopbackNetDevice>() );
 	for (uint32_t i = 0; i < this->nCsmaNetDevices; ++i) {
 		this->addCsmaNetDevice<ns3::CsmaNetDevice> ();
 	}//for
-	NS_ASSERT(this->GetNDevices()==this->nCsmaNetDevices);
+	NS_ASSERT(this->getNDevices<ns3::CsmaNetDevice>()==this->nCsmaNetDevices);
 	NS_LOG_INFO("constructed with " << this->GetNDevices() << " devices");
 }
 void CsmaNode::DoDispose() {
