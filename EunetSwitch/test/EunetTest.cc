@@ -23,6 +23,11 @@ private:
 };
 
 void EunetTestCase::DoRun() {
+	Eunet eunet;
+
+	eunet.addEunetSwitch("キャンパス間接続L2", 4, 64, ns3::DataRate("10Gbps"),
+			ns3::DataRate("1Gbps"));
+
 	Simulator::Stop(Seconds(this->stopTime));
 	Simulator::Run();
 	Simulator::Destroy();

@@ -26,6 +26,13 @@ public:
 
 	template<class NodeT, class DeviceT>
 	void enableAsciiTrace(const unsigned i_port);
+
+	ns3::Ptr<EunetSwitch> addEunetSwitch(std::string name,
+			const unsigned n_uplink_ports, const unsigned n_downlik_ports,
+			const ns3::DataRate& uplink_data_rate,
+			const ns3::DataRate& downlink_data_rate,
+			const ns3::Time& uplink_delay = ns3::MilliSeconds(1),
+			const ns3::Time& downlink_delay = ns3::MilliSeconds(1));
 private:
 };
 
@@ -48,10 +55,9 @@ void Eunet::connect(std::string src_name, std::string dst_name,
 	}//if
 
 	ns3::Ptr<SrcDeviceT> ptr_src_device = ptr_src->getUnusedPort<SrcDeviceT> ();
-	ns3::Ptr<DstDeviceT> ptr_dst_device =
-			ptr_dst->getUnusedPort<DstDeviceT> ();
+	ns3::Ptr<DstDeviceT> ptr_dst_device = ptr_dst->getUnusedPort<DstDeviceT> ();
 	ns3::Ptr<ns3::Channel> ptr_src_channel = ptr_src_device->GetChannel();
-	auto ptr_src_csma_channel = ptr_src_channel->GetObject<ns3::CsmaChannel>();
+	auto ptr_src_csma_channel = ptr_src_channel->GetObject<ns3::CsmaChannel> ();
 	ptr_dst_device->Attach(ptr_src_csma_channel);
 }
 
