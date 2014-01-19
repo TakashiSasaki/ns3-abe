@@ -99,20 +99,43 @@ void EunetTestCase::DoRun() {
 	/*
 	 *  routing between network 1 and 2 via router r1 with OSPF.
 	 *
-	 *OnOffApplication
-	 *   t125           t133
-	 *     |                |
-	 *   s12---s11------s13
-	 *            |
-	 *          r1 OSPF
-	 *            |
-	 *   s22---s21---s23
-	 *     |             |
-	 *   t225        t233
-	 *            PacketSink
-	 *
+	 *     OnOffApplication
+	 *       192.168.2.5
+	 *         t125             t133
+	 *           |                |
+	 *         s12-----s11------s13
+	 *                  |
+	 *                  | 192.168.1.101
+	 *192.168.12.1 |---r1 OSPF
+	 *192.168.12.2 |    | 192.168.13.1
+	 *        OSPF r2   |
+	 *192.168.23.2 |    | 192.168.13.3
+	 *192.168.23.3 |---r3 OSPF
+	 *                  |192.168.2.103
+	 *                  |
+	 *         s22-----s21---s23
+	 *           |             |
+	 *         t225          t233
+	 *                     PacketSink
+	 *                    192.168.2.103
 	 */
 	eunet.addEunetRouter("r1");
+	eunet.addEunetRouter("r2");
+	eunet.addEunetRouter("r3");
+
+	//////////////////////////////////////////////
+	// TODO: connect switches and routers
+	//////////////////////////////////////////////
+	eunet.connectToRouter("s11", "r1", ns3::Ipv4Address("192.168.1.101"),
+			ns3::Ipv4Mask("255.255.255.0"));
+	eunet.connectToRouter("s21", "r3", ns3::Ipv4Address("192.168.2.103"),
+			ns3::Ipv4Mask("255.255.255.0"));
+	eunet.connectRouters("r1", "r3", ns3::Ipv4Address("192.168.13.1"),
+			ns3::Ipv4Address("192.168.13.3"), ns3::Ipv4Mask("255.255.255.0"));
+	eunet.connectRouters("r1", "r2", ns3::Ipv4Address("192.168.12.1"),
+			ns3::Ipv4Address("192.168.12.2"), ns3::Ipv4Mask("255.255.255.0"));
+	eunet.connectRouters("r2", "r3", ns3::Ipv4Address("192.168.23.1"),
+			ns3::Ipv4Address("192.168.23.3"), ns3::Ipv4Mask("255.255.255.0"));
 
 	Simulator::Stop(Seconds(this->stopTime));
 	Simulator::Run();
