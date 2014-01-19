@@ -33,7 +33,7 @@ public:
 			ns3::Ptr<SimpleSwitch> sibling_switch,
 			const unsigned i_sibling_uplink_port);
 	//unsigned getUnusedUplinkPort();
-	unsigned getUnusedDownlinkPort();
+	//unsigned getUnusedDownlinkPort();
 	void enableAsciiTraceDownlink(const int i_downlink_port);
 	void enableAsciiTraceUplink(const int i_uplink_port);
 	void enablePcapDownlink(const int i_downlink_port, const bool promiscuous =

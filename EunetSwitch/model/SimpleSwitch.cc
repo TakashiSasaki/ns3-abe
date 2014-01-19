@@ -143,15 +143,6 @@ void SimpleSwitch::connectSibling(const unsigned i_our_port, ns3::Ptr<
 	NS_ASSERT((sibling_switch->isConnectedTo<ns3::CsmaNetDevice, SimpleSwitch>(+i_their_port)));
 }//connectSibling
 
-unsigned SimpleSwitch::getUnusedDownlinkPort() {
-	for (unsigned i = 0; i < this->nDownlinkPorts; ++i) {
-		if (!this->isConnectedTo<DownlinkNetDevice, SimpleSwitch> (i)) {
-			return i;
-		}//if
-	}//for
-	NS_FATAL_ERROR("no unused downlink port");
-}
-
 void SimpleSwitch::SimpleSwitch::enableAsciiTraceDownlink(
 		const int i_downlink_port) {
 	ns3::CsmaHelper csma_helper;
