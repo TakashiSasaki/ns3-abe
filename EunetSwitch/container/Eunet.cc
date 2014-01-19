@@ -35,6 +35,7 @@ ns3::Ptr<EunetSwitch> Eunet::addEunetSwitch(std::string name,
 	this->eunetSwitchFactory.Set("uplinkDelay", ns3::TimeValue(uplink_delay));
 	this->eunetSwitchFactory.Set("downlinkDelay",
 			ns3::TimeValue(downlink_delay));
+	this->eunetSwitchFactory.Set("dontAttachTerminals", ns3::BooleanValue(true));
 	ns3::Ptr<EunetSwitch> ptr_eunet_switch = this->eunetSwitchFactory.Create<
 			EunetSwitch> ();
 	ptr_eunet_switch->Initialize();

@@ -24,6 +24,7 @@ namespace std {
 class EunetSwitch: public SimpleSwitch {
 	EunetTerminals eunetTerminals;
 	uint32_t nTerminals;
+	bool dontAttachTerminals;
 
 	//ns3::Ptr<ns3::OutputStreamWrapper> oswAsciiTrace;
 	static const char* const pcapPrefix;

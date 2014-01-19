@@ -17,7 +17,11 @@ NS_OBJECT_ENSURE_REGISTERED(EunetSwitch);
 
 ns3::TypeId EunetSwitch::GetTypeId(void) {
 	static ns3::TypeId type_id = ns3::TypeId("EunetSwitch").SetParent<
-			SimpleSwitch> ().AddConstructor<EunetSwitch> ();
+			SimpleSwitch> ().AddConstructor<EunetSwitch> (). AddAttribute(
+			"dontAttachTerminals", "dontAttachTerminals", ns3::BooleanValue(
+					false), ns3::MakeBooleanAccessor(
+					&EunetSwitch::dontAttachTerminals),
+			ns3::MakeBooleanChecker());
 	return type_id;
 }//GetTypeId
 
@@ -48,12 +52,19 @@ void EunetSwitch::DoInitialize() {
 	ASSERT_DI;
 	SimpleSwitch::DoInitialize();
 	this->eunetTerminals.initialize(this->nDownlinkPorts);
+#if 0
 	NS_LOG_INFO("attaching " << this->eunetTerminals.GetN() << " terminal(s) to corresponding port(s)");
 	for (unsigned i = 0; i < this->eunetTerminals.GetN(); ++i) {
 		NS_LOG_INFO("attaching terminal " << i << " to corresponding port");
 		this->bring<DownlinkNetDevice, ns3::CsmaNetDevice> (i,
 				this->eunetTerminals.Get(i), 0);
 	}//for
+#endif
+	if(this->dontAttachTerminals) {
+		// do nothing
+	} else {
+		this->attachTerminals();
+	}
 }//DoInitialize
 
 void EunetSwitch::DoDispose() {
