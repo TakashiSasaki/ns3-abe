@@ -20,8 +20,8 @@ public:
 	SimpleSwitch();
 	virtual ~SimpleSwitch();
 
-	ns3::Ptr<ns3::CsmaNetDevice>
-	getUplinkPort(const unsigned i_uplink_port);
+	//ns3::Ptr<ns3::CsmaNetDevice>
+	//getUplinkPort(const unsigned i_uplink_port);
 	ns3::Ptr<ns3::CsmaNetDevice>
 	getDownlinkPort(const unsigned i_downlink_port);
 	void connectUpTo(const unsigned i_uplink_port,
@@ -32,8 +32,6 @@ public:
 	void connectSibling(const unsigned i_uplink_port,
 			ns3::Ptr<SimpleSwitch> sibling_switch,
 			const unsigned i_sibling_uplink_port);
-	//unsigned getUnusedUplinkPort();
-	//unsigned getUnusedDownlinkPort();
 	void enableAsciiTraceDownlink(const int i_downlink_port);
 	void enableAsciiTraceUplink(const int i_uplink_port);
 	void enablePcapDownlink(const int i_downlink_port, const bool promiscuous =
