@@ -100,7 +100,6 @@ ns3::Ptr<ns3::CsmaNetDevice> SimpleSwitch::getUplinkPort(
 	auto p = this->getNetDevice<UplinkNetDevice> (i_uplink_port);
 	return p;
 }//getUplinkPort
-#endif
 
 ns3::Ptr<ns3::CsmaNetDevice> SimpleSwitch::getDownlinkPort(
 		const unsigned i_downlink_port) {
@@ -108,6 +107,7 @@ ns3::Ptr<ns3::CsmaNetDevice> SimpleSwitch::getDownlinkPort(
 	auto p = this->getNetDevice<DownlinkNetDevice> (i_downlink_port);
 	return p;
 }//getDownlinkPort
+#endif
 
 void SimpleSwitch::connectUpTo(const unsigned i_uplink_port, ns3::Ptr<
 		SimpleSwitch> upstream_switch, const unsigned i_downlink_port) {
@@ -149,7 +149,7 @@ void SimpleSwitch::SimpleSwitch::enableAsciiTraceDownlink(
 		const int i_downlink_port) {
 	ns3::CsmaHelper csma_helper;
 	csma_helper.EnableAscii(this->GetInstanceTypeId().GetName(),
-			this->getDownlinkPort(i_downlink_port));
+			this->getNetDevice<DownlinkNetDevice> (i_downlink_port));
 }
 
 void SimpleSwitch::enableAsciiTraceUplink(const int i_uplink_port) {
@@ -162,7 +162,8 @@ void SimpleSwitch::enablePcapDownlink(const int i_downlink_port,
 		const bool promiscuous) {
 	ns3::CsmaHelper csma_helper;
 	csma_helper.EnablePcap(this->GetInstanceTypeId().GetName(),
-			this->getDownlinkPort(i_downlink_port), promiscuous);
+			this->getNetDevice<DownlinkNetDevice> (i_downlink_port),
+			promiscuous);
 }
 
 void SimpleSwitch::enablePcapUplink(const int i_uplink_port,
