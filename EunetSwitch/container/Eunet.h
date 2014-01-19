@@ -40,6 +40,8 @@ public:
 			const ns3::DataRate& downlink_data_rate,
 			const ns3::Time& uplink_delay = ns3::MilliSeconds(1),
 			const ns3::Time& downlink_delay = ns3::MilliSeconds(1));
+
+	void attachEunetTerminals();
 private:
 };
 

@@ -32,7 +32,9 @@ void EunetTestCase::DoRun() {
 	eunet.addEunetSwitch("s13", 4, 24, ns3::DataRate("10Gbps"), ns3::DataRate(
 			"1Gbps"));
 	eunet.connectDownTo("s11", "s12");
-	//eunet.connectDownTo("s11", "s13");
+	eunet.connectDownTo("s11", "s13");
+
+	eunet.attachEunetTerminals();
 
 	Simulator::Stop(Seconds(this->stopTime));
 	Simulator::Run();

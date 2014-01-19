@@ -57,3 +57,12 @@ ns3::Ptr<ns3::CsmaChannel> Eunet::connectDownTo(const std::string& src_name,
 			DownlinkNetDevice> (src_name, dst_name, active_channel);
 }
 
+void Eunet::attachEunetTerminals() {
+	for (unsigned i = 0; i < this->GetN(); ++i) {
+		auto ptr_node = this->Get(i);
+		auto type_id = ptr_node->GetInstanceTypeId();
+		if (type_id == EunetSwitch::GetTypeId()) {
+			ptr_node->GetObject<EunetSwitch> ()->attachTerminals();
+		}//if
+	}//for
+}
