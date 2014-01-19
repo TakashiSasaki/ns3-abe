@@ -32,7 +32,7 @@ public:
 	void connectSibling(const unsigned i_uplink_port,
 			ns3::Ptr<SimpleSwitch> sibling_switch,
 			const unsigned i_sibling_uplink_port);
-	unsigned getUnusedUplinkPort();
+	//unsigned getUnusedUplinkPort();
 	unsigned getUnusedDownlinkPort();
 	void enableAsciiTraceDownlink(const int i_downlink_port);
 	void enableAsciiTraceUplink(const int i_uplink_port);

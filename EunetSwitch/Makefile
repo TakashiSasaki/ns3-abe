@@ -18,6 +18,7 @@ TESTS_DCE= \
 	EunetTest.o \
 	SimpleSwitchTest.o \
 	EunetSwitchTest.o \
+	EunetSwitchesTest.o \
 	EunetTerminalTest.o \
 	EunetTerminalsTest.o \
     #EunetRouterTest.o \

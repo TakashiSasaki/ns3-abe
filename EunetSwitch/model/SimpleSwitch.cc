@@ -123,8 +123,6 @@ void SimpleSwitch::connectUpTo(std::string upstream_switch_name) {
 			DownlinkNetDevice> ();
 	unused_downlink_port->Attach(unused_uplink_port->GetChannel()->GetObject<
 			ns3::CsmaChannel> ());
-	//this->connectUpTo(unused_uplink_port, ptr_upstream_switch,
-	//		unused_downlink_port);
 }//connectUpTo
 
 void SimpleSwitch::connectDownTo(std::string downstream_switch_name) {
@@ -152,15 +150,6 @@ unsigned SimpleSwitch::getUnusedDownlinkPort() {
 		}//if
 	}//for
 	NS_FATAL_ERROR("no unused downlink port");
-}
-
-unsigned SimpleSwitch::getUnusedUplinkPort() {
-	for (unsigned i = 0; i < this->nUplinkPorts; ++i) {
-		if (!this->isConnectedTo<UplinkNetDevice, SimpleSwitch> (i)) {
-			return i;
-		}//if
-	}//for
-	NS_FATAL_ERROR("no unused uplink port");
 }
 
 void SimpleSwitch::SimpleSwitch::enableAsciiTraceDownlink(
