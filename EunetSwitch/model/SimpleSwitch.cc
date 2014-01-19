@@ -118,21 +118,14 @@ void SimpleSwitch::connectUpTo(const unsigned i_uplink_port, ns3::Ptr<
 void SimpleSwitch::connectUpTo(std::string upstream_switch_name) {
 	auto ptr_node = ns3::Names::Find<ns3::Node>(upstream_switch_name);
 	auto ptr_upstream_switch = ptr_node->GetObject<SimpleSwitch> ();
-	auto unused_uplink_port = this->getUnusedUplinkPort();
-	auto unused_downlink_port = ptr_upstream_switch->getUnusedDownlinkPort();
-	this->connectUpTo(unused_uplink_port, ptr_upstream_switch,
-			unused_downlink_port);
+	auto unused_uplink_port = this->getUnusedPort<UplinkNetDevice> ();
+	auto unused_downlink_port = ptr_upstream_switch->getUnusedPort<
+			DownlinkNetDevice> ();
+	unused_downlink_port->Attach(unused_uplink_port->GetChannel()->GetObject<
+			ns3::CsmaChannel> ());
+	//this->connectUpTo(unused_uplink_port, ptr_upstream_switch,
+	//		unused_downlink_port);
 }//connectUpTo
-
-#if 0
-void SimpleSwitch::connectDownTo(const unsigned i_downlink_port, ns3::Ptr<
-		SimpleSwitch> downstream_switch, const unsigned i_uplink_port) {
-	this->bring<DownlinkNetDevice, UplinkNetDevice> (i_downlink_port,
-			downstream_switch, i_uplink_port);
-	NS_ASSERT((this->isConnectedTo<DownlinkNetDevice,SimpleSwitch>(i_downlink_port)));
-	NS_ASSERT((downstream_switch->isConnectedTo<UplinkNetDevice, SimpleSwitch>(i_uplink_port)));
-}//connectDownTo
-#endif
 
 void SimpleSwitch::connectDownTo(std::string downstream_switch_name) {
 	auto ptr_node = ns3::Names::Find<ns3::Node>(downstream_switch_name);
