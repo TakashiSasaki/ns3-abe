@@ -39,7 +39,7 @@ EunetSwitch/test-runner
 EunetSwitch/visualize
 EunetSwitch/elf-cache
 EunetSwitch/exitprocs
-EunetSwitch/files-?
+EunetSwitch/files-*
 test-runner-dce
 EunetSimulation
 *.orig
