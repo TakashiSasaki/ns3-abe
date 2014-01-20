@@ -79,22 +79,22 @@ void SimpleSwitchTestCase::DoRun() {
 	{
 		auto ptr_unused_csma_net_device_on_switch_1_before =
 				ptr_simple_switch_1->getUnusedPort<ns3::CsmaNetDevice> ();
-		NS_LOG_DEBUG(ptr_unused_csma_net_device_on_switch_1_before->GetNode()->GetId() << ' '<< ptr_unused_csma_net_device_on_switch_1_before->GetIfIndex());
+		NS_LOG_INFO(ptr_unused_csma_net_device_on_switch_1_before->GetNode()->GetId() << ' '<< ptr_unused_csma_net_device_on_switch_1_before->GetIfIndex());
 		auto ptr_unused_uplink_device_on_switch_1_before =
 				ptr_simple_switch_1->getUnusedPort<UplinkNetDevice> ();
-		NS_LOG_DEBUG(ptr_unused_uplink_device_on_switch_1_before->GetNode()->GetId() << ' '<< ptr_unused_uplink_device_on_switch_1_before->GetIfIndex());
+		NS_LOG_INFO(ptr_unused_uplink_device_on_switch_1_before->GetNode()->GetId() << ' '<< ptr_unused_uplink_device_on_switch_1_before->GetIfIndex());
 		auto ptr_unused_downlink_device_on_switch_1_before =
 				ptr_simple_switch_1->getUnusedPort<DownlinkNetDevice> ();
-		NS_LOG_DEBUG(ptr_unused_downlink_device_on_switch_1_before->GetNode()->GetId() << ' '<< ptr_unused_downlink_device_on_switch_1_before->GetIfIndex());
+		NS_LOG_INFO(ptr_unused_downlink_device_on_switch_1_before->GetNode()->GetId() << ' '<< ptr_unused_downlink_device_on_switch_1_before->GetIfIndex());
 		auto ptr_unused_csma_net_device_on_switch_2_before =
 				ptr_simple_switch_2->getUnusedPort<ns3::CsmaNetDevice> ();
-		NS_LOG_DEBUG(ptr_unused_csma_net_device_on_switch_2_before->GetNode()->GetId() << ' '<< ptr_unused_csma_net_device_on_switch_2_before->GetIfIndex());
+		NS_LOG_INFO(ptr_unused_csma_net_device_on_switch_2_before->GetNode()->GetId() << ' '<< ptr_unused_csma_net_device_on_switch_2_before->GetIfIndex());
 		auto ptr_unused_uplink_device_on_switch_2_before =
 				ptr_simple_switch_2->getUnusedPort<UplinkNetDevice> ();
-		NS_LOG_DEBUG(ptr_unused_uplink_device_on_switch_2_before->GetNode()->GetId() << ' '<< ptr_unused_uplink_device_on_switch_2_before->GetIfIndex());
+		NS_LOG_INFO(ptr_unused_uplink_device_on_switch_2_before->GetNode()->GetId() << ' '<< ptr_unused_uplink_device_on_switch_2_before->GetIfIndex());
 		auto ptr_unused_downlink_device_on_switch_2_before =
 				ptr_simple_switch_2->getUnusedPort<DownlinkNetDevice> ();
-		NS_LOG_DEBUG(ptr_unused_downlink_device_on_switch_2_before->GetNode()->GetId() << ' '<< ptr_unused_downlink_device_on_switch_2_before->GetIfIndex());
+		NS_LOG_INFO(ptr_unused_downlink_device_on_switch_2_before->GetNode()->GetId() << ' '<< ptr_unused_downlink_device_on_switch_2_before->GetIfIndex());
 	}
 
 	ptr_simple_switch_2->bring<ns3::CsmaNetDevice, ns3::CsmaNetDevice> (0,
@@ -106,19 +106,19 @@ void SimpleSwitchTestCase::DoRun() {
 		NS_ASSERT(ptr_unused_csma_net_device_on_switch_1_after == NULL);
 		auto ptr_unused_uplink_device_on_switch_1_after =
 				ptr_simple_switch_1->getUnusedPort<UplinkNetDevice> ();
-		NS_LOG_DEBUG(ptr_unused_uplink_device_on_switch_1_after->GetNode()->GetId() << ' '<< ptr_unused_uplink_device_on_switch_1_after->GetIfIndex());
+		NS_LOG_INFO(ptr_unused_uplink_device_on_switch_1_after->GetNode()->GetId() << ' '<< ptr_unused_uplink_device_on_switch_1_after->GetIfIndex());
 		auto ptr_unused_downlink_device_on_switch_1_after =
 				ptr_simple_switch_1->getUnusedPort<DownlinkNetDevice> ();
-		NS_LOG_DEBUG(ptr_unused_downlink_device_on_switch_1_after->GetNode()->GetId() << ' '<< ptr_unused_downlink_device_on_switch_1_after->GetIfIndex());
+		NS_LOG_INFO(ptr_unused_downlink_device_on_switch_1_after->GetNode()->GetId() << ' '<< ptr_unused_downlink_device_on_switch_1_after->GetIfIndex());
 		auto ptr_unused_csma_net_device_on_switch_2_after =
 				ptr_simple_switch_2->getUnusedPort<ns3::CsmaNetDevice> ();
 		NS_ASSERT(ptr_unused_csma_net_device_on_switch_2_after == NULL);
 		auto ptr_unused_uplink_device_on_switch_2_after =
 				ptr_simple_switch_2->getUnusedPort<UplinkNetDevice> ();
-		NS_LOG_DEBUG(ptr_unused_uplink_device_on_switch_2_after->GetNode()->GetId() << ' '<< ptr_unused_uplink_device_on_switch_2_after->GetIfIndex());
+		NS_LOG_INFO(ptr_unused_uplink_device_on_switch_2_after->GetNode()->GetId() << ' '<< ptr_unused_uplink_device_on_switch_2_after->GetIfIndex());
 		auto ptr_unused_downlink_device_on_switch_2_after =
 				ptr_simple_switch_2->getUnusedPort<DownlinkNetDevice> ();
-		NS_LOG_DEBUG(ptr_unused_downlink_device_on_switch_2_after->GetNode()->GetId() << ' '<< ptr_unused_downlink_device_on_switch_2_after->GetIfIndex());
+		NS_LOG_INFO(ptr_unused_downlink_device_on_switch_2_after->GetNode()->GetId() << ' '<< ptr_unused_downlink_device_on_switch_2_after->GetIfIndex());
 	}
 
 	Simulator::Stop(Seconds(10.0));

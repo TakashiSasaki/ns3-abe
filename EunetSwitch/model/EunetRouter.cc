@@ -41,6 +41,7 @@ EunetRouter::EunetRouter() :
 
 void EunetRouter::DoInitialize() {
 	ASSERT_DI;
+	//this->SetAttribute("nPorts", ns3::UintegerValue(10));
 	SimpleRouter::DoInitialize();
 }//DoInitialize
 

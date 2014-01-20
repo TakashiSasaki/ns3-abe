@@ -79,6 +79,7 @@ ns3::NetDeviceContainer Eunet::connectToRouter(std::string src_name,
 			ptr_dst_net_device->GetNode()->GetObject<EunetRouter> ();
 	ptr_dst_node->assignAddress(ptr_dst_net_device->GetIfIndex(), dst_address,
 			dst_mask);
+	ptr_dst_node->enableOspf(ptr_dst_net_device->GetIfIndex());
 	return ndc;
 }
 
@@ -100,6 +101,8 @@ ns3::NetDeviceContainer Eunet::connectRouters(std::string src_name,
 			ipv4_mask);
 	ptr_dst_node->assignAddress(ptr_dst_dev->GetIfIndex(), dst_address,
 			ipv4_mask);
+	ptr_src_node->enableOspf(ptr_src_dev->GetIfIndex());
+	ptr_dst_node->enableOspf(ptr_dst_dev->GetIfIndex());
 	return ndc;
 }
 

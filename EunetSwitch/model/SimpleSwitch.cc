@@ -54,18 +54,18 @@ void SimpleSwitch::DoInitialize() {
 	CsmaChannelNode::DoInitialize();
 	NS_LOG_INFO("bridging all devices");
 
-	NS_LOG_DEBUG(this->getNDevices<ns3::CsmaNetDevice>() << " " << this->getNDevices<UplinkNetDevice> () << " " << this->getNDevices<DownlinkNetDevice> ());
+	NS_LOG_INFO(this->getNDevices<ns3::CsmaNetDevice>() << " " << this->getNDevices<UplinkNetDevice> () << " " << this->getNDevices<DownlinkNetDevice> ());
 	for (unsigned i = 0; i < this->nUplinkPorts; ++i) {
 		this->addCsmaNetDevice<UplinkNetDevice> ();
 	}//for
 
-	NS_LOG_DEBUG(this->getNDevices<ns3::CsmaNetDevice>() << " " << this->getNDevices<UplinkNetDevice> () << " " << this->getNDevices<DownlinkNetDevice> ());
+	NS_LOG_INFO(this->getNDevices<ns3::CsmaNetDevice>() << " " << this->getNDevices<UplinkNetDevice> () << " " << this->getNDevices<DownlinkNetDevice> ());
 
 	for (unsigned i = 0; i < this->nDownlinkPorts; ++i) {
 		this->addCsmaNetDevice<DownlinkNetDevice> ();
 	}//for
 
-	NS_LOG_DEBUG(this->getNDevices<ns3::CsmaNetDevice>() << " " << this->getNDevices<UplinkNetDevice> () << " " << this->getNDevices<DownlinkNetDevice> ());
+	NS_LOG_INFO(this->getNDevices<ns3::CsmaNetDevice>() << " " << this->getNDevices<UplinkNetDevice> () << " " << this->getNDevices<DownlinkNetDevice> ());
 
 	for (unsigned i = 0; i < this->nUplinkPorts; ++i) {
 		this->addCsmaChannel<UplinkNetDevice> (i, this->uplinkDataRate,

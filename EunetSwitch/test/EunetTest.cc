@@ -106,11 +106,11 @@ void EunetTestCase::DoRun() {
 	 *         s12-----s11------s13
 	 *                  |
 	 *                  | 192.168.1.101
-	 *192.168.12.1 |---r1 OSPF
+	 *192.168.12.1 |----r1 OSPF
 	 *192.168.12.2 |    | 192.168.13.1
 	 *        OSPF r2   |
 	 *192.168.23.2 |    | 192.168.13.3
-	 *192.168.23.3 |---r3 OSPF
+	 *192.168.23.3 |----r3 OSPF
 	 *                  |192.168.2.103
 	 *                  |
 	 *         s22-----s21---s23
@@ -137,6 +137,12 @@ void EunetTestCase::DoRun() {
 	eunet.connectRouters("r2", "r3", ns3::Ipv4Address("192.168.23.1"),
 			ns3::Ipv4Address("192.168.23.3"), ns3::Ipv4Mask("255.255.255.0"));
 
+	//auto ptr_s12 = ns3::Names::Find("s12");
+	//auto ptr_s23 = ns3::Names::Find("s23");
+	//auto t125 = ptr_s12->eunetTerminals->Get(5);
+	//auto t233 = ptr_s23->eunetTerminals->Get(5);
+	t125->setRemote("192.168.2.103");
+
 	Simulator::Stop(Seconds(this->stopTime));
 	Simulator::Run();
 	Simulator::Destroy();
@@ -144,13 +150,14 @@ void EunetTestCase::DoRun() {
 	NS_ASSERT_MSG(t125->getTotalRx() == 340992, t125->getTotalRx());
 	NS_ASSERT_MSG(t233->getTotalRx() == 0, t133->getTotalRx());
 	NS_ASSERT_MSG(t225->getTotalRx() == 340480, t225->getTotalRx());
+	NS_ASSERT_MSG(t233->getTotalRx() == 340480, t233->getTotalRx());
 }
 
 class EunetTestSuite: public TestSuite {
 public:
 	EunetTestSuite() :
 		ns3::TestSuite("EunetTestSuite", UNIT) {
-		AddTestCase(new EunetTestCase, TestCase::QUICK);
+		AddTestCase(new EunetTestCase, TestCase::TAKES_FOREVER);
 	}
 };
 

@@ -71,11 +71,11 @@ void CsmaChannelNode::bring(const unsigned i_our_csma_device,
 
 template<class NetDeviceT>
 ns3::Ptr<NetDeviceT> CsmaChannelNode::getUnusedPort() {
-	NS_LOG_DEBUG(NetDeviceT::GetTypeId());
+	NS_LOG_INFO(NetDeviceT::GetTypeId());
 	NS_ASSERT(NetDeviceT::GetTypeId().IsChildOf(ns3::NetDevice::GetTypeId()));
 	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
 		ns3::Ptr<ns3::NetDevice> ptr_net_device = this->GetDevice(i);
-		NS_LOG_DEBUG("inspecting ns3::NetDevice " << i << '(' << ptr_net_device
+		NS_LOG_INFO("inspecting ns3::NetDevice " << i << '(' << ptr_net_device
 				<< ')' << " actual type is "
 				<< ptr_net_device->GetInstanceTypeId());
 		if (ptr_net_device->GetInstanceTypeId() == NetDeviceT::GetTypeId()) {
@@ -84,14 +84,14 @@ ns3::Ptr<NetDeviceT> CsmaChannelNode::getUnusedPort() {
 			for (unsigned j = 0; j < ptr_channel->GetNDevices(); ++j) {
 				ns3::Ptr<ns3::NetDevice> ptr_remote_net_device =
 						ptr_channel->GetDevice(j);
-				NS_LOG_DEBUG("remote device " << ptr_remote_net_device << " "
+				NS_LOG_INFO("remote device " << ptr_remote_net_device << " "
 						<< ptr_remote_net_device->GetInstanceTypeId());
 				if (ptr_remote_net_device == ptr_net_device) {
-					NS_LOG_DEBUG("ignored because remote device "
+					NS_LOG_INFO("ignored because remote device "
 							<< ptr_remote_net_device << " is myself");
 					continue;
 				} else {
-					NS_LOG_DEBUG(ptr_remote_net_device
+					NS_LOG_INFO(ptr_remote_net_device
 							<< " is connected to other node");
 					has_remote_net_device = true;
 					break;
