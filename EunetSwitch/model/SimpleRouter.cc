@@ -90,6 +90,7 @@ void SimpleRouter::DoInitialize() {
 
 void SimpleRouter::NotifyConstructionCompleted() {
 	ASSERT_NCC
+	SetAttribute("willAssignDummyAddress", ns3::BooleanValue(true));
 	NS_ASSERT_MSG(this->GetNDevices() == 0, this->GetNDevices());
 	CsmaInternetNode::NotifyConstructionCompleted();
 	NS_ASSERT_MSG(((this->getNDevices<ns3::CsmaNetDevice>()) == this->nPorts), (this->getNetDevice<ns3::CsmaNetDevice>()));

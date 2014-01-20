@@ -47,14 +47,16 @@ private:
 
 		object_factory.SetTypeId("CsmaNode");
 		ns3::Ptr<CsmaNode> ptr_csma_node(object_factory.Create<CsmaNode> ());
-		NS_ASSERT(ptr_csma_node->GetNDevices() == 0);
+		NS_ASSERT_MSG(ptr_csma_node->GetNDevices() == 1, ptr_csma_node->GetNDevices());
+		NS_ASSERT_MSG(ptr_csma_node->getNDevices<ns3::CsmaNetDevice>() == 1, ptr_csma_node->getNDevices<ns3::CsmaNetDevice>());
+		NS_ASSERT_MSG(ptr_csma_node->getNDevices<ns3::LoopbackNetDevice>() == 0, ptr_csma_node->getNDevices<ns3::LoopbackNetDevice>());
 		ptr_csma_node->Initialize();
 		ptr_csma_node->Dispose();
 
 		object_factory.SetTypeId("EunetTerminal");
 		ns3::Ptr<EunetTerminal> ptr_eunet_terminal(object_factory.Create<
 				EunetTerminal> ());
-		NS_ASSERT_MSG(ptr_eunet_terminal->GetNDevices() == 1, ptr_eunet_terminal->GetNDevices());
+		NS_ASSERT_MSG(ptr_eunet_terminal->GetNDevices() == 2, ptr_eunet_terminal->GetNDevices());
 		ptr_eunet_terminal->Initialize();
 		NS_ASSERT_MSG(ptr_eunet_terminal->GetNDevices() == 2, ptr_eunet_terminal->GetNDevices());
 		NS_ASSERT_MSG(ptr_eunet_terminal->getNDevices<ns3::CsmaNetDevice>()==1, ptr_eunet_terminal->getNDevices<ns3::CsmaNetDevice>());
@@ -62,7 +64,7 @@ private:
 
 		ns3::Ptr<EunetTerminal> ptr_eunet_terminal_2(object_factory.Create<
 				EunetTerminal> ());
-		NS_ASSERT_MSG(ptr_eunet_terminal_2->GetNDevices() == 1, ptr_eunet_terminal->GetNDevices());
+		NS_ASSERT_MSG(ptr_eunet_terminal_2->GetNDevices() == 2, ptr_eunet_terminal->GetNDevices());
 		ptr_eunet_terminal_2->Initialize();
 		NS_ASSERT_MSG(ptr_eunet_terminal_2->GetNDevices() == 2, ptr_eunet_terminal->GetNDevices());
 
@@ -70,7 +72,7 @@ private:
 		object_factory_2.SetTypeId("EunetTerminal");
 		ns3::Ptr<EunetTerminal> ptr_eunet_terminal_3(object_factory_2.Create<
 				EunetTerminal> ());
-		NS_ASSERT_MSG(ptr_eunet_terminal_3->GetNDevices() == 1, ptr_eunet_terminal->GetNDevices());
+		NS_ASSERT_MSG(ptr_eunet_terminal_3->GetNDevices() == 2, ptr_eunet_terminal->GetNDevices());
 		ptr_eunet_terminal_3->Initialize();
 		NS_ASSERT_MSG(ptr_eunet_terminal_3->GetNDevices() == 2, ptr_eunet_terminal->GetNDevices());
 
@@ -80,14 +82,22 @@ private:
 		ptr_eunet_terminal_3->enableAsciiTrace<ns3::CsmaNetDevice> (0);
 
 		ptr_eunet_terminal_2->assignAddress(0, "10.0.0.2", "255.0.0.0");
-		NS_ASSERT(ptr_eunet_terminal_2->getAddress<ns3::CsmaNetDevice>(0) == "10.0.0.2");
+		{
+			auto p = ptr_eunet_terminal_2->getNetDevice<ns3::CsmaNetDevice> (0);
+			NS_ASSERT(ptr_eunet_terminal_2->getAddress(p) == "10.0.0.2");
+		}
 		ptr_eunet_terminal_3->assignAddress(0, "10.0.0.3", "255.0.0.0");
-		NS_ASSERT(ptr_eunet_terminal_3->getAddress<ns3::CsmaNetDevice>(0) == "10.0.0.3");
+		{
+			auto p = ptr_eunet_terminal_3->getNetDevice<ns3::CsmaNetDevice> (0);
+			NS_ASSERT(ptr_eunet_terminal_3->getAddress(p) == "10.0.0.3");
+		}
 
 		ptr_eunet_terminal_2->bring<ns3::CsmaNetDevice, ns3::CsmaNetDevice> (0,
 				ptr_eunet_terminal_3, 0);
-		ptr_eunet_terminal_2->setRemote(ptr_eunet_terminal_3->getAddress<
-				ns3::CsmaNetDevice> (0));
+		auto ptr_csma_net_device_2 = ptr_eunet_terminal_2->getNetDevice<
+				ns3::CsmaNetDevice> (0);
+		ptr_eunet_terminal_2->setRemote(ptr_eunet_terminal_3->getAddress(
+				ptr_csma_net_device_2));
 
 		NS_LOG_INFO("Run Simulation.");
 		ns3::Simulator::Stop(ns3::Seconds(10.11));

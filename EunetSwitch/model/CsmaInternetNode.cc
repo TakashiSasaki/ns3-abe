@@ -16,8 +16,14 @@ const ns3::Ipv4InterfaceAddress CsmaInternetNode::dummyAddress(
 		ns3::Ipv4Address("0.0.0.0"), ns3::Ipv4Mask("255.255.255.255"));
 
 ns3::TypeId CsmaInternetNode::GetTypeId(void) {
-	static ns3::TypeId type_id = ns3::TypeId("CsmaInternetNode").SetParent<
-			CsmaChannelNode> ().AddConstructor<CsmaInternetNode> ();
+	static ns3::TypeId
+			type_id =
+					ns3::TypeId("CsmaInternetNode").SetParent<CsmaChannelNode> ().AddConstructor<
+							CsmaInternetNode> ().AddAttribute(
+							"willAssignDummyAddress", "willAssignDummyAddress",
+							ns3::BooleanValue(false), ns3::MakeBooleanAccessor(
+									&CsmaInternetNode::willAssignDummyAddress),
+							ns3::MakeBooleanChecker());
 	return type_id;
 }//GetTypeId
 
@@ -50,8 +56,18 @@ void CsmaInternetNode::NotifyConstructionCompleted() {
 
 	for (unsigned i = 0; i < this->getNDevices<ns3::CsmaNetDevice> (); ++i) {
 		//NS_LOG_DEBUG("add ns3::IPv4 to node " << this->GetId() << " device " << i);
-		auto p = this->getNetDevice<ns3::CsmaNetDevice> (i);
-		this->assignDummyAddress(p);
+		auto ptr_csma_net_device = getNetDevice<ns3::CsmaNetDevice> (i);
+		auto ptr_ipv4 = this->GetObject<ns3::Ipv4> ();
+		int32_t i_interface = ptr_ipv4->GetInterfaceForDevice(
+				ptr_csma_net_device);
+		NS_ASSERT(i_interface==-1);
+		i_interface = ptr_ipv4->AddInterface(ptr_csma_net_device);
+		NS_ASSERT(i_interface>=0);
+
+		//auto p = this->getNetDevice<ns3::CsmaNetDevice> (i);
+		if (this->willAssignDummyAddress) {
+			this->assignDummyAddress(ptr_csma_net_device);
+		}//if
 	}//for
 }//NotifyConstructionCompleted
 
@@ -59,6 +75,7 @@ void CsmaInternetNode::assignDummyAddress(
 		ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device) {
 	auto ptr_ipv4 = this->GetObject<ns3::Ipv4> ();
 	int32_t i_interface = ptr_ipv4->GetInterfaceForDevice(ptr_csma_net_device);
+	NS_ASSERT(i_interface>=0);
 	if (i_interface == -1) {
 		i_interface = ptr_ipv4->AddInterface(ptr_csma_net_device);
 	}//if
@@ -139,7 +156,8 @@ void CsmaInternetNode::assignAddress(const unsigned i_port,
 }//assignAddress
 #endif
 
-void CsmaInternetNode::assignAddress(ns3::Ptr<ns3::CsmaNetDevice>ptr_csma_net_device,
+void CsmaInternetNode::assignAddress(
+		ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device,
 		ns3::Ipv4Address ipv4_address, ns3::Ipv4Mask ipv4_mask) {
 	ns3::Ptr<CsmaInternetNode> ptr_this(this, true);
 	auto ptr_ipv4 = ptr_this->GetObject<ns3::Ipv4> ();
@@ -159,9 +177,6 @@ void CsmaInternetNode::assignAddress(ns3::Ptr<ns3::CsmaNetDevice>ptr_csma_net_de
 void CsmaInternetNode::logAddress(const ns3::Ipv4Address& ipv4_address) {
 	NS_LOG_INFO(ipv4_address << " to node " << this->GetId());
 }
-
-template ns3::Ipv4Address CsmaInternetNode::getAddress<ns3::CsmaNetDevice>(
-		const unsigned i_device);
 
 #if 0
 ns3::Ipv4InterfaceAddress CsmaInternetNode::getIpv4InterfaceAddress(
@@ -187,16 +202,34 @@ template ns3::Ipv4InterfaceAddress CsmaInternetNode::getIpv4InterfaceAddress<
 void CsmaInternetNode::assignAddress(
 		ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device,
 		ns3::Ipv4AddressHelper& ipv4_address_helper) {
-	//NS_ASSERT(this->getNDevices<T>() > i_port);
-	//NS_ASSERT(this->GetNDevices()>=2);
-	//auto ptr_net_device = this->getNetDevice<T> (i_port);
+	NS_ASSERT(ptr_csma_net_device != 0);
 	removeAllAddresses(ptr_csma_net_device);
 	{
 		auto ptr_ipv4 = this->GetObject<ns3::Ipv4> ();
 		auto i_interface = ptr_ipv4->GetInterfaceForDevice(ptr_csma_net_device);
+		NS_ASSERT(i_interface >=0);
 		NS_ASSERT_MSG(ptr_ipv4->GetNAddresses(i_interface) == 0,ptr_ipv4->GetNAddresses(i_interface));
 	}
 	ipv4_address_helper.Assign(ns3::NetDeviceContainer(ptr_csma_net_device));
 	//this->setRemote(this);
 	//this->logAddress(this->getAddress<T> ());
 }
+
+ns3::Ipv4Address CsmaInternetNode::getAddress(
+		ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device) {
+	ns3::Ptr<ns3::Ipv4> ptr_ipv4 = this->GetObject<ns3::Ipv4> ();
+	NS_ASSERT(ptr_csma_net_device->GetInstanceTypeId().IsChildOf(ns3::NetDevice::GetTypeId()));
+	const auto i_interface = ptr_ipv4->GetInterfaceForDevice(
+			ptr_csma_net_device);
+	NS_ASSERT_MSG(i_interface != -1, i_interface);
+	const auto n_addresses = ptr_ipv4->GetNAddresses(i_interface);
+	for (unsigned i_address = 0; i_address < n_addresses; ++i_address) {
+		NS_LOG_DEBUG(ptr_ipv4->GetAddress(i_interface, i_address));
+	}//for
+	NS_ASSERT_MSG(n_addresses == 1, n_addresses);
+	ns3::Ipv4InterfaceAddress ipv4_interface_address = ptr_ipv4->GetAddress(
+			i_interface, 0);
+	ns3::Ipv4Address ipv4_address = ipv4_interface_address.GetLocal();
+	return ipv4_address;
+}
+

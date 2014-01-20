@@ -122,6 +122,7 @@ void EunetTerminals::setRemoteOfAtoB(const unsigned i_eunet_terminal_a,
 		const unsigned i_eunet_terminal_b) {
 	auto a = this->Get(i_eunet_terminal_a);
 	auto b = this->Get(i_eunet_terminal_b);
-	auto ipv4_address = b->getAddress<ns3::CsmaNetDevice> (0);
+	auto device_b = b->getNetDevice<ns3::CsmaNetDevice> (0);
+	auto ipv4_address = b->getAddress(device_b);
 	a->setRemote(ipv4_address);
 }

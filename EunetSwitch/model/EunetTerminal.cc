@@ -29,6 +29,7 @@ void EunetTerminal::NotifyConstructionCompleted() {
 	OnOffNode::NotifyConstructionCompleted();
 	NS_ASSERT(this->GetNDevices()==nPorts+1);
 }
+
 void EunetTerminal::DoInitialize() {
 	ASSERT_DI;
 	NS_ASSERT(this->GetNDevices()==nPorts+1);
