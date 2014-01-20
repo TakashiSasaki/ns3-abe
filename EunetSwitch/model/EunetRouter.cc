@@ -22,7 +22,7 @@ ns3::TypeId EunetRouter::GetTypeId(void) {
 }//GetTypeId
 
 const char* const EunetRouter::pcapPrefix = "EunetRouter";
-const char* const EunetRouter::asciiTracePrefix = "EunetRouter";
+//const char* const EunetRouter::asciiTracePrefix = "EunetRouter";
 
 void EunetRouter::DoDispose() {
 	ASSERT_DD;
@@ -49,3 +49,9 @@ void EunetRouter::NotifyConstructionCompleted() {
 	ASSERT_NCC;
 	SimpleRouter::NotifyConstructionCompleted();
 }//NotifyConstructionCompleted
+
+void enableAsciiTrace(ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device) {
+	ns3::CsmaHelper csma_helper;
+	csma_helper.EnableAscii(EunetRouter::GetTypeId().GetName(),
+			ptr_csma_net_device);
+}

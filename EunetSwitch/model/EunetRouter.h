@@ -29,10 +29,10 @@ public:
 	}
 	;
 
-	void enableAsciiTrace(const int i_port) {
+	void enableAsciiTrace(ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device) {
 		ns3::CsmaHelper csma_helper;
 		csma_helper.EnableAscii(EunetRouter::asciiTracePrefix,
-				this->getLinkPort(i_port));
+				ptr_csma_net_device);
 	}
 	EunetTerminals& getTerminals() {
 		return this->eunetTerminals;

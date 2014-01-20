@@ -19,8 +19,8 @@ public:
 	virtual ~SimpleRouter() {
 	}
 	;
-	ns3::Ptr<ns3::CsmaNetDevice>
-	getLinkPort(const unsigned i_link_port);
+	//	ns3::Ptr<ns3::CsmaNetDevice>
+	//getLinkPort(const unsigned i_link_port);
 	void connectTo(const unsigned i_link_port,
 			ns3::Ptr<SimpleRouter> connect_to_device,
 			const unsigned connect_i_link_port);
