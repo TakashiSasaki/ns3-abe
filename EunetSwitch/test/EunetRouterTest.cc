@@ -75,8 +75,10 @@ void EunetRouterTestCase::DoRun() {
 
 	Ipv4AddressHelper ipv4_address_helper;
 	ipv4_address_helper.SetBase("10.0.1.0", "255.255.255.0");
-	ptr_eunet_router_1->assignAddress<ns3::CsmaNetDevice> (ipv4_address_helper,
-			0);
+	{
+		auto ptr_csma_net_device = ptr_eunet_router_1->getNetDevice<ns3::CsmaNetDevice>(0);
+		ptr_eunet_router_1->assignAddress(ptr_csma_net_device, ipv4_address_helper);
+	}
 	//ptr_eunet_router_1->assignAddress<ns3::CsmaNetDevice> (ipv4_address_helper,
 	//		1);
 	ptr_eunet_router_1->assignAddress(1, ns3::Ipv4Address("0.0.0.0"),
@@ -97,8 +99,10 @@ void EunetRouterTestCase::DoRun() {
 		}
 	}
 
-	ptr_eunet_router_2->assignAddress<ns3::CsmaNetDevice> (ipv4_address_helper,
-			0);
+	{
+		auto ptr_csma_net_device = ptr_eunet_router_2->getNetDevice<ns3::CsmaNetDevice>(0);
+		ptr_eunet_router_2->assignAddress(ptr_csma_net_device, ipv4_address_helper);
+	}
 
 	ptr_eunet_router_1->enableOspf(0);
 	ptr_eunet_router_1->enablePcap<ns3::CsmaNetDevice> (0);

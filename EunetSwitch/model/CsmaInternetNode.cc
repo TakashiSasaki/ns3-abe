@@ -166,8 +166,6 @@ void CsmaInternetNode::logAddress(const ns3::Ipv4Address& ipv4_address) {
 template ns3::Ipv4Address CsmaInternetNode::getAddress<ns3::CsmaNetDevice>(
 		const unsigned i_device);
 
-template void CsmaInternetNode::assignAddress<ns3::CsmaNetDevice>(
-		ns3::Ipv4AddressHelper&, const unsigned i_port);
 
 #if 0
 ns3::Ipv4InterfaceAddress CsmaInternetNode::getIpv4InterfaceAddress(
@@ -189,3 +187,19 @@ ns3::Ipv4InterfaceAddress CsmaInternetNode::getIpv4InterfaceAddress(
 
 template ns3::Ipv4InterfaceAddress CsmaInternetNode::getIpv4InterfaceAddress<
 		ns3::CsmaNetDevice>(const unsigned i_port);
+
+void CsmaInternetNode::assignAddress(
+		ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device,ns3::Ipv4AddressHelper& ipv4_address_helper) {
+	//NS_ASSERT(this->getNDevices<T>() > i_port);
+	//NS_ASSERT(this->GetNDevices()>=2);
+	//auto ptr_net_device = this->getNetDevice<T> (i_port);
+	removeAllAddresses(ptr_csma_net_device);
+	{
+		auto ptr_ipv4 = this->GetObject<ns3::Ipv4> ();
+		auto i_interface = ptr_ipv4->GetInterfaceForDevice(ptr_csma_net_device);
+		NS_ASSERT_MSG(ptr_ipv4->GetNAddresses(i_interface) == 0,ptr_ipv4->GetNAddresses(i_interface));
+	}
+	ipv4_address_helper.Assign(ns3::NetDeviceContainer(ptr_csma_net_device));
+	//this->setRemote(this);
+	//this->logAddress(this->getAddress<T> ());
+}

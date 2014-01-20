@@ -26,9 +26,7 @@ EunetTerminal::EunetTerminal() :
 void EunetTerminal::NotifyConstructionCompleted() {
 	ASSERT_NCC;
 	NS_ASSERT(this->GetNDevices()==0);
-	//NS_ASSERT_MSG(this->GetNDevices() == 1, this->GetNDevices() << " " << this->getNDevices<ns3::CsmaNetDevice>());
 	OnOffNode::NotifyConstructionCompleted();
-	//NS_ASSERT(this->GetNDevices() == 2);
 	NS_ASSERT(this->GetNDevices()==nPorts+1);
 }
 void EunetTerminal::DoInitialize() {

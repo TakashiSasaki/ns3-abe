@@ -71,7 +71,9 @@ void EunetTerminals::assignAddresses(
 		ns3::Ipv4AddressHelper& ipv4_address_helper) {
 	for (unsigned i = 0; i < this->GetN(); ++i) {
 		NS_ASSERT(this->Get(i)-> GetNDevices()==2);
-		this->Get(i)->assignAddress<ns3::CsmaNetDevice> (ipv4_address_helper, 0);
+		auto ptr_csma_net_device = this->Get(i)->getNetDevice<
+				ns3::CsmaNetDevice> (0);
+		this->Get(i)->assignAddress(ptr_csma_net_device, ipv4_address_helper);
 	}//for
 }//assignAddresses
 
