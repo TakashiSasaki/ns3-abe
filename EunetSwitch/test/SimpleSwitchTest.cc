@@ -28,8 +28,8 @@ private:
 }; //class SimpleSwitchTestCase
 
 // Parameters
-uint32_t nNodes = 2;
-uint32_t stopTime = 20;
+//uint32_t nNodes = 2;
+//uint32_t stopTime = 20;
 
 void SimpleSwitchTestCase::DoRun() {
 	auto ptr_simple_switch = ns3::CreateObject<SimpleSwitch>();

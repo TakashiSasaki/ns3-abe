@@ -65,7 +65,7 @@ void DceQuaggaOspfdTest::DoRun() {
 
 	NetDeviceContainer devices;
 	devices = csma_helper.Install(nodes);
-	//devices = pointToPoint.Install(nodes);
+	auto ndc_point_to_point = pointToPoint.Install(nodes);
 
 	//
 	//
@@ -81,6 +81,7 @@ void DceQuaggaOspfdTest::DoRun() {
 
 	ipv4AddrHelper.SetBase("10.0.0.0", "255.255.255.0");
 	Ipv4InterfaceContainer interfaces = ipv4AddrHelper.Assign(devices);
+	Ipv4InterfaceContainer iic_point_to_point = ipv4AddrHelper.Assign(ndc_point_to_point);
 	//Ipv4GlobalRoutingHelper::PopulateRoutingTables();
 
 	DceManagerHelper processManager;

@@ -22,8 +22,8 @@ TESTS_DCE= \
 	EunetTerminalsTest.o \
 	EunetRouterTest.o \
 	EunetTest.o \
+    DceQuaggaOspfdTest.o
     #EunetRouterTest.o \
-    #DceQuaggaOspfdTest.o
 
 #NS_LOG_STD=WifiBase=*:EunetMobile=*:CsmaInternetNode=*:CsmaNode=*:EunetMobileTest=*
 #NS_LOG_STD=WifiTest=*:WifiPhyTrace=*:WifiMacTrace=*
