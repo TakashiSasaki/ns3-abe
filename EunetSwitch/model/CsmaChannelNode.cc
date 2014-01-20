@@ -40,8 +40,8 @@ void CsmaChannelNode::DoInitialize() {
 	ASSERT_DI;
 	//NS_ASSERT_MSG(this->GetNDevices()==1, "GetNDevices=" << this->GetNDevices() << " getNPorts=" << this->getNPorts());
 	CsmaNode::DoInitialize();
-	NS_ASSERT(this->getNDevices<ns3::CsmaNetDevice>()==this->getNPorts());
-	NS_LOG_INFO("constructing CsmaChannelNode with " << this->getNPorts() << " ports");
+	NS_ASSERT(this->getNDevices<ns3::CsmaNetDevice>()==this->nPorts);
+	NS_LOG_INFO("constructing CsmaChannelNode with " << this->nPorts << " ports");
 	this->csmaChannelFactory.SetTypeId("ns3::CsmaChannel");
 	this->csmaChannelFactory.Set("DataRate", ns3::DataRateValue(
 			this->csmaChannelDataRate));

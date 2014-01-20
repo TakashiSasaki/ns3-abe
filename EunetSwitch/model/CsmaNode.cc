@@ -16,14 +16,13 @@ ns3::TypeId CsmaNode::GetTypeId(void) {
 			ns3::TypeId("CsmaNode").SetParent<ns3::Node> ().AddConstructor<
 					CsmaNode> (). AddAttribute("nPorts",
 					"the number of CSMA port", ns3::UintegerValue(1),
-					ns3::MakeUintegerAccessor(&CsmaNode::getNPorts,
-							&CsmaNode::setNPorts), ns3::MakeUintegerChecker<
-							uint32_t>());
+					ns3::MakeUintegerAccessor(&CsmaNode::nPorts),
+					ns3::MakeUintegerChecker<uint32_t>());
 	return type_id;
 }//GetTypeId
 
 CsmaNode::CsmaNode() :
-	nCsmaNetDevices(0), INIT_DIDDNCC_FLAGS {
+	nPorts(0), INIT_DIDDNCC_FLAGS {
 	//this->deviceFactory.SetTypeId("ns3::CsmaNetDevice");
 	//this->queueFactory.SetTypeId("ns3::DropTailQueue");
 }
@@ -47,29 +46,20 @@ void CsmaNode::DoInitialize() {
 	//NS_LOG_INFO("2 GetNDevices=" << this->GetNDevices());
 	ns3::Node::DoInitialize();
 	NS_LOG_INFO("3 GetNDevices=" << this->GetNDevices());
-	NS_LOG_INFO("constructing CsmaNode with " << this->nCsmaNetDevices << " devices");
+	NS_LOG_INFO("constructing CsmaNode with " << this->nPorts << " devices");
 	NS_ASSERT_MSG((this->getNDevices<ns3::CsmaNetDevice>()==0), (this->getNDevices<ns3::CsmaNetDevice>()));
 	//NS_ASSERT_MSG(this->GetNDevices()==1, "devices=" << this->GetNDevices() << " csma="
 	//		<< this->getNDevices<ns3::CsmaNetDevice>() << " loopback=" <<this->getNDevices<ns3::LoopbackNetDevice>() );
-	for (uint32_t i = 0; i < this->nCsmaNetDevices; ++i) {
+	for (uint32_t i = 0; i < this->nPorts; ++i) {
 		this->addCsmaNetDevice<ns3::CsmaNetDevice> ();
 	}//for
-	NS_ASSERT(this->getNDevices<ns3::CsmaNetDevice>()==this->nCsmaNetDevices);
+	NS_ASSERT(this->getNDevices<ns3::CsmaNetDevice>()==this->nPorts);
 	NS_LOG_INFO("constructed with " << this->GetNDevices() << " devices");
 }
 void CsmaNode::DoDispose() {
 	NS_LOG_INFO("disposing CsmaNode " << this->GetId());
 	ASSERT_DD;
 	ns3::Node::DoDispose();
-}
-void CsmaNode::setNPorts(uint32_t n_ports) {
-	NS_LOG_INFO("n_ports = " << n_ports);
-	NS_ASSERT(!this->isDoInitializeCalled);
-	this->nCsmaNetDevices = n_ports;
-}
-
-uint32_t CsmaNode::getNPorts(void) const {
-	return this->nCsmaNetDevices;
 }
 
 void CsmaNode::logAllDevices(const ns3::LogLevel log_level) {

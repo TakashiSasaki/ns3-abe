@@ -203,8 +203,8 @@ std::unique_ptr<std::vector<std::string> > SimpleRouter::getAllNetworks() {
 
 void SimpleRouter::enableOspf(const unsigned i_port) {
 	NS_LOG_DEBUG("enabling Quagga OSPF routing daemon");
-	NS_ASSERT_MSG(this->getNDevices<ns3::CsmaNetDevice>() == this->getNPorts(),
-			this->getNDevices<ns3::CsmaNetDevice>()<< " device(s) " << this->getNPorts() << " ports");
+	NS_ASSERT_MSG(this->getNDevices<ns3::CsmaNetDevice>() == this->nPorts,
+			this->getNDevices<ns3::CsmaNetDevice>()<< " device(s) " << this->nPorts << " ports");
 	const auto ipv4_interface_address = this->getIpv4InterfaceAddress<
 			ns3::CsmaNetDevice> (i_port);
 	ns3::QuaggaHelper quagga_helper;

@@ -12,9 +12,9 @@
 #include "init.h"
 
 class CsmaNode: public ns3::Node {
-	uint32_t nCsmaNetDevices;
-	//static ns3::ObjectFactory deviceFactory;
-	//static ns3::ObjectFactory queueFactory;
+	//uint32_t nCsmaNetDevices;
+protected:
+	uint32_t nPorts;
 public:
 	static ns3::TypeId GetTypeId(void);
 	CsmaNode();
@@ -25,8 +25,6 @@ public:
 	template<class T>
 	unsigned getNDevices();
 	void logAllDevices(const ns3::LogLevel log_level = ns3::LOG_LEVEL_INFO);
-	void setNPorts(uint32_t);
-	uint32_t getNPorts() const;
 	template<class T>
 	ns3::Ptr<T> getApplication();
 	template<class T>
