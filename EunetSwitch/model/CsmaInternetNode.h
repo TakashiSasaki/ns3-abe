@@ -24,7 +24,10 @@ public:
 	void assignAddress(const unsigned i_device, ns3::Ipv4Address ipv4_address,
 			ns3::Ipv4Mask ipv4_mask);
 private:
+	static const ns3::Ipv4InterfaceAddress dummyAddress;
 	void logAddress(const ns3::Ipv4Address& ipv4_address);
+	void assignDummyAddress(const unsigned i_csma_port);
+	void removeAllAddresses(const unsigned i_csma_port);
 DECLARE_DIDDNCC
 };
 

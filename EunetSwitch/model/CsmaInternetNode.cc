@@ -12,6 +12,9 @@ NS_LOG_COMPONENT_DEFINE("CsmaInternetNode");
 
 NS_OBJECT_ENSURE_REGISTERED(CsmaInternetNode);
 
+const ns3::Ipv4InterfaceAddress CsmaInternetNode::dummyAddress(
+		ns3::Ipv4Address("0.0.0.0"), ns3::Ipv4Mask("255.255.255.255"));
+
 ns3::TypeId CsmaInternetNode::GetTypeId(void) {
 	static ns3::TypeId type_id = ns3::TypeId("CsmaInternetNode").SetParent<
 			CsmaChannelNode> ().AddConstructor<CsmaInternetNode> ();
@@ -44,16 +47,40 @@ void CsmaInternetNode::NotifyConstructionCompleted() {
 	NS_ASSERT(this->GetNDevices() == n_devices_before+1);
 	NS_ASSERT(this->GetDevice(n_devices_before)->GetObject<ns3::LoopbackNetDevice>(ns3::LoopbackNetDevice::GetTypeId()));
 
-	for (unsigned i = 0; i < this-> GetNDevices(); ++i) {
-		NS_LOG_DEBUG("add ns3::IPv4 to node " << this->GetId() << " device " << i);
-		auto ptr_csma_net_device = this->GetDevice(i);
-		auto ipv4 = this->GetObject<ns3::Ipv4> ();
-		int32_t i_interface = ipv4->GetInterfaceForDevice(ptr_csma_net_device);
-		if (i_interface == -1) {
-			ipv4->AddInterface(ptr_csma_net_device);
-		}//if
+	for (unsigned i = 0; i < this->getNDevices<ns3::CsmaNetDevice> (); ++i) {
+		//NS_LOG_DEBUG("add ns3::IPv4 to node " << this->GetId() << " device " << i);
+		this->assignDummyAddress(i);
 	}//for
 }//NotifyConstructionCompleted
+
+void CsmaInternetNode::assignDummyAddress(const unsigned i_csma_port) {
+	auto ptr_csma_net_device = this->getNetDevice<ns3::CsmaNetDevice> (
+			i_csma_port);
+	auto ptr_ipv4 = this->GetObject<ns3::Ipv4> ();
+	int32_t i_interface = ptr_ipv4->GetInterfaceForDevice(ptr_csma_net_device);
+	if (i_interface == -1) {
+		ptr_ipv4->AddInterface(ptr_csma_net_device);
+	}//if
+	ptr_ipv4->AddAddress(i_interface, dummyAddress);
+	ptr_ipv4->SetMetric(i_interface, 255);
+	ptr_ipv4->SetUp(i_interface);
+}
+
+void CsmaInternetNode::removeAllAddresses(const unsigned i_csma_port) {
+	auto ptr_csma_net_device = this->getNetDevice<ns3::CsmaNetDevice> (
+			i_csma_port);
+	auto ptr_ipv4 = this->GetObject<ns3::Ipv4> ();
+	int32_t i_interface = ptr_ipv4->GetInterfaceForDevice(ptr_csma_net_device);
+	if (i_interface == -1)
+		return;
+	for (unsigned i_address = 0; i_address < ptr_ipv4->GetNAddresses(i_interface); ++i_address) {
+		auto iia = ptr_ipv4->GetAddress(i_interface, i_address);
+		ptr_ipv4->RemoveAddress(i_interface, iia.GetLocal());
+	}//for
+	ptr_ipv4->AddAddress(i_interface, dummyAddress);
+	ptr_ipv4->SetMetric(i_interface, 255);
+	ptr_ipv4->SetUp(i_interface);
+}
 
 void CsmaInternetNode::DoInitialize() {
 	ASSERT_DI;

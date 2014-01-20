@@ -81,11 +81,13 @@ void EunetRouterTestCase::DoRun() {
 	ptr_eunet_router_1->assignAddress(1, ns3::Ipv4Address("0.0.0.0"),
 			ns3::Ipv4Mask("255.255.255.255"));
 	{
-		ns3::Ptr<ns3::CsmaNetDevice> p_device =
+		auto ptr_ipv4 = ptr_eunet_router_1->GetObject<ns3::Ipv4> ();
+		NS_ASSERT_MSG(ptr_ipv4 != 0, ptr_ipv4);
+		ns3::Ptr<ns3::CsmaNetDevice> ptr_device =
 				ptr_eunet_router_1->getNetDevice<ns3::CsmaNetDevice> (1);
-		auto ptr_ipv4 = p_device->GetObject<ns3::Ipv4> ();
-		auto i_interface = ptr_ipv4->GetInterfaceForDevice(p_device);
-		auto n_addresses = ptr_ipv4->GetNAddresses(i);
+		NS_LOG_DEBUG(ptr_device);
+		auto i_interface = ptr_ipv4->GetInterfaceForDevice(ptr_device);
+		auto n_addresses = ptr_ipv4->GetNAddresses(i_interface);
 		for (unsigned i = 0; i < n_addresses; ++i) {
 			auto ipv4_interface_address = ptr_ipv4->GetAddress(i_interface, i);
 			NS_LOG_DEBUG(ipv4_interface_address);
