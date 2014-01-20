@@ -12,7 +12,6 @@
 #include "init.h"
 
 class CsmaNode: public ns3::Node {
-	//uint32_t nCsmaNetDevices;
 protected:
 	uint32_t nPorts;
 public:
@@ -33,6 +32,7 @@ public:
 	void enableAsciiTrace(const unsigned i_port);
 	template<class T>
 	ns3::NetDeviceContainer getNetDevices();
+	void enableAsciiTrace(ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device);
 protected:
 	template<class T>
 	ns3::Ptr<T> addCsmaNetDevice();

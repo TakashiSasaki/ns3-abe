@@ -17,8 +17,7 @@ ns3::TypeId OnOffNode::GetTypeId(void) {
 			type_id =
 					ns3::TypeId("OnOffNode").SetParent<PacketSinkNode> ().AddConstructor<
 							OnOffNode> () .AddAttribute("onOffStartTime",
-							"onOffStartTime",
-							ns3::TimeValue(ns3::Seconds(0)),
+							"onOffStartTime", ns3::TimeValue(ns3::Seconds(0)),
 							ns3::MakeTimeAccessor(&OnOffNode::onOffStartTime),
 							ns3::MakeTimeChecker()).AddAttribute(
 							"onOffStopTime", "onOffStopTime",
@@ -46,7 +45,7 @@ OnOffNode::OnOffNode(const bool start_at_the_beginning) :
 
 void OnOffNode::DoInitialize() {
 	ASSERT_DI;
-	NS_ASSERT(this->GetNDevices()==1);
+	NS_ASSERT(this->GetNDevices()==nPorts+1);
 	PacketSinkNode::DoInitialize();
 	NS_ASSERT_MSG(this->GetNDevices()==2,this->GetNDevices());
 	ns3::OnOffHelper on_off_helper("ns3::UdpSocketFactory", ns3::Address(
@@ -112,7 +111,7 @@ void OnOffNode::stopAt(ns3::Time stop_seconds) {
 #endif
 
 void OnOffNode::setRemote(const ns3::Ipv4Address& ipv4_address) {
-	auto on_off_application = this->getApplication<ns3::OnOffApplication>();
+	auto on_off_application = this->getApplication<ns3::OnOffApplication> ();
 	on_off_application->SetAttribute("Remote", ns3::AddressValue(
 			ns3::InetSocketAddress(ipv4_address, PACKET_SINK_UDP_PORT)));
 }//setRemote

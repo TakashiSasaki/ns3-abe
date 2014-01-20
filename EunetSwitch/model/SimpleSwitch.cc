@@ -50,7 +50,7 @@ void SimpleSwitch::NotifyConstructionCompleted() {
 
 void SimpleSwitch::DoInitialize() {
 	ASSERT_DI;
-	NS_ASSERT(this->GetNDevices()==0);
+	NS_ASSERT(this->getNDevices<ns3::CsmaNetDevice>()==nPorts);
 	CsmaChannelNode::DoInitialize();
 	NS_LOG_INFO("bridging all devices");
 

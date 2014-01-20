@@ -17,23 +17,15 @@
 using namespace ns3;
 
 class EunetRouter: public SimpleRouter {
-	EunetTerminals eunetTerminals;
-
-	static const char* const pcapPrefix;
-	static const char* const asciiTracePrefix;
 
 public:
+	EunetTerminals eunetTerminals;
 	static ns3::TypeId GetTypeId(void);
 	EunetRouter();
 	virtual ~EunetRouter() {
 	}
 	;
 
-	void enableAsciiTrace(ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device) {
-		ns3::CsmaHelper csma_helper;
-		csma_helper.EnableAscii(EunetRouter::asciiTracePrefix,
-				ptr_csma_net_device);
-	}
 	EunetTerminals& getTerminals() {
 		return this->eunetTerminals;
 		//return this->ncTerminals;

@@ -26,8 +26,8 @@ public:
 private:
 	static const ns3::Ipv4InterfaceAddress dummyAddress;
 	void logAddress(const ns3::Ipv4Address& ipv4_address);
-	void assignDummyAddress(const unsigned i_csma_port);
-	void removeAllAddresses(const unsigned i_csma_port);
+	void assignDummyAddress(ns3::Ptr<ns3::CsmaNetDevice>);
+	void removeAllAddresses(ns3::Ptr<ns3::CsmaNetDevice>);
 DECLARE_DIDDNCC
 };
 
@@ -47,6 +47,9 @@ ns3::Ipv4Address CsmaInternetNode::getAddress(const unsigned i_device) {
 	}
 	NS_ASSERT(i_interface != -1);
 	const auto n_addresses = ptr_ipv4->GetNAddresses(i_interface);
+	for(unsigned i_address=0; i_address<n_addresses;++i_address){
+		NS_LOG_DEBUG(ptr_ipv4->GetAddress(i_interface, i_address));
+	}//for
 	NS_ASSERT(n_addresses == 1);
 	ns3::Ipv4InterfaceAddress ipv4_interface_address = ptr_ipv4->GetAddress(
 			i_interface, 0);
@@ -61,6 +64,12 @@ void CsmaInternetNode::assignAddress(
 	NS_ASSERT(this->getNDevices<T>() > i_port);
 	//NS_ASSERT(this->GetNDevices()>=2);
 	auto ptr_net_device = this->getNetDevice<T> (i_port);
+	removeAllAddresses(ptr_net_device);
+	{
+		auto ptr_ipv4 = this->GetObject<ns3::Ipv4>();
+		auto i_interface = ptr_ipv4->GetInterfaceForDevice(ptr_net_device);
+		NS_ASSERT_MSG(ptr_ipv4->GetNAddresses(i_interface) == 0,ptr_ipv4->GetNAddresses(i_interface)) ;
+	}
 	ipv4_address_helper.Assign(ns3::NetDeviceContainer(ptr_net_device));
 	//this->setRemote(this);
 	NS_LOG_INFO("node " << this->GetId() << " device "
@@ -83,7 +92,10 @@ ns3::Ipv4InterfaceAddress CsmaInternetNode::getIpv4InterfaceAddress(
 	const auto i_interface = ptr_ipv4->GetInterfaceForDevice(ptr_net_device);
 	NS_ASSERT_MSG(i_interface != -1, "maybe IPv4 address is not assigned yet.");
 	const auto n_addresses = ptr_ipv4->GetNAddresses(i_interface);
-	NS_ASSERT(n_addresses == 1);
+	for (unsigned i_address = 0; i_address < n_addresses; ++i_address) {
+		NS_LOG_DEBUG(ptr_ipv4->GetAddress(i_interface, i_address));
+	}//for
+	NS_ASSERT_MSG(n_addresses == 1, n_addresses);
 	ns3::Ipv4InterfaceAddress ipv4_interface_address = ptr_ipv4->GetAddress(
 			i_interface, 0);
 	return ipv4_interface_address;

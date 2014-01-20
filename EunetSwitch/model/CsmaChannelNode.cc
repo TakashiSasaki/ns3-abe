@@ -33,7 +33,7 @@ void CsmaChannelNode::NotifyConstructionCompleted() {
 	ASSERT_NCC;
 	NS_ASSERT(this->GetNDevices()==0);
 	CsmaNode::NotifyConstructionCompleted();
-	NS_ASSERT(this->GetNDevices()==0);
+	NS_ASSERT_MSG(GetNDevices()==nPorts, GetNDevices() << ","<<nPorts);
 }
 
 void CsmaChannelNode::DoInitialize() {

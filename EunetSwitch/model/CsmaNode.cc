@@ -32,30 +32,22 @@ CsmaNode::~CsmaNode() {
 
 void CsmaNode::NotifyConstructionCompleted() {
 	ASSERT_NCC;
-	NS_LOG_INFO("GetNDevices=" << this->GetNDevices());
 	NS_ASSERT(this->GetNDevices()==0);
 	ns3::Node::NotifyConstructionCompleted();
 	NS_ASSERT(this->GetNDevices()==0);
-	NS_LOG_INFO("GetNDevices=" << this->GetNDevices());
-}
-void CsmaNode::DoInitialize() {
-	NS_LOG_INFO("CsmaNode::DoInitialize");
-	ASSERT_DI;
-	NS_LOG_INFO("1 GetNDevices=" << this->GetNDevices());
-	//NS_ASSERT_MSG (this->getNDevices<ns3::LoopbackNetDevice>()==0, this->getNDevices<ns3::LoopbackNetDevice>());
-	//NS_LOG_INFO("2 GetNDevices=" << this->GetNDevices());
-	ns3::Node::DoInitialize();
-	NS_LOG_INFO("3 GetNDevices=" << this->GetNDevices());
-	NS_LOG_INFO("constructing CsmaNode with " << this->nPorts << " devices");
 	NS_ASSERT_MSG((this->getNDevices<ns3::CsmaNetDevice>()==0), (this->getNDevices<ns3::CsmaNetDevice>()));
-	//NS_ASSERT_MSG(this->GetNDevices()==1, "devices=" << this->GetNDevices() << " csma="
-	//		<< this->getNDevices<ns3::CsmaNetDevice>() << " loopback=" <<this->getNDevices<ns3::LoopbackNetDevice>() );
 	for (uint32_t i = 0; i < this->nPorts; ++i) {
 		this->addCsmaNetDevice<ns3::CsmaNetDevice> ();
 	}//for
-	NS_ASSERT(this->getNDevices<ns3::CsmaNetDevice>()==this->nPorts);
-	NS_LOG_INFO("constructed with " << this->GetNDevices() << " devices");
+	NS_ASSERT_MSG(this->getNDevices<ns3::CsmaNetDevice>()==this->nPorts,this->getNDevices<ns3::CsmaNetDevice>() << "," << this->nPorts );
 }
+
+void CsmaNode::DoInitialize() {
+	ASSERT_DI;
+	NS_ASSERT_MSG((getNDevices<ns3::CsmaNetDevice>()==nPorts), (this->getNDevices<ns3::CsmaNetDevice>()));
+	ns3::Node::DoInitialize();
+}
+
 void CsmaNode::DoDispose() {
 	NS_LOG_INFO("disposing CsmaNode " << this->GetId());
 	ASSERT_DD;
@@ -118,6 +110,14 @@ uint32_t CsmaNode::countCsmaNetDevices() {
 	}//for
 	return n_csma_net_devices;
 }
+
+void CsmaNode::enableAsciiTrace(
+		ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device) {
+	ns3::CsmaHelper csma_helper;
+	csma_helper.EnableAscii(this->GetInstanceTypeId().GetName(),
+			ptr_csma_net_device);
+}
+
 template
 void CsmaNode::enablePcap<ns3::CsmaNetDevice>(const int i_port,
 		const bool promiscous);

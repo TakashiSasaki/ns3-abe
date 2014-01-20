@@ -61,11 +61,14 @@ void EunetRouterTestCase::DoRun() {
 	NS_ASSERT(ptr_simple_router != 0);
 
 	NS_LOG_DEBUG("creating EunetRouter via CreateObject");
-	auto ptr_eunet_router_1 = ns3::CreateObject<EunetRouter>();
-	NS_ASSERT_MSG(ptr_eunet_router_1->getNDevices<ns3::CsmaNetDevice>() == 0, ptr_eunet_router_1->getNDevices<ns3::CsmaNetDevice>());
-	ptr_eunet_router_1->SetAttribute("nPorts", ns3::UintegerValue(2));
+	object_factory.SetTypeId(EunetRouter::GetTypeId());
+	object_factory.Set("nPorts", ns3::UintegerValue(2));
+	auto ptr_eunet_router_1 = object_factory.Create<EunetRouter> ();
+	NS_ASSERT_MSG(ptr_eunet_router_1->getNDevices<ns3::CsmaNetDevice>() == 2, ptr_eunet_router_1->getNDevices<ns3::CsmaNetDevice>());
+	NS_ASSERT_MSG(ptr_eunet_router_1->getNDevices<ns3::LoopbackNetDevice>() == 1, ptr_eunet_router_1->getNDevices<ns3::LoopbackNetDevice>());
 	ptr_eunet_router_1->Initialize();
 	NS_ASSERT_MSG(ptr_eunet_router_1->getNDevices<ns3::CsmaNetDevice>() == 2, ptr_eunet_router_1->getNDevices<ns3::CsmaNetDevice>());
+
 	auto ptr_eunet_router_2 = ns3::CreateObject<EunetRouter>();
 	ptr_eunet_router_2->Initialize();
 	NS_ASSERT(ptr_eunet_router_1 != 0 && ptr_eunet_router_2 != 0);

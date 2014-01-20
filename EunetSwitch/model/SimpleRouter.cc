@@ -92,8 +92,8 @@ void SimpleRouter::NotifyConstructionCompleted() {
 	ASSERT_NCC
 	NS_ASSERT_MSG(this->GetNDevices() == 0, this->GetNDevices());
 	CsmaInternetNode::NotifyConstructionCompleted();
-	//this->setCsmaChannelDataRateAll(defaultlinkDataRate);
-	//this->setCsmaChannelDelayAll(defaultlinkDelay);
+	NS_ASSERT_MSG(((this->getNDevices<ns3::CsmaNetDevice>()) == this->nPorts), (this->getNetDevice<ns3::CsmaNetDevice>()));
+	NS_ASSERT_MSG(getNDevices<ns3::LoopbackNetDevice>()==1, getNDevices<ns3::LoopbackNetDevice>());
 
 	NS_LOG_INFO(this->GetNDevices() << " devices");
 	for (unsigned i = 0; i < this->GetNDevices(); ++i) {

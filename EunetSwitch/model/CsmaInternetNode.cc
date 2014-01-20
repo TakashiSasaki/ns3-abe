@@ -34,6 +34,7 @@ void CsmaInternetNode::NotifyConstructionCompleted() {
 	ASSERT_NCC;
 	NS_ASSERT(this->GetNDevices()==0);
 	CsmaChannelNode::NotifyConstructionCompleted();
+	NS_ASSERT_MSG(this->getNDevices<ns3::CsmaNetDevice>() == this->nPorts, this->getNDevices<ns3::CsmaNetDevice>() << ", " << this->nPorts);
 	const unsigned n_devices_before = this->GetNDevices();
 	//NS_ASSERT(this->GetNDevices() == 1);
 	ns3::InternetStackHelper internet_stack_helper;
@@ -49,42 +50,43 @@ void CsmaInternetNode::NotifyConstructionCompleted() {
 
 	for (unsigned i = 0; i < this->getNDevices<ns3::CsmaNetDevice> (); ++i) {
 		//NS_LOG_DEBUG("add ns3::IPv4 to node " << this->GetId() << " device " << i);
-		this->assignDummyAddress(i);
+		auto p = this->getNetDevice<ns3::CsmaNetDevice> (i);
+		this->assignDummyAddress(p);
 	}//for
 }//NotifyConstructionCompleted
 
-void CsmaInternetNode::assignDummyAddress(const unsigned i_csma_port) {
-	auto ptr_csma_net_device = this->getNetDevice<ns3::CsmaNetDevice> (
-			i_csma_port);
+void CsmaInternetNode::assignDummyAddress(
+		ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device) {
 	auto ptr_ipv4 = this->GetObject<ns3::Ipv4> ();
 	int32_t i_interface = ptr_ipv4->GetInterfaceForDevice(ptr_csma_net_device);
 	if (i_interface == -1) {
-		ptr_ipv4->AddInterface(ptr_csma_net_device);
+		i_interface = ptr_ipv4->AddInterface(ptr_csma_net_device);
 	}//if
 	ptr_ipv4->AddAddress(i_interface, dummyAddress);
 	ptr_ipv4->SetMetric(i_interface, 255);
 	ptr_ipv4->SetUp(i_interface);
 }
 
-void CsmaInternetNode::removeAllAddresses(const unsigned i_csma_port) {
-	auto ptr_csma_net_device = this->getNetDevice<ns3::CsmaNetDevice> (
-			i_csma_port);
+void CsmaInternetNode::removeAllAddresses(
+		ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device) {
+	//auto ptr_csma_net_device = this->getNetDevice<ns3::CsmaNetDevice> (
+	//		i_csma_port);
 	auto ptr_ipv4 = this->GetObject<ns3::Ipv4> ();
 	int32_t i_interface = ptr_ipv4->GetInterfaceForDevice(ptr_csma_net_device);
 	if (i_interface == -1)
 		return;
-	for (unsigned i_address = 0; i_address < ptr_ipv4->GetNAddresses(i_interface); ++i_address) {
+	for (unsigned i_address = 0; i_address < ptr_ipv4->GetNAddresses(
+			i_interface); ++i_address) {
 		auto iia = ptr_ipv4->GetAddress(i_interface, i_address);
 		ptr_ipv4->RemoveAddress(i_interface, iia.GetLocal());
 	}//for
-	ptr_ipv4->AddAddress(i_interface, dummyAddress);
-	ptr_ipv4->SetMetric(i_interface, 255);
-	ptr_ipv4->SetUp(i_interface);
+	NS_ASSERT(ptr_ipv4->GetNAddresses(i_interface) == 0);
 }
 
 void CsmaInternetNode::DoInitialize() {
 	ASSERT_DI;
-	NS_ASSERT(this->GetNDevices()==1);
+	NS_ASSERT_MSG(this->getNDevices<ns3::CsmaNetDevice>()==this->nPorts, this->getNDevices<ns3::CsmaNetDevice>() << "," << this->nPorts);
+	NS_ASSERT_MSG(this->getNDevices<ns3::LoopbackNetDevice>()==1, this->getNDevices<ns3::LoopbackNetDevice>());
 	CsmaChannelNode::DoInitialize();
 #if 0
 	const unsigned n_devices_before = this->GetNDevices();
@@ -143,7 +145,9 @@ void CsmaInternetNode::assignAddress(const unsigned i_port,
 	auto ptr_ipv4 = ptr_this->GetObject<ns3::Ipv4> ();
 	const auto ptr_net_device = this->getNetDevice<ns3::CsmaNetDevice> (i_port);
 	NS_ASSERT(ptr_net_device != 0);
+	removeAllAddresses(ptr_net_device);
 	int32_t i_interface = ptr_ipv4->GetInterfaceForDevice(ptr_net_device);
+	NS_ASSERT_MSG(ptr_ipv4->GetNAddresses(i_interface) == 0,ptr_ipv4->GetNAddresses(i_interface));
 	//NS_ASSERT_MSG(i_interface != -1, i_interface);
 	if (i_interface == -1) {
 		i_interface = ptr_ipv4->AddInterface(ptr_net_device);
