@@ -139,19 +139,16 @@ void CsmaInternetNode::assignAddress(const unsigned i_port,
 }//assignAddress
 #endif
 
-void CsmaInternetNode::assignAddress(const unsigned i_port,
+void CsmaInternetNode::assignAddress(ns3::Ptr<ns3::CsmaNetDevice>ptr_csma_net_device,
 		ns3::Ipv4Address ipv4_address, ns3::Ipv4Mask ipv4_mask) {
 	ns3::Ptr<CsmaInternetNode> ptr_this(this, true);
 	auto ptr_ipv4 = ptr_this->GetObject<ns3::Ipv4> ();
-	const auto ptr_net_device = this->getNetDevice<ns3::CsmaNetDevice> (i_port);
-	NS_ASSERT(ptr_net_device != 0);
-	removeAllAddresses(ptr_net_device);
-	int32_t i_interface = ptr_ipv4->GetInterfaceForDevice(ptr_net_device);
-	NS_ASSERT_MSG(ptr_ipv4->GetNAddresses(i_interface) == 0,ptr_ipv4->GetNAddresses(i_interface));
-	//NS_ASSERT_MSG(i_interface != -1, i_interface);
+	removeAllAddresses(ptr_csma_net_device);
+	int32_t i_interface = ptr_ipv4->GetInterfaceForDevice(ptr_csma_net_device);
 	if (i_interface == -1) {
-		i_interface = ptr_ipv4->AddInterface(ptr_net_device);
+		i_interface = ptr_ipv4->AddInterface(ptr_csma_net_device);
 	}//if
+	NS_ASSERT_MSG(ptr_ipv4->GetNAddresses(i_interface) == 0,ptr_ipv4->GetNAddresses(i_interface));
 	const auto mask = ipv4_mask.Get();
 	ns3::Ipv4InterfaceAddress ipv4_interface_address(ipv4_address, mask);
 	ptr_ipv4->AddAddress(i_interface, ipv4_interface_address);
@@ -165,7 +162,6 @@ void CsmaInternetNode::logAddress(const ns3::Ipv4Address& ipv4_address) {
 
 template ns3::Ipv4Address CsmaInternetNode::getAddress<ns3::CsmaNetDevice>(
 		const unsigned i_device);
-
 
 #if 0
 ns3::Ipv4InterfaceAddress CsmaInternetNode::getIpv4InterfaceAddress(
@@ -189,7 +185,8 @@ template ns3::Ipv4InterfaceAddress CsmaInternetNode::getIpv4InterfaceAddress<
 		ns3::CsmaNetDevice>(const unsigned i_port);
 
 void CsmaInternetNode::assignAddress(
-		ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device,ns3::Ipv4AddressHelper& ipv4_address_helper) {
+		ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device,
+		ns3::Ipv4AddressHelper& ipv4_address_helper) {
 	//NS_ASSERT(this->getNDevices<T>() > i_port);
 	//NS_ASSERT(this->GetNDevices()>=2);
 	//auto ptr_net_device = this->getNetDevice<T> (i_port);

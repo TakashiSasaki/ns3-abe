@@ -20,7 +20,7 @@ public:
 	//void setAddress(ns3::Ipv4AddressHelper& ipv4_address_helper);
 	void assignAddress(ns3::Ptr<ns3::CsmaNetDevice>, ns3::Ipv4AddressHelper&);
 	//void assignAddress(const unsigned i_device, ns3::Ipv4AddressHelper&);
-	void assignAddress(const unsigned i_device, ns3::Ipv4Address ipv4_address,
+	void assignAddress(ns3::Ptr<ns3::CsmaNetDevice>, ns3::Ipv4Address ipv4_address,
 			ns3::Ipv4Mask ipv4_mask);
 private:
 	static const ns3::Ipv4InterfaceAddress dummyAddress;
