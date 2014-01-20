@@ -90,14 +90,14 @@ void SimpleRouter::DoInitialize() {
 
 void SimpleRouter::NotifyConstructionCompleted() {
 	ASSERT_NCC
-	NS_LOG_INFO(this->GetNDevices() << " devices");
+	NS_ASSERT_MSG(this->GetNDevices() == 0, this->GetNDevices());
 	CsmaInternetNode::NotifyConstructionCompleted();
 	//this->setCsmaChannelDataRateAll(defaultlinkDataRate);
 	//this->setCsmaChannelDelayAll(defaultlinkDelay);
 
 	NS_LOG_INFO(this->GetNDevices() << " devices");
 	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
-		NS_LOG_INFO("device " << i << " is " << this->GetDevice(i)->GetInstanceTypeId());
+		NS_LOG_DEBUG("device " << i << " is " << this->GetDevice(i)->GetInstanceTypeId());
 	}
 	NS_LOG_INFO("CsmaChannelNode::NotifyConstructionCompleted finished");
 	ns3::Ptr<SimpleRouter> ptr_this(this, true);

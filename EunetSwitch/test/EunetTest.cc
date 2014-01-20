@@ -157,7 +157,7 @@ class EunetTestSuite: public TestSuite {
 public:
 	EunetTestSuite() :
 		ns3::TestSuite("EunetTestSuite", UNIT) {
-		AddTestCase(new EunetTestCase, TestCase::TAKES_FOREVER);
+		AddTestCase(new EunetTestCase, TestCase::QUICK);
 	}
 };
 

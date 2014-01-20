@@ -21,8 +21,8 @@ TESTS_DCE= \
 	EunetTerminalTest.o \
 	EunetTerminalsTest.o \
 	EunetRouterTest.o \
-	EunetTest.o \
     DceQuaggaOspfdTest.o
+	# EunetTest.o
     #EunetRouterTest.o \
 
 #NS_LOG_STD=WifiBase=*:EunetMobile=*:CsmaInternetNode=*:CsmaNode=*:EunetMobileTest=*
@@ -42,6 +42,7 @@ NS_LOG_DCE:=$(NS_LOG_DCE):EunetTerminalTest=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):SimpleSwitchTest=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):EunetSwitches=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):EunetRouterTest=debug\|prefix_func\|prefix_time
+NS_LOG_DCE:=$(NS_LOG_DCE):SimpleRouter=debug\|prefix_func\|prefix_time
 #NS_LOG_DCE:=$(NS_LOG_DCE):EunetTest=debug\|prefix_func\|prefix_time
 #define NS_LOG
 #NS_LOG="NamedRouters=**:EunetRouters=**:EunetRouter=**:SimpleRouter=**:BridgingAp=**:SimpleAp=**:NamedSwitches=**:EunetSwitch=**:EunetSwitches=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"

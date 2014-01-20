@@ -43,6 +43,16 @@ void CsmaInternetNode::NotifyConstructionCompleted() {
 	this->logAllDevices();
 	NS_ASSERT(this->GetNDevices() == n_devices_before+1);
 	NS_ASSERT(this->GetDevice(n_devices_before)->GetObject<ns3::LoopbackNetDevice>(ns3::LoopbackNetDevice::GetTypeId()));
+
+	for (unsigned i = 0; i < this-> GetNDevices(); ++i) {
+		NS_LOG_DEBUG("add ns3::IPv4 to node " << this->GetId() << " device " << i);
+		auto ptr_csma_net_device = this->GetDevice(i);
+		auto ipv4 = this->GetObject<ns3::Ipv4> ();
+		int32_t i_interface = ipv4->GetInterfaceForDevice(ptr_csma_net_device);
+		if (i_interface == -1) {
+			ipv4->AddInterface(ptr_csma_net_device);
+		}//if
+	}//for
 }//NotifyConstructionCompleted
 
 void CsmaInternetNode::DoInitialize() {
