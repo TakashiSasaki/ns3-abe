@@ -11,7 +11,6 @@ NS_LOG_COMPONENT_DEFINE("EunetRouter");
 #include "ns3/dce-application-helper.h"
 #include "EunetRouter.h"
 #include "SimpleRouter.h"
-//#include "CsmaChannelNode.h"
 
 NS_OBJECT_ENSURE_REGISTERED(EunetRouter);
 
@@ -28,17 +27,10 @@ void EunetRouter::DoDispose() {
 
 EunetRouter::EunetRouter() :
 	INIT_DIDDNCC_FLAGS {
-	NS_LOG_INFO("constructing EunetRouter");
-	//	NS_LOG_INFO("attaching " << this->eunetTerminals.GetN() << " terminal(s) to corresponding port(s)");
-	//	for (unsigned i = 0; i < this->eunetTerminals.GetN(); ++i) {
-	//		NS_LOG_INFO("attaching terminal " << i << " to corresponding port");
-	//		this->bring(i, this->eunetTerminals.Get(i), 0);
-	//	}
 }// the constructor
 
 void EunetRouter::DoInitialize() {
 	ASSERT_DI;
-	//this->SetAttribute("nPorts", ns3::UintegerValue(10));
 	SimpleRouter::DoInitialize();
 }//DoInitialize
 
