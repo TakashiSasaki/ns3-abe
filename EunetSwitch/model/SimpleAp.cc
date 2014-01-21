@@ -33,6 +33,9 @@ void SimpleAp::DoInitialize() {
 	Base::DoInitialize();
 }
 
+void SimpleAp::DoDispose() {
+}
+
 void SimpleAp::NotifyConstructionCompleted() {
 	ASSERT_NCC;
 	Base::NotifyConstructionCompleted();

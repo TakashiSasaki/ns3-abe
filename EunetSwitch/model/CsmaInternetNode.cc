@@ -85,7 +85,7 @@ void CsmaInternetNode::assignDummyAddress(
 }
 
 void CsmaInternetNode::removeAllAddresses(
-		ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device) {
+		ns3::Ptr<ns3::NetDevice> ptr_csma_net_device) {
 	//auto ptr_csma_net_device = this->getNetDevice<ns3::CsmaNetDevice> (
 	//		i_csma_port);
 	auto ptr_ipv4 = this->GetObject<ns3::Ipv4> ();
@@ -157,7 +157,7 @@ void CsmaInternetNode::assignAddress(const unsigned i_port,
 #endif
 
 void CsmaInternetNode::assignAddress(
-		ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device,
+		ns3::Ptr<ns3::NetDevice> ptr_csma_net_device,
 		ns3::Ipv4Address ipv4_address, ns3::Ipv4Mask ipv4_mask) {
 	NS_ASSERT(ptr_csma_net_device != NULL);
 	NS_ASSERT(this->GetId()==ptr_csma_net_device->GetNode()->GetId());
@@ -204,7 +204,7 @@ template ns3::Ipv4InterfaceAddress CsmaInternetNode::getIpv4InterfaceAddress<
 		ns3::CsmaNetDevice>(const unsigned i_port);
 
 void CsmaInternetNode::assignAddress(
-		ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device,
+		ns3::Ptr<ns3::NetDevice> ptr_csma_net_device,
 		ns3::Ipv4AddressHelper& ipv4_address_helper) {
 	NS_ASSERT(ptr_csma_net_device != 0);
 	removeAllAddresses(ptr_csma_net_device);
@@ -220,7 +220,7 @@ void CsmaInternetNode::assignAddress(
 }
 
 ns3::Ipv4Address CsmaInternetNode::getAddress(
-		ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device) {
+		ns3::Ptr<ns3::NetDevice> ptr_csma_net_device) {
 	NS_ASSERT(ptr_csma_net_device->GetNode()->GetId()==this->GetId());
 	ns3::Ptr<ns3::Ipv4> ptr_ipv4 = this->GetObject<ns3::Ipv4> ();
 	NS_ASSERT(ptr_csma_net_device->GetInstanceTypeId().IsChildOf(ns3::NetDevice::GetTypeId()));

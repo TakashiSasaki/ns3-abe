@@ -23,6 +23,8 @@ private:
 		ns3::ObjectFactory object_factory;
 
 		object_factory.SetTypeId("EunetMobile");
+		object_factory.Set("onOffStartTime", ns3::TimeValue(ns3::Seconds(0)));
+		object_factory.Set("onOffStopTime", ns3::TimeValue(ns3::Seconds(10)));
 		auto eunet_mobile_1 = object_factory.Create<EunetMobile> ();
 		eunet_mobile_1->setSsid(ns3::Ssid("eunet"));
 		auto eunet_mobile_2 = object_factory.Create<EunetMobile> ();
@@ -38,12 +40,21 @@ private:
 		NS_LOG_INFO(ptr_wifi_net_device->GetInstanceTypeId());
 		NS_ASSERT(ptr_wifi_net_device->GetInstanceTypeId() == ns3::WifiNetDevice::GetTypeId());
 
-		eunet_mobile_1->setAddress<ns3::WifiNetDevice> (ipv4_address_helper);
-		eunet_mobile_2->setAddress<ns3::WifiNetDevice> (ipv4_address_helper);
+		{
+			auto device1 = eunet_mobile_1->getNetDevice<ns3::WifiNetDevice> (0);
+			auto device2 = eunet_mobile_2->getNetDevice<ns3::WifiNetDevice> (0);
+			eunet_mobile_1->assignAddress(device1, ipv4_address_helper);
+			eunet_mobile_2->assignAddress(device2, ipv4_address_helper);
+		}
 
-		eunet_mobile_1->startAt(ns3::Seconds(0.0));
-		eunet_mobile_1->stopAt(ns3::Seconds(10.0));
-		eunet_mobile_1->setRemote<ns3::WifiNetDevice> (eunet_mobile_2);
+		//eunet_mobile_1->startAt(ns3::Seconds(0.0));
+		//eunet_mobile_1->stopAt(ns3::Seconds(10.0));
+		{
+			auto device = eunet_mobile_1->getNetDevice<ns3::WifiNetDevice> (0);
+			auto address = eunet_mobile_1->getAddress(device);
+			eunet_mobile_1->setRemote(address);
+		}
+
 		NS_ASSERT(eunet_mobile_2->getTotalRx()==0);
 
 		object_factory.SetTypeId("SimpleAp");
@@ -71,7 +82,7 @@ private:
 class EunetMobileTestSuite: public ns3::TestSuite {
 public:
 	EunetMobileTestSuite() :
-		ns3::TestSuite("EunetMobile", UNIT) {
+		ns3::TestSuite("EunetMobileTestSuite", UNIT) {
 		//NS_LOG_UNCOND("adding a test case");
 		AddTestCase(new EunetMobileTestCase, ns3::TestCase::QUICK);
 	}

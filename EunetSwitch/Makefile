@@ -22,6 +22,7 @@ TESTS_DCE= \
 	EunetTerminalsTest.o \
     DceQuaggaOspfdTest.o \
 	EunetTest.o \
+	EunetMobileTest.o \
 	EunetRouterTest.o
 
 #NS_LOG_STD=WifiBase=*:EunetMobile=*:CsmaInternetNode=*:CsmaNode=*:EunetMobileTest=*
@@ -43,7 +44,11 @@ NS_LOG_DCE:=$(NS_LOG_DCE):SimpleSwitchTest=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):EunetSwitches=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):EunetRouterTest=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):SimpleRouter=debug\|prefix_func\|prefix_time
-NS_LOG_DCE:=$(NS_LOG_DCE):WifiTest=debug\|prefix_func\|prefix_time
+NS_LOG_DCE:=$(NS_LOG_DCE):WifiTest=info\|prefix_func\|prefix_time
+#NS_LOG_DCE:=$(NS_LOG_DCE):WifiBase=info\|prefix_func\|prefix_time
+NS_LOG_DCE:=$(NS_LOG_DCE):WifiMacTrace=info\|prefix_func\|prefix_time
+NS_LOG_DCE:=$(NS_LOG_DCE):WifiPhyTrace=info\|prefix_func\|prefix_time
+NS_LOG_DCE:=$(NS_LOG_DCE):EunetMobileTest=info\|prefix_func\|prefix_time
 #NS_LOG_DCE:=$(NS_LOG_DCE):EunetTest=debug\|prefix_func\|prefix_time
 #define NS_LOG
 #NS_LOG="NamedRouters=**:EunetRouters=**:EunetRouter=**:SimpleRouter=**:BridgingAp=**:SimpleAp=**:NamedSwitches=**:EunetSwitch=**:EunetSwitches=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"
@@ -273,7 +278,7 @@ OBJS_COMMON:= \
     EunetTerminal.o EunetTerminals.o CsmaNode.o CsmaChannelNode.o \
     CsmaInternetNode.o PacketSinkNode.o OnOffNode.o SimpleSwitch.o \
     WifiMacTrace.o DownlinkNetDevice.o UplinkNetDevice.o \
-    Eunet.o
+    Eunet.o WifiBase.o EunetMobile.o MobilityBase.o SimpleAp.o
 
 OBJS_STD:= \
     SimpleAp.o BridgingAp.o \
@@ -282,7 +287,7 @@ OBJS_STD:= \
 
 OBJS_DCE:= \
     EunetRouter.o SimpleRouter.o \
-    TraceBase.o WifiMacTrace.o WifiPhyTrace.o
+    TraceBase.o WifiMacTrace.o WifiPhyTrace.o WifiBase.o
     # NamedRouters.o EunetRouters.o
 
 libeunet.a : $(OBJS_COMMON) $(OBJS_$(VER))
@@ -342,6 +347,9 @@ EunetRouterTestSuite: test-runner
 	$(EXECENV) ./test-runner --suite=$@ --verbose 
 
 WifiTestSuite: test-runner
+	$(EXECENV) ./test-runner --suite=$@ --verbose 
+
+EunetMobileTestSuite: test-runner
 	$(EXECENV) ./test-runner --suite=$@ --verbose 
 
 #build this target first to use DCE feature

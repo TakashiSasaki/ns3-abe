@@ -24,6 +24,9 @@ EunetMobile::EunetMobile() :
 			WifiBase(this, WifiBase::StaWifiMac, true), INIT_DIDDNCC_FLAGS {
 }// the default constructor
 
+EunetMobile::~EunetMobile(){
+}
+
 void EunetMobile::DoInitialize() {
 	ASSERT_DI
 	MobilityBase::DoInitialize();

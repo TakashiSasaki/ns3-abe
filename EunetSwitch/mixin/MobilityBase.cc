@@ -11,9 +11,20 @@ MobilityBase::MobilityBase(ns3::Node* p_node,
 	ptrNode(p_node, true), initialPosition(initial_position) {
 }
 
+MobilityBase::~MobilityBase() {
+
+}
+
+void MobilityBase::NotifyConstructionCompleted() {
+
+}
+
 void MobilityBase::DoInitialize() {
 	//auto ptr_node = ns3::Ptr<SimpleAp>(this, true);
 	this->setPosition(this->initialPosition);
+}
+
+void MobilityBase::DoDispose() {
 }
 
 void MobilityBase::setPosition(const ns3::Vector& position) {

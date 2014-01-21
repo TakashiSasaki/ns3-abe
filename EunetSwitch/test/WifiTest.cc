@@ -20,6 +20,7 @@ NS_LOG_COMPONENT_DEFINE("WifiTest");
 #include "ns3/aarf-wifi-manager.h"
 #include "ns3/propagation-delay-model.h"
 #include "ns3/propagation-loss-model.h"
+#include "ns3/ap-wifi-mac.h"
 #include "WifiPhyTrace.h"
 #include "WifiMacTrace.h"
 
@@ -130,7 +131,7 @@ void WifiTestCase::DoRun() {
 	this->ptrYansWifiPhy3->SetDevice(this->ptrWifiNetDevice3);
 	this->ptrWifiMac1 = ns3::CreateObject<ns3::AdhocWifiMac>();
 	this->ptrWifiMac2 = ns3::CreateObject<ns3::AdhocWifiMac>();
-	this->ptrWifiMac3 = ns3::CreateObject<ns3::AdhocWifiMac>();
+	this->ptrWifiMac3 = ns3::CreateObject<ns3::ApWifiMac>();
 	this->ptrWifiMac1->ConfigureStandard(ns3::WIFI_PHY_STANDARD_80211a);
 	this->ptrWifiMac2->ConfigureStandard(ns3::WIFI_PHY_STANDARD_80211a);
 	this->ptrWifiMac3->ConfigureStandard(ns3::WIFI_PHY_STANDARD_80211a);

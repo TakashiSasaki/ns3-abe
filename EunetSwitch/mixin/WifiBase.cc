@@ -83,6 +83,12 @@ void WifiBase::DoInitialize() {
 WifiBase::~WifiBase() {
 }
 
+void WifiBase::NotifyConstructionCompleted(){
+}
+
+void WifiBase::DoDispose(){
+}
+
 void WifiBase::setSsid(const ns3::Ssid& ssid) {
 	this->ssid = ssid;
 }
