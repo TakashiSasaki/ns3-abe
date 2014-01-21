@@ -52,4 +52,5 @@ EunetSwitch/UlPdcpStats.txt
 EunetSwitch/UlRlcStats.txt
 EunetSwitch/DCE
 EunetSwitch/.dce/
+EunetSwitch/gdbinit
 

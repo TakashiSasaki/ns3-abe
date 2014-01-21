@@ -12,6 +12,8 @@ NS_LOG_COMPONENT_DEFINE("EunetMobile");
 #include "ns3/config.h"
 #include "ns3/string.h"
 #include "ns3/double.h"
+#include "ns3/loopback-net-device.h"
+#include "ns3/internet-stack-helper.h"
 #include "EunetMobile.h"
 NS_OBJECT_ENSURE_REGISTERED(EunetMobile);
 
@@ -89,8 +91,19 @@ void EunetMobile::DoInitialize() {
 	wifi_mac_helper.SetType("ns3::AdhocWifiMac");
 
 	// installing wifi
-	wifi_helper.Install(wifi_phy_helper, wifi_mac_helper, ns3::NodeContainer(
-			ns3::Ptr<ns3::Node>(this, true)));
+	auto devices = wifi_helper.Install(wifi_phy_helper, wifi_mac_helper,
+			ns3::NodeContainer(ns3::Ptr<ns3::Node>(this, true)));
+	NS_ASSERT(devices.GetN()==1);
+	NS_ASSERT_MSG(getNDevices<ns3::WifiNetDevice>()== 1, getNDevices<ns3::WifiNetDevice>());
+
+	// it causes multiple aggregation error. Use AddDevice instead.
+	//ns3::InternetStackHelper internet_stack_helper;
+	//internet_stack_helper.Install(ns3::NodeContainer(ns3::Ptr<ns3::Node>(this, true)));
+
+	//AddDevice(devices.Get(0));
+	// add new device to already existing internet stack.
+	auto ipv4 = GetObject<ns3::Ipv4> ();
+	ipv4->AddInterface(devices.Get(0));
 
 	// mobility
 	ns3::MobilityHelper mobility_helper;
@@ -100,16 +113,16 @@ void EunetMobile::DoInitialize() {
 	mobility_helper.SetMobilityModel("ns3::ConstantPositionMobilityModel");
 	mobility_helper.Install(ns3::NodeContainer(ns3::Ptr<ns3::Node>(this, true)));
 
+	NS_ASSERT_MSG(getNDevices<ns3::WifiNetDevice>()== 1, getNDevices<ns3::WifiNetDevice>());
 }//DoInitialize
 
 void EunetMobile::NotifyConstructionCompleted() {
 	ASSERT_NCC
-	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
-		NS_LOG_INFO(this->GetDevice(i)->GetTypeId().GetName());
-	}//for
-	NS_ASSERT(this->GetNDevices() == 2);
+	NS_ASSERT_MSG(this->GetNDevices() == 0, this->GetNDevices());
 	OnOffNode::NotifyConstructionCompleted();
-	NS_ASSERT(this->GetNDevices() == 3);
+	NS_ASSERT_MSG(this->GetNDevices() == 2, this->GetNDevices());
+	NS_ASSERT(getNDevices<ns3::LoopbackNetDevice>()== 1);
+	NS_ASSERT(getNDevices<ns3::CsmaNetDevice>()== 1);
 	//MobilityBase::NotifyConstructionCompleted();
 	//WifiBase::NotifyConstructionCompleted();
 }//NotifyConstructionCompleted

@@ -127,8 +127,9 @@ ns3::Ptr<ns3::CsmaNetDevice> CsmaNode::addCsmaNetDevice<ns3::CsmaNetDevice>();
 template
 ns3::NetDeviceContainer CsmaNode::getNetDevices<ns3::CsmaNetDevice>();
 
-void CsmaNode::enablePcap(ns3::Ptr<ns3::CsmaNetDevice> device,
+void CsmaNode::enablePcap(ns3::Ptr<ns3::NetDevice> device,
 		const bool promiscuous) {
+	NS_ASSERT(GetId()==device->GetNode()->GetId());
 	ns3::CsmaHelper csma_helper;
 	std::ostringstream oss;
 	oss << device->GetInstanceTypeId() << "-" << this->GetId() << "-"

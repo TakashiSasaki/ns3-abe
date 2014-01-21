@@ -49,6 +49,7 @@ NS_LOG_DCE:=$(NS_LOG_DCE):WifiTest=info\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):WifiMacTrace=info\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):WifiPhyTrace=info\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):EunetMobileTest=info\|prefix_func\|prefix_time
+NS_LOG_DCE:=$(NS_LOG_DCE):EunetMobile=info\|prefix_func\|prefix_time
 #NS_LOG_DCE:=$(NS_LOG_DCE):EunetTest=debug\|prefix_func\|prefix_time
 #define NS_LOG
 #NS_LOG="NamedRouters=**:EunetRouters=**:EunetRouter=**:SimpleRouter=**:BridgingAp=**:SimpleAp=**:NamedSwitches=**:EunetSwitch=**:EunetSwitches=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"
@@ -350,7 +351,9 @@ WifiTestSuite: test-runner
 	$(EXECENV) ./test-runner --suite=$@ --verbose 
 
 EunetMobileTestSuite: test-runner
-	$(EXECENV) ./test-runner --suite=$@ --verbose 
+	echo run --suite=$@ --verbose > gdbinit
+	#$(EXECENV) gdb ./test-runner --command=gdbinit 
+	$(EXECENV) ./test-runner --suite=$@ --verbose
 
 #build this target first to use DCE feature
 install-dce-quagga: build-dce-quagga test-dce-quagga copy-shared-library copy-include-files

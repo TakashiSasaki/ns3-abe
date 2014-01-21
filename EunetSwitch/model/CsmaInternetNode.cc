@@ -206,12 +206,12 @@ template ns3::Ipv4InterfaceAddress CsmaInternetNode::getIpv4InterfaceAddress<
 void CsmaInternetNode::assignAddress(
 		ns3::Ptr<ns3::NetDevice> ptr_csma_net_device,
 		ns3::Ipv4AddressHelper& ipv4_address_helper) {
-	NS_ASSERT(ptr_csma_net_device != 0);
+	NS_ASSERT(ptr_csma_net_device != NULL);
 	removeAllAddresses(ptr_csma_net_device);
 	{
 		auto ptr_ipv4 = this->GetObject<ns3::Ipv4> ();
 		auto i_interface = ptr_ipv4->GetInterfaceForDevice(ptr_csma_net_device);
-		NS_ASSERT(i_interface >=0);
+		NS_ASSERT_MSG(i_interface >=0, i_interface);
 		NS_ASSERT_MSG(ptr_ipv4->GetNAddresses(i_interface) == 0,ptr_ipv4->GetNAddresses(i_interface));
 	}
 	ipv4_address_helper.Assign(ns3::NetDeviceContainer(ptr_csma_net_device));

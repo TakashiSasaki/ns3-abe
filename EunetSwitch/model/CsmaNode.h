@@ -27,7 +27,7 @@ public:
 	template<class T>
 	ns3::Ptr<T> getApplication();
 
-	void enablePcap(ns3::Ptr<ns3::CsmaNetDevice>, const bool promiscuous = false);
+	void enablePcap(ns3::Ptr<ns3::NetDevice>, const bool promiscuous = false);
 
 	template<class T>
 	void enableAsciiTrace(const unsigned i_port);
