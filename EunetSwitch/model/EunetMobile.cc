@@ -32,7 +32,11 @@ ns3::TypeId EunetMobile::GetTypeId(void) {
 							"position", "position", ns3::VectorValue(
 									ns3::Vector(0.0, 0.0, 0.0)),
 							ns3::MakeVectorAccessor(&EunetMobile::position),
-							ns3::MakeVectorChecker());
+							ns3::MakeVectorChecker()).AddAttribute(
+							"wifiMacType", "wifiMacType", ns3::StringValue(
+									"ns3::AdhocWifiMac"),
+							ns3::MakeStringAccessor(&EunetMobile::wifiMacType),
+							ns3::MakeStringChecker());
 	return type_id;
 }//GetTypeId
 
@@ -89,7 +93,8 @@ void EunetMobile::DoInitialize() {
 
 	// creating mac helper
 	ns3::NqosWifiMacHelper wifi_mac_helper = ns3::NqosWifiMacHelper::Default();
-	wifi_mac_helper.SetType("ns3::AdhocWifiMac");
+	//wifi_mac_helper.SetType("ns3::AdhocWifiMac");
+	wifi_mac_helper.SetType(this->wifiMacType);
 
 	// installing wifi
 	auto devices = wifi_helper.Install(wifi_phy_helper, wifi_mac_helper,

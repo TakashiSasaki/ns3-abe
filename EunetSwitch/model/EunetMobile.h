@@ -12,7 +12,7 @@ class EunetMobile: public OnOffNode/*, public MobilityBase, public WifiBase*/{
 	std::string phyMode;
 	double rss;
 	ns3::Vector position;
-
+	std::string wifiMacType;
 public:
 	static ns3::TypeId GetTypeId(void);
 	EunetMobile();
