@@ -29,9 +29,9 @@ EunetMobile::~EunetMobile() {
 
 void EunetMobile::DoInitialize() {
 	ASSERT_DI
+	OnOffNode::DoInitialize();
 	MobilityBase::DoInitialize();
 	WifiBase::DoInitialize();
-	OnOffNode::DoInitialize();
 }//DoInitialize
 
 void EunetMobile::NotifyConstructionCompleted() {
@@ -42,9 +42,13 @@ void EunetMobile::NotifyConstructionCompleted() {
 	NS_ASSERT(this->GetNDevices() == 2);
 	OnOffNode::NotifyConstructionCompleted();
 	NS_ASSERT(this->GetNDevices() == 3);
+	MobilityBase::NotifyConstructionCompleted();
+	WifiBase::NotifyConstructionCompleted();
 }//NotifyConstructionCompleted
 
 void EunetMobile::DoDispose() {
 	ASSERT_DD;
-	EunetMobile::DoDispose();
+	OnOffNode::DoDispose();
+	MobilityBase::DoDispose();
+	WifiBase::DoDispose();
 }
