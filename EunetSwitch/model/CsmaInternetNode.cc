@@ -9,6 +9,7 @@ NS_LOG_COMPONENT_DEFINE("CsmaInternetNode");
 #include "CsmaNode.h"
 #include "CsmaChannelNode.h"
 #include "CsmaInternetNode.h"
+#include "CsmaDevice.h"
 
 NS_OBJECT_ENSURE_REGISTERED(CsmaInternetNode);
 
@@ -40,9 +41,9 @@ void CsmaInternetNode::NotifyConstructionCompleted() {
 	ASSERT_NCC;
 	NS_ASSERT(this->GetNDevices()==0);
 	CsmaChannelNode::NotifyConstructionCompleted();
-	NS_ASSERT_MSG(this->getNDevices<ns3::CsmaNetDevice>() == this->nPorts, this->getNDevices<ns3::CsmaNetDevice>() << ", " << this->nPorts);
+	NS_ASSERT_MSG(this->getNDevices<CsmaDevice>() == this->nPorts, this->getNDevices<CsmaDevice>() << ", " << this->nPorts);
 	const unsigned n_devices_before = this->GetNDevices();
-	//NS_ASSERT(this->GetNDevices() == 1);
+
 	ns3::InternetStackHelper internet_stack_helper;
 	internet_stack_helper.SetIpv4StackInstall(true);
 	internet_stack_helper.SetIpv6StackInstall(true);
@@ -54,9 +55,8 @@ void CsmaInternetNode::NotifyConstructionCompleted() {
 	NS_ASSERT(this->GetNDevices() == n_devices_before+1);
 	NS_ASSERT(this->GetDevice(n_devices_before)->GetObject<ns3::LoopbackNetDevice>(ns3::LoopbackNetDevice::GetTypeId()));
 
-	for (unsigned i = 0; i < this->getNDevices<ns3::CsmaNetDevice> (); ++i) {
-		//NS_LOG_DEBUG("add ns3::IPv4 to node " << this->GetId() << " device " << i);
-		auto ptr_csma_net_device = getNetDevice<ns3::CsmaNetDevice> (i);
+	for (unsigned i = 0; i < this->getNDevices<CsmaDevice> (); ++i) {
+		auto ptr_csma_net_device = getNetDevice<CsmaDevice> (i);
 		auto ptr_ipv4 = this->GetObject<ns3::Ipv4> ();
 		int32_t i_interface = ptr_ipv4->GetInterfaceForDevice(
 				ptr_csma_net_device);
@@ -64,7 +64,6 @@ void CsmaInternetNode::NotifyConstructionCompleted() {
 		i_interface = ptr_ipv4->AddInterface(ptr_csma_net_device);
 		NS_ASSERT(i_interface>=0);
 
-		//auto p = this->getNetDevice<ns3::CsmaNetDevice> (i);
 		if (this->willAssignDummyAddress) {
 			this->assignDummyAddress(ptr_csma_net_device);
 		}//if
@@ -72,7 +71,7 @@ void CsmaInternetNode::NotifyConstructionCompleted() {
 }//NotifyConstructionCompleted
 
 void CsmaInternetNode::assignDummyAddress(
-		ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device) {
+		ns3::Ptr<ns3::NetDevice> ptr_csma_net_device) {
 	auto ptr_ipv4 = this->GetObject<ns3::Ipv4> ();
 	int32_t i_interface = ptr_ipv4->GetInterfaceForDevice(ptr_csma_net_device);
 	NS_ASSERT(i_interface>=0);
@@ -102,7 +101,7 @@ void CsmaInternetNode::removeAllAddresses(
 
 void CsmaInternetNode::DoInitialize() {
 	ASSERT_DI;
-	NS_ASSERT_MSG(this->getNDevices<ns3::CsmaNetDevice>()==this->nPorts, this->getNDevices<ns3::CsmaNetDevice>() << "," << this->nPorts);
+	NS_ASSERT_MSG(this->getNDevices<CsmaDevice>()==this->nPorts, this->getNDevices<CsmaDevice>() << "," << this->nPorts);
 	NS_ASSERT_MSG(this->getNDevices<ns3::LoopbackNetDevice>()==1, this->getNDevices<ns3::LoopbackNetDevice>());
 	CsmaChannelNode::DoInitialize();
 #if 0

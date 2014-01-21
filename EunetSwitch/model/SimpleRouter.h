@@ -5,6 +5,7 @@
 #include "ns3/internet-module.h"
 #include "ns3/dce-application-helper.h"
 #include "CsmaInternetNode.h"
+#include "CsmaDevice.h"
 using namespace ns3;
 
 class SimpleRouter: public CsmaInternetNode {
@@ -26,7 +27,7 @@ public:
 			const unsigned connect_i_link_port);
 	void connectTo(std::string router_name);
 	unsigned getUnusedlinkPort();
-	void enableOspf(ns3::Ptr<ns3::CsmaNetDevice>);
+	void enableOspf(ns3::Ptr<CsmaDevice>);
 private:
 	//bool isConnectedToSimpleRouter(const unsigned i_port);
 	void assignIpAddressToDevice(unsigned i_net_device, ns3::Ipv4Address,

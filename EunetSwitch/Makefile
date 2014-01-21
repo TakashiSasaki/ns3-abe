@@ -278,8 +278,8 @@ OBJS_COMMON:= \
     NamedSwitches.o EunetSwitch.o EunetSwitches.o \
     EunetTerminal.o EunetTerminals.o CsmaNode.o CsmaChannelNode.o \
     CsmaInternetNode.o PacketSinkNode.o OnOffNode.o SimpleSwitch.o \
-    WifiMacTrace.o DownlinkNetDevice.o UplinkNetDevice.o \
-    Eunet.o WifiBase.o EunetMobile.o MobilityBase.o SimpleAp.o CsmaNetDevice.o
+    WifiMacTrace.o DownlinkDevice.o UplinkDevice.o \
+    Eunet.o WifiBase.o EunetMobile.o MobilityBase.o SimpleAp.o CsmaDevice.o
 
 OBJS_STD:= \
     SimpleAp.o BridgingAp.o \
@@ -308,7 +308,8 @@ gprof: gmon.out
 	$(EXECENV) gprof ./EunetSwitchTest -p -q
 
 gdb: test-runner
-	$(EXECENV) gdb ./test-runner 
+	echo run --verbose --test-type=unit > gdbinit
+	$(EXECENV) gdb -q ./test-runner --command=gdbinit
 
 doxygen:
 	doxygen

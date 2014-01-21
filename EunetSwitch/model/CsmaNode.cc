@@ -35,16 +35,16 @@ void CsmaNode::NotifyConstructionCompleted() {
 	NS_ASSERT(this->GetNDevices()==0);
 	ns3::Node::NotifyConstructionCompleted();
 	NS_ASSERT(this->GetNDevices()==0);
-	NS_ASSERT_MSG((this->getNDevices<ns3::CsmaNetDevice>()==0), (this->getNDevices<ns3::CsmaNetDevice>()));
+	NS_ASSERT_MSG((this->getNDevices<CsmaDevice>()==0), (this->getNDevices<CsmaDevice>()));
 	for (uint32_t i = 0; i < this->nPorts; ++i) {
-		this->addCsmaNetDevice<ns3::CsmaNetDevice> ();
+		this->addCsmaNetDevice<CsmaDevice> ();
 	}//for
-	NS_ASSERT_MSG(this->getNDevices<ns3::CsmaNetDevice>()==this->nPorts,this->getNDevices<ns3::CsmaNetDevice>() << "," << this->nPorts );
+	NS_ASSERT_MSG(this->getNDevices<CsmaDevice>()==this->nPorts,this->getNDevices<CsmaDevice>() << "," << this->nPorts );
 }
 
 void CsmaNode::DoInitialize() {
 	ASSERT_DI;
-	NS_ASSERT_MSG((getNDevices<ns3::CsmaNetDevice>()==nPorts), (this->getNDevices<ns3::CsmaNetDevice>()));
+	NS_ASSERT_MSG((getNDevices<CsmaDevice>()==nPorts), (this->getNDevices<CsmaDevice>()));
 	ns3::Node::DoInitialize();
 }
 
@@ -111,8 +111,7 @@ uint32_t CsmaNode::countCsmaNetDevices() {
 	return n_csma_net_devices;
 }
 
-void CsmaNode::enableAsciiTrace(
-		ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device) {
+void CsmaNode::enableAsciiTrace(ns3::Ptr<CsmaDevice> ptr_csma_net_device) {
 	ns3::CsmaHelper csma_helper;
 	csma_helper.EnableAscii(this->GetInstanceTypeId().GetName(),
 			ptr_csma_net_device);

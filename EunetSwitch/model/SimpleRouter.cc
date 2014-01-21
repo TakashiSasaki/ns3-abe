@@ -11,6 +11,7 @@ NS_LOG_COMPONENT_DEFINE("SimpleRouter");
 //#include "ns3/dce-application-helper.h"
 #include "ns3/quagga-helper.h"
 #include "ns3/names.h"
+#include "CsmaDevice.h"
 #include "SimpleRouter.h"
 
 NS_OBJECT_ENSURE_REGISTERED( SimpleRouter);
@@ -52,10 +53,10 @@ ns3::Ptr<ns3::CsmaNetDevice> SimpleRouter::getLinkPort(const unsigned i_port) {
 void SimpleRouter::connectTo(const unsigned i_link_port,
 		ns3::Ptr<SimpleRouter> connect_router,
 		const unsigned connect_i_link_port) {
-	this->bring<ns3::CsmaNetDevice, ns3::CsmaNetDevice> (i_link_port,
-			connect_router, connect_i_link_port);
-	NS_ASSERT((this->isConnectedTo<ns3::CsmaNetDevice, SimpleRouter>(i_link_port)));
-	NS_ASSERT((connect_router->isConnectedTo<ns3::CsmaNetDevice, SimpleRouter>(connect_i_link_port)));
+	this->bring<CsmaDevice, CsmaDevice> (i_link_port, connect_router,
+			connect_i_link_port);
+	NS_ASSERT((this->isConnectedTo<CsmaDevice, SimpleRouter>(i_link_port)));
+	NS_ASSERT((connect_router->isConnectedTo<CsmaDevice, SimpleRouter>(connect_i_link_port)));
 }//connectTo
 
 void SimpleRouter::connectTo(std::string connect_router_name) {
@@ -63,9 +64,9 @@ void SimpleRouter::connectTo(std::string connect_router_name) {
 			connect_router_name);
 	auto ptr_connect_router = ns3::Names::Find<SimpleRouter>(
 			connect_router_name);
-	auto ptr_unused_our_port = this->getUnusedPort<ns3::CsmaNetDevice> ();
-	auto ptr_unused_their_port = ptr_connect_router->getUnusedPort<
-			ns3::CsmaNetDevice> ();
+	auto ptr_unused_our_port = this->getUnusedPort<CsmaDevice> ();
+	auto ptr_unused_their_port =
+			ptr_connect_router->getUnusedPort<CsmaDevice> ();
 	ptr_unused_their_port->Attach(
 			ptr_unused_their_port->GetChannel()->GetObject<ns3::CsmaChannel> ());
 	//this->connectTo(unused_link_port, ptr_connect_router,
@@ -93,7 +94,7 @@ void SimpleRouter::NotifyConstructionCompleted() {
 	SetAttribute("willAssignDummyAddress", ns3::BooleanValue(true));
 	NS_ASSERT_MSG(this->GetNDevices() == 0, this->GetNDevices());
 	CsmaInternetNode::NotifyConstructionCompleted();
-	NS_ASSERT_MSG(((this->getNDevices<ns3::CsmaNetDevice>()) == this->nPorts), (this->getNetDevice<ns3::CsmaNetDevice>()));
+	NS_ASSERT_MSG(((this->getNDevices<CsmaDevice>()) == this->nPorts), (this->getNetDevice<CsmaDevice>()));
 	NS_ASSERT_MSG(getNDevices<ns3::LoopbackNetDevice>()==1, getNDevices<ns3::LoopbackNetDevice>());
 
 	NS_LOG_INFO(this->GetNDevices() << " devices");
@@ -202,10 +203,10 @@ std::unique_ptr<std::vector<std::string> > SimpleRouter::getAllNetworks() {
 	return p_networks;
 }
 
-void SimpleRouter::enableOspf(ns3::Ptr<ns3::CsmaNetDevice> device) {
+void SimpleRouter::enableOspf(ns3::Ptr<CsmaDevice> device) {
 	NS_LOG_DEBUG("enabling Quagga OSPF routing daemon");
-	NS_ASSERT_MSG(this->getNDevices<ns3::CsmaNetDevice>() == this->nPorts,
-			this->getNDevices<ns3::CsmaNetDevice>()<< " device(s) " << this->nPorts << " ports");
+	NS_ASSERT_MSG(this->getNDevices<CsmaDevice>() == this->nPorts,
+			this->getNDevices<CsmaDevice>()<< " device(s) " << this->nPorts << " ports");
 	NS_ASSERT(this->GetId()==device->GetNode()->GetId());
 	ns3::Ptr<ns3::Ipv4> ipv4 = this->GetObject<ns3::Ipv4> ();
 	auto interface = ipv4->GetInterfaceForDevice(device);

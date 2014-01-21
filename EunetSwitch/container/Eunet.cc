@@ -7,8 +7,8 @@ NS_LOG_COMPONENT_DEFINE("Eunet");
 #include "ns3/ipv4-address-helper.h"
 #include "ns3/mobility-helper.h"
 #include "Eunet.h"
-#include "UplinkNetDevice.h"
-#include "DownlinkNetDevice.h"
+#include "UplinkDevice.h"
+#include "DownlinkDevice.h"
 
 Eunet::Eunet() {
 	this->eunetRouterFactory.SetTypeId(EunetRouter::GetTypeId());
@@ -39,7 +39,7 @@ ns3::Ptr<EunetSwitch> Eunet::addEunetSwitch(std::string name,
 	ns3::Ptr<EunetSwitch> ptr_eunet_switch = this->eunetSwitchFactory.Create<
 			EunetSwitch> ();
 	ptr_eunet_switch->Initialize();
-	NS_ASSERT_MSG(ptr_eunet_switch->getNDevices<DownlinkNetDevice>() == n_downlink_ports, ptr_eunet_switch->getNDevices<DownlinkNetDevice>());
+	NS_ASSERT_MSG(ptr_eunet_switch->getNDevices<DownlinkDevice>() == n_downlink_ports, ptr_eunet_switch->getNDevices<DownlinkDevice>());
 	this->Add(ptr_eunet_switch);
 	ns3::Names::Add(name, ptr_eunet_switch);
 	return ptr_eunet_switch;
@@ -58,23 +58,23 @@ ns3::Ptr<EunetRouter> Eunet::addEunetRouter(std::string name) {
 
 ns3::NetDeviceContainer Eunet::connectUpTo(const std::string& src_name,
 		const std::string& dst_name, Eunet::ActiveChannel active_channel) {
-	return this->connect<EunetSwitch, UplinkNetDevice, EunetSwitch,
-			DownlinkNetDevice> (src_name, dst_name, active_channel);
+	return this->connect<EunetSwitch, UplinkDevice, EunetSwitch, DownlinkDevice> (
+			src_name, dst_name, active_channel);
 }
 
 ns3::NetDeviceContainer Eunet::connectDownTo(const std::string& src_name,
 		const std::string& dst_name, Eunet::ActiveChannel active_channel) {
-	return this->connect<EunetSwitch, DownlinkNetDevice, EunetSwitch,
-			DownlinkNetDevice> (src_name, dst_name, active_channel);
+	return this->connect<EunetSwitch, DownlinkDevice, EunetSwitch,
+			DownlinkDevice> (src_name, dst_name, active_channel);
 }
 
 ns3::NetDeviceContainer Eunet::connectToRouter(std::string src_name,
 		std::string dst_name, ns3::Ipv4Address dst_address,
 		ns3::Ipv4Mask dst_mask, Eunet::ActiveChannel active_channel) {
-	auto ndc = connect<EunetSwitch, ns3::CsmaNetDevice, EunetRouter,
-			ns3::CsmaNetDevice> (src_name, dst_name, DST);
-	ns3::Ptr<ns3::CsmaNetDevice> ptr_dst_net_device = ndc.Get(1)->GetObject<
-			ns3::CsmaNetDevice> ();
+	auto ndc = connect<EunetSwitch, CsmaDevice, EunetRouter, CsmaDevice> (
+			src_name, dst_name, DST);
+	ns3::Ptr<CsmaDevice> ptr_dst_net_device =
+			ndc.Get(1)->GetObject<CsmaDevice> ();
 	ns3::Ptr<EunetRouter> ptr_dst_node =
 			ptr_dst_net_device->GetNode()->GetObject<EunetRouter> ();
 	ptr_dst_node->assignAddress(ptr_dst_net_device, dst_address, dst_mask);
@@ -86,12 +86,10 @@ ns3::NetDeviceContainer Eunet::connectRouters(std::string src_name,
 		std::string dst_name, ns3::Ipv4Address src_address,
 		ns3::Ipv4Address dst_address, ns3::Ipv4Mask ipv4_mask,
 		Eunet::ActiveChannel active_channel) {
-	auto ndc = connect<EunetRouter, ns3::CsmaNetDevice, EunetRouter,
-			ns3::CsmaNetDevice> (src_name, dst_name, active_channel);
-	ns3::Ptr<ns3::CsmaNetDevice> ptr_src_dev = ndc.Get(0)->GetObject<
-			ns3::CsmaNetDevice> ();
-	ns3::Ptr<ns3::CsmaNetDevice> ptr_dst_dev = ndc.Get(1)->GetObject<
-			ns3::CsmaNetDevice> ();
+	auto ndc = connect<EunetRouter, CsmaDevice, EunetRouter, CsmaDevice> (
+			src_name, dst_name, active_channel);
+	ns3::Ptr<CsmaDevice> ptr_src_dev = ndc.Get(0)->GetObject<CsmaDevice> ();
+	ns3::Ptr<CsmaDevice> ptr_dst_dev = ndc.Get(1)->GetObject<CsmaDevice> ();
 	ns3::Ptr<EunetRouter> ptr_src_node = ptr_src_dev->GetNode()->GetObject<
 			EunetRouter> ();
 	ns3::Ptr<EunetRouter> ptr_dst_node = ptr_dst_dev->GetNode()->GetObject<

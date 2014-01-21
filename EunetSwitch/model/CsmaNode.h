@@ -10,6 +10,7 @@
 #include "ns3/queue.h"
 #include "ns3/drop-tail-queue.h"
 #include "init.h"
+#include "CsmaDevice.h"
 
 class CsmaNode: public ns3::Node {
 protected:
@@ -33,7 +34,7 @@ public:
 	void enableAsciiTrace(const unsigned i_port);
 	template<class T>
 	ns3::NetDeviceContainer getNetDevices();
-	void enableAsciiTrace(ns3::Ptr<ns3::CsmaNetDevice> ptr_csma_net_device);
+	void enableAsciiTrace(ns3::Ptr<CsmaDevice> ptr_csma_net_device);
 protected:
 	template<class T>
 	ns3::Ptr<T> addCsmaNetDevice();

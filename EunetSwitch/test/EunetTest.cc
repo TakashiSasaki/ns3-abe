@@ -64,7 +64,7 @@ void EunetTestCase::DoRun() {
 	auto t133 = ptr_s13->eunetTerminals.Get(3)->GetObject<EunetTerminal> ();
 	auto t125 = ptr_s12->eunetTerminals.Get(5)->GetObject<EunetTerminal> ();
 	{
-		auto p = t125->getNetDevice<ns3::CsmaNetDevice> (0);
+		auto p = t125->getNetDevice<CsmaDevice> (0);
 		t133->setRemote(t125->getAddress(p));
 	}
 
@@ -95,7 +95,7 @@ void EunetTestCase::DoRun() {
 	auto t233 = ptr_s23->eunetTerminals.Get(3)->GetObject<EunetTerminal> ();
 	auto t225 = ptr_s22->eunetTerminals.Get(5)->GetObject<EunetTerminal> ();
 	{
-		auto p = t225->getNetDevice<ns3::CsmaNetDevice> (0);
+		auto p = t225->getNetDevice<CsmaDevice> (0);
 		t233->setRemote(t225->getAddress(p));
 	}
 

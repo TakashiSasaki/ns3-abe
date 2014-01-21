@@ -44,8 +44,6 @@ void CsmaChannelNode::addCsmaChannel(const unsigned i_port,
 			i_port);
 	ns3::Ptr<ns3::CsmaChannel> ptr_csma_channel =
 			this->csmaChannelFactory.Create()->GetObject<ns3::CsmaChannel> ();
-	//NS_LOG_INFO("attaching a channel to device #" << i);
-	//this->getNetDevice<ns3::CsmaNetDevice> (i)->Attach(ptr_csma_channel);
 	ptr_csma_net_device->Attach(ptr_csma_channel);
 }//addCsmaChannel
 

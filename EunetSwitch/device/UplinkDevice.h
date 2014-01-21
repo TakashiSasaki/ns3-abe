@@ -1,15 +1,15 @@
 #ifndef UPLINKNETDEVICE_H_
 #define UPLINKNETDEVICE_H_
-#include "ns3/csma-net-device.h"
+#include "ns3/data-rate.h"
+#include "CsmaDevice.h"
 
-class CsmaNetDevice: public ns3::CsmaNetDevice {
+class UplinkDevice: public CsmaDevice {
 	ns3::DataRate uplinkChannelDataRate;
 	ns3::Time uplinkChannelDelay;
 public:
 	static ns3::TypeId GetTypeId(void);
-	CsmaNetDevice();
-	virtual ~CsmaNetDevice();
-	void joinTo(ns3::Ptr<CsmaNetDevice>);
+	UplinkDevice();
+	virtual ~UplinkDevice();
 };
 
-#endif
+#endif /* UPLINKNETDEVICE_H_ */

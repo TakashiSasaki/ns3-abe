@@ -128,7 +128,7 @@ void EunetMobile::NotifyConstructionCompleted() {
 	OnOffNode::NotifyConstructionCompleted();
 	NS_ASSERT_MSG(this->GetNDevices() == 2, this->GetNDevices());
 	NS_ASSERT(getNDevices<ns3::LoopbackNetDevice>()== 1);
-	NS_ASSERT(getNDevices<ns3::CsmaNetDevice>()== 1);
+	NS_ASSERT(getNDevices<CsmaDevice>()== 1);
 	//MobilityBase::NotifyConstructionCompleted();
 	//WifiBase::NotifyConstructionCompleted();
 }//NotifyConstructionCompleted
