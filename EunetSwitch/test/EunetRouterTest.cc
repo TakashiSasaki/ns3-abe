@@ -125,7 +125,7 @@ void EunetRouterTestCase::DoRun() {
 	//ptr_eunet_router_1->getTerminals().Get(1)->startAt(ns3::Seconds(0.0));
 
 	NS_LOG_INFO("Run Simulation.");
-	ns3::Simulator::Stop(ns3::Seconds(100.0));
+	ns3::Simulator::Stop(ns3::Seconds(25.0));
 	ns3::Simulator::Run();
 	ns3::Simulator::Destroy();
 	//NS_LOG_INFO("Done.");

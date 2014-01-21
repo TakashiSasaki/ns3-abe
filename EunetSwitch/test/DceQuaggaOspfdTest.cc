@@ -45,7 +45,7 @@ private:
 
 // Parameters
 uint32_t nNodes = 2;
-uint32_t stopTime = 20;
+uint32_t stopTime = 60;
 
 void DceQuaggaOspfdTest::DoRun() {
 	//
@@ -106,12 +106,13 @@ void DceQuaggaOspfdTest::DoRun() {
 	}
 	Simulator::Run();
 	Simulator::Destroy();
+	NS_LOG_UNCOND("dfsofjdijad");
 }//DceQuaggaOspfdTest::DoRun
 
 class DceQuaggaOspfdTestSuite: public TestSuite {
 public:
 	DceQuaggaOspfdTestSuite() :
-		ns3::TestSuite("DceQuaggaOspfd", UNIT) {
+		ns3::TestSuite("DceQuaggaOspfdTestSuite", UNIT) {
 		//NS_LOG_UNCOND("adding a test case");
 		AddTestCase(new DceQuaggaOspfdTest, TestCase::QUICK);
 	}
