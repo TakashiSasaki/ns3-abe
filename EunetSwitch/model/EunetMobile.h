@@ -17,6 +17,7 @@ public:
 	static ns3::TypeId GetTypeId(void);
 	EunetMobile();
 	virtual ~EunetMobile();
+	void joinTo(ns3::Ptr<EunetMobile>);
 DECLARE_DIDDNCC
 };//EunetMobile
 

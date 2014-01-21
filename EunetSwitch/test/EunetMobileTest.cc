@@ -10,13 +10,15 @@ NS_LOG_COMPONENT_DEFINE("EunetMobileTest");
 #include "ns3/wifi-net-device.h"
 #include "ns3/yans-wifi-helper.h"
 #include "ns3/yans-wifi-phy.h"
+#include "ns3/global-value.h"
 #include "EunetMobile.h"
 #include "SimpleAp.h"
 
 class EunetMobileTestCase: public ns3::TestCase {
+	const bool isVisual;
 public:
-	EunetMobileTestCase() :
-		ns3::TestCase("EunetMobileTestCase") {
+	EunetMobileTestCase(const bool is_visual = false) :
+		ns3::TestCase("EunetMobileTestCase"), isVisual(is_visual) {
 		//NS_LOG_UNCOND("constructing a test case");
 	}
 	virtual ~EunetMobileTestCase() {
@@ -24,6 +26,12 @@ public:
 
 private:
 	virtual void DoRun(void) {
+		if (this->isVisual) {
+			NS_LOG_DEBUG("--SimulatorImplementationType=ns3::VisualSimulatorImpl");
+			ns3::GlobalValue::Bind("SimulatorImplementationType",
+					ns3::StringValue("ns3::VisualSimulatorImpl"));
+		}//if
+
 		ns3::PacketMetadata::Enable();
 
 		ns3::ObjectFactory object_factory;
@@ -54,17 +62,7 @@ private:
 					ns3::WifiNetDevice> (0);
 			NS_ASSERT(device2 != NULL);
 
-			ns3::Ptr<ns3::YansWifiChannel> channel1 =
-					device1->GetChannel()->GetObject<ns3::YansWifiChannel> ();
-			ns3::Ptr<ns3::YansWifiChannel> channel2 =
-					device2->GetChannel()->GetObject<ns3::YansWifiChannel> ();
-
-			NS_LOG_INFO(device2->GetPhy()->GetChannel()->GetId());
-			channel1->Add(device2->GetPhy()->GetObject<ns3::YansWifiPhy> ());
-			NS_LOG_INFO(device2->GetPhy()->GetChannel()->GetId());
-			device2->GetPhy()->GetObject<ns3::YansWifiPhy> ()->SetChannel(
-					channel1);
-			NS_LOG_INFO(device2->GetPhy()->GetChannel()->GetId());
+			node2->joinTo(node1);
 
 			node1->assignAddress(device1, ipv4_address_helper);
 			node2->assignAddress(device2, ipv4_address_helper);
@@ -102,19 +100,26 @@ private:
 		ns3::Simulator::Stop(ns3::Seconds(100.1));
 		ns3::Simulator::Run();
 		ns3::Simulator::Destroy();
-		NS_ASSERT_MSG(node1->getTotalTxBytes()>10000, node1->getTotalTxBytes());
-		NS_ASSERT_MSG(node2->getTotalRx()>10000, node2->getTotalRx());
+		NS_ASSERT_MSG(node1->getTotalTxBytes()==624640, node1->getTotalTxBytes());
+		NS_ASSERT_MSG(node2->getTotalRx()==624640, node2->getTotalRx());
 		NS_LOG_INFO("Done.");
 	}
 };
 
 class EunetMobileTestSuite: public ns3::TestSuite {
 public:
-	EunetMobileTestSuite() :
-		ns3::TestSuite("EunetMobileTestSuite", UNIT) {
-		//NS_LOG_UNCOND("adding a test case");
-		AddTestCase(new EunetMobileTestCase, ns3::TestCase::QUICK);
-	}
+	EunetMobileTestSuite(ns3::TestSuite::Type type) :
+		ns3::TestSuite("EunetMobileTestSuite", type) {
+		switch (type) {
+		case UNIT:
+			AddTestCase(new EunetMobileTestCase, ns3::TestCase::QUICK);
+			break;
+		case PERFORMANCE:
+			AddTestCase(new EunetMobileTestCase(true), ns3::TestCase::QUICK);
+			break;
+		default:
+break	}
+}
 };
 
 static EunetMobileTestSuite eunet_mobile_test_suite;

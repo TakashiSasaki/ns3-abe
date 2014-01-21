@@ -14,6 +14,7 @@ NS_LOG_COMPONENT_DEFINE("EunetMobile");
 #include "ns3/double.h"
 #include "ns3/loopback-net-device.h"
 #include "ns3/internet-stack-helper.h"
+#include "ns3/yans-wifi-phy.h"
 #include "EunetMobile.h"
 NS_OBJECT_ENSURE_REGISTERED(EunetMobile);
 
@@ -132,4 +133,21 @@ void EunetMobile::DoDispose() {
 	OnOffNode::DoDispose();
 	//MobilityBase::DoDispose();
 	//WifiBase::DoDispose();
+}
+
+void EunetMobile::joinTo(ns3::Ptr<EunetMobile> their_node) {
+	ns3::Ptr<ns3::WifiNetDevice> our_device = this->getNetDevice<
+			ns3::WifiNetDevice> (0);
+	ns3::Ptr<ns3::WifiNetDevice> their_device = their_node->getNetDevice<
+			ns3::WifiNetDevice> (0);
+	ns3::Ptr<ns3::YansWifiPhy> our_phy = our_device->GetPhy()->GetObject<
+			ns3::YansWifiPhy> ();
+	ns3::Ptr<ns3::YansWifiPhy> their_phy = their_device->GetPhy()->GetObject<
+			ns3::YansWifiPhy> ();
+	ns3::Ptr<ns3::YansWifiChannel> our_channel =
+			our_phy->GetChannel()->GetObject<ns3::YansWifiChannel> ();
+	ns3::Ptr<ns3::YansWifiChannel> their_channel =
+			their_phy->GetChannel()->GetObject<ns3::YansWifiChannel> ();
+	their_channel->Add(our_phy);
+	our_phy->SetChannel(their_channel);
 }
