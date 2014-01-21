@@ -20,8 +20,8 @@ ns3::TypeId EunetMobile::GetTypeId(void) {
 }//GetTypeId
 
 EunetMobile::EunetMobile() :
-	TraceBase(this), MobilityBase(this, ns3::Vector(0, /*this->GetId()*/0, 0)),
-			WifiBase(this, WifiBase::StaWifiMac, true), INIT_DIDDNCC_FLAGS {
+	/*TraceBase(this), MobilityBase(this, ns3::Vector(0, 0, 0)), WifiBase(this,
+			WifiBase::StaWifiMac, true),*/ INIT_DIDDNCC_FLAGS {
 }// the default constructor
 
 EunetMobile::~EunetMobile() {
@@ -30,8 +30,8 @@ EunetMobile::~EunetMobile() {
 void EunetMobile::DoInitialize() {
 	ASSERT_DI
 	OnOffNode::DoInitialize();
-	MobilityBase::DoInitialize();
-	WifiBase::DoInitialize();
+	//MobilityBase::DoInitialize();
+	//WifiBase::DoInitialize();
 }//DoInitialize
 
 void EunetMobile::NotifyConstructionCompleted() {
@@ -42,13 +42,13 @@ void EunetMobile::NotifyConstructionCompleted() {
 	NS_ASSERT(this->GetNDevices() == 2);
 	OnOffNode::NotifyConstructionCompleted();
 	NS_ASSERT(this->GetNDevices() == 3);
-	MobilityBase::NotifyConstructionCompleted();
-	WifiBase::NotifyConstructionCompleted();
+	//MobilityBase::NotifyConstructionCompleted();
+	//WifiBase::NotifyConstructionCompleted();
 }//NotifyConstructionCompleted
 
 void EunetMobile::DoDispose() {
 	ASSERT_DD;
 	OnOffNode::DoDispose();
-	MobilityBase::DoDispose();
-	WifiBase::DoDispose();
+	//MobilityBase::DoDispose();
+	//WifiBase::DoDispose();
 }

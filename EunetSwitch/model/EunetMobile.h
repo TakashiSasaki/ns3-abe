@@ -8,7 +8,7 @@
 #include "MobilityBase.h"
 #include "OnOffNode.h"
 
-class EunetMobile: public OnOffNode, public MobilityBase, public WifiBase {
+class EunetMobile: public OnOffNode/*, public MobilityBase, public WifiBase*/ {
 public:
 	static ns3::TypeId GetTypeId(void);
 	EunetMobile();
