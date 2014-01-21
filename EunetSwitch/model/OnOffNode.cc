@@ -38,7 +38,7 @@ ns3::TypeId OnOffNode::GetTypeId(void) {
 }//GetTypeId
 
 OnOffNode::OnOffNode(const bool start_at_the_beginning) :
-	/*startAtTheBeginning(start_at_the_beginning),*/INIT_DIDDNCC_FLAGS {
+	/*startAtTheBeginning(start_at_the_beginning),*/totalTxBytes(0), INIT_DIDDNCC_FLAGS {
 	//auto ptr_on_off_application = ns3::CreateObject<ns3::OnOffApplication>();
 	//this->AddApplication(ptr_on_off_application);
 }// the constructor
@@ -60,7 +60,10 @@ void OnOffNode::DoInitialize() {
 	//				PACKET_SINK_UDP_PORT)));
 
 	/*this->onOffApplication =*/
-	on_off_helper.Install(this);
+	auto ac = on_off_helper.Install(this);
+	NS_ASSERT(ac.GetN()==1);
+	ac.Get(0)->TraceConnectWithoutContext("Tx", ns3::MakeCallback(
+			&OnOffNode::traceTxCallback, this));
 #if 0
 	this->getApplication<ns3::OnOffApplication> ()->SetAttribute("Remote",
 			ns3::AddressValue(ns3::InetSocketAddress(ns3::Ipv4Address(
@@ -116,3 +119,11 @@ void OnOffNode::setRemote(const ns3::Ipv4Address& ipv4_address) {
 			ns3::InetSocketAddress(ipv4_address, PACKET_SINK_UDP_PORT)));
 }//setRemote
 
+void OnOffNode::traceTxCallback(ns3::Ptr<const ns3::Packet> p) {
+	//NS_LOG_UNCOND("oapifopisajfoidjfojsdaoifap");
+	totalTxBytes += p->GetSize();
+}
+
+unsigned long OnOffNode::getTotalTxBytes(){
+	return this->totalTxBytes;
+}

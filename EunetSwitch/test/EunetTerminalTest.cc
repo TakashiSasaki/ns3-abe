@@ -103,8 +103,10 @@ private:
 		ns3::Simulator::Stop(ns3::Seconds(10.11));
 		ns3::Simulator::Run();
 		ns3::Simulator::Destroy();
-		NS_ASSERT_MSG(ptr_eunet_terminal_2->getTotalRx() == 0, ptr_eunet_terminal_2->getTotalRx());
-		NS_ASSERT_MSG(ptr_eunet_terminal_3->getTotalRx() == 348160, ptr_eunet_terminal_3->getTotalRx());
+		NS_ASSERT_MSG(ptr_eunet_terminal_2->getTotalRx() == 631808, ptr_eunet_terminal_2->getTotalRx());
+		NS_ASSERT_MSG(ptr_eunet_terminal_3->getTotalRx() == 0, ptr_eunet_terminal_3->getTotalRx());
+		NS_ASSERT_MSG(ptr_eunet_terminal_2->getTotalTxBytes() == 631808, ptr_eunet_terminal_2->getTotalTxBytes());
+		NS_ASSERT_MSG(ptr_eunet_terminal_3->getTotalTxBytes() == 631808, ptr_eunet_terminal_3->getTotalTxBytes());
 		NS_LOG_INFO("Done.");
 	}//DoRun
 };//EunetTerminalTestCase
