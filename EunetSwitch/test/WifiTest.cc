@@ -13,6 +13,7 @@ NS_LOG_COMPONENT_DEFINE("WifiTest");
 #include "ns3/regular-wifi-mac.h"
 #include "ns3/sta-wifi-mac.h"
 #include "ns3/adhoc-wifi-mac.h"
+#include "ns3/ap-wifi-mac.h"
 #include "ns3/yans-wifi-phy.h"
 #include "ns3/mac-rx-middle.h"
 #include "ns3/wifi-net-device.h"
@@ -128,7 +129,7 @@ void WifiTestCase::DoRun() {
 	this->ptrYansWifiPhy1->SetDevice(this->ptrWifiNetDevice1);
 	this->ptrYansWifiPhy2->SetDevice(this->ptrWifiNetDevice2);
 	this->ptrYansWifiPhy3->SetDevice(this->ptrWifiNetDevice3);
-	this->ptrWifiMac1 = ns3::CreateObject<ns3::AdhocWifiMac>();
+	this->ptrWifiMac1 = ns3::CreateObject<ns3::ApWifiMac>();
 	this->ptrWifiMac2 = ns3::CreateObject<ns3::AdhocWifiMac>();
 	this->ptrWifiMac3 = ns3::CreateObject<ns3::AdhocWifiMac>();
 	this->ptrWifiMac1->ConfigureStandard(ns3::WIFI_PHY_STANDARD_80211a);
