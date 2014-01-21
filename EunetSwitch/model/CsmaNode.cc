@@ -119,10 +119,6 @@ void CsmaNode::enableAsciiTrace(
 }
 
 template
-void CsmaNode::enablePcap<ns3::CsmaNetDevice>(const int i_port,
-		const bool promiscous);
-
-template
 void CsmaNode::enableAsciiTrace<ns3::CsmaNetDevice>(const unsigned i_port);
 
 template
@@ -130,3 +126,13 @@ ns3::Ptr<ns3::CsmaNetDevice> CsmaNode::addCsmaNetDevice<ns3::CsmaNetDevice>();
 
 template
 ns3::NetDeviceContainer CsmaNode::getNetDevices<ns3::CsmaNetDevice>();
+
+void CsmaNode::enablePcap(ns3::Ptr<ns3::CsmaNetDevice> device,
+		const bool promiscuous) {
+	ns3::CsmaHelper csma_helper;
+	std::ostringstream oss;
+	oss << device->GetInstanceTypeId() << "-" << this->GetId() << "-"
+			<< device->GetIfIndex();
+	csma_helper.EnablePcap(oss.str(), device, promiscuous);
+}//enablePcap
+

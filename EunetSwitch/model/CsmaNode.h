@@ -26,8 +26,9 @@ public:
 	void logAllDevices(const ns3::LogLevel log_level = ns3::LOG_LEVEL_INFO);
 	template<class T>
 	ns3::Ptr<T> getApplication();
-	template<class T>
-	void enablePcap(const int i_port, const bool promiscuous = false);
+
+	void enablePcap(ns3::Ptr<ns3::CsmaNetDevice>, const bool promiscuous = false);
+
 	template<class T>
 	void enableAsciiTrace(const unsigned i_port);
 	template<class T>
@@ -84,15 +85,6 @@ ns3::Ptr<T> CsmaNode::getApplication() {
 	}//for
 	return NULL;
 }//getApplication
-
-template<class T>
-void CsmaNode::enablePcap(const int i_port, const bool promiscuous) {
-	ns3::CsmaHelper csma_helper;
-	std::ostringstream oss;
-	oss << T::GetTypeId() << "-" << this->GetId() << "-" << i_port;
-	csma_helper.EnablePcap(oss.str(), this->getNetDevice<T> (i_port),
-			promiscuous);
-}//enablePcap
 
 template<class T>
 void CsmaNode::enableAsciiTrace(const unsigned i_port) {

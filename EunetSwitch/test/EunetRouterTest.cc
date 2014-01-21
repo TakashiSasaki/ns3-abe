@@ -109,10 +109,14 @@ void EunetRouterTestCase::DoRun() {
 				ipv4_address_helper);
 	}
 
-	ptr_eunet_router_1->enableOspf(0);
-	ptr_eunet_router_1->enablePcap<ns3::CsmaNetDevice> (0);
-	ptr_eunet_router_2->enableOspf(0);
-	ptr_eunet_router_2->enablePcap<ns3::CsmaNetDevice> (0);
+	{
+		auto device1 = ptr_eunet_router_1->getNetDevice<ns3::CsmaNetDevice> ();
+		auto device2 = ptr_eunet_router_2->getNetDevice<ns3::CsmaNetDevice> ();
+		ptr_eunet_router_1->enableOspf(0);
+		ptr_eunet_router_1->enablePcap(device1);
+		ptr_eunet_router_2->enableOspf(0);
+		ptr_eunet_router_2->enablePcap(device2);
+	}
 
 	//ns3::PacketMetadata::Enable();
 	//ptr_eunet_router_1->getTerminals().assignAddresses();

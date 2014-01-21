@@ -238,3 +238,10 @@ ns3::Ipv4Address CsmaInternetNode::getAddress(
 	return ipv4_address;
 }
 
+ns3::Ptr<ns3::CsmaNetDevice> CsmaInternetNode::getDevice(
+		ns3::Ipv4Address ipv4_address) {
+	auto ipv4 = this->GetObject<ns3::Ipv4> ();
+	int32_t i_interface = ipv4->GetInterfaceForAddress(ipv4_address);
+	auto device = ipv4->GetNetDevice(i_interface);
+	return device->GetObject<ns3::CsmaNetDevice> ();
+}

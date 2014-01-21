@@ -76,11 +76,16 @@ private:
 		ptr_eunet_terminal_3->Initialize();
 		NS_ASSERT_MSG(ptr_eunet_terminal_3->GetNDevices() == 2, ptr_eunet_terminal->GetNDevices());
 
-		ptr_eunet_terminal_2->enablePcap<ns3::CsmaNetDevice> (0);
-		ptr_eunet_terminal_3->enablePcap<ns3::CsmaNetDevice> (0);
-		ptr_eunet_terminal_2->enableAsciiTrace<ns3::CsmaNetDevice> (0);
-		ptr_eunet_terminal_3->enableAsciiTrace<ns3::CsmaNetDevice> (0);
-
+		{
+			auto device2 =
+					ptr_eunet_terminal_2->getNetDevice<ns3::CsmaNetDevice> ();
+			auto device3 =
+					ptr_eunet_terminal_3->getNetDevice<ns3::CsmaNetDevice> ();
+			ptr_eunet_terminal_2->enablePcap(device2);
+			ptr_eunet_terminal_3->enablePcap(device3);
+			ptr_eunet_terminal_2->enableAsciiTrace<ns3::CsmaNetDevice> (0);
+			ptr_eunet_terminal_3->enableAsciiTrace<ns3::CsmaNetDevice> (0);
+		}
 		{
 			auto p = ptr_eunet_terminal_2->getNetDevice<ns3::CsmaNetDevice> (0);
 			ptr_eunet_terminal_2->assignAddress(p, "10.0.0.2", "255.0.0.0");

@@ -20,16 +20,17 @@ public:
 	//void setAddress(ns3::Ipv4AddressHelper& ipv4_address_helper);
 	void assignAddress(ns3::Ptr<ns3::CsmaNetDevice>, ns3::Ipv4AddressHelper&);
 	//void assignAddress(const unsigned i_device, ns3::Ipv4AddressHelper&);
-	void assignAddress(ns3::Ptr<ns3::CsmaNetDevice>, ns3::Ipv4Address ipv4_address,
-			ns3::Ipv4Mask ipv4_mask);
+	void assignAddress(ns3::Ptr<ns3::CsmaNetDevice>,
+			ns3::Ipv4Address ipv4_address, ns3::Ipv4Mask ipv4_mask);
+	ns3::Ptr<ns3::CsmaNetDevice> getDevice(ns3::Ipv4Address);
 private:
 	static const ns3::Ipv4InterfaceAddress dummyAddress;
 	void logAddress(const ns3::Ipv4Address& ipv4_address);
 	void assignDummyAddress(ns3::Ptr<ns3::CsmaNetDevice>);
 	void removeAllAddresses(ns3::Ptr<ns3::CsmaNetDevice>);
+	void setDefaultRoute();
 DECLARE_DIDDNCC
 };
-
 
 template<class T>
 ns3::Ipv4InterfaceAddress CsmaInternetNode::getIpv4InterfaceAddress(

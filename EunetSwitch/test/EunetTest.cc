@@ -143,6 +143,15 @@ void EunetTestCase::DoRun() {
 	eunet.connectRouters("r2", "r3", ns3::Ipv4Address("192.168.23.1"),
 			ns3::Ipv4Address("192.168.23.3"), ns3::Ipv4Mask("255.255.255.0"));
 
+	// enabling packet capture on some ports
+	ns3::Ptr<EunetRouter> r1 = ns3::Names::Find<EunetRouter>("r1");
+	{
+		auto device = r1->getDevice(ns3::Ipv4Address("192.168.1.101"));
+		r1->enablePcap(device);
+		auto device2 = r1->getDevice(ns3::Ipv4Address("192.168.13.1"));
+		r1->enablePcap(device2);
+	}
+
 	//auto ptr_s12 = ns3::Names::Find("s12");
 	//auto ptr_s23 = ns3::Names::Find("s23");
 	//auto t125 = ptr_s12->eunetTerminals->Get(5);
