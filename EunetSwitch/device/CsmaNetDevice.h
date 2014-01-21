@@ -9,6 +9,7 @@ public:
 	static ns3::TypeId GetTypeId(void);
 	CsmaNetDevice();
 	virtual ~CsmaNetDevice();
+	void joinTo(ns3::Ptr<CsmaNetDevice>);
 };
 
 #endif

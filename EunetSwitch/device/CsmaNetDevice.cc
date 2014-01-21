@@ -4,6 +4,7 @@ NS_LOG_COMPONENT_DEFINE("CsmaNetDevice");
 #define NS3_ASSERT_ENABLE 1
 #include "ns3/assert.h"
 #include "ns3/csma-net-device.h"
+#include "ns3/csma-channel.h"
 #include "CsmaNetDevice.h"
 NS_OBJECT_ENSURE_REGISTERED(CsmaNetDevice);
 
@@ -17,4 +18,10 @@ CsmaNetDevice::CsmaNetDevice() {
 }
 
 CsmaNetDevice::~CsmaNetDevice() {
+}
+
+void CsmaNetDevice::joinTo(ns3::Ptr<CsmaNetDevice> their_device) {
+	auto their_channel =
+			their_device->GetChannel()->GetObject<ns3::CsmaChannel> ();
+	this->Attach(their_channel);
 }
