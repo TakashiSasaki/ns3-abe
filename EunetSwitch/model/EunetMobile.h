@@ -12,9 +12,7 @@ class EunetMobile: public OnOffNode, public MobilityBase, public WifiBase {
 public:
 	static ns3::TypeId GetTypeId(void);
 	EunetMobile();
-	virtual ~EunetMobile() {
-	}
-	;
+	virtual ~EunetMobile();
 DECLARE_DIDDNCC
 };//EunetMobile
 
