@@ -10,20 +10,19 @@ TESTS_COMMON= \
     EunetSwitchTest.o 
 
 TESTS_STD= \
-    WifiTest.o \
     #EunetMobileTest.o \
     #SimpleApTest.o \
 
 TESTS_DCE= \
+    WifiTest.o \
 	SimpleSwitchTest.o \
 	EunetSwitchTest.o \
 	EunetSwitchesTest.o \
 	EunetTerminalTest.o \
 	EunetTerminalsTest.o \
-	EunetRouterTest.o \
     DceQuaggaOspfdTest.o \
-	EunetTest.o
-    #EunetRouterTest.o \
+	EunetTest.o \
+	EunetRouterTest.o
 
 #NS_LOG_STD=WifiBase=*:EunetMobile=*:CsmaInternetNode=*:CsmaNode=*:EunetMobileTest=*
 #NS_LOG_STD=WifiTest=*:WifiPhyTrace=*:WifiMacTrace=*
@@ -44,6 +43,7 @@ NS_LOG_DCE:=$(NS_LOG_DCE):SimpleSwitchTest=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):EunetSwitches=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):EunetRouterTest=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):SimpleRouter=debug\|prefix_func\|prefix_time
+NS_LOG_DCE:=$(NS_LOG_DCE):WifiTest=debug\|prefix_func\|prefix_time
 #NS_LOG_DCE:=$(NS_LOG_DCE):EunetTest=debug\|prefix_func\|prefix_time
 #define NS_LOG
 #NS_LOG="NamedRouters=**:EunetRouters=**:EunetRouter=**:SimpleRouter=**:BridgingAp=**:SimpleAp=**:NamedSwitches=**:EunetSwitch=**:EunetSwitches=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"
@@ -282,6 +282,7 @@ OBJS_STD:= \
 
 OBJS_DCE:= \
     EunetRouter.o SimpleRouter.o \
+    TraceBase.o WifiMacTrace.o WifiPhyTrace.o
     # NamedRouters.o EunetRouters.o
 
 libeunet.a : $(OBJS_COMMON) $(OBJS_$(VER))
@@ -336,6 +337,12 @@ EunetTerminalTestSuite: test-runner
 
 SimpleSwitchTestSuite: test-runner
 	$(EXECENV) ./test-runner --suite=$@ --verbose
+
+EunetRouterTestSuite: test-runner
+	$(EXECENV) ./test-runner --suite=$@ --verbose 
+
+WifiTestSuite: test-runner
+	$(EXECENV) ./test-runner --suite=$@ --verbose 
 
 #build this target first to use DCE feature
 install-dce-quagga: build-dce-quagga test-dce-quagga copy-shared-library copy-include-files
