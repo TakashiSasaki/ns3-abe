@@ -81,23 +81,23 @@ private:
 		ptr_eunet_terminal_2->enableAsciiTrace<ns3::CsmaNetDevice> (0);
 		ptr_eunet_terminal_3->enableAsciiTrace<ns3::CsmaNetDevice> (0);
 
-		ptr_eunet_terminal_2->assignAddress(0, "10.0.0.2", "255.0.0.0");
 		{
 			auto p = ptr_eunet_terminal_2->getNetDevice<ns3::CsmaNetDevice> (0);
+			ptr_eunet_terminal_2->assignAddress(p, "10.0.0.2", "255.0.0.0");
 			NS_ASSERT(ptr_eunet_terminal_2->getAddress(p) == "10.0.0.2");
 		}
-		ptr_eunet_terminal_3->assignAddress(0, "10.0.0.3", "255.0.0.0");
 		{
 			auto p = ptr_eunet_terminal_3->getNetDevice<ns3::CsmaNetDevice> (0);
+			ptr_eunet_terminal_3->assignAddress(p, "10.0.0.3", "255.0.0.0");
 			NS_ASSERT(ptr_eunet_terminal_3->getAddress(p) == "10.0.0.3");
 		}
 
 		ptr_eunet_terminal_2->bring<ns3::CsmaNetDevice, ns3::CsmaNetDevice> (0,
 				ptr_eunet_terminal_3, 0);
-		auto ptr_csma_net_device_2 = ptr_eunet_terminal_2->getNetDevice<
-				ns3::CsmaNetDevice> (0);
-		ptr_eunet_terminal_2->setRemote(ptr_eunet_terminal_3->getAddress(
-				ptr_csma_net_device_2));
+		{
+			auto p = ptr_eunet_terminal_2->getNetDevice<ns3::CsmaNetDevice> (0);
+			ptr_eunet_terminal_2->setRemote(ptr_eunet_terminal_2->getAddress(p));
+		}
 
 		NS_LOG_INFO("Run Simulation.");
 		ns3::Simulator::Stop(ns3::Seconds(10.11));

@@ -332,7 +332,7 @@ test: test-runner
 	$(EXECENV) ./test-runner --verbose --test-type=unit
 
 EunetTerminalTestSuite: test-runner
-	#$(EXECENV) ./test-runner --suite=$@ --verbose --test-type=performance
+	$(EXECENV) ./test-runner --suite=$@ --verbose --test-type=performance
 
 SimpleSwitchTestSuite: test-runner
 	$(EXECENV) ./test-runner --suite=$@ --verbose
