@@ -26,7 +26,7 @@ public:
 			const unsigned connect_i_link_port);
 	void connectTo(std::string router_name);
 	unsigned getUnusedlinkPort();
-	void enableOspf(const unsigned i_device);
+	void enableOspf(ns3::Ptr<ns3::CsmaNetDevice>);
 private:
 	//bool isConnectedToSimpleRouter(const unsigned i_port);
 	void assignIpAddressToDevice(unsigned i_net_device, ns3::Ipv4Address,

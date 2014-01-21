@@ -202,25 +202,33 @@ std::unique_ptr<std::vector<std::string> > SimpleRouter::getAllNetworks() {
 	return p_networks;
 }
 
-void SimpleRouter::enableOspf(const unsigned i_port) {
+void SimpleRouter::enableOspf(ns3::Ptr<ns3::CsmaNetDevice> device) {
 	NS_LOG_DEBUG("enabling Quagga OSPF routing daemon");
 	NS_ASSERT_MSG(this->getNDevices<ns3::CsmaNetDevice>() == this->nPorts,
 			this->getNDevices<ns3::CsmaNetDevice>()<< " device(s) " << this->nPorts << " ports");
-	const auto ipv4_interface_address = this->getIpv4InterfaceAddress<
-			ns3::CsmaNetDevice> (i_port);
-	ns3::QuaggaHelper quagga_helper;
+	NS_ASSERT(this->GetId()==device->GetNode()->GetId());
+	ns3::Ptr<ns3::Ipv4> ipv4 = this->GetObject<ns3::Ipv4> ();
+	auto interface = ipv4->GetInterfaceForDevice(device);
+	auto n_addresses = ipv4->GetNAddresses(interface);
+	NS_ASSERT(n_addresses == 1);
+	auto address = ipv4->GetAddress(interface, 0);
+	const auto ipv4_address = address.GetLocal();
+	const auto ipv4_mask = address.GetMask();
+	const auto ipv4_network_address = ipv4_address.CombineMask(ipv4_mask);
+
+	//const auto ipv4_interface_address = this->getIpv4InterfaceAddress<
+	//		ns3::CsmaNetDevice> (i_port);
 	//auto all_networks = this->getAllNetworks();
 	//for (auto i = all_networks->begin(); i != all_networks->end(); ++i) {
 	//	quagga.EnableOspf(ns3::NodeContainer(ptr_this), (*i).c_str());
 	//}//for
-	const auto ipv4_address = ipv4_interface_address.GetLocal();
-	const auto ipv4_mask = ipv4_interface_address.GetMask();
-	const auto ipv4_network_address = ipv4_address.CombineMask(ipv4_mask);
 	std::ostringstream oss;
 	ipv4_network_address.Print(oss);
 	oss << '/' << ipv4_mask.GetPrefixLength();
 	NS_LOG_DEBUG("enabling Quagga OSPF to network " << oss.str());
 	ns3::Ptr<SimpleRouter> ptr_this(this, true);
+
+	ns3::QuaggaHelper quagga_helper;
 	quagga_helper.EnableOspf(ns3::NodeContainer(ptr_this), oss.str().c_str());
 	NS_LOG_DEBUG("enabling Quagga OSPF debug");
 	quagga_helper.EnableOspfDebug(ns3::NodeContainer(ptr_this));
