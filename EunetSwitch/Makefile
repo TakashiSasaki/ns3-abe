@@ -279,7 +279,7 @@ OBJS_COMMON:= \
     EunetTerminal.o EunetTerminals.o CsmaNode.o CsmaChannelNode.o \
     CsmaInternetNode.o PacketSinkNode.o OnOffNode.o SimpleSwitch.o \
     WifiMacTrace.o DownlinkNetDevice.o UplinkNetDevice.o \
-    Eunet.o WifiBase.o EunetMobile.o MobilityBase.o SimpleAp.o
+    Eunet.o WifiBase.o EunetMobile.o MobilityBase.o SimpleAp.o CsmaNetDevice.o
 
 OBJS_STD:= \
     SimpleAp.o BridgingAp.o \
