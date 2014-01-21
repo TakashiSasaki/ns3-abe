@@ -96,6 +96,9 @@ private:
 		//NS_LOG_INFO(eunet_mobile);
 #endif
 
+		node1->setPosition(ns3::Vector(10,10,10));
+		node1->setPosition(ns3::Vector(20,20,20));
+
 		NS_LOG_INFO("Run Simulation.");
 		ns3::Simulator::Stop(ns3::Seconds(100.1));
 		ns3::Simulator::Run();
@@ -118,9 +121,13 @@ public:
 			AddTestCase(new EunetMobileTestCase(true), ns3::TestCase::QUICK);
 			break;
 		default:
-break	}
-}
+			break;
+		}
+	}
+
 };
 
-static EunetMobileTestSuite eunet_mobile_test_suite;
+static EunetMobileTestSuite eunet_mobile_test_suite(ns3::TestSuite::UNIT);
+static EunetMobileTestSuite eunet_mobile_test_suite_visual(
+		ns3::TestSuite::PERFORMANCE);
 

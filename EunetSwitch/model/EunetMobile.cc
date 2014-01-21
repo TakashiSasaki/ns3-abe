@@ -151,3 +151,12 @@ void EunetMobile::joinTo(ns3::Ptr<EunetMobile> their_node) {
 	their_channel->Add(our_phy);
 	our_phy->SetChannel(their_channel);
 }
+
+void EunetMobile::setPosition(ns3::Vector position) {
+	ns3::MobilityHelper mobility_helper;
+	auto positions = ns3::CreateObject<ns3::ListPositionAllocator>();
+	positions->Add(position);
+	mobility_helper.SetPositionAllocator(positions);
+	mobility_helper.SetMobilityModel("ns3::ConstantPositionMobilityModel");
+	mobility_helper.Install(ns3::NodeContainer(ns3::Ptr<ns3::Node>(this, true)));
+}
