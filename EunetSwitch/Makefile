@@ -22,7 +22,7 @@ TESTS_DCE= \
 	EunetTerminalsTest.o \
 	EunetRouterTest.o \
     DceQuaggaOspfdTest.o \
-	#EunetTest.o
+	EunetTest.o
     #EunetRouterTest.o \
 
 #NS_LOG_STD=WifiBase=*:EunetMobile=*:CsmaInternetNode=*:CsmaNode=*:EunetMobileTest=*
