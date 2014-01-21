@@ -38,7 +38,7 @@ private:
 		object_factory.SetTypeId("EunetMobile");
 		object_factory.Set("onOffStartTime", ns3::TimeValue(ns3::Seconds(0)));
 		object_factory.Set("onOffStopTime", ns3::TimeValue(ns3::Seconds(10)));
-		object_factory .Set("wifiMacType", ns3::StringValue("ns3::StaWifiMac"));
+		object_factory .Set("wifiMacType", ns3::StringValue("ns3::AdhocWifiMac"));
 		ns3::Config::SetDefault("ns3::WifiMac::Ssid", ns3::StringValue("eunet"));
 
 		auto node1 = object_factory.Create<EunetMobile> ();
