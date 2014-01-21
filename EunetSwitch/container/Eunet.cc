@@ -46,8 +46,7 @@ ns3::Ptr<EunetSwitch> Eunet::addEunetSwitch(std::string name,
 }
 
 ns3::Ptr<EunetRouter> Eunet::addEunetRouter(std::string name) {
-	this->eunetRouterFactory.Set("nPorts", ns3::UintegerValue(24));
-	this->eunetRouterFactory.Create<EunetRouter> ();
+	this->eunetRouterFactory.Set("nPorts", ns3::UintegerValue(3));
 	ns3::Ptr<EunetRouter> ptr_eunet_router = this->eunetRouterFactory.Create<
 			EunetRouter> ();
 	ptr_eunet_router->Initialize();
@@ -64,8 +63,8 @@ ns3::NetDeviceContainer Eunet::connectUpTo(const std::string& src_name,
 
 ns3::NetDeviceContainer Eunet::connectDownTo(const std::string& src_name,
 		const std::string& dst_name, Eunet::ActiveChannel active_channel) {
-	return this->connect<EunetSwitch, DownlinkDevice, EunetSwitch,
-			DownlinkDevice> (src_name, dst_name, active_channel);
+	return this->connect<EunetSwitch, DownlinkDevice, EunetSwitch, UplinkDevice> (
+			src_name, dst_name, active_channel);
 }
 
 ns3::NetDeviceContainer Eunet::connectToRouter(std::string src_name,

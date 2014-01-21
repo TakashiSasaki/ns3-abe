@@ -17,9 +17,7 @@ public:
 
 	static ns3::TypeId GetTypeId(void);
 	SimpleRouter();
-	virtual ~SimpleRouter() {
-	}
-	;
+	virtual ~SimpleRouter();
 	//	ns3::Ptr<ns3::CsmaNetDevice>
 	//getLinkPort(const unsigned i_link_port);
 	void connectTo(const unsigned i_link_port,
@@ -29,9 +27,6 @@ public:
 	unsigned getUnusedlinkPort();
 	void enableOspf(ns3::Ptr<CsmaDevice>);
 private:
-	//bool isConnectedToSimpleRouter(const unsigned i_port);
-	void assignIpAddressToDevice(unsigned i_net_device, ns3::Ipv4Address,
-			ns3::Ipv4Mask);
 	std::unique_ptr<std::vector<std::string> > getAllNetworks();
 DECLARE_DIDDNCC
 }; // class SimpleRouter

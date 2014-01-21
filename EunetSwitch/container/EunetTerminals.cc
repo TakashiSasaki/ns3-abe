@@ -54,9 +54,11 @@ void EunetTerminals::initialize(const uint32_t n_terminals) {
 	}//for
 	NS_ASSERT(n_terminals == this->GetN());
 
+#if 0
 	ns3::MobilityHelper mobility_helper;
 	mobility_helper.SetMobilityModel("ns3::ConstantPositionMobilityModel");
 	mobility_helper.Install(*this);
+#endif
 }
 
 void EunetTerminals::assignAddresses(const char* network_address,

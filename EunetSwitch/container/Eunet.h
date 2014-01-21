@@ -92,11 +92,9 @@ ns3::NetDeviceContainer Eunet::connect(const std::string& src_name,
 	NS_ASSERT_MSG((ptr_src != 0), "cannot find node " << src_name);
 	ns3::Ptr<CsmaChannelNode> ptr_dst = ns3::Names::Find<DstNodeT>(dst_name);
 	NS_ASSERT_MSG((ptr_dst != 0), "cannot find node " << dst_name);
-	ns3::Ptr<ns3::CsmaNetDevice> ptr_src_port = ptr_src->getUnusedPort<
-			SrcDeviceT> ();
+	ns3::Ptr<CsmaDevice> ptr_src_port = ptr_src->getUnusedPort<SrcDeviceT> ();
 	NS_ASSERT_MSG(ptr_src_port != 0, ptr_src_port);
-	ns3::Ptr<ns3::CsmaNetDevice> ptr_dst_port = ptr_dst->getUnusedPort<
-			DstDeviceT> ();
+	ns3::Ptr<CsmaDevice> ptr_dst_port = ptr_dst->getUnusedPort<DstDeviceT> ();
 	NS_ASSERT_MSG(ptr_dst_port != 0, ptr_dst_port);
 	auto ptr_src_channel = ptr_src_port->GetChannel()->GetObject<
 			ns3::CsmaChannel> ();

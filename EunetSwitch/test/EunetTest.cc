@@ -10,10 +10,11 @@ NS_LOG_COMPONENT_DEFINE("EunetTest");
 using namespace ns3;
 
 class EunetTestCase: public TestCase {
-	static const double stopTime = 100.0;
+	static const double stopTime = 30.0;
+	const bool isVisual;
 public:
-	EunetTestCase() :
-		ns3::TestCase("EunetTestCase") {
+	EunetTestCase(const bool is_visual = false) :
+		ns3::TestCase("EunetTestCase"), isVisual(is_visual) {
 	}
 	virtual ~EunetTestCase() {
 	}
@@ -23,6 +24,12 @@ private:
 };
 
 void EunetTestCase::DoRun() {
+	if (this->isVisual) {
+		NS_LOG_DEBUG("--SimulatorImplementationType=ns3::VisualSimulatorImpl");
+		ns3::GlobalValue::Bind("SimulatorImplementationType", ns3::StringValue(
+				"ns3::VisualSimulatorImpl"));
+	}//if
+
 	Eunet eunet;
 	const ns3::DataRate DATARATE_10GBPS("10Gbps");
 	const ns3::DataRate DATARATE_1GBPS("1Gbps");
@@ -33,13 +40,12 @@ void EunetTestCase::DoRun() {
 	 *   s12---s11---s13
 	 *
 	 */
-
 	// creating three switches for network 1
-	auto ptr_s11 = eunet.addEunetSwitch("s11", 4, 24, DATARATE_10GBPS,
+	auto ptr_s11 = eunet.addEunetSwitch("s11", 1, 6, DATARATE_10GBPS,
 			DATARATE_1GBPS);
-	auto ptr_s12 = eunet.addEunetSwitch("s12", 4, 24, DATARATE_10GBPS,
+	auto ptr_s12 = eunet.addEunetSwitch("s12", 1, 6, DATARATE_10GBPS,
 			DATARATE_1GBPS);
-	auto ptr_s13 = eunet.addEunetSwitch("s13", 4, 24, DATARATE_10GBPS,
+	auto ptr_s13 = eunet.addEunetSwitch("s13", 1, 6, DATARATE_10GBPS,
 			DATARATE_1GBPS);
 
 	// connecting switches in network 1
@@ -62,7 +68,9 @@ void EunetTestCase::DoRun() {
 	 * PacketSink  OnOffApplication
 	 */
 	auto t133 = ptr_s13->eunetTerminals.Get(3)->GetObject<EunetTerminal> ();
+	ns3::Names::Add("133", t133);
 	auto t125 = ptr_s12->eunetTerminals.Get(5)->GetObject<EunetTerminal> ();
+	ns3::Names::Add("125", t125);
 	{
 		auto p = t125->getNetDevice<CsmaDevice> (0);
 		t133->setRemote(t125->getAddress(p));
@@ -76,11 +84,11 @@ void EunetTestCase::DoRun() {
 	 *   t225        t233
 	 * PacketSink  OnOffApplication
 	 */
-	auto ptr_s21 = eunet.addEunetSwitch("s21", 4, 24, DATARATE_10GBPS,
+	auto ptr_s21 = eunet.addEunetSwitch("s21", 1, 6, DATARATE_10GBPS,
 			DATARATE_1GBPS);
-	auto ptr_s22 = eunet.addEunetSwitch("s22", 4, 24, DATARATE_10GBPS,
+	auto ptr_s22 = eunet.addEunetSwitch("s22", 1, 6, DATARATE_10GBPS,
 			DATARATE_1GBPS);
-	auto ptr_s23 = eunet.addEunetSwitch("s23", 4, 24, DATARATE_10GBPS,
+	auto ptr_s23 = eunet.addEunetSwitch("s23", 1, 6, DATARATE_10GBPS,
 			DATARATE_1GBPS);
 
 	eunet.connectDownTo("s21", "s22");
@@ -101,12 +109,11 @@ void EunetTestCase::DoRun() {
 
 	// attaching corresponding CSMA channel to EunetTerminals
 	eunet.attachEunetTerminals();
-
 	/*
 	 *  routing between network 1 and 2 via router r1 with OSPF.
 	 *
 	 *     OnOffApplication
-	 *       192.168.2.5
+	 *       192.168.1.12
 	 *         t125             t133
 	 *           |                |
 	 *         s12-----s11------s13
@@ -123,7 +130,7 @@ void EunetTestCase::DoRun() {
 	 *           |             |
 	 *         t225          t233
 	 *                     PacketSink
-	 *                    192.168.2.103
+	 *                    192.168.2.3
 	 */
 	eunet.addEunetRouter("r1");
 	eunet.addEunetRouter("r2");
@@ -160,11 +167,15 @@ void EunetTestCase::DoRun() {
 	//auto ptr_s23 = ns3::Names::Find("s23");
 	//auto t125 = ptr_s12->eunetTerminals->Get(5);
 	//auto t233 = ptr_s23->eunetTerminals->Get(5);
-	t125->setRemote("192.168.2.103");
+	{
+		auto device = t233->getNetDevice<CsmaDevice> (0);
+		t125->setRemote(t233->getAddress(device));
+	}
 
 	Simulator::Stop(Seconds(this->stopTime));
 	Simulator::Run();
 	Simulator::Destroy();
+
 	NS_ASSERT_MSG(t133->getTotalRx() == 0, t133->getTotalRx());
 	NS_ASSERT_MSG(t125->getTotalRx() > 300000, t125->getTotalRx());
 	//NS_ASSERT_MSG(t125->getTotalRx() == t133->getTotalTxBytes(), t125->getTotalRx() << " " << t133->getTotalTxBytes());
@@ -172,14 +183,25 @@ void EunetTestCase::DoRun() {
 	//NS_ASSERT_MSG (t225->getTotalRx() == t233->getTotalTxBytes(),t225->getTotalRx() <<" "<< t233->getTotalTxBytes());
 	NS_ASSERT_MSG(t233->getTotalRx() > 300000, t233->getTotalRx());
 	NS_ASSERT_MSG(t233->getTotalRx() == t125->getTotalTxBytes(), t233->getTotalRx() << "," <<t125->getTotalRx());
+
 }
 
 class EunetTestSuite: public TestSuite {
 public:
-	EunetTestSuite() :
-		ns3::TestSuite("EunetTestSuite", UNIT) {
-		AddTestCase(new EunetTestCase, TestCase::QUICK);
+	EunetTestSuite(ns3::TestSuite::Type type) :
+		ns3::TestSuite("EunetTestSuite", type) {
+		switch (type) {
+		case UNIT:
+			AddTestCase(new EunetTestCase, TestCase::QUICK);
+			break;
+		case PERFORMANCE:
+			AddTestCase(new EunetTestCase(true), TestCase::QUICK);
+			break;
+		default:
+			break;
+		}
 	}
 };
 
-static EunetTestSuite eunet_test_suite;
+static EunetTestSuite eunet_test_suite(ns3::TestSuite::UNIT);
+static EunetTestSuite eunet_test_suite_visual(ns3::TestSuite::PERFORMANCE);

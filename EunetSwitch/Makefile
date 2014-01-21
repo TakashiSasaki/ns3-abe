@@ -359,7 +359,12 @@ DceQuaggaOspfdTestSuite: test-runner
 EunetMobileTestSuite: test-runner
 	echo run --suite=$@ --verbose > gdbinit
 	#$(EXECENV) gdb ./test-runner --command=gdbinit 
-	$(EXECENV) ./test-runner --suite=$@ --verbose --test-type=unit
+	$(EXECENV) ./test-runner --suite=$@ --verbose --test-type=performance
+
+EunetTestSuite: test-runner
+	echo run --suite=$@ --verbose > gdbinit
+	#$(EXECENV) gdb ./test-runner --command=gdbinit 
+	$(EXECENV) ./test-runner --suite=$@ --test-type=unit
 
 #build this target first to use DCE feature
 install-dce-quagga: build-dce-quagga test-dce-quagga copy-shared-library copy-include-files

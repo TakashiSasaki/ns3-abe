@@ -27,15 +27,12 @@ ns3::TypeId SimpleRouter::GetTypeId(void) {
 
 
 SimpleRouter::SimpleRouter() :
-	/*CsmaChannelNode(n_ports, defaultlinkDataRate, defaultlinkDelay),*/
 	INIT_DIDDNCC_FLAGS {
 	NS_LOG_DEBUG("the constructor of SimpleRouter");
-	//	NS_LOG_INFO("constructing SimpleSwitch");
-	//	for (unsigned i = 0; i < nlinkPorts; ++i) {
-	//		NS_LOG_INFO("investigating port " << i);
-	//		NS_ASSERT(!this->isConnectedToSimpleRouter(i));
-	//	}
 }//the constructor
+
+SimpleRouter::~SimpleRouter() {
+}
 
 void SimpleRouter::DoDispose() {
 	ASSERT_DD
