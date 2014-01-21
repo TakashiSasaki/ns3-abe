@@ -6,6 +6,7 @@ NS_LOG_COMPONENT_DEFINE("EunetTerminal");
 #include "ns3/ipv4.h"
 #include "ns3/internet-module.h"
 #include "ns3/mobility-helper.h"
+#include "ns3/ipv4-static-routing-helper.h"
 #include "EunetTerminal.h"
 NS_OBJECT_ENSURE_REGISTERED(EunetTerminal);
 
@@ -28,6 +29,16 @@ void EunetTerminal::NotifyConstructionCompleted() {
 	NS_ASSERT(this->GetNDevices()==0);
 	OnOffNode::NotifyConstructionCompleted();
 	NS_ASSERT(this->GetNDevices()==nPorts+1);
+
+	ns3::Ipv4StaticRoutingHelper ipv4_static_routing_helper;
+	auto ipv4 = this->GetObject<ns3::Ipv4> ();
+	this->ipv4StaticRouting = ipv4_static_routing_helper.GetStaticRouting(ipv4);
+	NS_ASSERT(this->ipv4StaticRouting != NULL);
+
+	auto device0 = getNetDevice<ns3::CsmaNetDevice> (0);
+	auto interface = ipv4->GetInterfaceForDevice(device0);
+	NS_ASSERT(interface >=0);
+	//this->ipv4StaticRouting->SetDefaultRoute(defaultGateway, interface);
 }
 
 void EunetTerminal::DoInitialize() {
@@ -42,3 +53,12 @@ void EunetTerminal::DoDispose() {
 	OnOffNode::DoDispose();
 }
 
+EunetTerminal::~EunetTerminal() {
+}
+
+void EunetTerminal::setDefaultRoute(ns3::Ipv4Address next_hop) {
+	auto ipv4 = this->GetObject<ns3::Ipv4> ();
+	auto device0 = getNetDevice<ns3::CsmaNetDevice> (0);
+	auto interface = ipv4->GetInterfaceForDevice(device0);
+	this->ipv4StaticRouting->SetDefaultRoute(next_hop, interface);
+}

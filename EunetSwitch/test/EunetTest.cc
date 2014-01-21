@@ -143,6 +143,10 @@ void EunetTestCase::DoRun() {
 	eunet.connectRouters("r2", "r3", ns3::Ipv4Address("192.168.23.1"),
 			ns3::Ipv4Address("192.168.23.3"), ns3::Ipv4Mask("255.255.255.0"));
 
+	// setting default route to two nodes
+	t125->setDefaultRoute(ns3::Ipv4Address("192.168.1.101"));
+	t233->setDefaultRoute(ns3::Ipv4Address("192.168.2.103"));
+
 	// enabling packet capture on some ports
 	ns3::Ptr<EunetRouter> r1 = ns3::Names::Find<EunetRouter>("r1");
 	{

@@ -28,7 +28,6 @@ private:
 	void logAddress(const ns3::Ipv4Address& ipv4_address);
 	void assignDummyAddress(ns3::Ptr<ns3::CsmaNetDevice>);
 	void removeAllAddresses(ns3::Ptr<ns3::CsmaNetDevice>);
-	void setDefaultRoute();
 DECLARE_DIDDNCC
 };
 
