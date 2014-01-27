@@ -52,7 +52,7 @@ NS_LOG_DCE:=$(NS_LOG_DCE):EunetMobileTest=info\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):EunetMobile=info\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):DceQuaggaOspfdTest=info\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):DceManagerHelper=info\|prefix_func\|prefix_time
-#NS_LOG_DCE:=$(NS_LOG_DCE):EunetTest=debug\|prefix_func\|prefix_time
+NS_LOG_DCE:=$(NS_LOG_DCE):EunetTest=debug\|prefix_func\|prefix_time
 #define NS_LOG
 #NS_LOG="NamedRouters=**:EunetRouters=**:EunetRouter=**:SimpleRouter=**:BridgingAp=**:SimpleAp=**:NamedSwitches=**:EunetSwitch=**:EunetSwitches=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"
 #endef
@@ -367,7 +367,7 @@ EunetMobileTestSuite: test-runner
 
 EunetTestSuite: test-runner
 	echo run --suite=$@ --verbose > gdbinit
-	#$(EXECENV) gdb ./test-runner --command=gdbinit 
+	#$(EXECENV) gdb ./test-runner -q --command=gdbinit 
 	$(EXECENV) ./test-runner --suite=$@ --test-type=unit
 
 #build this target first to use DCE feature
