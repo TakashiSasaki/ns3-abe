@@ -572,22 +572,23 @@ void DceQuaggaOspfdChannelTestCase::DoRun() {
 	}
 
 	{
-		auto ipv4_0 = node0->GetObject<ns3::Ipv4> ();
-		Ipv4DceRoutingHelper ipv4_routing_helper_0;
-		auto ipv4_routing_protocol_0 = ipv4_routing_helper_0.Create(node0);
-		ipv4_0->SetRoutingProtocol(ipv4_routing_protocol_0);
-
-		auto ipv4_1 = node1->GetObject<ns3::Ipv4> ();
-		Ipv4DceRoutingHelper ipv4_routing_helper_1;
-		auto ipv4_routing_protocol_1 = ipv4_routing_helper_1.Create(node1);
-		ipv4_1->SetRoutingProtocol(ipv4_routing_protocol_1);
-
-		auto ipv4_2 = node2->GetObject<ns3::Ipv4> ();
-		Ipv4DceRoutingHelper ipv4_routing_helper_2;
-		auto ipv4_routing_protocol_2 = ipv4_routing_helper_2.Create(node2);
-		ipv4_2->SetRoutingProtocol(ipv4_routing_protocol_2);
+		Ipv4DceRoutingHelper ipv4_routing_helper;
+		auto ipv4_routing_protocol = ipv4_routing_helper.Create(node0);
+		auto ipv4 = node0->GetObject<ns3::Ipv4> ();
+		ipv4->SetRoutingProtocol(ipv4_routing_protocol);
 	}
-
+	{
+		Ipv4DceRoutingHelper ipv4_routing_helper;
+		auto ipv4_routing_protocol = ipv4_routing_helper.Create(node1);
+		auto ipv4 = node1->GetObject<ns3::Ipv4> ();
+		ipv4->SetRoutingProtocol(ipv4_routing_protocol);
+	}
+	{
+		Ipv4DceRoutingHelper ipv4_routing_helper;
+		auto ipv4_routing_protocol = ipv4_routing_helper.Create(node2);
+		auto ipv4 = node2->GetObject<ns3::Ipv4> ();
+		ipv4->SetRoutingProtocol(ipv4_routing_protocol);
+	}
 	{
 		Ipv4AddressHelper ipv4_address_helper;
 		ipv4_address_helper.SetBase("10.0.1.0", "255.255.255.0");
