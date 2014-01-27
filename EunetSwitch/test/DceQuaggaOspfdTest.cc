@@ -30,24 +30,24 @@
 using namespace ns3;
 NS_LOG_COMPONENT_DEFINE ("DceQuaggaOspfdTest");
 
-class DceQuaggaOspfdTest: public TestCase {
+class DceQuaggaOspfdTestCase: public TestCase {
 public:
-	DceQuaggaOspfdTest() :
+	DceQuaggaOspfdTestCase() :
 		ns3::TestCase("DceQuaggaOspfdTest") {
 		//NS_LOG_UNCOND("constructing a test case");
 	}
-	virtual ~DceQuaggaOspfdTest() {
+	virtual ~DceQuaggaOspfdTestCase() {
 	}
 
 private:
 	virtual void DoRun(void);
-}; //class DceQuaggaOspfdTest
+}; //class DceQuaggaOspfdTestCase
 
 // Parameters
 uint32_t nNodes = 2;
 uint32_t stopTime = 60;
 
-void DceQuaggaOspfdTest::DoRun() {
+void DceQuaggaOspfdTestCase::DoRun() {
 	//
 	//  Step 1
 	//  Node Basic Configuration
@@ -72,8 +72,85 @@ void DceQuaggaOspfdTest::DoRun() {
 	// Address Configuration
 	//
 	//
-#define SEPARATE true // Either case works
-#if SEPARATE
+	{
+		// Internet stack install
+		InternetStackHelper stack; // IPv4 is required for GlobalRouteMan
+		Ipv4DceRoutingHelper ipv4RoutingHelper;
+		stack.SetRoutingHelper(ipv4RoutingHelper);
+		stack.Install(nodes);
+	}
+
+	{
+		// assigning IP address
+		Ipv4AddressHelper ipv4AddrHelper;
+		ipv4AddrHelper.SetBase("10.0.0.0", "255.255.255.0");
+		Ipv4InterfaceContainer interfaces = ipv4AddrHelper.Assign(devices);
+		Ipv4InterfaceContainer iic_point_to_point = ipv4AddrHelper.Assign(
+				ndc_point_to_point);
+		//Ipv4GlobalRoutingHelper::PopulateRoutingTables();
+	}
+
+	DceManagerHelper processManager;
+	processManager.SetNetworkStack("ns3::Ns3SocketFdFactory");
+	processManager.Install(nodes);
+
+	QuaggaHelper quagga;
+	quagga.EnableOspf(nodes, "10.0.0.0/24");
+	quagga.EnableOspfDebug(nodes);
+	quagga.EnableZebraDebug(nodes);
+	quagga.Install(nodes);
+
+	pointToPoint.EnablePcapAll("DceQuaggaOspfdTestCase");
+	csma_helper.EnablePcapAll("DceQuaggaOspfdTestCase");
+
+	//
+	// Step 9
+	// Now It's ready to GO!
+	//
+	if (stopTime != 0) {
+		Simulator::Stop(Seconds(stopTime));
+	}
+	Simulator::Run();
+	Simulator::Destroy();
+}//DceQuaggaOspfdTest::DoRun
+
+class DceQuaggaOspfdSeparatedTestCase: public TestCase {
+public:
+	DceQuaggaOspfdSeparatedTestCase() :
+		ns3::TestCase("DceQuaggaOspfdSeparatedTestCase") {
+	}
+	virtual ~DceQuaggaOspfdSeparatedTestCase() {
+	}
+
+private:
+	virtual void DoRun(void);
+}; //class DceQuaggaOspfdSeparatedTestCase
+
+void DceQuaggaOspfdSeparatedTestCase::DoRun() {
+	//
+	//  Step 1
+	//  Node Basic Configuration
+	//
+	NodeContainer nodes;
+	nodes.Create(nNodes);
+
+	CsmaHelper csma_helper;
+	csma_helper.SetChannelAttribute("DataRate", StringValue("5Mbps"));
+	csma_helper.SetChannelAttribute("Delay", StringValue("2ms"));
+
+	PointToPointHelper pointToPoint;
+	pointToPoint.SetDeviceAttribute("DataRate", StringValue("5Mbps"));
+	pointToPoint.SetChannelAttribute("Delay", StringValue("2ms"));
+
+	NetDeviceContainer devices;
+	devices = csma_helper.Install(nodes);
+	auto ndc_point_to_point = pointToPoint.Install(nodes);
+
+	//
+	//
+	// Address Configuration
+	//
+	//
 	{
 		// Internet stack install
 		InternetStackHelper stack1; // IPv4 is required for GlobalRouteMan
@@ -87,15 +164,6 @@ void DceQuaggaOspfdTest::DoRun() {
 		stack2.Install(nodes.Get(1));
 
 	}
-#else
-	{
-		// Internet stack install
-		InternetStackHelper stack; // IPv4 is required for GlobalRouteMan
-		Ipv4DceRoutingHelper ipv4RoutingHelper;
-		stack.SetRoutingHelper(ipv4RoutingHelper);
-		stack.Install(nodes);
-	}
-#endif
 
 	{
 		// assigning IP address
@@ -107,7 +175,6 @@ void DceQuaggaOspfdTest::DoRun() {
 		//Ipv4GlobalRoutingHelper::PopulateRoutingTables();
 	}
 
-#if SEPARATE
 	DceManagerHelper processManager1;
 	processManager1.SetNetworkStack("ns3::Ns3SocketFdFactory");
 	processManager1.Install(nodes.Get(0));
@@ -127,20 +194,9 @@ void DceQuaggaOspfdTest::DoRun() {
 	quagga2.EnableOspfDebug(nodes.Get(1));
 	quagga2.EnableZebraDebug(nodes.Get(1));
 	quagga2.Install(nodes.Get(1));
-#else
-	DceManagerHelper processManager;
-	processManager.SetNetworkStack("ns3::Ns3SocketFdFactory");
-	processManager.Install(nodes);
 
-	QuaggaHelper quagga;
-	quagga.EnableOspf(nodes, "10.0.0.0/24");
-	quagga.EnableOspfDebug(nodes);
-	quagga.EnableZebraDebug(nodes);
-	quagga.Install(nodes);
-#endif
-
-	pointToPoint.EnablePcapAll("dce-quagga-ospfd");
-	csma_helper.EnablePcapAll("dce-quagga-ospfd");
+	pointToPoint.EnablePcapAll("DceQuaggaOspfdSeparatedTestCase");
+	csma_helper.EnablePcapAll("DceQuaggaOspfdSeparatedTestCase");
 
 	//
 	// Step 9
@@ -151,15 +207,16 @@ void DceQuaggaOspfdTest::DoRun() {
 	}
 	Simulator::Run();
 	Simulator::Destroy();
-	NS_LOG_UNCOND("dfsofjdijad");
-}//DceQuaggaOspfdTest::DoRun
+}//DceQuaggaOspfdSeparatedTestCase::DoRun
+
 
 class DceQuaggaOspfdTestSuite: public TestSuite {
 public:
 	DceQuaggaOspfdTestSuite() :
 		ns3::TestSuite("DceQuaggaOspfdTestSuite", UNIT) {
 		//NS_LOG_UNCOND("adding a test case");
-		AddTestCase(new DceQuaggaOspfdTest, TestCase::QUICK);
+		AddTestCase(new DceQuaggaOspfdTestCase, TestCase::QUICK);
+		AddTestCase(new DceQuaggaOspfdSeparatedTestCase, TestCase::QUICK);
 	}
 };
 
