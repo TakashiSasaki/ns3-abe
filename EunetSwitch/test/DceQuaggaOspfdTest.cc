@@ -419,6 +419,12 @@ void DceQuaggaOspfd3TestCase::DoRun() {
 	{
 		QuaggaHelper quagga0;
 		quagga0.EnableOspf(node0, "10.0.1.0/24");
+		quagga0.EnableOspfDebug(node0);
+		quagga0.EnableZebraDebug(node0);
+		quagga0.Install(node0);
+	}
+	{
+		QuaggaHelper quagga0;
 		quagga0.EnableOspf(node0, "10.0.2.0/24");
 		quagga0.EnableOspfDebug(node0);
 		quagga0.EnableZebraDebug(node0);
@@ -427,6 +433,12 @@ void DceQuaggaOspfd3TestCase::DoRun() {
 	{
 		QuaggaHelper quagga1;
 		quagga1.EnableOspf(node1, "10.0.1.0/24");
+		quagga1.EnableOspfDebug(node1);
+		quagga1.EnableZebraDebug(node1);
+		quagga1.Install(node1);
+	}
+	{
+		QuaggaHelper quagga1;
 		quagga1.EnableOspf(node1, "10.0.3.0/24");
 		quagga1.EnableOspfDebug(node1);
 		quagga1.EnableZebraDebug(node1);
@@ -435,6 +447,12 @@ void DceQuaggaOspfd3TestCase::DoRun() {
 	{
 		QuaggaHelper quagga2;
 		quagga2.EnableOspf(node2, "10.0.2.0/24");
+		quagga2.EnableOspfDebug(node2);
+		quagga2.EnableZebraDebug(node2);
+		quagga2.Install(node2);
+	}
+	{
+		QuaggaHelper quagga2;
 		quagga2.EnableOspf(node2, "10.0.3.0/24");
 		quagga2.EnableOspfDebug(node2);
 		quagga2.EnableZebraDebug(node2);
