@@ -72,18 +72,41 @@ void DceQuaggaOspfdTest::DoRun() {
 	// Address Configuration
 	//
 	//
-	Ipv4AddressHelper ipv4AddrHelper;
 	// Internet stack install
 	InternetStackHelper stack; // IPv4 is required for GlobalRouteMan
 	Ipv4DceRoutingHelper ipv4RoutingHelper;
 	stack.SetRoutingHelper(ipv4RoutingHelper);
 	stack.Install(nodes);
 
+	Ipv4AddressHelper ipv4AddrHelper;
 	ipv4AddrHelper.SetBase("10.0.0.0", "255.255.255.0");
 	Ipv4InterfaceContainer interfaces = ipv4AddrHelper.Assign(devices);
-	Ipv4InterfaceContainer iic_point_to_point = ipv4AddrHelper.Assign(ndc_point_to_point);
+	Ipv4InterfaceContainer iic_point_to_point = ipv4AddrHelper.Assign(
+			ndc_point_to_point);
 	//Ipv4GlobalRoutingHelper::PopulateRoutingTables();
 
+#define SEPARATE false // Either case works
+#if SEPARATE
+	DceManagerHelper processManager1;
+	processManager1.SetNetworkStack("ns3::Ns3SocketFdFactory");
+	processManager1.Install(nodes.Get(0));
+
+	QuaggaHelper quagga1;
+	quagga1.EnableOspf(nodes.Get(0), "10.0.0.0/24");
+	quagga1.EnableOspfDebug(nodes.Get(0));
+	quagga1.EnableZebraDebug(nodes.Get(0));
+	quagga1.Install(nodes.Get(0));
+
+	DceManagerHelper processManager2;
+	processManager2.SetNetworkStack("ns3::Ns3SocketFdFactory");
+	processManager2.Install(nodes.Get(1));
+
+	QuaggaHelper quagga2;
+	quagga2.EnableOspf(nodes.Get(1), "10.0.0.0/24");
+	quagga2.EnableOspfDebug(nodes.Get(1));
+	quagga2.EnableZebraDebug(nodes.Get(1));
+	quagga2.Install(nodes.Get(1));
+#else
 	DceManagerHelper processManager;
 	processManager.SetNetworkStack("ns3::Ns3SocketFdFactory");
 	processManager.Install(nodes);
@@ -93,6 +116,7 @@ void DceQuaggaOspfdTest::DoRun() {
 	quagga.EnableOspfDebug(nodes);
 	quagga.EnableZebraDebug(nodes);
 	quagga.Install(nodes);
+#endif
 
 	pointToPoint.EnablePcapAll("dce-quagga-ospfd");
 	csma_helper.EnablePcapAll("dce-quagga-ospfd");
