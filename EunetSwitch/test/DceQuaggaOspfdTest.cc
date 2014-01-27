@@ -589,79 +589,82 @@ void DceQuaggaOspfdChannelTestCase::DoRun() {
 	}
 
 	{
-		Ipv4AddressHelper ipv4AddrHelper;
-		ipv4AddrHelper.SetBase("10.0.1.0", "255.255.255.0");
-		Ipv4InterfaceContainer interfaces = ipv4AddrHelper.Assign(devices01);
+		Ipv4AddressHelper ipv4_address_helper;
+		ipv4_address_helper.SetBase("10.0.1.0", "255.255.255.0");
+		Ipv4InterfaceContainer interfaces = ipv4_address_helper.Assign(
+				devices01);
 	}
 
 	{
-		Ipv4AddressHelper ipv4AddrHelper;
-		ipv4AddrHelper.SetBase("10.0.2.0", "255.255.255.0");
-		Ipv4InterfaceContainer interfaces = ipv4AddrHelper.Assign(devices02);
+		Ipv4AddressHelper ipv4_address_helper;
+		ipv4_address_helper.SetBase("10.0.2.0", "255.255.255.0");
+		Ipv4InterfaceContainer interfaces = ipv4_address_helper.Assign(
+				devices02);
 	}
 
 	{
-		Ipv4AddressHelper ipv4AddrHelper;
-		ipv4AddrHelper.SetBase("10.0.3.0", "255.255.255.0");
-		Ipv4InterfaceContainer interfaces = ipv4AddrHelper.Assign(devices12);
+		Ipv4AddressHelper ipv4_address_helper;
+		ipv4_address_helper.SetBase("10.0.3.0", "255.255.255.0");
+		Ipv4InterfaceContainer interfaces = ipv4_address_helper.Assign(
+				devices12);
 	}
 
 	{
-		DceManagerHelper processManager0;
-		processManager0.SetNetworkStack("ns3::Ns3SocketFdFactory");
-		processManager0.Install(node0);
+		DceManagerHelper dce_manager_helper;
+		dce_manager_helper.SetNetworkStack("ns3::Ns3SocketFdFactory");
+		dce_manager_helper.Install(node0);
 	}
 	{
-		DceManagerHelper processManager1;
-		processManager1.SetNetworkStack("ns3::Ns3SocketFdFactory");
-		processManager1.Install(node1);
+		DceManagerHelper dce_manager_helper;
+		dce_manager_helper.SetNetworkStack("ns3::Ns3SocketFdFactory");
+		dce_manager_helper.Install(node1);
 	}
 	{
-		DceManagerHelper processManager2;
-		processManager2.SetNetworkStack("ns3::Ns3SocketFdFactory");
-		processManager2.Install(node2);
+		DceManagerHelper dce_manager_helper;
+		dce_manager_helper.SetNetworkStack("ns3::Ns3SocketFdFactory");
+		dce_manager_helper.Install(node2);
 	}
 	{
-		QuaggaHelper quagga0;
-		quagga0.EnableOspf(node0, "10.0.1.0/24");
-		quagga0.EnableOspfDebug(node0);
-		quagga0.EnableZebraDebug(node0);
-		quagga0.Install(node0);
+		QuaggaHelper quagga_helper;
+		quagga_helper.EnableOspf(node0, "10.0.1.0/24");
+		quagga_helper.EnableOspfDebug(node0);
+		quagga_helper.EnableZebraDebug(node0);
+		quagga_helper.Install(node0);
 	}
 	{
-		QuaggaHelper quagga0;
-		quagga0.EnableOspf(node0, "10.0.2.0/24");
-		quagga0.EnableOspfDebug(node0);
-		quagga0.EnableZebraDebug(node0);
-		quagga0.Install(node0);
+		QuaggaHelper quagga_helper;
+		quagga_helper.EnableOspf(node0, "10.0.2.0/24");
+		quagga_helper.EnableOspfDebug(node0);
+		quagga_helper.EnableZebraDebug(node0);
+		quagga_helper.Install(node0);
 	}
 	{
-		QuaggaHelper quagga1;
-		quagga1.EnableOspf(node1, "10.0.1.0/24");
-		quagga1.EnableOspfDebug(node1);
-		quagga1.EnableZebraDebug(node1);
-		quagga1.Install(node1);
+		QuaggaHelper quagga_helper;
+		quagga_helper.EnableOspf(node1, "10.0.1.0/24");
+		quagga_helper.EnableOspfDebug(node1);
+		quagga_helper.EnableZebraDebug(node1);
+		quagga_helper.Install(node1);
 	}
 	{
-		QuaggaHelper quagga1;
-		quagga1.EnableOspf(node1, "10.0.3.0/24");
-		quagga1.EnableOspfDebug(node1);
-		quagga1.EnableZebraDebug(node1);
-		quagga1.Install(node1);
+		QuaggaHelper quagga_helper;
+		quagga_helper.EnableOspf(node1, "10.0.3.0/24");
+		quagga_helper.EnableOspfDebug(node1);
+		quagga_helper.EnableZebraDebug(node1);
+		quagga_helper.Install(node1);
 	}
 	{
-		QuaggaHelper quagga2;
-		quagga2.EnableOspf(node2, "10.0.2.0/24");
-		quagga2.EnableOspfDebug(node2);
-		quagga2.EnableZebraDebug(node2);
-		quagga2.Install(node2);
+		QuaggaHelper quagga_helper;
+		quagga_helper.EnableOspf(node2, "10.0.2.0/24");
+		quagga_helper.EnableOspfDebug(node2);
+		quagga_helper.EnableZebraDebug(node2);
+		quagga_helper.Install(node2);
 	}
 	{
-		QuaggaHelper quagga2;
-		quagga2.EnableOspf(node2, "10.0.3.0/24");
-		quagga2.EnableOspfDebug(node2);
-		quagga2.EnableZebraDebug(node2);
-		quagga2.Install(node2);
+		QuaggaHelper quagga_helper;
+		quagga_helper.EnableOspf(node2, "10.0.3.0/24");
+		quagga_helper.EnableOspfDebug(node2);
+		quagga_helper.EnableZebraDebug(node2);
+		quagga_helper.Install(node2);
 	}
 	{
 		CsmaHelper csma_helper;
