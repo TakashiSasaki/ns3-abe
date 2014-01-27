@@ -20,7 +20,7 @@ ns3::TypeId PacketSinkNode::GetTypeId(void) {
 }//GetTypeId
 
 PacketSinkNode::PacketSinkNode() :
-	INIT_DIDDNCC_FLAGS {
+	totalRxPackets(0), INIT_DIDDNCC_FLAGS {
 }
 
 void PacketSinkNode::DoInitialize() {
@@ -38,6 +38,8 @@ void PacketSinkNode::DoInitialize() {
 	this->packetSink = packet_sink_helper.Install(this);
 	this->packetSink.Start(ns3::Seconds(0.0));
 	NS_ASSERT(this->GetNDevices() == n_devices_before);
+	this->packetSink.Get(0)->TraceConnectWithoutContext("Rx",
+			ns3::MakeCallback(&PacketSinkNode::traceRxCallback, this));
 }//DoInitialize
 
 void PacketSinkNode::DoDispose() {
@@ -56,7 +58,15 @@ uint32_t PacketSinkNode::getTotalRx() {
 	return this->packetSink.Get(0)->GetObject<ns3::PacketSink> ()->GetTotalRx();
 }//getTotalRx
 
+unsigned long PacketSinkNode::getTotalRxPackets() {
+	return this->totalRxPackets;
+}
+
 void PacketSinkNode::logTotalRx(ns3::LogLevel log_level) {
 	NS_LOG(ns3::LOG_LEVEL_INFO, "node " << this->GetId() << " have received " << this->getTotalRx() << " bytes");
 }//logTotalRx
 
+void PacketSinkNode::traceRxCallback(ns3::Ptr<const ns3::Packet> packet,
+		const ns3::Address & address) {
+	this->totalRxPackets += 1;
+}
