@@ -129,12 +129,11 @@ void SimpleRouter::NotifyConstructionCompleted() {
 	//NS_LOG_INFO("populating global routing table");;
 	//Ipv4GlobalRoutingHelper::PopulateRoutingTables();
 
-	NS_LOG_INFO("preparing DceManagerHelper");
-	ns3::DceManagerHelper dce_manager_helper;
-	dce_manager_helper.SetNetworkStack("ns3::Ns3SocketFdFactory");
-	NS_LOG_INFO("installing with DceManagerHelper");
-	dce_manager_helper.Install(ns3::NodeContainer(ptr_this));
-	NS_LOG_INFO("DceManagerHelper was installed.");
+	{
+		ns3::DceManagerHelper dce_manager_helper;
+		dce_manager_helper.SetNetworkStack("ns3::Ns3SocketFdFactory");
+		dce_manager_helper.Install(ns3::NodeContainer(ptr_this));
+	}
 
 }//NotifyConstructionCompleted
 
