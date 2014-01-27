@@ -18,7 +18,12 @@
  * Author: Hajime Tazaki <tazaki@nict.go.jp>
  */
 // modified by Takashi SASAKI
-
+#define NS3_LOG_ENABLE 1
+#include "ns3/log.h"
+NS_LOG_COMPONENT_DEFINE ("DceQuaggaOspfdTest");
+#define NS3_ASSERT_ENABLE 1
+#include "ns3/assert.h"
+#include "assert.h"
 #include "ns3/network-module.h"
 #include "ns3/core-module.h"
 #include "ns3/internet-module.h"
@@ -28,7 +33,6 @@
 #include "ns3/csma-helper.h"
 
 using namespace ns3;
-NS_LOG_COMPONENT_DEFINE ("DceQuaggaOspfdTest");
 
 class DceQuaggaOspfdTestCase: public TestCase {
 public:
@@ -313,6 +317,130 @@ void DceQuaggaOspfdSetRoutingProtocolTestCase::DoRun() {
 	Simulator::Destroy();
 }//DceQuaggaOspfdSetRoutingProtocolTestCase::DoRun
 
+class DceQuaggaOspfd3TestCase: public TestCase {
+public:
+	DceQuaggaOspfd3TestCase() :
+		ns3::TestCase("DceQuaggaOspfd3TestCase") {
+	}
+	virtual ~DceQuaggaOspfd3TestCase() {
+	}
+
+private:
+	virtual void DoRun(void);
+}; //class DceQuaggaOspfd3TestCase
+
+void DceQuaggaOspfd3TestCase::DoRun() {
+	NodeContainer nodes;
+	nodes.Create(3);
+
+	CsmaHelper csma_helper;
+	csma_helper.SetChannelAttribute("DataRate", StringValue("5Mbps"));
+	csma_helper.SetChannelAttribute("Delay", StringValue("2ms"));
+
+	auto devices = csma_helper.Install(nodes);
+	NS_ASSERT_MSG(devices.GetN()==3, devices.GetN());
+	auto devices2 = csma_helper.Install(nodes);
+	NS_ASSERT_MSG(devices2.GetN()==3, devices2.GetN());
+	devices.Add(devices2);
+	NS_ASSERT_MSG(devices.GetN()==6, devices.GetN());
+	NS_ASSERT_MSG(nodes.Get(0)->GetNDevices()==2, nodes.Get(0)->GetNDevices());
+	NS_ASSERT_MSG(nodes.Get(1)->GetNDevices()==2, nodes.Get(1)->GetNDevices());
+	NS_ASSERT_MSG(nodes.Get(2)->GetNDevices()==2, nodes.Get(2)->GetNDevices());
+
+	{
+		// Internet stack install
+		InternetStackHelper stack0; // IPv4 is required for GlobalRouteMan
+		stack0.Install(nodes.Get(0));
+
+		InternetStackHelper stack1; // IPv4 is required for GlobalRouteMan
+		stack1.Install(nodes.Get(1));
+
+		InternetStackHelper stack2; // IPv4 is required for GlobalRouteMan
+		stack2.Install(nodes.Get(2));
+
+		NS_ASSERT_MSG(nodes.Get(0)->GetNDevices()==3, nodes.Get(0)->GetNDevices());
+		NS_ASSERT_MSG(nodes.Get(1)->GetNDevices()==3, nodes.Get(1)->GetNDevices());
+		NS_ASSERT_MSG(nodes.Get(2)->GetNDevices()==3, nodes.Get(2)->GetNDevices());
+	}
+
+	{
+		auto ipv4_0 = nodes.Get(0)->GetObject<ns3::Ipv4> ();
+		Ipv4DceRoutingHelper ipv4_routing_helper_0;
+		auto ipv4_routing_protocol_0 = ipv4_routing_helper_0.Create(
+				nodes.Get(0));
+		ipv4_0->SetRoutingProtocol(ipv4_routing_protocol_0);
+
+		auto ipv4_1 = nodes.Get(1)->GetObject<ns3::Ipv4> ();
+		Ipv4DceRoutingHelper ipv4_routing_helper_1;
+		auto ipv4_routing_protocol_1 = ipv4_routing_helper_1.Create(
+				nodes.Get(1));
+		ipv4_1->SetRoutingProtocol(ipv4_routing_protocol_1);
+
+		auto ipv4_2 = nodes.Get(2)->GetObject<ns3::Ipv4> ();
+		Ipv4DceRoutingHelper ipv4_routing_helper_2;
+		auto ipv4_routing_protocol_2 = ipv4_routing_helper_2.Create(
+				nodes.Get(2));
+		ipv4_2->SetRoutingProtocol(ipv4_routing_protocol_2);
+	}
+
+	{
+		Ipv4AddressHelper ipv4AddrHelper;
+		ipv4AddrHelper.SetBase("10.0.0.0", "255.255.255.0");
+		Ipv4InterfaceContainer interfaces = ipv4AddrHelper.Assign(devices);
+	}
+
+	{
+		DceManagerHelper processManager0;
+		processManager0.SetNetworkStack("ns3::Ns3SocketFdFactory");
+		processManager0.Install(nodes.Get(0));
+	}
+
+	{
+		QuaggaHelper quagga0;
+		quagga0.EnableOspf(nodes.Get(0), "10.0.0.0/24");
+		quagga0.EnableOspfDebug(nodes.Get(0));
+		quagga0.EnableZebraDebug(nodes.Get(0));
+		quagga0.Install(nodes.Get(0));
+	}
+
+	{
+		DceManagerHelper processManager1;
+		processManager1.SetNetworkStack("ns3::Ns3SocketFdFactory");
+		processManager1.Install(nodes.Get(1));
+	}
+
+	{
+		QuaggaHelper quagga1;
+		quagga1.EnableOspf(nodes.Get(1), "10.0.0.0/24");
+		quagga1.EnableOspfDebug(nodes.Get(1));
+		quagga1.EnableZebraDebug(nodes.Get(1));
+		quagga1.Install(nodes.Get(1));
+	}
+
+	{
+		DceManagerHelper processManager2;
+		processManager2.SetNetworkStack("ns3::Ns3SocketFdFactory");
+		processManager2.Install(nodes.Get(2));
+	}
+
+	{
+		QuaggaHelper quagga2;
+		quagga2.EnableOspf(nodes.Get(1), "10.0.0.0/24");
+		quagga2.EnableOspfDebug(nodes.Get(2));
+		quagga2.EnableZebraDebug(nodes.Get(2));
+		quagga2.Install(nodes.Get(2));
+	}
+
+	csma_helper.EnablePcapAll("DceQuaggaOspfd3TestCase");
+
+	if (stopTime != 0) {
+		Simulator::Stop(Seconds(stopTime));
+	}
+	Simulator::Run();
+	Simulator::Destroy();
+}//DceQuaggaOspfd3TestCase::DoRun
+
+
 class DceQuaggaOspfdTestSuite: public TestSuite {
 public:
 	DceQuaggaOspfdTestSuite() :
@@ -322,6 +450,7 @@ public:
 		AddTestCase(new DceQuaggaOspfdSeparatedTestCase, TestCase::QUICK);
 		AddTestCase(new DceQuaggaOspfdSetRoutingProtocolTestCase,
 				TestCase::QUICK);
+		AddTestCase(new DceQuaggaOspfd3TestCase, TestCase::QUICK);
 	}
 };
 
