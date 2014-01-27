@@ -121,10 +121,6 @@ void SimpleRouter::NotifyConstructionCompleted() {
 	ptr_ipv4->SetRoutingProtocol(ipv4_routing_protocol);
 	NS_LOG_DEBUG("Ipv4DceRoutingProtocol was installed");
 
-	//const auto n_devices_after = ptr_this->GetNDevices();
-	//NS_ASSERT(n_devices_before +1 == n_devices_after);
-	//NS_ASSERT(this->GetDevice(n_devices_before)->GetObject<ns3::LoopbackNetDevice>(ns3::LoopbackNetDevice::GetTypeId()));
-
 	//this->assignIpAddressToDevice();
 	//Ipv4AddressHelper ipv4AddrHelper;
 	//ipv4AddrHelper.SetBase("10.0.0.0", "255.255.255.0");
