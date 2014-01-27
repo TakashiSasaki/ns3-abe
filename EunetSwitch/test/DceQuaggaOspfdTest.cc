@@ -72,6 +72,22 @@ void DceQuaggaOspfdTest::DoRun() {
 	// Address Configuration
 	//
 	//
+#define SEPARATE true // Either case works
+#if SEPARATE
+	{
+		// Internet stack install
+		InternetStackHelper stack1; // IPv4 is required for GlobalRouteMan
+		Ipv4DceRoutingHelper ipv4RoutingHelper1;
+		stack1.SetRoutingHelper(ipv4RoutingHelper1);
+		stack1.Install(nodes.Get(0));
+
+		InternetStackHelper stack2; // IPv4 is required for GlobalRouteMan
+		Ipv4DceRoutingHelper ipv4RoutingHelper2;
+		stack2.SetRoutingHelper(ipv4RoutingHelper2);
+		stack2.Install(nodes.Get(1));
+
+	}
+#else
 	{
 		// Internet stack install
 		InternetStackHelper stack; // IPv4 is required for GlobalRouteMan
@@ -79,6 +95,7 @@ void DceQuaggaOspfdTest::DoRun() {
 		stack.SetRoutingHelper(ipv4RoutingHelper);
 		stack.Install(nodes);
 	}
+#endif
 
 	{
 		// assigning IP address
@@ -90,7 +107,6 @@ void DceQuaggaOspfdTest::DoRun() {
 		//Ipv4GlobalRoutingHelper::PopulateRoutingTables();
 	}
 
-#define SEPARATE false // Either case works
 #if SEPARATE
 	DceManagerHelper processManager1;
 	processManager1.SetNetworkStack("ns3::Ns3SocketFdFactory");
