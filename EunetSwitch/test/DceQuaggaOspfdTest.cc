@@ -332,103 +332,113 @@ private:
 void DceQuaggaOspfd3TestCase::DoRun() {
 	NodeContainer nodes;
 	nodes.Create(3);
+	auto node0 = nodes.Get(0);
+	auto node1 = nodes.Get(1);
+	auto node2 = nodes.Get(2);
+	NodeContainer nodes01(node0, node1);
+	NodeContainer nodes02(node0, node2);
+	NodeContainer nodes12(node1, node2);
 
 	CsmaHelper csma_helper;
 	csma_helper.SetChannelAttribute("DataRate", StringValue("5Mbps"));
 	csma_helper.SetChannelAttribute("Delay", StringValue("2ms"));
 
-	auto devices = csma_helper.Install(nodes);
-	NS_ASSERT_MSG(devices.GetN()==3, devices.GetN());
-	auto devices2 = csma_helper.Install(nodes);
-	NS_ASSERT_MSG(devices2.GetN()==3, devices2.GetN());
-	devices.Add(devices2);
-	NS_ASSERT_MSG(devices.GetN()==6, devices.GetN());
-	NS_ASSERT_MSG(nodes.Get(0)->GetNDevices()==2, nodes.Get(0)->GetNDevices());
-	NS_ASSERT_MSG(nodes.Get(1)->GetNDevices()==2, nodes.Get(1)->GetNDevices());
-	NS_ASSERT_MSG(nodes.Get(2)->GetNDevices()==2, nodes.Get(2)->GetNDevices());
+	auto devices01 = csma_helper.Install(nodes01);
+	auto devices02 = csma_helper.Install(nodes02);
+	auto devices12 = csma_helper.Install(nodes12);
+	NS_ASSERT_MSG(devices01.GetN()==2, devices01.GetN());
+	NS_ASSERT_MSG(devices02.GetN()==2, devices02.GetN());
+	NS_ASSERT_MSG(devices12.GetN()==2, devices12.GetN());
 
 	{
 		// Internet stack install
 		InternetStackHelper stack0; // IPv4 is required for GlobalRouteMan
-		stack0.Install(nodes.Get(0));
+		stack0.Install(node0);
 
 		InternetStackHelper stack1; // IPv4 is required for GlobalRouteMan
-		stack1.Install(nodes.Get(1));
+		stack1.Install(node1);
 
 		InternetStackHelper stack2; // IPv4 is required for GlobalRouteMan
-		stack2.Install(nodes.Get(2));
+		stack2.Install(node2);
 
-		NS_ASSERT_MSG(nodes.Get(0)->GetNDevices()==3, nodes.Get(0)->GetNDevices());
-		NS_ASSERT_MSG(nodes.Get(1)->GetNDevices()==3, nodes.Get(1)->GetNDevices());
-		NS_ASSERT_MSG(nodes.Get(2)->GetNDevices()==3, nodes.Get(2)->GetNDevices());
+		NS_ASSERT_MSG(node0->GetNDevices()==3, node0->GetNDevices());
+		NS_ASSERT_MSG(node1->GetNDevices()==3, node1->GetNDevices());
+		NS_ASSERT_MSG(node2->GetNDevices()==3, node2->GetNDevices());
 	}
 
 	{
-		auto ipv4_0 = nodes.Get(0)->GetObject<ns3::Ipv4> ();
+		auto ipv4_0 = node0->GetObject<ns3::Ipv4> ();
 		Ipv4DceRoutingHelper ipv4_routing_helper_0;
-		auto ipv4_routing_protocol_0 = ipv4_routing_helper_0.Create(
-				nodes.Get(0));
+		auto ipv4_routing_protocol_0 = ipv4_routing_helper_0.Create(node0);
 		ipv4_0->SetRoutingProtocol(ipv4_routing_protocol_0);
 
-		auto ipv4_1 = nodes.Get(1)->GetObject<ns3::Ipv4> ();
+		auto ipv4_1 = node1->GetObject<ns3::Ipv4> ();
 		Ipv4DceRoutingHelper ipv4_routing_helper_1;
-		auto ipv4_routing_protocol_1 = ipv4_routing_helper_1.Create(
-				nodes.Get(1));
+		auto ipv4_routing_protocol_1 = ipv4_routing_helper_1.Create(node1);
 		ipv4_1->SetRoutingProtocol(ipv4_routing_protocol_1);
 
-		auto ipv4_2 = nodes.Get(2)->GetObject<ns3::Ipv4> ();
+		auto ipv4_2 = node2->GetObject<ns3::Ipv4> ();
 		Ipv4DceRoutingHelper ipv4_routing_helper_2;
-		auto ipv4_routing_protocol_2 = ipv4_routing_helper_2.Create(
-				nodes.Get(2));
+		auto ipv4_routing_protocol_2 = ipv4_routing_helper_2.Create(node2);
 		ipv4_2->SetRoutingProtocol(ipv4_routing_protocol_2);
 	}
 
 	{
 		Ipv4AddressHelper ipv4AddrHelper;
-		ipv4AddrHelper.SetBase("10.0.0.0", "255.255.255.0");
-		Ipv4InterfaceContainer interfaces = ipv4AddrHelper.Assign(devices);
+		ipv4AddrHelper.SetBase("10.0.1.0", "255.255.255.0");
+		Ipv4InterfaceContainer interfaces = ipv4AddrHelper.Assign(devices01);
+	}
+
+	{
+		Ipv4AddressHelper ipv4AddrHelper;
+		ipv4AddrHelper.SetBase("10.0.2.0", "255.255.255.0");
+		Ipv4InterfaceContainer interfaces = ipv4AddrHelper.Assign(devices02);
+	}
+
+	{
+		Ipv4AddressHelper ipv4AddrHelper;
+		ipv4AddrHelper.SetBase("10.0.3.0", "255.255.255.0");
+		Ipv4InterfaceContainer interfaces = ipv4AddrHelper.Assign(devices12);
 	}
 
 	{
 		DceManagerHelper processManager0;
 		processManager0.SetNetworkStack("ns3::Ns3SocketFdFactory");
-		processManager0.Install(nodes.Get(0));
+		processManager0.Install(node0);
 	}
-
-	{
-		QuaggaHelper quagga0;
-		quagga0.EnableOspf(nodes.Get(0), "10.0.0.0/24");
-		quagga0.EnableOspfDebug(nodes.Get(0));
-		quagga0.EnableZebraDebug(nodes.Get(0));
-		quagga0.Install(nodes.Get(0));
-	}
-
 	{
 		DceManagerHelper processManager1;
 		processManager1.SetNetworkStack("ns3::Ns3SocketFdFactory");
-		processManager1.Install(nodes.Get(1));
+		processManager1.Install(node1);
 	}
-
-	{
-		QuaggaHelper quagga1;
-		quagga1.EnableOspf(nodes.Get(1), "10.0.0.0/24");
-		quagga1.EnableOspfDebug(nodes.Get(1));
-		quagga1.EnableZebraDebug(nodes.Get(1));
-		quagga1.Install(nodes.Get(1));
-	}
-
 	{
 		DceManagerHelper processManager2;
 		processManager2.SetNetworkStack("ns3::Ns3SocketFdFactory");
-		processManager2.Install(nodes.Get(2));
+		processManager2.Install(node2);
 	}
-
+	{
+		QuaggaHelper quagga0;
+		quagga0.EnableOspf(node0, "10.0.1.0/24");
+		quagga0.EnableOspf(node0, "10.0.2.0/24");
+		quagga0.EnableOspfDebug(node0);
+		quagga0.EnableZebraDebug(node0);
+		quagga0.Install(node0);
+	}
+	{
+		QuaggaHelper quagga1;
+		quagga1.EnableOspf(node1, "10.0.1.0/24");
+		quagga1.EnableOspf(node1, "10.0.3.0/24");
+		quagga1.EnableOspfDebug(node1);
+		quagga1.EnableZebraDebug(node1);
+		quagga1.Install(node1);
+	}
 	{
 		QuaggaHelper quagga2;
-		quagga2.EnableOspf(nodes.Get(1), "10.0.0.0/24");
-		quagga2.EnableOspfDebug(nodes.Get(2));
-		quagga2.EnableZebraDebug(nodes.Get(2));
-		quagga2.Install(nodes.Get(2));
+		quagga2.EnableOspf(node2, "10.0.2.0/24");
+		quagga2.EnableOspf(node2, "10.0.3.0/24");
+		quagga2.EnableOspfDebug(node2);
+		quagga2.EnableZebraDebug(node2);
+		quagga2.Install(node2);
 	}
 
 	csma_helper.EnablePcapAll("DceQuaggaOspfd3TestCase");
