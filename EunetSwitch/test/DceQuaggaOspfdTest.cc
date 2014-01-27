@@ -590,27 +590,6 @@ void DceQuaggaOspfdChannelTestCase::DoRun() {
 		ipv4->SetRoutingProtocol(ipv4_routing_protocol);
 	}
 	{
-		Ipv4AddressHelper ipv4_address_helper;
-		ipv4_address_helper.SetBase("10.0.1.0", "255.255.255.0");
-		Ipv4InterfaceContainer interfaces = ipv4_address_helper.Assign(
-				devices01);
-	}
-
-	{
-		Ipv4AddressHelper ipv4_address_helper;
-		ipv4_address_helper.SetBase("10.0.2.0", "255.255.255.0");
-		Ipv4InterfaceContainer interfaces = ipv4_address_helper.Assign(
-				devices02);
-	}
-
-	{
-		Ipv4AddressHelper ipv4_address_helper;
-		ipv4_address_helper.SetBase("10.0.3.0", "255.255.255.0");
-		Ipv4InterfaceContainer interfaces = ipv4_address_helper.Assign(
-				devices12);
-	}
-
-	{
 		DceManagerHelper dce_manager_helper;
 		dce_manager_helper.SetNetworkStack("ns3::Ns3SocketFdFactory");
 		dce_manager_helper.Install(node0);
@@ -624,6 +603,24 @@ void DceQuaggaOspfdChannelTestCase::DoRun() {
 		DceManagerHelper dce_manager_helper;
 		dce_manager_helper.SetNetworkStack("ns3::Ns3SocketFdFactory");
 		dce_manager_helper.Install(node2);
+	}
+	{
+		Ipv4AddressHelper ipv4_address_helper;
+		ipv4_address_helper.SetBase("10.0.1.0", "255.255.255.0");
+		Ipv4InterfaceContainer interfaces = ipv4_address_helper.Assign(
+				devices01);
+	}
+	{
+		Ipv4AddressHelper ipv4_address_helper;
+		ipv4_address_helper.SetBase("10.0.2.0", "255.255.255.0");
+		Ipv4InterfaceContainer interfaces = ipv4_address_helper.Assign(
+				devices02);
+	}
+	{
+		Ipv4AddressHelper ipv4_address_helper;
+		ipv4_address_helper.SetBase("10.0.3.0", "255.255.255.0");
+		Ipv4InterfaceContainer interfaces = ipv4_address_helper.Assign(
+				devices12);
 	}
 	{
 		QuaggaHelper quagga_helper;
