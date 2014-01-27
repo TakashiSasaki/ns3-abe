@@ -355,8 +355,8 @@ WifiTestSuite: test-runner
 DceQuaggaOspfdTestSuite: test-runner
 	echo run --suite=$@ --verbose > gdbinit
 	#$(EXECENV) ./test-runner --suite=$@ --verbose --test-type=performance 
-	#$(EXECENV) ./test-runner --suite=$@ --verbose  
-	$(EXECENV) gdb ./test-runner --command=gdbinit 
+	$(EXECENV) ./test-runner --suite=$@ --verbose  
+	#$(EXECENV) gdb ./test-runner --command=gdbinit 
 
 EunetMobileTestSuite: test-runner
 	echo run --suite=$@ --verbose > gdbinit

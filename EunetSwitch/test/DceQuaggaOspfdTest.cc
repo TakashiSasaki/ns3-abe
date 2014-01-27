@@ -72,18 +72,23 @@ void DceQuaggaOspfdTest::DoRun() {
 	// Address Configuration
 	//
 	//
-	// Internet stack install
-	InternetStackHelper stack; // IPv4 is required for GlobalRouteMan
-	Ipv4DceRoutingHelper ipv4RoutingHelper;
-	stack.SetRoutingHelper(ipv4RoutingHelper);
-	stack.Install(nodes);
+	{
+		// Internet stack install
+		InternetStackHelper stack; // IPv4 is required for GlobalRouteMan
+		Ipv4DceRoutingHelper ipv4RoutingHelper;
+		stack.SetRoutingHelper(ipv4RoutingHelper);
+		stack.Install(nodes);
+	}
 
-	Ipv4AddressHelper ipv4AddrHelper;
-	ipv4AddrHelper.SetBase("10.0.0.0", "255.255.255.0");
-	Ipv4InterfaceContainer interfaces = ipv4AddrHelper.Assign(devices);
-	Ipv4InterfaceContainer iic_point_to_point = ipv4AddrHelper.Assign(
-			ndc_point_to_point);
-	//Ipv4GlobalRoutingHelper::PopulateRoutingTables();
+	{
+		// assigning IP address
+		Ipv4AddressHelper ipv4AddrHelper;
+		ipv4AddrHelper.SetBase("10.0.0.0", "255.255.255.0");
+		Ipv4InterfaceContainer interfaces = ipv4AddrHelper.Assign(devices);
+		Ipv4InterfaceContainer iic_point_to_point = ipv4AddrHelper.Assign(
+				ndc_point_to_point);
+		//Ipv4GlobalRoutingHelper::PopulateRoutingTables();
+	}
 
 #define SEPARATE false // Either case works
 #if SEPARATE
