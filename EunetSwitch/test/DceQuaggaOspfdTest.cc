@@ -275,25 +275,33 @@ void DceQuaggaOspfdSetRoutingProtocolTestCase::DoRun() {
 		//Ipv4GlobalRoutingHelper::PopulateRoutingTables();
 	}
 
-	DceManagerHelper processManager1;
-	processManager1.SetNetworkStack("ns3::Ns3SocketFdFactory");
-	processManager1.Install(nodes.Get(0));
+	{
+		DceManagerHelper processManager1;
+		processManager1.SetNetworkStack("ns3::Ns3SocketFdFactory");
+		processManager1.Install(nodes.Get(0));
+	}
 
-	QuaggaHelper quagga1;
-	quagga1.EnableOspf(nodes.Get(0), "10.0.0.0/24");
-	quagga1.EnableOspfDebug(nodes.Get(0));
-	quagga1.EnableZebraDebug(nodes.Get(0));
-	quagga1.Install(nodes.Get(0));
+	{
+		QuaggaHelper quagga1;
+		quagga1.EnableOspf(nodes.Get(0), "10.0.0.0/24");
+		quagga1.EnableOspfDebug(nodes.Get(0));
+		quagga1.EnableZebraDebug(nodes.Get(0));
+		quagga1.Install(nodes.Get(0));
+	}
 
-	DceManagerHelper processManager2;
-	processManager2.SetNetworkStack("ns3::Ns3SocketFdFactory");
-	processManager2.Install(nodes.Get(1));
+	{
+		DceManagerHelper processManager2;
+		processManager2.SetNetworkStack("ns3::Ns3SocketFdFactory");
+		processManager2.Install(nodes.Get(1));
+	}
 
-	QuaggaHelper quagga2;
-	quagga2.EnableOspf(nodes.Get(1), "10.0.0.0/24");
-	quagga2.EnableOspfDebug(nodes.Get(1));
-	quagga2.EnableZebraDebug(nodes.Get(1));
-	quagga2.Install(nodes.Get(1));
+	{
+		QuaggaHelper quagga2;
+		quagga2.EnableOspf(nodes.Get(1), "10.0.0.0/24");
+		quagga2.EnableOspfDebug(nodes.Get(1));
+		quagga2.EnableZebraDebug(nodes.Get(1));
+		quagga2.Install(nodes.Get(1));
+	}
 
 	pointToPoint.EnablePcapAll("DceQuaggaOspfdSetRoutingProtocolTestCase");
 	csma_helper.EnablePcapAll("DceQuaggaOspfdSetRoutingProtocolTestCase");
