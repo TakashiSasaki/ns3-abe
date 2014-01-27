@@ -18,6 +18,7 @@
  * Author: Hajime Tazaki <tazaki@nict.go.jp>
  */
 // modified by Takashi SASAKI
+#include <iostream>
 #define NS3_LOG_ENABLE 1
 #include "ns3/log.h"
 NS_LOG_COMPONENT_DEFINE ("DceQuaggaOspfdTest");
@@ -461,9 +462,13 @@ void DceQuaggaOspfd3TestCase::DoRun() {
 
 	csma_helper.EnablePcapAll("DceQuaggaOspfd3TestCase");
 
-	if (stopTime != 0) {
-		Simulator::Stop(Seconds(stopTime));
-	}
+	auto output_stream_wrapper = Create<OutputStreamWrapper> (&std::cout);
+
+	Ipv4DceRoutingHelper ipv4_dce_routing_helper;
+	ipv4_dce_routing_helper.PrintRoutingTableAllEvery(ns3::Seconds(10.0),
+			output_stream_wrapper);
+
+	Simulator::Stop(Seconds(120));
 	Simulator::Run();
 	Simulator::Destroy();
 }//DceQuaggaOspfd3TestCase::DoRun
