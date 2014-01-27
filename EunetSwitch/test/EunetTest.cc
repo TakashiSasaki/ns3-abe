@@ -147,7 +147,7 @@ void EunetTestCase::DoRun() {
 			ns3::Ipv4Address("192.168.13.3"), ns3::Ipv4Mask("255.255.255.0"));
 	eunet.connectRouters("r1", "r2", ns3::Ipv4Address("192.168.12.1"),
 			ns3::Ipv4Address("192.168.12.2"), ns3::Ipv4Mask("255.255.255.0"));
-	eunet.connectRouters("r2", "r3", ns3::Ipv4Address("192.168.23.1"),
+	eunet.connectRouters("r2", "r3", ns3::Ipv4Address("192.168.23.2"),
 			ns3::Ipv4Address("192.168.23.3"), ns3::Ipv4Mask("255.255.255.0"));
 
 	// setting default route to two nodes
@@ -161,6 +161,16 @@ void EunetTestCase::DoRun() {
 		r1->enablePcap(device);
 		auto device2 = r1->getDevice(ns3::Ipv4Address("192.168.13.1"));
 		r1->enablePcap(device2);
+		auto device3 = r1->getDevice(ns3::Ipv4Address("192.168.12.1"));
+		r1->enablePcap(device3);
+	}
+
+	ns3::Ptr<EunetRouter> r2 = ns3::Names::Find<EunetRouter>("r2");
+	{
+		auto device = r2->getDevice(ns3::Ipv4Address("192.168.12.2"));
+		r2->enablePcap(device);
+		auto device2 = r2->getDevice(ns3::Ipv4Address("192.168.23.2"));
+		r2->enablePcap(device2);
 	}
 
 	//auto ptr_s12 = ns3::Names::Find("s12");

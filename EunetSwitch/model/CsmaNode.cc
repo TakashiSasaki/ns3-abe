@@ -8,6 +8,7 @@ NS_LOG_COMPONENT_DEFINE("CsmaNode");
 #include "ns3/ipv4-l3-protocol.h"
 #include "ns3/uinteger.h"
 #include "ns3/loopback-net-device.h"
+#include "ns3/names.h"
 #include "CsmaNode.h"
 NS_OBJECT_ENSURE_REGISTERED(CsmaNode);
 
@@ -129,10 +130,15 @@ ns3::NetDeviceContainer CsmaNode::getNetDevices<ns3::CsmaNetDevice>();
 void CsmaNode::enablePcap(ns3::Ptr<ns3::NetDevice> device,
 		const bool promiscuous) {
 	NS_ASSERT(GetId()==device->GetNode()->GetId());
+	auto name = ns3::Names::FindName(this);
+	if (name.empty()) {
+		std::ostringstream oss;
+		oss << device->GetInstanceTypeId() << "-" << this->GetId() << "-"
+				<< device->GetIfIndex();
+		name = oss.str();
+	}
+	NS_LOG_DEBUG("enablePcap on node " << name);
 	ns3::CsmaHelper csma_helper;
-	std::ostringstream oss;
-	oss << device->GetInstanceTypeId() << "-" << this->GetId() << "-"
-			<< device->GetIfIndex();
-	csma_helper.EnablePcap(oss.str(), device, promiscuous);
+	csma_helper.EnablePcap(name, device, promiscuous);
 }//enablePcap
 

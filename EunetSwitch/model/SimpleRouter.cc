@@ -201,7 +201,8 @@ std::unique_ptr<std::vector<std::string> > SimpleRouter::getAllNetworks() {
 }
 
 void SimpleRouter::enableOspf(ns3::Ptr<CsmaDevice> device) {
-	NS_LOG_DEBUG("enabling Quagga OSPF routing daemon");
+	auto name = ns3::Names::FindPath(this);
+	NS_LOG_DEBUG("enabling Quagga OSPF routing daemon to " << name << " " << device->GetIfIndex());
 	NS_ASSERT_MSG(this->getNDevices<CsmaDevice>() == this->nPorts,
 			this->getNDevices<CsmaDevice>()<< " device(s) " << this->nPorts << " ports");
 	NS_ASSERT(this->GetId()==device->GetNode()->GetId());
