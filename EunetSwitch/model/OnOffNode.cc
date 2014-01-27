@@ -27,7 +27,7 @@ ns3::TypeId OnOffNode::GetTypeId(void) {
 							ns3::MakeTimeChecker()) .AddAttribute(
 							"onOffDataRate",
 							"onOffDataRate",
-							ns3::DataRateValue(ns3::DataRate("500kb/s")),
+							ns3::DataRateValue(ns3::DataRate("1kb/s")),
 							ns3::MakeDataRateAccessor(&OnOffNode::onOffDataRate),
 							ns3::MakeDataRateChecker()) .AddAttribute(
 							"onOffRemoteAddress", "onOffRemoteAddress",
@@ -38,9 +38,7 @@ ns3::TypeId OnOffNode::GetTypeId(void) {
 }//GetTypeId
 
 OnOffNode::OnOffNode(const bool start_at_the_beginning) :
-	/*startAtTheBeginning(start_at_the_beginning),*/totalTxBytes(0), INIT_DIDDNCC_FLAGS {
-	//auto ptr_on_off_application = ns3::CreateObject<ns3::OnOffApplication>();
-	//this->AddApplication(ptr_on_off_application);
+	totalTxBytes(0), INIT_DIDDNCC_FLAGS {
 }// the constructor
 
 void OnOffNode::DoInitialize() {
@@ -121,10 +119,14 @@ void OnOffNode::setRemote(const ns3::Ipv4Address& ipv4_address) {
 }//setRemote
 
 void OnOffNode::traceTxCallback(ns3::Ptr<const ns3::Packet> p) {
-	//NS_LOG_UNCOND("oapifopisajfoidjfojsdaoifap");
 	totalTxBytes += p->GetSize();
+	++totalTxPackets;
 }
 
-unsigned long OnOffNode::getTotalTxBytes(){
+unsigned long OnOffNode::getTotalTxBytes() {
 	return this->totalTxBytes;
+}
+
+unsigned long OnOffNode::getTotalTxPackets() {
+	return this->totalTxPackets;
 }

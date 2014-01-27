@@ -11,6 +11,7 @@ class OnOffNode: public PacketSinkNode {
 	ns3::DataRate onOffDataRate;
 	std::string onOffRemote;
 	unsigned long totalTxBytes;
+	unsigned long totalTxPackets;
 public:
 	static ns3::TypeId GetTypeId(void);
 	OnOffNode(const bool start_at_the_beginning = false);
@@ -21,6 +22,7 @@ public:
 	void stopAt(ns3::Time stop_seconds = ns3::Seconds(10.0));
 	void setRemote(const ns3::Ipv4Address&);
 	unsigned long getTotalTxBytes();
+	unsigned long getTotalTxPackets();
 private:
 	void installOnOffApplication();
 	static const int ON_OFF_APPLICATION_UDP_PORT = 10009;
