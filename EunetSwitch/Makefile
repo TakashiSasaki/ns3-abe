@@ -50,6 +50,8 @@ NS_LOG_DCE:=$(NS_LOG_DCE):WifiMacTrace=info\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):WifiPhyTrace=info\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):EunetMobileTest=info\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):EunetMobile=info\|prefix_func\|prefix_time
+NS_LOG_DCE:=$(NS_LOG_DCE):DceQuaggaOspfdTest=info\|prefix_func\|prefix_time
+NS_LOG_DCE:=$(NS_LOG_DCE):DceManagerHelper=info\|prefix_func\|prefix_time
 #NS_LOG_DCE:=$(NS_LOG_DCE):EunetTest=debug\|prefix_func\|prefix_time
 #define NS_LOG
 #NS_LOG="NamedRouters=**:EunetRouters=**:EunetRouter=**:SimpleRouter=**:BridgingAp=**:SimpleAp=**:NamedSwitches=**:EunetSwitch=**:EunetSwitches=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"
