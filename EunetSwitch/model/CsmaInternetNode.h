@@ -23,7 +23,7 @@ public:
 	//void assignAddress(const unsigned i_device, ns3::Ipv4AddressHelper&);
 	void assignAddress(ns3::Ptr<ns3::NetDevice>, ns3::Ipv4Address ipv4_address,
 			ns3::Ipv4Mask ipv4_mask);
-	ns3::Ptr<ns3::CsmaNetDevice> getDevice(ns3::Ipv4Address);
+	ns3::Ptr<CsmaDevice> getDevice(ns3::Ipv4Address);
 private:
 	static const ns3::Ipv4InterfaceAddress dummyAddress;
 	void logAddress(const ns3::Ipv4Address& ipv4_address);

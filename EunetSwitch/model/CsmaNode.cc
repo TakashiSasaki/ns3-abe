@@ -126,19 +126,3 @@ ns3::Ptr<ns3::CsmaNetDevice> CsmaNode::addCsmaNetDevice<ns3::CsmaNetDevice>();
 
 template
 ns3::NetDeviceContainer CsmaNode::getNetDevices<ns3::CsmaNetDevice>();
-
-void CsmaNode::enablePcap(ns3::Ptr<ns3::NetDevice> device,
-		const bool promiscuous) {
-	NS_ASSERT(GetId()==device->GetNode()->GetId());
-	auto name = ns3::Names::FindName(this);
-	if (name.empty()) {
-		std::ostringstream oss;
-		oss << device->GetInstanceTypeId() << "-" << this->GetId() << "-"
-				<< device->GetIfIndex();
-		name = oss.str();
-	}
-	NS_LOG_DEBUG("enablePcap on node " << name);
-	ns3::CsmaHelper csma_helper;
-	csma_helper.EnablePcap(name, device, promiscuous);
-}//enablePcap
-

@@ -10,6 +10,7 @@ public:
 	CsmaDevice();
 	virtual ~CsmaDevice();
 	void joinTo(ns3::Ptr<CsmaDevice>);
+	void enablePcap(const bool promiscuous = false);
 };
 
 #endif

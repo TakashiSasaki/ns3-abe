@@ -113,9 +113,9 @@ void EunetRouterTestCase::DoRun() {
 		auto device1 = ptr_eunet_router_1->getNetDevice<CsmaDevice> ();
 		auto device2 = ptr_eunet_router_2->getNetDevice<CsmaDevice> ();
 		ptr_eunet_router_1->enableOspf(device1);
-		ptr_eunet_router_1->enablePcap(device1);
+		device1->enablePcap();
 		ptr_eunet_router_2->enableOspf(device2);
-		ptr_eunet_router_2->enablePcap(device2);
+		device2->enablePcap();
 	}
 
 	//ns3::PacketMetadata::Enable();

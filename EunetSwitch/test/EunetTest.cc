@@ -18,7 +18,7 @@ class EunetTestCase: public TestCase {
 public:
 	EunetTestCase(const bool is_visual = false) :
 		ns3::TestCase("EunetTestCase"), isVisual(is_visual) {
-		if(isVisual){
+		if (isVisual) {
 			NS_LOG_DEBUG("initializing EunetTestCase as visual simulation");
 		} else {
 			NS_LOG_DEBUG("initializing EunetTestCase as non-visual simulation");
@@ -194,19 +194,19 @@ void EunetTestCase::DoRun() {
 	//ns3::Ptr<EunetRouter> r1 = ns3::Names::Find<EunetRouter>("r1");
 	{
 		auto device = r1->getDevice(ns3::Ipv4Address("192.168.1.101"));
-		r1->enablePcap(device);
+		device->enablePcap();
 		auto device2 = r1->getDevice(ns3::Ipv4Address("192.168.13.1"));
-		r1->enablePcap(device2);
+		device2->enablePcap();
 		auto device3 = r1->getDevice(ns3::Ipv4Address("192.168.12.1"));
-		r1->enablePcap(device3);
+		device3->enablePcap();
 	}
 
 	//ns3::Ptr<EunetRouter> r2 = ns3::Names::Find<EunetRouter>("r2");
 	{
 		auto device = r2->getDevice(ns3::Ipv4Address("192.168.12.2"));
-		r2->enablePcap(device);
+		device->enablePcap();
 		auto device2 = r2->getDevice(ns3::Ipv4Address("192.168.23.2"));
-		r2->enablePcap(device2);
+		device2->enablePcap();
 	}
 	//auto ptr_s12 = ns3::Names::Find("s12");
 	//auto ptr_s23 = ns3::Names::Find("s23");

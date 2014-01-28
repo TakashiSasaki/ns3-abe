@@ -19,7 +19,6 @@ public:
 	static ns3::TypeId GetTypeId(void);
 	CsmaNode();
 	virtual ~CsmaNode();
-	//ns3::Ptr<ns3::CsmaNetDevice> getCsmaNetDevice(const unsigned i_device = 0);
 	template<class T>
 	ns3::Ptr<T> getNetDevice(const unsigned i_port = 0);
 	template<class T>
@@ -27,8 +26,6 @@ public:
 	void logAllDevices(const ns3::LogLevel log_level = ns3::LOG_LEVEL_INFO);
 	template<class T>
 	ns3::Ptr<T> getApplication();
-
-	void enablePcap(ns3::Ptr<ns3::NetDevice>, const bool promiscuous = false);
 
 	template<class T>
 	void enableAsciiTrace(const unsigned i_port);

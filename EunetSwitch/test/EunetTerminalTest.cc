@@ -77,12 +77,10 @@ private:
 		NS_ASSERT_MSG(ptr_eunet_terminal_3->GetNDevices() == 2, ptr_eunet_terminal->GetNDevices());
 
 		{
-			auto device2 = ptr_eunet_terminal_2->getNetDevice<
-					ns3::CsmaNetDevice> ();
-			auto device3 = ptr_eunet_terminal_3->getNetDevice<
-					ns3::CsmaNetDevice> ();
-			ptr_eunet_terminal_2->enablePcap(device2);
-			ptr_eunet_terminal_3->enablePcap(device3);
+			auto device2 = ptr_eunet_terminal_2->getNetDevice<CsmaDevice> ();
+			auto device3 = ptr_eunet_terminal_3->getNetDevice<CsmaDevice> ();
+			device2->enablePcap();
+			device3->enablePcap();
 			ptr_eunet_terminal_2->enableAsciiTrace<ns3::CsmaNetDevice> (0);
 			ptr_eunet_terminal_3->enableAsciiTrace<ns3::CsmaNetDevice> (0);
 		}

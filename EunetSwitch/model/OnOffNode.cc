@@ -38,7 +38,7 @@ ns3::TypeId OnOffNode::GetTypeId(void) {
 }//GetTypeId
 
 OnOffNode::OnOffNode(const bool start_at_the_beginning) :
-	totalTxBytes(0), INIT_DIDDNCC_FLAGS {
+	totalTxBytes(0), totalTxPackets(0), INIT_DIDDNCC_FLAGS {
 }// the constructor
 
 void OnOffNode::DoInitialize() {
