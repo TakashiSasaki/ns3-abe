@@ -46,73 +46,72 @@ void SimpleSwitchTestCase::DoRun() {
 		NS_ASSERT(ptr_csma_net_device != NULL);
 	}
 
+	ns3::Ptr<SimpleSwitch> sw1, sw2;
 	ns3::ObjectFactory object_factory;
 	object_factory.SetTypeId(SimpleSwitch::GetTypeId());
 	object_factory.Set("nDownlinkPorts", ns3::UintegerValue(48));
 	object_factory.Set("nUplinkPorts", ns3::UintegerValue(4));
 	object_factory.Set("uplinkDataRate", ns3::StringValue("10Gbps"));
 	object_factory.Set("downlinkDataRate", ns3::StringValue("1Gbps"));
-	ns3::Ptr<SimpleSwitch> ptr_simple_switch_1 = object_factory.Create<
-			SimpleSwitch> ();
+	sw1 = object_factory.Create<SimpleSwitch> ();
 	ns3::UintegerValue uv_uplink_ports;
-	ptr_simple_switch_1 ->GetAttribute("nDownlinkPorts", uv_uplink_ports);
+	sw1 ->GetAttribute("nDownlinkPorts", uv_uplink_ports);
 	NS_ASSERT(48==uv_uplink_ports.Get());
 	ns3::UintegerValue uv_downlink_ports;
-	ptr_simple_switch_1->GetAttribute("nUplinkPorts", uv_downlink_ports);
+	sw1->GetAttribute("nUplinkPorts", uv_downlink_ports);
 	NS_ASSERT(4==uv_downlink_ports.Get());
 	//NS_ASSERT_MSG(52 == ptr_simple_switch_1->getNPorts(), "getNports() " << ptr_simple_switch_1->getNPorts());
-	ptr_simple_switch_1->Initialize();
-	NS_ASSERT_MSG(ptr_simple_switch_1->getNDevices<CsmaDevice>() == 1, ptr_simple_switch_1->getNDevices<CsmaDevice>());
-	NS_ASSERT_MSG(ptr_simple_switch_1->getNDevices<UplinkDevice>() == 4, ptr_simple_switch_1->getNDevices<CsmaDevice>());
-	NS_ASSERT_MSG(ptr_simple_switch_1->getNDevices<DownlinkDevice>() == 48, ptr_simple_switch_1->getNDevices<CsmaDevice>());
-	auto ptr_simple_switch_2 = object_factory.Create<SimpleSwitch> ();
-	ptr_simple_switch_2->Initialize();
-	NS_ASSERT_MSG(ptr_simple_switch_2->getNDevices<CsmaDevice>() == 1, ptr_simple_switch_2->getNDevices<CsmaDevice>());
-	NS_ASSERT_MSG(ptr_simple_switch_2->getNDevices<UplinkDevice>() == 4, ptr_simple_switch_2->getNDevices<CsmaDevice>());
-	NS_ASSERT_MSG(ptr_simple_switch_2->getNDevices<DownlinkDevice>() == 48, ptr_simple_switch_2->getNDevices<CsmaDevice>());
+	sw1->Initialize();
+	NS_ASSERT_MSG(sw1->getNDevices<CsmaDevice>() == 1, sw1->getNDevices<CsmaDevice>());
+	NS_ASSERT_MSG(sw1->getNDevices<UplinkDevice>() == 4, sw1->getNDevices<CsmaDevice>());
+	NS_ASSERT_MSG(sw1->getNDevices<DownlinkDevice>() == 48, sw1->getNDevices<CsmaDevice>());
+	sw2 = object_factory.Create<SimpleSwitch> ();
+	sw2->Initialize();
+	NS_ASSERT_MSG(sw2->getNDevices<CsmaDevice>() == 1, sw2->getNDevices<CsmaDevice>());
+	NS_ASSERT_MSG(sw2->getNDevices<UplinkDevice>() == 4, sw2->getNDevices<CsmaDevice>());
+	NS_ASSERT_MSG(sw2->getNDevices<DownlinkDevice>() == 48, sw2->getNDevices<CsmaDevice>());
 
 	{
 		auto ptr_unused_csma_net_device_on_switch_1_before =
-				ptr_simple_switch_1->getUnusedPort<CsmaDevice> ();
+				sw1->getUnusedPort<CsmaDevice> ();
 		NS_LOG_INFO(ptr_unused_csma_net_device_on_switch_1_before->GetNode()->GetId() << ' '<< ptr_unused_csma_net_device_on_switch_1_before->GetIfIndex());
-		auto ptr_unused_uplink_device_on_switch_1_before =
-				ptr_simple_switch_1->getUnusedPort<UplinkDevice> ();
+		auto ptr_unused_uplink_device_on_switch_1_before = sw1->getUnusedPort<
+				UplinkDevice> ();
 		NS_LOG_INFO(ptr_unused_uplink_device_on_switch_1_before->GetNode()->GetId() << ' '<< ptr_unused_uplink_device_on_switch_1_before->GetIfIndex());
 		auto ptr_unused_downlink_device_on_switch_1_before =
-				ptr_simple_switch_1->getUnusedPort<DownlinkDevice> ();
+				sw1->getUnusedPort<DownlinkDevice> ();
 		NS_LOG_INFO(ptr_unused_downlink_device_on_switch_1_before->GetNode()->GetId() << ' '<< ptr_unused_downlink_device_on_switch_1_before->GetIfIndex());
 		auto ptr_unused_csma_net_device_on_switch_2_before =
-				ptr_simple_switch_2->getUnusedPort<CsmaDevice> ();
+				sw2->getUnusedPort<CsmaDevice> ();
 		NS_LOG_INFO(ptr_unused_csma_net_device_on_switch_2_before->GetNode()->GetId() << ' '<< ptr_unused_csma_net_device_on_switch_2_before->GetIfIndex());
-		auto ptr_unused_uplink_device_on_switch_2_before =
-				ptr_simple_switch_2->getUnusedPort<UplinkDevice> ();
+		auto ptr_unused_uplink_device_on_switch_2_before = sw2->getUnusedPort<
+				UplinkDevice> ();
 		NS_LOG_INFO(ptr_unused_uplink_device_on_switch_2_before->GetNode()->GetId() << ' '<< ptr_unused_uplink_device_on_switch_2_before->GetIfIndex());
 		auto ptr_unused_downlink_device_on_switch_2_before =
-				ptr_simple_switch_2->getUnusedPort<DownlinkDevice> ();
+				sw2->getUnusedPort<DownlinkDevice> ();
 		NS_LOG_INFO(ptr_unused_downlink_device_on_switch_2_before->GetNode()->GetId() << ' '<< ptr_unused_downlink_device_on_switch_2_before->GetIfIndex());
 	}
 
-	ptr_simple_switch_2->bring<CsmaDevice, CsmaDevice> (0, ptr_simple_switch_1,
-			0);
+	sw2->bring<CsmaDevice, CsmaDevice> (0, sw1, 0);
 
 	{
-		auto ptr_unused_csma_net_device_on_switch_1_after =
-				ptr_simple_switch_1->getUnusedPort<CsmaDevice> ();
+		auto ptr_unused_csma_net_device_on_switch_1_after = sw1->getUnusedPort<
+				CsmaDevice> ();
 		NS_ASSERT(ptr_unused_csma_net_device_on_switch_1_after == NULL);
-		auto ptr_unused_uplink_device_on_switch_1_after =
-				ptr_simple_switch_1->getUnusedPort<UplinkDevice> ();
+		auto ptr_unused_uplink_device_on_switch_1_after = sw1->getUnusedPort<
+				UplinkDevice> ();
 		NS_LOG_INFO(ptr_unused_uplink_device_on_switch_1_after->GetNode()->GetId() << ' '<< ptr_unused_uplink_device_on_switch_1_after->GetIfIndex());
-		auto ptr_unused_downlink_device_on_switch_1_after =
-				ptr_simple_switch_1->getUnusedPort<DownlinkDevice> ();
+		auto ptr_unused_downlink_device_on_switch_1_after = sw1->getUnusedPort<
+				DownlinkDevice> ();
 		NS_LOG_INFO(ptr_unused_downlink_device_on_switch_1_after->GetNode()->GetId() << ' '<< ptr_unused_downlink_device_on_switch_1_after->GetIfIndex());
-		auto ptr_unused_csma_net_device_on_switch_2_after =
-				ptr_simple_switch_2->getUnusedPort<CsmaDevice> ();
+		auto ptr_unused_csma_net_device_on_switch_2_after = sw2->getUnusedPort<
+				CsmaDevice> ();
 		NS_ASSERT(ptr_unused_csma_net_device_on_switch_2_after == NULL);
-		auto ptr_unused_uplink_device_on_switch_2_after =
-				ptr_simple_switch_2->getUnusedPort<UplinkDevice> ();
+		auto ptr_unused_uplink_device_on_switch_2_after = sw2->getUnusedPort<
+				UplinkDevice> ();
 		NS_LOG_INFO(ptr_unused_uplink_device_on_switch_2_after->GetNode()->GetId() << ' '<< ptr_unused_uplink_device_on_switch_2_after->GetIfIndex());
-		auto ptr_unused_downlink_device_on_switch_2_after =
-				ptr_simple_switch_2->getUnusedPort<DownlinkDevice> ();
+		auto ptr_unused_downlink_device_on_switch_2_after = sw2->getUnusedPort<
+				DownlinkDevice> ();
 		NS_LOG_INFO(ptr_unused_downlink_device_on_switch_2_after->GetNode()->GetId() << ' '<< ptr_unused_downlink_device_on_switch_2_after->GetIfIndex());
 	}
 
