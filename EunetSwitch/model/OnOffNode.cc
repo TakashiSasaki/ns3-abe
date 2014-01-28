@@ -41,6 +41,9 @@ OnOffNode::OnOffNode(const bool start_at_the_beginning) :
 	totalTxBytes(0), totalTxPackets(0), INIT_DIDDNCC_FLAGS {
 }// the constructor
 
+OnOffNode::~OnOffNode() {
+}
+
 void OnOffNode::DoInitialize() {
 	ASSERT_DI;
 	NS_ASSERT(this->GetNDevices()==nPorts+1);
@@ -60,6 +63,7 @@ void OnOffNode::DoInitialize() {
 	/*this->onOffApplication =*/
 	auto ac = on_off_helper.Install(this);
 	NS_ASSERT(ac.GetN()==1);
+	NS_ASSERT(this->getApplication<ns3::OnOffApplication> () != NULL);
 	ac.Get(0)->TraceConnectWithoutContext("Tx", ns3::MakeCallback(
 			&OnOffNode::traceTxCallback, this));
 #if 0
@@ -114,9 +118,18 @@ void OnOffNode::stopAt(ns3::Time stop_seconds) {
 void OnOffNode::setRemote(const ns3::Ipv4Address& ipv4_address) {
 	NS_LOG_DEBUG(ipv4_address);
 	auto on_off_application = this->getApplication<ns3::OnOffApplication> ();
+	NS_ASSERT(on_off_application != NULL);
 	on_off_application->SetAttribute("Remote", ns3::AddressValue(
 			ns3::InetSocketAddress(ipv4_address, PACKET_SINK_UDP_PORT)));
 }//setRemote
+
+ns3::Address OnOffNode::getRemote() {
+	auto on_off_application = this->getApplication<ns3::OnOffApplication> ();
+	NS_ASSERT(on_off_application != NULL);
+	ns3::AddressValue address_value;
+	on_off_application->GetAttribute("Remote", address_value);
+	return address_value.Get();
+}
 
 void OnOffNode::traceTxCallback(ns3::Ptr<const ns3::Packet> p) {
 	totalTxBytes += p->GetSize();
