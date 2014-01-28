@@ -9,7 +9,7 @@ public:
 	virtual ~DeviceGetterMixin();
 	template<class T>
 	ns3::Ptr<T> getNetDevice(const unsigned i_port);
-	virtual ns3::Ptr<ns3::Node> getThis();
+	virtual ns3::Ptr<ns3::Node> getThis() = 0;
 };
 
 template<class T>
