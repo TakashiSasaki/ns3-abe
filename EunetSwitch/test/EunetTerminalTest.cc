@@ -9,6 +9,7 @@ NS_LOG_COMPONENT_DEFINE("EunetTerminalTest");
 #include "ns3/loopback-net-device.h"
 #include "ns3/global-value.h"
 #include "ns3/string.h"
+#include "ns3/on-off-helper.h"
 #include "EunetTerminal.h"
 
 class EunetTerminalTestCase: public ns3::TestCase {
@@ -48,69 +49,96 @@ private:
 		object_factory.SetTypeId("CsmaNode");
 		ns3::Ptr<CsmaNode> ptr_csma_node(object_factory.Create<CsmaNode> ());
 		NS_ASSERT_MSG(ptr_csma_node->GetNDevices() == 1, ptr_csma_node->GetNDevices());
-		NS_ASSERT_MSG(ptr_csma_node->getNDevices<ns3::CsmaNetDevice>() == 1, ptr_csma_node->getNDevices<ns3::CsmaNetDevice>());
+		NS_ASSERT_MSG(ptr_csma_node->getNDevices<CsmaDevice>() == 1, ptr_csma_node->getNDevices<ns3::CsmaNetDevice>());
 		NS_ASSERT_MSG(ptr_csma_node->getNDevices<ns3::LoopbackNetDevice>() == 0, ptr_csma_node->getNDevices<ns3::LoopbackNetDevice>());
 		ptr_csma_node->Initialize();
 		ptr_csma_node->Dispose();
 
 		object_factory.SetTypeId("EunetTerminal");
-		ns3::Ptr<EunetTerminal> ptr_eunet_terminal(object_factory.Create<
+		ns3::Ptr<EunetTerminal> terminal1(object_factory.Create<
 				EunetTerminal> ());
-		NS_ASSERT_MSG(ptr_eunet_terminal->GetNDevices() == 2, ptr_eunet_terminal->GetNDevices());
-		ptr_eunet_terminal->Initialize();
-		NS_ASSERT_MSG(ptr_eunet_terminal->GetNDevices() == 2, ptr_eunet_terminal->GetNDevices());
-		NS_ASSERT_MSG(ptr_eunet_terminal->getNDevices<ns3::CsmaNetDevice>()==1, ptr_eunet_terminal->getNDevices<ns3::CsmaNetDevice>());
-		NS_ASSERT_MSG(ptr_eunet_terminal->getNDevices<ns3::LoopbackNetDevice>()==1, ptr_eunet_terminal->getNDevices<ns3::LoopbackNetDevice>());
+		NS_ASSERT_MSG(terminal1->GetNDevices() == 2, terminal1->GetNDevices());
+		terminal1->Initialize();
+		NS_ASSERT_MSG(terminal1->GetNDevices() == 2, terminal1->GetNDevices());
+		NS_ASSERT_MSG(terminal1->getNDevices<CsmaDevice>()==1, terminal1->getNDevices<ns3::CsmaNetDevice>());
+		NS_ASSERT_MSG(terminal1->getNDevices<ns3::LoopbackNetDevice>()==1, terminal1->getNDevices<ns3::LoopbackNetDevice>());
 
-		ns3::Ptr<EunetTerminal> ptr_eunet_terminal_2(object_factory.Create<
+		ns3::Ptr<EunetTerminal> terminal2(object_factory.Create<
 				EunetTerminal> ());
-		NS_ASSERT_MSG(ptr_eunet_terminal_2->GetNDevices() == 2, ptr_eunet_terminal->GetNDevices());
-		ptr_eunet_terminal_2->Initialize();
-		NS_ASSERT_MSG(ptr_eunet_terminal_2->GetNDevices() == 2, ptr_eunet_terminal->GetNDevices());
+		NS_ASSERT_MSG(terminal2->GetNDevices() == 2, terminal1->GetNDevices());
+		terminal2->Initialize();
+		NS_ASSERT_MSG(terminal2->GetNDevices() == 2, terminal1->GetNDevices());
 
 		ns3::ObjectFactory object_factory_2;
 		object_factory_2.SetTypeId("EunetTerminal");
-		ns3::Ptr<EunetTerminal> ptr_eunet_terminal_3(object_factory_2.Create<
+		ns3::Ptr<EunetTerminal> terminal3(object_factory_2.Create<
 				EunetTerminal> ());
-		NS_ASSERT_MSG(ptr_eunet_terminal_3->GetNDevices() == 2, ptr_eunet_terminal->GetNDevices());
-		ptr_eunet_terminal_3->Initialize();
-		NS_ASSERT_MSG(ptr_eunet_terminal_3->GetNDevices() == 2, ptr_eunet_terminal->GetNDevices());
+		NS_ASSERT_MSG(terminal3->GetNDevices() == 2, terminal1->GetNDevices());
+		terminal3->Initialize();
+		NS_ASSERT_MSG(terminal3->GetNDevices() == 2, terminal1->GetNDevices());
 
 		{
-			auto device2 = ptr_eunet_terminal_2->getNetDevice<CsmaDevice> (0);
-			auto device3 = ptr_eunet_terminal_3->getNetDevice<CsmaDevice> (0);
+			auto device2 = terminal2->getNetDevice<CsmaDevice> (0);
+			auto device3 = terminal3->getNetDevice<CsmaDevice> (0);
 			device2->enablePcap();
 			device3->enablePcap();
-			ptr_eunet_terminal_2->enableAsciiTrace<ns3::CsmaNetDevice> (0);
-			ptr_eunet_terminal_3->enableAsciiTrace<ns3::CsmaNetDevice> (0);
+			terminal2->enableAsciiTrace<CsmaDevice> (0);
+			terminal3->enableAsciiTrace<CsmaDevice> (0);
 		}
 		{
-			auto p = ptr_eunet_terminal_2->getNetDevice<CsmaDevice> (0);
-			ptr_eunet_terminal_2->assignAddress(p, "10.0.0.2", "255.0.0.0");
-			NS_ASSERT(ptr_eunet_terminal_2->getAddress(p) == "10.0.0.2");
+			auto p = terminal2->getNetDevice<CsmaDevice> (0);
+			terminal2->assignAddress(p, "10.0.0.2", "255.0.0.0");
+			NS_ASSERT(terminal2->getAddress(p) == "10.0.0.2");
 		}
 		{
-			auto p = ptr_eunet_terminal_3->getNetDevice<CsmaDevice> (0);
-			ptr_eunet_terminal_3->assignAddress(p, "10.0.0.3", "255.0.0.0");
-			NS_ASSERT(ptr_eunet_terminal_3->getAddress(p) == "10.0.0.3");
+			auto p = terminal3->getNetDevice<CsmaDevice> (0);
+			terminal3->assignAddress(p, "10.0.0.3", "255.0.0.0");
+			NS_ASSERT(terminal3->getAddress(p) == "10.0.0.3");
 		}
 
-		ptr_eunet_terminal_2->bring<ns3::CsmaNetDevice, ns3::CsmaNetDevice> (0,
-				ptr_eunet_terminal_3, 0);
+		terminal2->bring<CsmaDevice, CsmaDevice> (0,
+				terminal3, 0);
 		{
-			auto p = ptr_eunet_terminal_2->getNetDevice<ns3::CsmaNetDevice> (0);
-			ptr_eunet_terminal_2->setRemote(ptr_eunet_terminal_2->getAddress(p));
+			auto p = terminal2->getNetDevice<CsmaDevice> (0);
+			terminal3->setRemote(terminal2->getAddress(p));
+		}
+
+		if (true) {
+			NS_ASSERT(terminal1->getApplication<ns3::OnOffApplication>()!= NULL);
+			NS_ASSERT(terminal2->getApplication<ns3::OnOffApplication>()!= NULL);
+			NS_ASSERT(terminal3->getApplication<ns3::OnOffApplication>()!= NULL);
 		}
 
 		NS_LOG_INFO("Run Simulation.");
 		ns3::Simulator::Stop(ns3::Seconds(10.11));
 		ns3::Simulator::Run();
-		ns3::Simulator::Destroy();
-		NS_ASSERT_MSG(ptr_eunet_terminal_2->getTotalRx() == 631808, ptr_eunet_terminal_2->getTotalRx());
-		NS_ASSERT_MSG(ptr_eunet_terminal_3->getTotalRx() == 0, ptr_eunet_terminal_3->getTotalRx());
-		NS_ASSERT_MSG(ptr_eunet_terminal_2->getTotalTxBytes() == 631808, ptr_eunet_terminal_2->getTotalTxBytes());
-		NS_ASSERT_MSG(ptr_eunet_terminal_3->getTotalTxBytes() == 631808, ptr_eunet_terminal_3->getTotalTxBytes());
+
+		if (true) {
+			NS_ASSERT(terminal1->getApplication<ns3::OnOffApplication>()!= NULL);
+			NS_ASSERT(terminal2->getApplication<ns3::OnOffApplication>()!= NULL);
+			NS_ASSERT(terminal3->getApplication<ns3::OnOffApplication>()!= NULL);
+		}
+
+		if (true) {
+			NS_ASSERT(terminal1->getTotalTxBytes() > 0);
+			NS_ASSERT(terminal1->getTotalTxPackets() > 0);
+			NS_ASSERT(terminal2->getTotalTxBytes() > 0);
+			NS_ASSERT(terminal2->getTotalTxPackets() > 0);
+			NS_ASSERT(terminal3->getTotalTxBytes() > 0);
+			NS_ASSERT(terminal3->getTotalTxPackets() > 0);
+		}
+		NS_ASSERT_MSG(terminal3->getTotalTxBytes() > 10, terminal3->getTotalTxBytes());
+		NS_ASSERT_MSG(terminal2->getTotalRx() > 10, terminal2->getTotalRx());
+		NS_ASSERT_MSG(terminal3->getTotalRx() == 0, terminal3->getTotalRx());
+		NS_ASSERT(terminal3->getTotalTxBytes() == terminal2->getTotalRx());
 		NS_LOG_INFO("Done.");
+		ns3::Simulator::Destroy();
+
+		if (true) {
+			NS_ASSERT(terminal1->getApplication<ns3::OnOffApplication>()== NULL);
+			NS_ASSERT(terminal2->getApplication<ns3::OnOffApplication>()== NULL);
+			NS_ASSERT(terminal3->getApplication<ns3::OnOffApplication>()== NULL);
+		}
 	}//DoRun
 };//EunetTerminalTestCase
 
