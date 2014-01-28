@@ -10,6 +10,7 @@ NS_LOG_COMPONENT_DEFINE ("SimpleSwitchTest");
 #include "ns3/quagga-helper.h"
 #include "ns3/point-to-point-helper.h"
 #include "ns3/csma-helper.h"
+#include "ns3/test.h"
 #include "SimpleSwitch.h"
 
 using namespace ns3;
@@ -18,7 +19,6 @@ class SimpleSwitchTestCase: public TestCase {
 public:
 	SimpleSwitchTestCase() :
 		ns3::TestCase("SimpleSwitchTestCase") {
-		//NS_LOG_UNCOND("constructing a test case");
 	}
 	virtual ~SimpleSwitchTestCase() {
 	}
@@ -72,47 +72,55 @@ void SimpleSwitchTestCase::DoRun() {
 	NS_ASSERT_MSG(sw2->getNDevices<DownlinkDevice>() == 48, sw2->getNDevices<CsmaDevice>());
 
 	{
-		auto ptr_unused_csma_net_device_on_switch_1_before =
-				sw1->getUnusedPort<CsmaDevice> ();
-		NS_LOG_INFO(ptr_unused_csma_net_device_on_switch_1_before->GetNode()->GetId() << ' '<< ptr_unused_csma_net_device_on_switch_1_before->GetIfIndex());
-		auto ptr_unused_uplink_device_on_switch_1_before = sw1->getUnusedPort<
-				UplinkDevice> ();
-		NS_LOG_INFO(ptr_unused_uplink_device_on_switch_1_before->GetNode()->GetId() << ' '<< ptr_unused_uplink_device_on_switch_1_before->GetIfIndex());
-		auto ptr_unused_downlink_device_on_switch_1_before =
-				sw1->getUnusedPort<DownlinkDevice> ();
-		NS_LOG_INFO(ptr_unused_downlink_device_on_switch_1_before->GetNode()->GetId() << ' '<< ptr_unused_downlink_device_on_switch_1_before->GetIfIndex());
-		auto ptr_unused_csma_net_device_on_switch_2_before =
-				sw2->getUnusedPort<CsmaDevice> ();
-		NS_LOG_INFO(ptr_unused_csma_net_device_on_switch_2_before->GetNode()->GetId() << ' '<< ptr_unused_csma_net_device_on_switch_2_before->GetIfIndex());
-		auto ptr_unused_uplink_device_on_switch_2_before = sw2->getUnusedPort<
-				UplinkDevice> ();
-		NS_LOG_INFO(ptr_unused_uplink_device_on_switch_2_before->GetNode()->GetId() << ' '<< ptr_unused_uplink_device_on_switch_2_before->GetIfIndex());
-		auto ptr_unused_downlink_device_on_switch_2_before =
-				sw2->getUnusedPort<DownlinkDevice> ();
-		NS_LOG_INFO(ptr_unused_downlink_device_on_switch_2_before->GetNode()->GetId() << ' '<< ptr_unused_downlink_device_on_switch_2_before->GetIfIndex());
+		auto device = sw1->getUnusedPort<CsmaDevice> ();
+		NS_LOG_INFO(device->GetNode()->GetId() << ' '<< device->GetIfIndex());
+	}
+	{
+		auto device = sw1->getUnusedPort<UplinkDevice> ();
+		NS_LOG_INFO(device->GetNode()->GetId() << ' '<< device->GetIfIndex());
+	}
+	{
+		auto device = sw1->getUnusedPort<DownlinkDevice> ();
+		NS_LOG_INFO(device->GetNode()->GetId() << ' '<< device->GetIfIndex());
+	}
+	{
+		auto device = sw2->getUnusedPort<CsmaDevice> ();
+		NS_LOG_INFO(device->GetNode()->GetId() << ' '<< device->GetIfIndex());
+	}
+	{
+		auto device = sw2->getUnusedPort<UplinkDevice> ();
+		NS_LOG_INFO(device->GetNode()->GetId() << ' '<< device->GetIfIndex());
+	}
+	{
+		auto device = sw2->getUnusedPort<DownlinkDevice> ();
+		NS_LOG_INFO(device->GetNode()->GetId() << ' '<< device->GetIfIndex());
 	}
 
 	sw2->bring<CsmaDevice, CsmaDevice> (0, sw1, 0);
 
 	{
-		auto ptr_unused_csma_net_device_on_switch_1_after = sw1->getUnusedPort<
-				CsmaDevice> ();
-		NS_ASSERT(ptr_unused_csma_net_device_on_switch_1_after == NULL);
-		auto ptr_unused_uplink_device_on_switch_1_after = sw1->getUnusedPort<
-				UplinkDevice> ();
-		NS_LOG_INFO(ptr_unused_uplink_device_on_switch_1_after->GetNode()->GetId() << ' '<< ptr_unused_uplink_device_on_switch_1_after->GetIfIndex());
-		auto ptr_unused_downlink_device_on_switch_1_after = sw1->getUnusedPort<
-				DownlinkDevice> ();
-		NS_LOG_INFO(ptr_unused_downlink_device_on_switch_1_after->GetNode()->GetId() << ' '<< ptr_unused_downlink_device_on_switch_1_after->GetIfIndex());
-		auto ptr_unused_csma_net_device_on_switch_2_after = sw2->getUnusedPort<
-				CsmaDevice> ();
-		NS_ASSERT(ptr_unused_csma_net_device_on_switch_2_after == NULL);
-		auto ptr_unused_uplink_device_on_switch_2_after = sw2->getUnusedPort<
-				UplinkDevice> ();
-		NS_LOG_INFO(ptr_unused_uplink_device_on_switch_2_after->GetNode()->GetId() << ' '<< ptr_unused_uplink_device_on_switch_2_after->GetIfIndex());
-		auto ptr_unused_downlink_device_on_switch_2_after = sw2->getUnusedPort<
-				DownlinkDevice> ();
-		NS_LOG_INFO(ptr_unused_downlink_device_on_switch_2_after->GetNode()->GetId() << ' '<< ptr_unused_downlink_device_on_switch_2_after->GetIfIndex());
+		auto device = sw1->getUnusedPort<CsmaDevice> ();
+		NS_ASSERT(device == NULL);
+	}
+	{
+		auto device = sw1->getUnusedPort<UplinkDevice> ();
+		NS_LOG_INFO(device->GetNode()->GetId() << ' '<< device->GetIfIndex());
+	}
+	{
+		auto device = sw1->getUnusedPort<DownlinkDevice> ();
+		NS_LOG_INFO(device->GetNode()->GetId() << ' '<< device->GetIfIndex());
+	}
+	{
+		auto device = sw2->getUnusedPort<CsmaDevice> ();
+		NS_ASSERT(device == NULL);
+	}
+	{
+		auto device = sw2->getUnusedPort<UplinkDevice> ();
+		NS_LOG_INFO(device->GetNode()->GetId() << ' '<< device->GetIfIndex());
+	}
+	{
+		auto device = sw2->getUnusedPort<DownlinkDevice> ();
+		NS_LOG_INFO(device->GetNode()->GetId() << ' '<< device->GetIfIndex());
 	}
 
 	Simulator::Stop(Seconds(10.0));
