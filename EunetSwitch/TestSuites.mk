@@ -1,8 +1,14 @@
 EunetSwitchTestSuite: test-runner
 	echo handle SIGUSR1 nostop > gdbinit
 	echo run --suite=$@ --verbose --test-type=unit >> gdbinit
-	$(EXECENV) gdb ./test-runner -q --command=gdbinit 
-	#$(EXECENV) ./test-runner --suite=$@ --verbose --test-type=unit
+	#$(EXECENV) gdb ./test-runner -q --command=gdbinit 
+	$(EXECENV) ./test-runner --suite=$@ --verbose --test-type=unit
+
+EunetSwitchesTestSuite: test-runner
+	echo handle SIGUSR1 nostop > gdbinit
+	echo run --suite=$@ --verbose --test-type=unit >> gdbinit
+	#$(EXECENV) gdb ./test-runner -q --command=gdbinit 
+	$(EXECENV) ./test-runner --suite=$@ --verbose --test-type=unit
 
 EunetTerminalTestSuite: test-runner
 	echo run --suite=$@ --verbose --test-type=unit > gdbinit

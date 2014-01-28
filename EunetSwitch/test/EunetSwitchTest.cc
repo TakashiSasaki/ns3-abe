@@ -26,31 +26,54 @@ public:
 
 private:
 	virtual void DoRun(void) {
-		auto ptr_node = ns3::CreateObject<ns3::Node>();
-		NS_ASSERT(ptr_node->GetNDevices()==0);
+		{
+			auto ptr_node = ns3::CreateObject<ns3::Node>();
+			NS_ASSERT(ptr_node->GetNDevices()==0);
+		}
+		ns3::Ptr<OnOffNode> on_off_node;
+		{
+			on_off_node = ns3::CreateObject<OnOffNode>();
+			NS_ASSERT(on_off_node->GetNDevices()==2);
+		}
 
-		ns3::ObjectFactory object_factory;
-		object_factory.SetTypeId("EunetSwitch");
-		ns3::Ptr<EunetSwitch> eunet_switch(
-				object_factory.Create<EunetSwitch> ());
-		eunet_switch->Initialize();
+		ns3::Ptr<EunetSwitch> sw;
+		{
+			ns3::ObjectFactory object_factory;
+			object_factory.SetTypeId("EunetSwitch");
+			sw = object_factory.Create<EunetSwitch> ();
+			sw->Initialize();
+			NS_ASSERT(sw->getTerminals().Get(0)->GetNDevices()==2);
+			ns3::UintegerValue uv_downlink_ports;
+			sw->GetAttribute("nDownlinkPorts", uv_downlink_ports);
+			NS_ASSERT_MSG(uv_downlink_ports.Get() == sw->getTerminals().GetN(),
+					uv_downlink_ports.Get()<< ' ' << sw->getTerminals().GetN());
+			sw->getTerminals().assignAddresses();
+			NS_ASSERT(sw->getTerminals().Get(0)->GetNDevices()==2);
+			sw->getTerminals().setRemoteOfAtoB(0, 0);
+			NS_ASSERT(sw->getTerminals().Get(0)->GetNDevices()==2);
+			sw->getTerminals().setRemoteOfAtoB(1, 0);
+			NS_ASSERT(sw->getTerminals().Get(0)->GetNDevices()==2);
+		}
 
-		ns3::UintegerValue uv_downlink_ports;
-		eunet_switch->GetAttribute("nDownlinkPorts", uv_downlink_ports);
-		NS_ASSERT_MSG(uv_downlink_ports.Get() == eunet_switch->getTerminals().GetN(),
-				uv_downlink_ports.Get()<< ' ' << eunet_switch->getTerminals().GetN());
-		eunet_switch->getTerminals().assignAddresses();
-		eunet_switch->getTerminals().setRemoteOfAtoB(0, 0);
-		eunet_switch->getTerminals().setRemoteOfAtoB(1, 0);
-		//eunet_switch->getTerminals().Get(1)->startAt(ns3::Seconds(0.0));
-		NS_LOG_INFO("Run Simulation.");
-		ns3::Simulator::Stop(ns3::Seconds(0.2));
+		ns3::Ptr<EunetTerminal> terminal0 = sw->getTerminal(0);
+		ns3::Ptr<EunetTerminal> terminal1 = sw->getTerminal(1);
+		NS_LOG_DEBUG(terminal0->getAddress(terminal0->getNetDevice<CsmaDevice>(0)));
+		NS_LOG_DEBUG(terminal1->getAddress(terminal1->getNetDevice<CsmaDevice>(0)));
+
+		ns3::Simulator::Stop(ns3::Seconds(10.0));
+		NS_ASSERT(sw->getTerminals().Get(0)->GetNDevices()==2);
 		ns3::Simulator::Run();
-		ns3::Simulator::Destroy();
-		NS_LOG_INFO("Done.");
+		NS_ASSERT(sw->getTerminals().Get(0)->GetNDevices()==2);
 		//eunet_switch->getTerminals().logTotalRx();
-		NS_LOG_INFO(eunet_switch->getTerminals().getTotalRx() << " bytes received among all EunetTerminals");
-		NS_ASSERT_MSG (eunet_switch->getTerminals().getTotalRx()==16384, eunet_switch->getTerminals().getTotalRx());
+		//NS_LOG_INFO(eunet_switch->getTerminals().getTotalRx() << " bytes received among all EunetTerminals");
+		NS_ASSERT(on_off_node->getTotalTxPackets()>0);
+		NS_ASSERT(on_off_node->getTotalTxBytes()>0);
+		NS_ASSERT(sw->getTerminals().Get(0)->GetNDevices()==2);
+		NS_ASSERT(terminal0->getTotalTxBytes()>0);
+		NS_ASSERT_MSG(sw->getTerminals().Get(0)->getTotalTxPackets()>0,sw->getTerminals().Get(0)->getTotalTxPackets());
+		NS_ASSERT_MSG(sw->getTerminals().Get(1)->getTotalTxPackets()>0,sw->getTerminals().Get(0)->getTotalTxPackets());
+		NS_ASSERT_MSG (sw->getTerminals().Get(0)->getTotalRx() > 0, sw->getTerminals().getTotalRx());
+		ns3::Simulator::Destroy();
 	}//DoRun
 };
 
