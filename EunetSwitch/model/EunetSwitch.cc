@@ -52,6 +52,7 @@ void EunetSwitch::DoInitialize() {
 	ASSERT_DI;
 	SimpleSwitch::DoInitialize();
 	this->eunetTerminals.initialize(this->nDownlinkPorts);
+	NS_ASSERT(this->eunetTerminals.Get(0)->GetNDevices()==2);
 #if 0
 	NS_LOG_INFO("attaching " << this->eunetTerminals.GetN() << " terminal(s) to corresponding port(s)");
 	for (unsigned i = 0; i < this->eunetTerminals.GetN(); ++i) {

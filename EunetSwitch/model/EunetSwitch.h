@@ -46,8 +46,7 @@ public:
 	ns3::NetDeviceContainer getTerminalDevices() {
 		ns3::NetDeviceContainer ndc;
 		for (unsigned i = 0; i < this->eunetTerminals.GetN(); ++i) {
-			ndc.Add(this->eunetTerminals.Get(i)->getNetDevice<
-					ns3::CsmaNetDevice> (0));
+			ndc.Add(this->eunetTerminals.Get(i)->getNetDevice<CsmaDevice> (0));
 		}//for
 		return ndc;
 	}//getTerminalDevices
