@@ -93,8 +93,8 @@ void SimpleSwitchTestCase::DoRun() {
 		NS_LOG_INFO(ptr_unused_downlink_device_on_switch_2_before->GetNode()->GetId() << ' '<< ptr_unused_downlink_device_on_switch_2_before->GetIfIndex());
 	}
 
-	ptr_simple_switch_2->bring<ns3::CsmaNetDevice, ns3::CsmaNetDevice> (0,
-			ptr_simple_switch_1, 0);
+	ptr_simple_switch_2->bring<CsmaDevice, CsmaDevice> (0, ptr_simple_switch_1,
+			0);
 
 	{
 		auto ptr_unused_csma_net_device_on_switch_1_after =

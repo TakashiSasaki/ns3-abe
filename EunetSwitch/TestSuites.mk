@@ -14,9 +14,6 @@ EunetTerminalsTestSuite: test-runner
 	#$(EXECENV) gdb ./test-runner -q --command=gdbinit 
 	$(EXECENV) ./test-runner --suite=$@ --verbose --test-type=unit
 
-SimpleSwitchTestSuite: test-runner
-	$(EXECENV) ./test-runner --suite=$@ --verbose
-
 EunetRouterTestSuite: test-runner
 	$(EXECENV) ./test-runner --suite=$@ --verbose 
 
@@ -47,3 +44,10 @@ EunetTestSuiteVisual: test-runner
 
 SandboxTestSuite: test-runner
 	$(EXECENV) ./test-runner --suite=$@ --test-type=unit
+
+SimpleSwitchTestSuite: test-runner
+	echo run --suite=$@ --verbose > gdbinit
+	$(EXECENV) gdb ./test-runner -q --command=gdbinit 
+	#$(EXECENV) ./test-runner --suite=$@ --verbose
+
+	
