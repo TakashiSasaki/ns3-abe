@@ -28,22 +28,21 @@ private:
 }; //class SimpleSwitchTestCase
 
 void SimpleSwitchTestCase::DoRun() {
-	auto ptr_simple_switch = ns3::CreateObject<SimpleSwitch>();
-	ptr_simple_switch->SetAttribute("nDownlinkPorts", ns3::UintegerValue(48));
-	ptr_simple_switch->SetAttribute("nUplinkPorts", ns3::UintegerValue(4));
-	ptr_simple_switch->SetAttribute("uplinkDataRate",
-			ns3::StringValue("10Gbps"));
-	ptr_simple_switch->SetAttribute("downlinkDataRate", ns3::StringValue(
-			"1Gbps"));
-	NS_LOG_UNCOND(ptr_simple_switch->getNDevices<CsmaDevice>());
-	ptr_simple_switch->Initialize();
-	NS_ASSERT_MSG(ptr_simple_switch->getNDevices<CsmaDevice>() == 1, ptr_simple_switch->getNDevices<CsmaDevice>());
-	NS_ASSERT_MSG(ptr_simple_switch->getNDevices<DownlinkDevice>() == 48, ptr_simple_switch->getNDevices<DownlinkDevice>());
-	NS_ASSERT_MSG(ptr_simple_switch->getNDevices<UplinkDevice>() == 4, ptr_simple_switch->getNDevices<UplinkDevice>());
-
+	ns3::Ptr<SimpleSwitch> sw;
 	{
-		auto ptr_csma_net_device =
-				ptr_simple_switch->getUnusedPort<CsmaDevice> ();
+		sw = ns3::CreateObject<SimpleSwitch>();
+		sw->SetAttribute("nDownlinkPorts", ns3::UintegerValue(48));
+		sw->SetAttribute("nUplinkPorts", ns3::UintegerValue(4));
+		sw->SetAttribute("uplinkDataRate", ns3::StringValue("10Gbps"));
+		sw->SetAttribute("downlinkDataRate", ns3::StringValue("1Gbps"));
+		NS_LOG_UNCOND(sw->getNDevices<CsmaDevice>());
+		sw->Initialize();
+		NS_ASSERT_MSG(sw->getNDevices<CsmaDevice>() == 1, sw->getNDevices<CsmaDevice>());
+		NS_ASSERT_MSG(sw->getNDevices<DownlinkDevice>() == 48, sw->getNDevices<DownlinkDevice>());
+		NS_ASSERT_MSG(sw->getNDevices<UplinkDevice>() == 4, sw->getNDevices<UplinkDevice>());
+	}
+	{
+		auto ptr_csma_net_device = sw->getUnusedPort<CsmaDevice> ();
 		NS_ASSERT(ptr_csma_net_device != NULL);
 	}
 
