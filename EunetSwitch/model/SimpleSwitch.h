@@ -30,10 +30,6 @@ public:
 			const unsigned i_sibling_uplink_port);
 	void enableAsciiTraceDownlink(const int i_downlink_port);
 	void enableAsciiTraceUplink(const int i_uplink_port);
-	void enablePcapDownlink(const int i_downlink_port, const bool promiscuous =
-			false);
-	void enablePcapUplink(const int i_uplink_port, const bool promiscuous =
-			false);
 #if 0
 protected:
 	template<class D, class N>

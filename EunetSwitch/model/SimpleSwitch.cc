@@ -145,20 +145,6 @@ void SimpleSwitch::enableAsciiTraceUplink(const int i_uplink_port) {
 			this->getNetDevice<UplinkDevice> (i_uplink_port));
 }
 
-void SimpleSwitch::enablePcapDownlink(const int i_downlink_port,
-		const bool promiscuous) {
-	ns3::CsmaHelper csma_helper;
-	csma_helper.EnablePcap(this->GetInstanceTypeId().GetName(),
-			this->getNetDevice<DownlinkDevice> (i_downlink_port), promiscuous);
-}
-
-void SimpleSwitch::enablePcapUplink(const int i_uplink_port,
-		const bool promiscuous) {
-	ns3::CsmaHelper csma_helper;
-	csma_helper.EnablePcap(this->GetInstanceTypeId().GetName(),
-			this->getNetDevice<UplinkDevice> (i_uplink_port), promiscuous);
-}
-
 #if 0
 template bool SimpleSwitch::isConnectedTo<ns3::CsmaNetDevice, SimpleSwitch>(
 		const unsigned);
