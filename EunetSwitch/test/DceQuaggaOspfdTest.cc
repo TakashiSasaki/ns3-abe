@@ -674,7 +674,7 @@ void DceQuaggaOspfdChannelTestCase::DoRun() {
 		ipv4_dce_routing_helper.PrintRoutingTableAllEvery(ns3::Seconds(10.0),
 				output_stream_wrapper);
 	}
-	Simulator::Stop(Seconds(120));
+	Simulator::Stop(Seconds(50));
 	Simulator::Run();
 	Simulator::Destroy();
 }//DceQuaggaOspfdChannelTestCase::DoRun

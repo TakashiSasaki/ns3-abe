@@ -26,7 +26,7 @@ private:
 		auto source_terminal = source_switch->getTerminal(5);
 		auto dest_switch = eunet_switches.getEunetSwitch(0, 0);
 		auto dest_terminal = dest_switch->getTerminal(5);
-		auto dest_device = dest_terminal->getNetDevice<ns3::CsmaNetDevice> ();
+		auto dest_device = dest_terminal->getNetDevice<CsmaDevice> (0);
 		source_terminal->setRemote(dest_terminal->getAddress(dest_device));
 		//source_terminal->startAt(ns3::Seconds(0.0));
 		source_switch->enableAsciiTraceDownlink(5);

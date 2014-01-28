@@ -16,6 +16,7 @@ NS_LOG_COMPONENT_DEFINE("WifiBase");
 #include "ns3/config.h"
 #include "ns3/string.h"
 #include "WifiBase.h"
+#include "WifiDevice.h"
 
 WifiBase::WifiMacTypeString WifiBase::AdhocWifiMac = "ns3::AdhocWifiMac";
 WifiBase::WifiMacTypeString WifiBase::ApWifiMac = "ns3::ApWifiMac";
@@ -83,10 +84,10 @@ void WifiBase::DoInitialize() {
 WifiBase::~WifiBase() {
 }
 
-void WifiBase::NotifyConstructionCompleted(){
+void WifiBase::NotifyConstructionCompleted() {
 }
 
-void WifiBase::DoDispose(){
+void WifiBase::DoDispose() {
 }
 
 void WifiBase::setSsid(const ns3::Ssid& ssid) {
@@ -102,8 +103,7 @@ ns3::Ptr<ns3::WifiNetDevice> WifiBase::getWifiNetDevice() {
 
 void WifiBase::bringWifiBase(WifiBase& foreign_node) {
 	auto ptr_wifi_net_device =
-			this->ptrNode->GetObject<CsmaNode> ()->getNetDevice<
-					ns3::WifiNetDevice> ();
+			this->ptrNode->GetObject<CsmaNode> ()->getNetDevice<WifiDevice> (0);
 	auto ptr_wifi_phy = ptr_wifi_net_device->GetPhy();
 	auto ptr_yans_wifi_phy = ptr_wifi_phy->GetObject<ns3::YansWifiPhy> ();
 	auto ptr_wifi_channel = ptr_wifi_phy->GetChannel();
@@ -111,7 +111,7 @@ void WifiBase::bringWifiBase(WifiBase& foreign_node) {
 			ns3::YansWifiChannel> ();
 	auto ptr_foreign_wifi_net_device =
 			foreign_node.ptrNode->GetObject<CsmaNode> ()->getNetDevice<
-					ns3::WifiNetDevice> ();
+					WifiDevice> (0);
 	auto ptr_foreign_wifi_phy = ptr_foreign_wifi_net_device->GetPhy();
 	auto ptr_foreign_yans_wifi_phy = ptr_foreign_wifi_phy->GetObject<
 			ns3::YansWifiPhy> ();

@@ -233,7 +233,7 @@ void EunetTestCase::DoRun() {
 
 	// attaching corresponding CSMA channel to EunetTerminals
 	eunet.attachEunetTerminals();
-	Simulator::Stop(Seconds(120));
+	Simulator::Stop(Seconds(70));
 	Simulator::Run();
 	Simulator::Destroy();
 

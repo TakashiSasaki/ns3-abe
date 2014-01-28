@@ -92,7 +92,7 @@ ns3::NetDeviceContainer EunetTerminals::getDevicesAll() {
 		//NS_ASSERT(ptr_eunet_terminal->GetNDevices()==1);
 		//auto ptr_net_device = ptr_eunet_terminal->GetDevice(0);
 		net_device_container.Add(
-				this->Get(i)->getNetDevice<ns3::CsmaNetDevice> ());
+				this->Get(i)->getNetDevice<ns3::CsmaNetDevice> (0));
 	}//for
 	return net_device_container;
 }//getDevicesAll

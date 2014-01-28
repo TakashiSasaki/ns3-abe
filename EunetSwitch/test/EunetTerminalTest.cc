@@ -77,8 +77,8 @@ private:
 		NS_ASSERT_MSG(ptr_eunet_terminal_3->GetNDevices() == 2, ptr_eunet_terminal->GetNDevices());
 
 		{
-			auto device2 = ptr_eunet_terminal_2->getNetDevice<CsmaDevice> ();
-			auto device3 = ptr_eunet_terminal_3->getNetDevice<CsmaDevice> ();
+			auto device2 = ptr_eunet_terminal_2->getNetDevice<CsmaDevice> (0);
+			auto device3 = ptr_eunet_terminal_3->getNetDevice<CsmaDevice> (0);
 			device2->enablePcap();
 			device3->enablePcap();
 			ptr_eunet_terminal_2->enableAsciiTrace<ns3::CsmaNetDevice> (0);

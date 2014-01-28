@@ -7,7 +7,8 @@ TESTS_COMMON= \
     EunetTerminalTest.o \
     EunetTerminalsTest.o \
     EunetSwitchesTest.o \
-    EunetSwitchTest.o 
+    EunetSwitchTest.o \
+    Sandbox.o
 
 TESTS_STD= \
     #EunetMobileTest.o \
@@ -282,7 +283,7 @@ OBJS_COMMON:= \
     CsmaInternetNode.o PacketSinkNode.o OnOffNode.o SimpleSwitch.o \
     WifiMacTrace.o DownlinkDevice.o UplinkDevice.o \
     Eunet.o WifiBase.o EunetMobile.o MobilityBase.o SimpleAp.o CsmaDevice.o \
-    WifiDevice.o
+    WifiDevice.o DeviceGetterMixin.o
 
 OBJS_STD:= \
     SimpleAp.o BridgingAp.o \

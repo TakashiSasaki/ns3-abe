@@ -42,8 +42,8 @@ void SimpleSwitchTestCase::DoRun() {
 	NS_ASSERT_MSG(ptr_simple_switch->getNDevices<UplinkDevice>() == 4, ptr_simple_switch->getNDevices<UplinkDevice>());
 
 	{
-		auto ptr_csma_net_device = ptr_simple_switch->getUnusedPort<
-				ns3::CsmaNetDevice> ();
+		auto ptr_csma_net_device =
+				ptr_simple_switch->getUnusedPort<CsmaDevice> ();
 		NS_ASSERT(ptr_csma_net_device != NULL);
 	}
 

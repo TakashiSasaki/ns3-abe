@@ -91,7 +91,7 @@ void SimpleRouter::NotifyConstructionCompleted() {
 	SetAttribute("willAssignDummyAddress", ns3::BooleanValue(true));
 	NS_ASSERT_MSG(this->GetNDevices() == 0, this->GetNDevices());
 	CsmaInternetNode::NotifyConstructionCompleted();
-	NS_ASSERT_MSG(((this->getNDevices<CsmaDevice>()) == this->nPorts), (this->getNetDevice<CsmaDevice>()));
+	NS_ASSERT_MSG(((this->getNDevices<CsmaDevice>()) == this->nPorts), (this->getNetDevice<CsmaDevice>(0)));
 	NS_ASSERT_MSG(getNDevices<ns3::LoopbackNetDevice>()==1, getNDevices<ns3::LoopbackNetDevice>());
 
 	NS_LOG_INFO(this->GetNDevices() << " devices");

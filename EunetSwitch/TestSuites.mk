@@ -31,3 +31,6 @@ EunetTestSuiteVisual: test-runner
 	echo run --suite=$@ --verbose > gdbinit
 	#$(EXECENV) gdb ./test-runner -q --command=gdbinit 
 	$(EXECENV) ./test-runner --suite=EunetTestSuite --test-type=performance
+
+SandboxTestSuite: test-runner
+	$(EXECENV) ./test-runner --suite=$@ --test-type=unit

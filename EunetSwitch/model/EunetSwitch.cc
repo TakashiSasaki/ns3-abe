@@ -84,7 +84,7 @@ void EunetSwitch::attachTerminals() {
 		ns3::Ptr<ns3::CsmaChannel> ptr_downlink_channel =
 				ptr_downlink_port->GetChannel()->GetObject<ns3::CsmaChannel> ();
 		ns3::Ptr<CsmaDevice> ptr_terminal_port =
-				this->eunetTerminals.Get(i)->getNetDevice<CsmaDevice> ();
+				this->eunetTerminals.Get(i)->getNetDevice<CsmaDevice> (0);
 		ptr_terminal_port->Attach(ptr_downlink_channel);
 	}//for
 }
@@ -96,7 +96,7 @@ void EunetSwitch::detachTerminals() {
 		ns3::Ptr<ns3::CsmaChannel> ptr_downlink_channel =
 				ptr_downlink_port->GetChannel()->GetObject<ns3::CsmaChannel> ();
 		ns3::Ptr<CsmaDevice> ptr_terminal_port =
-				this->eunetTerminals.Get(i)->getNetDevice<CsmaDevice> ();
+				this->eunetTerminals.Get(i)->getNetDevice<CsmaDevice> (0);
 		ptr_downlink_channel->Detach(ptr_terminal_port);
 	}//for
 }

@@ -11,16 +11,17 @@
 #include "ns3/drop-tail-queue.h"
 #include "init.h"
 #include "CsmaDevice.h"
+#include "DeviceGetterMixin.h"
 
-class CsmaNode: public ns3::Node {
+class CsmaNode: public ns3::Node, public DeviceGetterMixin {
 protected:
 	uint32_t nPorts;
 public:
 	static ns3::TypeId GetTypeId(void);
 	CsmaNode();
 	virtual ~CsmaNode();
-	template<class T>
-	ns3::Ptr<T> getNetDevice(const unsigned i_port = 0);
+	//template<class T>
+	//ns3::Ptr<T> getNetDevice(const unsigned i_port = 0);
 	template<class T>
 	unsigned getNDevices();
 	void logAllDevices(const ns3::LogLevel log_level = ns3::LOG_LEVEL_INFO);
@@ -39,28 +40,6 @@ private:
 	uint32_t countCsmaNetDevices();
 DECLARE_DIDDNCC
 };
-
-template<class T>
-ns3::Ptr<T> CsmaNode::getNetDevice(const unsigned i_port) {
-	//NS_ASSERT(this->countCsmaNetDevices()==1);
-	unsigned j = 0;
-	bool has_device_T = false;
-	for (unsigned i = 0; i < this->GetNDevices(); ++i) {
-		//NS_LOG(log_level, this->GetDevice(i)->GetTypeId() << ", " << this->GetDevice(i)->GetInstanceTypeId());
-		if (this->GetDevice(i)->GetInstanceTypeId() == T::GetTypeId()) {
-			has_device_T = true;
-			if (j == i_port) {
-				return this->GetDevice(i)->GetObject<T> (T::GetTypeId());
-
-			}//if
-			++j;
-		}//if
-	}//for
-	if (has_device_T) {
-		NS_FATAL_ERROR("only " << this->getNDevices<T>() << " " << T::GetTypeId() << " exists." );
-	}
-	NS_FATAL_ERROR("node " << this->GetId() << " has no " << T::GetTypeId() << "." );
-}
 
 template<class T>
 unsigned CsmaNode::getNDevices() {
