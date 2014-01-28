@@ -14,7 +14,6 @@ class EunetSwitchesTestCase: public ns3::TestCase {
 public:
 	EunetSwitchesTestCase() :
 		ns3::TestCase("EunetSwitchesTestCase") {
-		//NS_LOG_UNCOND("constructing a test case");
 	}
 	virtual ~EunetSwitchesTestCase() {
 	}
@@ -30,11 +29,9 @@ private:
 		source_terminal->setRemote(dest_terminal->getAddress(dest_device));
 		//source_terminal->startAt(ns3::Seconds(0.0));
 		source_switch->enableAsciiTraceDownlink(5);
-		source_switch->enablePcapDownlink(5);
+		source_switch->getNetDevice<DownlinkDevice> (5)->enablePcap();
 		dest_switch->enableAsciiTraceDownlink(5);
-		dest_switch->enablePcapDownlink(5);
-		//ns3::CsmaHelper csma_helper;
-		//csma_helper.EnableAsciiAll("a");
+		dest_switch->getNetDevice<DownlinkDevice> (5)->enablePcap();
 		ns3::AnimationInterface animation_interface("EunetSwitch.xml");
 		NS_LOG_INFO("Run Simulation.");
 		ns3::Simulator::Stop(ns3::Seconds(0.1));
@@ -49,7 +46,7 @@ private:
 class ThisTestSuite: public ns3::TestSuite {
 public:
 	ThisTestSuite() :
-		ns3::TestSuite("EunetSwitches", UNIT) {
+		ns3::TestSuite("EunetSwitchesTestSuite", UNIT) {
 		AddTestCase(new EunetSwitchesTestCase, ns3::TestCase::QUICK);
 	}
 };
