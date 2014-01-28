@@ -1,7 +1,7 @@
 vpath %.h container:model:eunet:test:mixin:device
 vpath %.cc container:model:eunet:test:mixin:device
 .PHONY: test visualize build-visualize run-visualize
-
+include TestSuites.mk
 
 TESTS_COMMON= \
     EunetTerminalTest.o \
@@ -340,35 +340,6 @@ run-test-so: test-so
 
 test: test-runner
 	$(EXECENV) ./test-runner --verbose --test-type=unit
-
-EunetTerminalTestSuite: test-runner
-	$(EXECENV) ./test-runner --suite=$@ --verbose --test-type=performance
-
-SimpleSwitchTestSuite: test-runner
-	$(EXECENV) ./test-runner --suite=$@ --verbose
-
-EunetRouterTestSuite: test-runner
-	$(EXECENV) ./test-runner --suite=$@ --verbose 
-
-WifiTestSuite: test-runner
-	#$(EXECENV) ./test-runner --suite=$@ --verbose --test-type=performance 
-	$(EXECENV) ./test-runner --suite=$@ --verbose  
-
-DceQuaggaOspfdTestSuite: test-runner
-	echo run --suite=$@ --verbose > gdbinit
-	#$(EXECENV) ./test-runner --suite=$@ --verbose --test-type=performance 
-	$(EXECENV) ./test-runner --suite=$@ --verbose  
-	#$(EXECENV) gdb ./test-runner --command=gdbinit 
-
-EunetMobileTestSuite: test-runner
-	echo run --suite=$@ --verbose > gdbinit
-	#$(EXECENV) gdb ./test-runner --command=gdbinit 
-	$(EXECENV) ./test-runner --suite=$@ --verbose --test-type=performance
-
-EunetTestSuite: test-runner
-	echo run --suite=$@ --verbose > gdbinit
-	#$(EXECENV) gdb ./test-runner -q --command=gdbinit 
-	$(EXECENV) ./test-runner --suite=$@ --test-type=unit
 
 #build this target first to use DCE feature
 install-dce-quagga: build-dce-quagga test-dce-quagga copy-shared-library copy-include-files

@@ -18,6 +18,11 @@ class EunetTestCase: public TestCase {
 public:
 	EunetTestCase(const bool is_visual = false) :
 		ns3::TestCase("EunetTestCase"), isVisual(is_visual) {
+		if(isVisual){
+			NS_LOG_DEBUG("initializing EunetTestCase as visual simulation");
+		} else {
+			NS_LOG_DEBUG("initializing EunetTestCase as non-visual simulation");
+		}
 	}
 	virtual ~EunetTestCase() {
 	}
@@ -265,9 +270,11 @@ public:
 		ns3::TestSuite("EunetTestSuite", type) {
 		switch (type) {
 		case UNIT:
-			AddTestCase(new EunetTestCase, TestCase::QUICK);
+			NS_LOG_DEBUG("initializing EunetTestSuite as UNTI type.");
+			AddTestCase(new EunetTestCase(false), TestCase::QUICK);
 			break;
 		case PERFORMANCE:
+			NS_LOG_DEBUG("initializing EunetTestSuite as PERFORMANCE type.");
 			AddTestCase(new EunetTestCase(true), TestCase::QUICK);
 			break;
 		default:
