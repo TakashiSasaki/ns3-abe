@@ -81,7 +81,9 @@ void EunetTerminals::assignAddresses(
 ns3::Ptr<EunetTerminal> EunetTerminals::Get(const int i_eunet_terminal) {
 	auto ptr = ns3::NodeContainer::Get(i_eunet_terminal)->GetObject<
 			EunetTerminal> ();
-	NS_ASSERT(ptr->GetNDevices()==2);
+	NS_ASSERT(ptr != NULL);
+	NS_ASSERT(ptr->GetInstanceTypeId() == EunetTerminal::GetTypeId());
+	NS_ASSERT_MSG(ptr->GetNDevices()==2, ptr->GetNDevices());
 	return ptr;
 }
 
@@ -121,9 +123,13 @@ void EunetTerminals::bringAtoB(const unsigned i_eunet_terminal_a,
 
 void EunetTerminals::setRemoteOfAtoB(const unsigned i_eunet_terminal_a,
 		const unsigned i_eunet_terminal_b) {
-	auto a = this->Get(i_eunet_terminal_a);
-	auto b = this->Get(i_eunet_terminal_b);
-	auto device_b = b->getNetDevice<ns3::CsmaNetDevice> (0);
-	auto ipv4_address = b->getAddress(device_b);
-	a->setRemote(ipv4_address);
+	auto node_a = this->Get(i_eunet_terminal_a);
+	NS_ASSERT(node_a != NULL);
+	auto node_b = this->Get(i_eunet_terminal_b);
+	NS_ASSERT(node_b != NULL);
+	auto device_b = node_b->getNetDevice<CsmaDevice> (0);
+	NS_ASSERT(device_b != NULL);
+	auto ipv4_address = node_b->getAddress(device_b);
+	NS_LOG_DEBUG("setting remote address " << ipv4_address << " to node " << node_a->GetId());
+	node_a->setRemote(ipv4_address);
 }
