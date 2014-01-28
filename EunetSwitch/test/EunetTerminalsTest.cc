@@ -98,6 +98,11 @@ private:
 		ns3::Simulator::Destroy();
 		NS_LOG_INFO("Done.");
 
+		if (true) {
+			NS_ASSERT(terminal0->getApplication<ns3::OnOffApplication>()== NULL);
+			NS_ASSERT(terminal1->getApplication<ns3::OnOffApplication>()== NULL);
+			NS_ASSERT(terminal2->getApplication<ns3::OnOffApplication>()== NULL);
+		}
 	}//DoRun
 };
 
