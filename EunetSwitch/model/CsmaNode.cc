@@ -126,3 +126,7 @@ ns3::Ptr<ns3::CsmaNetDevice> CsmaNode::addCsmaNetDevice<ns3::CsmaNetDevice>();
 
 template
 ns3::NetDeviceContainer CsmaNode::getNetDevices<ns3::CsmaNetDevice>();
+
+ns3::Ptr<ns3::Node> CsmaNode::getThis() {
+	return ns3::Ptr<CsmaNode>(this, true);
+}

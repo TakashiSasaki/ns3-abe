@@ -37,10 +37,12 @@ NS_LOG_DCE:=$(NS_LOG_DCE):CsmaInternetNode=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):CsmaNode=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):EunetSwitchTest=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):EunetTerminal=debug\|prefix_func\|prefix_time
+NS_LOG_DCE:=$(NS_LOG_DCE):EunetTerminals=debug\|prefix_func\|prefix_time
+NS_LOG_DCE:=$(NS_LOG_DCE):EunetTerminalTest=debug\|prefix_func\|prefix_time
+NS_LOG_DCE:=$(NS_LOG_DCE):EunetTerminalsTest=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):PacketSinkNode=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):OnOffNode=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):CsmaInternetNode=debug\|prefix_func\|prefix_time
-NS_LOG_DCE:=$(NS_LOG_DCE):EunetTerminalTest=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):SimpleSwitchTest=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):EunetSwitches=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):EunetRouterTest=debug\|prefix_func\|prefix_time
