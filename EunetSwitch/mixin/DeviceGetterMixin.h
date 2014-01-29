@@ -14,7 +14,7 @@ public:
 	ns3::Ptr<T> getDevice(const unsigned i_port);
 	template<class DeviceT>
 	ns3::Ptr<DeviceT> getDevice(ns3::Ipv4Address ipv4_address);
-	virtual ns3::Ptr<ns3::Node> getThis() = 0;
+	virtual ns3::Ptr<ns3::Node> getNode() = 0;
 };
 
 template<class T>
@@ -22,12 +22,12 @@ ns3::Ptr<T> DeviceGetterMixin::getDevice(const unsigned i_port) {
 	//NS_ASSERT(this->countCsmaNetDevices()==1);
 	unsigned j = 0;
 	bool has_device_T = false;
-	for (unsigned i = 0; i < getThis()->GetNDevices(); ++i) {
+	for (unsigned i = 0; i < getNode()->GetNDevices(); ++i) {
 		//NS_LOG(log_level, this->GetDevice(i)->GetTypeId() << ", " << this->GetDevice(i)->GetInstanceTypeId());
-		if (getThis()->GetDevice(i)->GetInstanceTypeId() == T::GetTypeId()) {
+		if (getNode()->GetDevice(i)->GetInstanceTypeId() == T::GetTypeId()) {
 			has_device_T = true;
 			if (j == i_port) {
-				return getThis()->GetDevice(i)->GetObject<T> (T::GetTypeId());
+				return getNode()->GetDevice(i)->GetObject<T> (T::GetTypeId());
 
 			}//if
 			++j;
@@ -36,13 +36,13 @@ ns3::Ptr<T> DeviceGetterMixin::getDevice(const unsigned i_port) {
 	if (has_device_T) {
 		NS_FATAL_ERROR("only " << j << " " << T::GetTypeId() << "ports exist.");
 	}
-	NS_FATAL_ERROR("node " << getThis()->GetId() << " has no " << T::GetTypeId()
+	NS_FATAL_ERROR("node " << getNode()->GetId() << " has no " << T::GetTypeId()
 			<< ".");
 }
 
 template<class DeviceT>
 ns3::Ptr<DeviceT> DeviceGetterMixin::getDevice(ns3::Ipv4Address ipv4_address) {
-	auto ipv4 = getThis()->GetObject<ns3::Ipv4> ();
+	auto ipv4 = getNode()->GetObject<ns3::Ipv4> ();
 	NS_ASSERT(ipv4 != NULL);
 	int32_t i_interface = ipv4->GetInterfaceForAddress(ipv4_address);
 	auto device = ipv4->GetNetDevice(i_interface);

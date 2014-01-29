@@ -33,7 +33,7 @@ public:
 	template<class T>
 	ns3::NetDeviceContainer getNetDevices();
 	void enableAsciiTrace(ns3::Ptr<CsmaDevice> ptr_csma_net_device);
-	virtual ns3::Ptr<ns3::Node> getThis();
+	virtual ns3::Ptr<ns3::Node> getNode();
 protected:
 	template<class T>
 	ns3::Ptr<T> addCsmaNetDevice();
