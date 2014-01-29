@@ -42,3 +42,7 @@ void CsmaDevice::enablePcap(const bool promiscuous) {
 	ns3::CsmaHelper csma_helper;
 	csma_helper.EnablePcap(name, this, promiscuous);
 }//enablePcap
+
+int CsmaDevice::getInt(const int i) {
+	return i + 123;
+}

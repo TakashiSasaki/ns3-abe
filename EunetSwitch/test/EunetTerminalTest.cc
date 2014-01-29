@@ -83,8 +83,8 @@ private:
 			auto device3 = terminal3->getDevice<CsmaDevice> (0);
 			device2->enablePcap();
 			device3->enablePcap();
-			NS_ASSERT(device2->getInt()==1234567);
-			NS_ASSERT(device3->getInt()==1234567);
+			NS_ASSERT(device2->getInt(111)==111+123);
+			NS_ASSERT(device3->getInt(222)==222+123);
 			terminal2->enableAsciiTrace<CsmaDevice> (0);
 			terminal3->enableAsciiTrace<CsmaDevice> (0);
 		}

@@ -5,7 +5,7 @@
 
 class AddressGetterMixin {
 public:
-	virtual int getInt();
+	virtual int getInt(const int);
 	AddressGetterMixin();
 	virtual ~AddressGetterMixin();
 	ns3::Ipv4Address getAddress();

@@ -35,6 +35,6 @@ ns3::Ptr<ns3::NetDevice> AddressGetterMixin::getNetDevice3() {
 }
 #endif
 
-int AddressGetterMixin::getInt() {
-	return 1234567;
+int AddressGetterMixin::getInt(const int i) {
+	return i;
 }
