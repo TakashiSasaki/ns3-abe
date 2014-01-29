@@ -29,10 +29,6 @@ ns3::Ipv4Address AddressGetterMixin::getAddress() {
 	auto ipv4_address = ipv4_interface_address.GetLocal();
 	return ipv4_address;
 }
-
-ns3::Ptr<ns3::NetDevice> AddressGetterMixin::getNetDevice3() {
-	return ns3::CreateObject<ns3::CsmaNetDevice>();
-}
 #endif
 
 int AddressGetterMixin::getInt(const int i) {

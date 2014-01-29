@@ -46,3 +46,7 @@ void CsmaDevice::enablePcap(const bool promiscuous) {
 int CsmaDevice::getInt(const int i) {
 	return i + 123;
 }
+
+ns3::Ptr<ns3::NetDevice> CsmaDevice::getNetDevice() {
+	return ns3::Ptr<ns3::NetDevice>(this, true);
+}

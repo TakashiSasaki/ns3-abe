@@ -5,10 +5,11 @@
 
 class AddressGetterMixin {
 public:
-	virtual int getInt(const int);
 	AddressGetterMixin();
 	virtual ~AddressGetterMixin();
 	ns3::Ipv4Address getAddress();
+	virtual ns3::Ptr<ns3::NetDevice> getNetDevice() = 0;
+	virtual int getInt(const int);
 };
 
 #endif /* ADDRESSGETTERMIXIN_H_ */

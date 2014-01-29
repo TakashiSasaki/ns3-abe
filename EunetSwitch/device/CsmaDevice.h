@@ -13,6 +13,7 @@ public:
 	void joinTo(ns3::Ptr<CsmaDevice>);
 	void enablePcap(const bool promiscuous = false);
 	virtual int getInt(const int);
+	virtual ns3::Ptr<ns3::NetDevice> getNetDevice();
 };
 
 #endif
