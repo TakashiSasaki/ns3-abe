@@ -87,16 +87,14 @@ ns3::NetDeviceContainer Eunet::connectRouters(std::string src_name,
 		Eunet::ActiveChannel active_channel) {
 	auto ndc = connect<EunetRouter, CsmaDevice, EunetRouter, CsmaDevice> (
 			src_name, dst_name, active_channel);
-	ns3::Ptr<CsmaDevice> ptr_src_dev = ndc.Get(0)->GetObject<CsmaDevice> ();
-	ns3::Ptr<CsmaDevice> ptr_dst_dev = ndc.Get(1)->GetObject<CsmaDevice> ();
-	ns3::Ptr<EunetRouter> ptr_src_node = ptr_src_dev->GetNode()->GetObject<
-			EunetRouter> ();
-	ns3::Ptr<EunetRouter> ptr_dst_node = ptr_dst_dev->GetNode()->GetObject<
-			EunetRouter> ();
-	ptr_src_node->assignAddress(ptr_src_dev, src_address, ipv4_mask);
-	ptr_dst_node->assignAddress(ptr_dst_dev, dst_address, ipv4_mask);
-	ptr_src_node->enableOspf(ptr_src_dev);
-	ptr_dst_node->enableOspf(ptr_dst_dev);
+	auto src_dev = ndc.Get(0)->GetObject<CsmaDevice> ();
+	auto dst_dev = ndc.Get(1)->GetObject<CsmaDevice> ();
+	auto src_node = src_dev->GetNode()->GetObject<EunetRouter> ();
+	auto dst_node = dst_dev->GetNode()->GetObject<EunetRouter> ();
+	src_node->assignAddress(src_dev, src_address, ipv4_mask);
+	dst_node->assignAddress(dst_dev, dst_address, ipv4_mask);
+	src_node->enableOspf(src_dev);
+	dst_node->enableOspf(dst_dev);
 	return ndc;
 }
 
