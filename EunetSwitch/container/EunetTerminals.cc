@@ -99,6 +99,7 @@ ns3::NetDeviceContainer EunetTerminals::getDevicesAll() {
 	return net_device_container;
 }//getDevicesAll
 
+#if 0
 unsigned EunetTerminals::getTotalRx() {
 	unsigned count = 0;
 	for (auto i = this->Begin(); i != this->End(); ++i) {
@@ -107,6 +108,7 @@ unsigned EunetTerminals::getTotalRx() {
 	}//for
 	return count;
 }//getTotalRx
+#endif
 
 void EunetTerminals::bringAtoB(const unsigned i_eunet_terminal_a,
 		const unsigned i_eunet_terminal_b) {

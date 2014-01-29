@@ -70,9 +70,9 @@ private:
 		NS_ASSERT(on_off_node->getTotalTxBytes()>0);
 		NS_ASSERT(sw->getTerminals().Get(0)->GetNDevices()==2);
 		NS_ASSERT(terminal0->getTotalTxBytes()>0);
-		NS_ASSERT_MSG(sw->getTerminals().Get(0)->getTotalTxPackets()>0,sw->getTerminals().Get(0)->getTotalTxPackets());
-		NS_ASSERT_MSG(sw->getTerminals().Get(1)->getTotalTxPackets()>0,sw->getTerminals().Get(0)->getTotalTxPackets());
-		NS_ASSERT_MSG (sw->getTerminals().Get(0)->getTotalRx() > 0, sw->getTerminals().getTotalRx());
+		NS_ASSERT(sw->getTerminals().Get(0)->getTotalTxPackets()>0);
+		NS_ASSERT(sw->getTerminals().Get(1)->getTotalTxPackets()>0);
+		NS_ASSERT(sw->getTerminals().Get(0)->getTotalRx() > 0);
 		ns3::Simulator::Destroy();
 	}//DoRun
 };

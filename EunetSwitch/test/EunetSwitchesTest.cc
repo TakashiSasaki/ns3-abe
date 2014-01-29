@@ -34,12 +34,16 @@ private:
 		dest_switch->getDevice<DownlinkDevice> (5)->enablePcap();
 		ns3::AnimationInterface animation_interface("EunetSwitch.xml");
 		NS_LOG_INFO("Run Simulation.");
-		ns3::Simulator::Stop(ns3::Seconds(0.1));
+		ns3::Simulator::Stop(ns3::Seconds(10.1));
 		ns3::Simulator::Run();
-		ns3::Simulator::Destroy();
 		NS_LOG_INFO("Done.");
-		NS_LOG_INFO("source node received " << source_switch->getTerminals().getTotalRx() << " bytes");
-		NS_LOG_INFO("dest node received " << dest_switch->getTerminals().getTotalRx() << " bytes");
+		NS_ASSERT(source_terminal->getTotalRx()==0);
+		NS_ASSERT(source_terminal->getTotalRxPackets()==0);
+		NS_ASSERT(dest_terminal->getTotalRx()>0);
+		NS_ASSERT(dest_terminal->getTotalRxPackets()>0);
+		ns3::Simulator::Destroy();
+		//NS_LOG_INFO("source node received " << source_switch->getTerminals().getRxBytes() << " bytes");
+		//NS_LOG_INFO("dest node received " << dest_switch->getTerminals().getRxBytes() << " bytes");
 	}//DoRun
 };
 

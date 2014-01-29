@@ -14,7 +14,6 @@ public:
 	void assignAddresses(ns3::Ipv4AddressHelper&);
 	virtual ~EunetTerminals();
 	ns3::Ptr<EunetTerminal> Get(const int i_eunet_terminal);
-	unsigned getTotalRx();
 	void bringAtoB(const unsigned i_eunet_terminal_a,
 			const unsigned i_eunet_terminal_b);
 	void setRemoteOfAtoB(const unsigned i_eunet_terminal_a,
