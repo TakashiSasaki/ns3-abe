@@ -1,8 +1,9 @@
 #ifndef CSMANETDEVICE_H_
 #define CSMANETDEVICE_H_
 #include "ns3/csma-net-device.h"
+#include "AddressGetterMixin.h"
 
-class CsmaDevice: public ns3::CsmaNetDevice {
+class CsmaDevice: public ns3::CsmaNetDevice, public AddressGetterMixin {
 	ns3::DataRate uplinkChannelDataRate;
 	ns3::Time uplinkChannelDelay;
 public:

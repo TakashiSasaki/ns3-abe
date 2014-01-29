@@ -286,7 +286,7 @@ OBJS_COMMON:= \
     CsmaInternetNode.o PacketSinkNode.o OnOffNode.o SimpleSwitch.o \
     WifiMacTrace.o DownlinkDevice.o UplinkDevice.o \
     Eunet.o WifiBase.o EunetMobile.o MobilityBase.o SimpleAp.o CsmaDevice.o \
-    WifiDevice.o DeviceGetterMixin.o
+    WifiDevice.o DeviceGetterMixin.o AddressGetterMixin.o
 
 OBJS_STD:= \
     SimpleAp.o BridgingAp.o \
