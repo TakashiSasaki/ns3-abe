@@ -3,10 +3,9 @@
 #include "ns3/node-container.h"
 #include "ns3/ipv4-address-helper.h"
 #include "EunetTerminal.h"
+#include "Nodes.h"
 
-class EunetTerminals: public ns3::NodeContainer {
-	//typedef ns3::NodeContainer Base;
-
+class EunetTerminals: public Nodes {
 public:
 	EunetTerminals();
 	void initialize(const uint32_t n_terminals);
@@ -20,7 +19,6 @@ public:
 			const unsigned i_eunet_terminal_b);
 	void setRemoteOfAtoB(const unsigned i_eunet_terminal_a,
 			const unsigned i_eunet_terminal_b);
-
 private:
 	ns3::NetDeviceContainer getDevicesAll();
 };

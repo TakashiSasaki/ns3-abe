@@ -8,7 +8,7 @@ TESTS_COMMON= \
     EunetTerminalsTest.o \
     EunetSwitchesTest.o \
     EunetSwitchTest.o \
-    Sandbox.o
+    Sandbox.o Nodes.o
 
 TESTS_STD= \
     #EunetMobileTest.o \
@@ -40,6 +40,7 @@ NS_LOG_DCE:=$(NS_LOG_DCE):EunetTerminal=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):EunetTerminals=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):EunetTerminalTest=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):EunetTerminalsTest=debug\|prefix_func\|prefix_time
+NS_LOG_DCE:=$(NS_LOG_DCE):Nodes=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):PacketSinkNode=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):OnOffNode=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):CsmaInternetNode=debug\|prefix_func\|prefix_time

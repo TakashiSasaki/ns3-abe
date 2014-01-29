@@ -124,9 +124,9 @@ void EunetTestCase::DoRun() {
 		s22->eunetTerminals.assignAddresses(ipv4_address_helper_2);
 		s23->eunetTerminals.assignAddresses(ipv4_address_helper_2);
 	}
-	auto t233 = s23->eunetTerminals.Get(3)->GetObject<EunetTerminal> ();
+	auto t233 = s23->eunetTerminals.get<EunetTerminal> (3);
 	NS_LOG_DEBUG("address of t233 is " << t233->getAddress(t233->GetDevice(0)));
-	auto t225 = s22->eunetTerminals.Get(5)->GetObject<EunetTerminal> ();
+	auto t225 = s22->eunetTerminals.get<EunetTerminal> (5);
 	NS_LOG_DEBUG("address of t225 is " << t225->getAddress(t225->GetDevice(0)));
 	{
 		auto device = t225->getDevice<CsmaDevice> (0);
