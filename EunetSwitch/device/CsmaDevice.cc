@@ -32,8 +32,10 @@ void CsmaDevice::enablePcap(const bool promiscuous) {
 	auto name = ns3::Names::FindName(this);
 	if (name.empty()) {
 		std::ostringstream oss;
-		oss << this->GetInstanceTypeId() << "-" << this->GetNode()->GetId()
-				<< "-" << this->GetIfIndex();
+		auto type_id = this->GetInstanceTypeId();
+		auto node_id = this->GetNode()->GetId();
+		auto if_index = this->GetIfIndex();
+		oss << type_id << "-" << node_id << "-" << if_index;
 		name = oss.str();
 	}
 	NS_LOG_DEBUG("enablePcap on node " << name);
