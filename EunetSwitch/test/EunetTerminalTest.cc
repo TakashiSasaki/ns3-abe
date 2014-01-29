@@ -10,6 +10,7 @@ NS_LOG_COMPONENT_DEFINE("EunetTerminalTest");
 #include "ns3/global-value.h"
 #include "ns3/string.h"
 #include "ns3/on-off-helper.h"
+#include "CsmaDevice.h"
 #include "EunetTerminal.h"
 
 class EunetTerminalTestCase: public ns3::TestCase {
@@ -55,51 +56,50 @@ private:
 		ptr_csma_node->Dispose();
 
 		object_factory.SetTypeId("EunetTerminal");
-		ns3::Ptr<EunetTerminal> terminal1(object_factory.Create<
-				EunetTerminal> ());
+		ns3::Ptr<EunetTerminal> terminal1(
+				object_factory.Create<EunetTerminal> ());
 		NS_ASSERT_MSG(terminal1->GetNDevices() == 2, terminal1->GetNDevices());
 		terminal1->Initialize();
 		NS_ASSERT_MSG(terminal1->GetNDevices() == 2, terminal1->GetNDevices());
 		NS_ASSERT_MSG(terminal1->getNDevices<CsmaDevice>()==1, terminal1->getNDevices<ns3::CsmaNetDevice>());
 		NS_ASSERT_MSG(terminal1->getNDevices<ns3::LoopbackNetDevice>()==1, terminal1->getNDevices<ns3::LoopbackNetDevice>());
 
-		ns3::Ptr<EunetTerminal> terminal2(object_factory.Create<
-				EunetTerminal> ());
+		ns3::Ptr<EunetTerminal> terminal2(
+				object_factory.Create<EunetTerminal> ());
 		NS_ASSERT_MSG(terminal2->GetNDevices() == 2, terminal1->GetNDevices());
 		terminal2->Initialize();
 		NS_ASSERT_MSG(terminal2->GetNDevices() == 2, terminal1->GetNDevices());
 
 		ns3::ObjectFactory object_factory_2;
 		object_factory_2.SetTypeId("EunetTerminal");
-		ns3::Ptr<EunetTerminal> terminal3(object_factory_2.Create<
-				EunetTerminal> ());
+		ns3::Ptr<EunetTerminal> terminal3(
+				object_factory_2.Create<EunetTerminal> ());
 		NS_ASSERT_MSG(terminal3->GetNDevices() == 2, terminal1->GetNDevices());
 		terminal3->Initialize();
 		NS_ASSERT_MSG(terminal3->GetNDevices() == 2, terminal1->GetNDevices());
 
 		{
-			auto device2 = terminal2->getNetDevice<CsmaDevice> (0);
-			auto device3 = terminal3->getNetDevice<CsmaDevice> (0);
+			auto device2 = terminal2->getDevice<CsmaDevice> (0);
+			auto device3 = terminal3->getDevice<CsmaDevice> (0);
 			device2->enablePcap();
 			device3->enablePcap();
 			terminal2->enableAsciiTrace<CsmaDevice> (0);
 			terminal3->enableAsciiTrace<CsmaDevice> (0);
 		}
 		{
-			auto p = terminal2->getNetDevice<CsmaDevice> (0);
+			auto p = terminal2->getDevice<CsmaDevice> (0);
 			terminal2->assignAddress(p, "10.0.0.2", "255.0.0.0");
 			NS_ASSERT(terminal2->getAddress(p) == "10.0.0.2");
 		}
 		{
-			auto p = terminal3->getNetDevice<CsmaDevice> (0);
+			auto p = terminal3->getDevice<CsmaDevice> (0);
 			terminal3->assignAddress(p, "10.0.0.3", "255.0.0.0");
 			NS_ASSERT(terminal3->getAddress(p) == "10.0.0.3");
 		}
 
-		terminal2->bring<CsmaDevice, CsmaDevice> (0,
-				terminal3, 0);
+		terminal2->bring<CsmaDevice, CsmaDevice> (0, terminal3, 0);
 		{
-			auto p = terminal2->getNetDevice<CsmaDevice> (0);
+			auto p = terminal2->getDevice<CsmaDevice> (0);
 			terminal3->setRemote(terminal2->getAddress(p));
 		}
 

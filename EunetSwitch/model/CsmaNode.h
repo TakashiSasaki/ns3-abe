@@ -68,7 +68,7 @@ template<class T>
 void CsmaNode::enableAsciiTrace(const unsigned i_port) {
 	ns3::CsmaHelper csma_helper;
 	csma_helper.EnableAscii(this->GetInstanceTypeId().GetName(),
-			this->getNetDevice<T> (i_port));
+			this->getDevice<T> (i_port));
 }//enableAsciiTrace
 
 template<class T>

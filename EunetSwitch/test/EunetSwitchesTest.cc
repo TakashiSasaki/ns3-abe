@@ -25,13 +25,13 @@ private:
 		auto source_terminal = source_switch->getTerminal(5);
 		auto dest_switch = eunet_switches.getEunetSwitch(0, 0);
 		auto dest_terminal = dest_switch->getTerminal(5);
-		auto dest_device = dest_terminal->getNetDevice<CsmaDevice> (0);
+		auto dest_device = dest_terminal->getDevice<CsmaDevice> (0);
 		source_terminal->setRemote(dest_terminal->getAddress(dest_device));
 		//source_terminal->startAt(ns3::Seconds(0.0));
 		source_switch->enableAsciiTraceDownlink(5);
-		source_switch->getNetDevice<DownlinkDevice> (5)->enablePcap();
+		source_switch->getDevice<DownlinkDevice> (5)->enablePcap();
 		dest_switch->enableAsciiTraceDownlink(5);
-		dest_switch->getNetDevice<DownlinkDevice> (5)->enablePcap();
+		dest_switch->getDevice<DownlinkDevice> (5)->enablePcap();
 		ns3::AnimationInterface animation_interface("EunetSwitch.xml");
 		NS_LOG_INFO("Run Simulation.");
 		ns3::Simulator::Stop(ns3::Seconds(0.1));

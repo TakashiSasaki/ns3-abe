@@ -77,21 +77,21 @@ void EunetRouterTestCase::DoRun() {
 	ipv4_address_helper.SetBase("10.0.1.0", "255.255.255.0");
 	{
 		auto ptr_csma_net_device =
-				ptr_eunet_router_1->getNetDevice<CsmaDevice> (0);
+				ptr_eunet_router_1->getDevice<CsmaDevice> (0);
 		ptr_eunet_router_1->assignAddress(ptr_csma_net_device,
 				ipv4_address_helper);
 	}
 	//ptr_eunet_router_1->assignAddress<ns3::CsmaNetDevice> (ipv4_address_helper,
 	//		1);
 	{
-		auto p = ptr_eunet_router_1->getNetDevice<CsmaDevice> (1);
+		auto p = ptr_eunet_router_1->getDevice<CsmaDevice> (1);
 		ptr_eunet_router_1->assignAddress(p, ns3::Ipv4Address("0.0.0.0"),
 				ns3::Ipv4Mask("255.255.255.255"));
 	}
 	{
 		auto ptr_ipv4 = ptr_eunet_router_1->GetObject<ns3::Ipv4> ();
 		NS_ASSERT_MSG(ptr_ipv4 != 0, ptr_ipv4);
-		ns3::Ptr<CsmaDevice> ptr_device = ptr_eunet_router_1->getNetDevice<
+		ns3::Ptr<CsmaDevice> ptr_device = ptr_eunet_router_1->getDevice<
 				CsmaDevice> (1);
 		NS_LOG_DEBUG(ptr_device);
 		auto i_interface = ptr_ipv4->GetInterfaceForDevice(ptr_device);
@@ -104,14 +104,14 @@ void EunetRouterTestCase::DoRun() {
 
 	{
 		auto ptr_csma_net_device =
-				ptr_eunet_router_2->getNetDevice<CsmaDevice> (0);
+				ptr_eunet_router_2->getDevice<CsmaDevice> (0);
 		ptr_eunet_router_2->assignAddress(ptr_csma_net_device,
 				ipv4_address_helper);
 	}
 
 	{
-		auto device1 = ptr_eunet_router_1->getNetDevice<CsmaDevice> (0);
-		auto device2 = ptr_eunet_router_2->getNetDevice<CsmaDevice> (0);
+		auto device1 = ptr_eunet_router_1->getDevice<CsmaDevice> (0);
+		auto device2 = ptr_eunet_router_2->getDevice<CsmaDevice> (0);
 		ptr_eunet_router_1->enableOspf(device1);
 		device1->enablePcap();
 		ptr_eunet_router_2->enableOspf(device2);

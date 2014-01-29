@@ -47,9 +47,9 @@ private:
 		auto node2 = object_factory.Create<EunetMobile> ();
 		node1->Initialize();
 		node2->Initialize();
-		auto device1 = node1->getNetDevice<WifiDevice> (0);
+		auto device1 = node1->getDevice<WifiDevice> (0);
 		NS_ASSERT(device1 != NULL);
-		auto device2 = node2->getNetDevice<WifiDevice> (0);
+		auto device2 = node2->getDevice<WifiDevice> (0);
 		NS_ASSERT(device2 != NULL);
 
 		ns3::Ipv4Address ipv4_address("10.0.0.0");
@@ -58,9 +58,9 @@ private:
 
 		NS_LOG_DEBUG("abc");
 		{
-			ns3::Ptr<WifiDevice> device1 = node1->getNetDevice<WifiDevice> (0);
+			ns3::Ptr<WifiDevice> device1 = node1->getDevice<WifiDevice> (0);
 			NS_ASSERT(device1 != NULL);
-			ns3::Ptr<WifiDevice> device2 = node2->getNetDevice<WifiDevice> (0);
+			ns3::Ptr<WifiDevice> device2 = node2->getDevice<WifiDevice> (0);
 			NS_ASSERT(device2 != NULL);
 
 			node2->joinTo(node1);
@@ -141,9 +141,9 @@ private:
 		auto node2 = object_factory.Create<EunetMobile> ();
 		node1->Initialize();
 		node2->Initialize();
-		auto device1 = node1->getNetDevice<WifiDevice> (0);
+		auto device1 = node1->getDevice<WifiDevice> (0);
 		NS_ASSERT(device1 != NULL);
-		auto device2 = node2->getNetDevice<WifiDevice> (0);
+		auto device2 = node2->getDevice<WifiDevice> (0);
 		NS_ASSERT(device2 != NULL);
 
 		ns3::Ipv4Address ipv4_address("10.0.0.0");
@@ -151,9 +151,9 @@ private:
 		ns3::Ipv4AddressHelper ipv4_address_helper(ipv4_address, ipv4_mask);
 
 		{
-			ns3::Ptr<WifiDevice> device1 = node1->getNetDevice<WifiDevice> (0);
+			ns3::Ptr<WifiDevice> device1 = node1->getDevice<WifiDevice> (0);
 			NS_ASSERT(device1 != NULL);
-			ns3::Ptr<WifiDevice> device2 = node2->getNetDevice<WifiDevice> (0);
+			ns3::Ptr<WifiDevice> device2 = node2->getDevice<WifiDevice> (0);
 			NS_ASSERT(device2 != NULL);
 
 			node2->joinTo(node1);

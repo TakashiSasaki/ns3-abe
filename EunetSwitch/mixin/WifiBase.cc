@@ -103,15 +103,15 @@ ns3::Ptr<ns3::WifiNetDevice> WifiBase::getWifiNetDevice() {
 
 void WifiBase::bringWifiBase(WifiBase& foreign_node) {
 	auto ptr_wifi_net_device =
-			this->ptrNode->GetObject<CsmaNode> ()->getNetDevice<WifiDevice> (0);
+			this->ptrNode->GetObject<CsmaNode> ()->getDevice<WifiDevice> (0);
 	auto ptr_wifi_phy = ptr_wifi_net_device->GetPhy();
 	auto ptr_yans_wifi_phy = ptr_wifi_phy->GetObject<ns3::YansWifiPhy> ();
 	auto ptr_wifi_channel = ptr_wifi_phy->GetChannel();
 	auto ptr_yans_wifi_channel = ptr_wifi_channel->GetObject<
 			ns3::YansWifiChannel> ();
-	auto ptr_foreign_wifi_net_device =
-			foreign_node.ptrNode->GetObject<CsmaNode> ()->getNetDevice<
-					WifiDevice> (0);
+	auto
+			ptr_foreign_wifi_net_device = foreign_node.ptrNode->GetObject<
+					CsmaNode> ()->getDevice<WifiDevice> (0);
 	auto ptr_foreign_wifi_phy = ptr_foreign_wifi_net_device->GetPhy();
 	auto ptr_foreign_yans_wifi_phy = ptr_foreign_wifi_phy->GetObject<
 			ns3::YansWifiPhy> ();

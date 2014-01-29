@@ -92,7 +92,7 @@ void EunetTestCase::DoRun() {
 	auto t125 = s12->eunetTerminals.Get(5)->GetObject<EunetTerminal> ();
 	ns3::Names::Add("t125", t125);
 	{
-		auto device = t125->getNetDevice<CsmaDevice> (0);
+		auto device = t125->getDevice<CsmaDevice> (0);
 		t133->setRemote(t125->getAddress(device));
 	}
 
@@ -129,7 +129,7 @@ void EunetTestCase::DoRun() {
 	auto t225 = s22->eunetTerminals.Get(5)->GetObject<EunetTerminal> ();
 	NS_LOG_DEBUG("address of t225 is " << t225->getAddress(t225->GetDevice(0)));
 	{
-		auto device = t225->getNetDevice<CsmaDevice> (0);
+		auto device = t225->getDevice<CsmaDevice> (0);
 		t233->setRemote(t225->getAddress(device));
 	}
 
@@ -193,19 +193,27 @@ void EunetTestCase::DoRun() {
 	// enabling packet capture on some ports
 	//ns3::Ptr<EunetRouter> r1 = ns3::Names::Find<EunetRouter>("r1");
 	{
-		auto device = r1->getDevice(ns3::Ipv4Address("192.168.1.101"));
+		auto device = r1->getDevice<CsmaDevice> (ns3::Ipv4Address(
+				"192.168.1.101"));
+		NS_ASSERT(device != NULL);
 		device->enablePcap();
-		auto device2 = r1->getDevice(ns3::Ipv4Address("192.168.13.1"));
+		auto device2 = r1->getDevice<CsmaDevice> (ns3::Ipv4Address(
+				"192.168.13.1"));
+		NS_ASSERT(device2 != NULL);
 		device2->enablePcap();
-		auto device3 = r1->getDevice(ns3::Ipv4Address("192.168.12.1"));
+		auto device3 = r1->getDevice<CsmaDevice> (ns3::Ipv4Address(
+				"192.168.12.1"));
+		NS_ASSERT(device3 != NULL);
 		device3->enablePcap();
 	}
 
 	//ns3::Ptr<EunetRouter> r2 = ns3::Names::Find<EunetRouter>("r2");
 	{
-		auto device = r2->getDevice(ns3::Ipv4Address("192.168.12.2"));
+		auto device = r2->getDevice<CsmaDevice> (ns3::Ipv4Address(
+				"192.168.12.2"));
 		device->enablePcap();
-		auto device2 = r2->getDevice(ns3::Ipv4Address("192.168.23.2"));
+		auto device2 = r2->getDevice<CsmaDevice> (ns3::Ipv4Address(
+				"192.168.23.2"));
 		device2->enablePcap();
 	}
 	//auto ptr_s12 = ns3::Names::Find("s12");
@@ -213,7 +221,7 @@ void EunetTestCase::DoRun() {
 	//auto t125 = ptr_s12->eunetTerminals->Get(5);
 	//auto t233 = ptr_s23->eunetTerminals->Get(5);
 	if (true) {
-		auto device = t233->getNetDevice<CsmaDevice> (0);
+		auto device = t233->getDevice<CsmaDevice> (0);
 		NS_ASSERT(device != NULL);
 		auto address = t233->getAddress(device);
 		NS_LOG_DEBUG("set remote address of t125 to " << address);

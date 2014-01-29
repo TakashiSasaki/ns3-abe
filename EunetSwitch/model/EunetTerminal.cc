@@ -35,7 +35,7 @@ void EunetTerminal::NotifyConstructionCompleted() {
 	this->ipv4StaticRouting = ipv4_static_routing_helper.GetStaticRouting(ipv4);
 	NS_ASSERT(this->ipv4StaticRouting != NULL);
 
-	auto device0 = getNetDevice<CsmaDevice> (0);
+	auto device0 = getDevice<CsmaDevice> (0);
 	auto interface = ipv4->GetInterfaceForDevice(device0);
 	NS_ASSERT(interface >=0);
 	//this->ipv4StaticRouting->SetDefaultRoute(defaultGateway, interface);
@@ -58,7 +58,7 @@ EunetTerminal::~EunetTerminal() {
 
 void EunetTerminal::setDefaultRoute(ns3::Ipv4Address next_hop) {
 	auto ipv4 = this->GetObject<ns3::Ipv4> ();
-	auto device0 = getNetDevice<CsmaDevice> (0);
+	auto device0 = getDevice<CsmaDevice> (0);
 	auto interface = ipv4->GetInterfaceForDevice(device0);
 	this->ipv4StaticRouting->SetDefaultRoute(next_hop, interface);
 }

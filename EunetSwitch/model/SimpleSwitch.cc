@@ -136,13 +136,13 @@ void SimpleSwitch::SimpleSwitch::enableAsciiTraceDownlink(
 		const int i_downlink_port) {
 	ns3::CsmaHelper csma_helper;
 	csma_helper.EnableAscii(this->GetInstanceTypeId().GetName(),
-			this->getNetDevice<DownlinkDevice> (i_downlink_port));
+			this->getDevice<DownlinkDevice> (i_downlink_port));
 }
 
 void SimpleSwitch::enableAsciiTraceUplink(const int i_uplink_port) {
 	ns3::CsmaHelper csma_helper;
 	csma_helper.EnableAscii(this->GetInstanceTypeId().GetName(),
-			this->getNetDevice<UplinkDevice> (i_uplink_port));
+			this->getDevice<UplinkDevice> (i_uplink_port));
 }
 
 #if 0

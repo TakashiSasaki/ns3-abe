@@ -141,9 +141,9 @@ void EunetMobile::DoDispose() {
 }
 
 void EunetMobile::joinTo(ns3::Ptr<EunetMobile> their_node) {
-	ns3::Ptr<ns3::WifiNetDevice> our_device = this->getNetDevice<
+	ns3::Ptr<ns3::WifiNetDevice> our_device = this->getDevice<
 			ns3::WifiNetDevice> (0);
-	ns3::Ptr<ns3::WifiNetDevice> their_device = their_node->getNetDevice<
+	ns3::Ptr<ns3::WifiNetDevice> their_device = their_node->getDevice<
 			ns3::WifiNetDevice> (0);
 	ns3::Ptr<ns3::YansWifiPhy> our_phy = our_device->GetPhy()->GetObject<
 			ns3::YansWifiPhy> ();

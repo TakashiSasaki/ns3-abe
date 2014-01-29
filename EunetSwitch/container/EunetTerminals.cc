@@ -11,6 +11,7 @@ NS_LOG_COMPONENT_DEFINE("EunetTerminals");
 #include "ns3/loopback-net-device.h"
 #include "EunetTerminal.h"
 #include "EunetTerminals.h"
+#include "CsmaDevice.h"
 
 EunetTerminals::EunetTerminals() {
 #if 0
@@ -73,7 +74,7 @@ void EunetTerminals::assignAddresses(
 		ns3::Ipv4AddressHelper& ipv4_address_helper) {
 	for (unsigned i = 0; i < this->GetN(); ++i) {
 		NS_ASSERT(this->Get(i)-> GetNDevices()==2);
-		auto ptr_csma_net_device = this->Get(i)->getNetDevice<CsmaDevice> (0);
+		auto ptr_csma_net_device = this->Get(i)->getDevice<CsmaDevice> (0);
 		this->Get(i)->assignAddress(ptr_csma_net_device, ipv4_address_helper);
 	}//for
 }//assignAddresses
@@ -93,8 +94,7 @@ ns3::NetDeviceContainer EunetTerminals::getDevicesAll() {
 		//auto ptr_eunet_terminal = getEunetTerminal(i);
 		//NS_ASSERT(ptr_eunet_terminal->GetNDevices()==1);
 		//auto ptr_net_device = ptr_eunet_terminal->GetDevice(0);
-		net_device_container.Add(
-				this->Get(i)->getNetDevice<ns3::CsmaNetDevice> (0));
+		net_device_container.Add(this->Get(i)->getDevice<CsmaDevice> (0));
 	}//for
 	return net_device_container;
 }//getDevicesAll
@@ -127,7 +127,7 @@ void EunetTerminals::setRemoteOfAtoB(const unsigned i_eunet_terminal_a,
 	NS_ASSERT(node_a != NULL);
 	auto node_b = this->Get(i_eunet_terminal_b);
 	NS_ASSERT(node_b != NULL);
-	auto device_b = node_b->getNetDevice<CsmaDevice> (0);
+	auto device_b = node_b->getDevice<CsmaDevice> (0);
 	NS_ASSERT(device_b != NULL);
 	auto ipv4_address = node_b->getAddress(device_b);
 	NS_LOG_DEBUG("setting remote address " << ipv4_address << " to node " << node_a->GetId());

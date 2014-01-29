@@ -57,8 +57,8 @@ private:
 
 		ns3::Ptr<EunetTerminal> terminal0 = sw->getTerminal(0);
 		ns3::Ptr<EunetTerminal> terminal1 = sw->getTerminal(1);
-		NS_LOG_DEBUG(terminal0->getAddress(terminal0->getNetDevice<CsmaDevice>(0)));
-		NS_LOG_DEBUG(terminal1->getAddress(terminal1->getNetDevice<CsmaDevice>(0)));
+		NS_LOG_DEBUG(terminal0->getAddress(terminal0->getDevice<CsmaDevice>(0)));
+		NS_LOG_DEBUG(terminal1->getAddress(terminal1->getDevice<CsmaDevice>(0)));
 
 		ns3::Simulator::Stop(ns3::Seconds(10.0));
 		NS_ASSERT(sw->getTerminals().Get(0)->GetNDevices()==2);
