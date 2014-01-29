@@ -165,3 +165,7 @@ void EunetMobile::setPosition(ns3::Vector position) {
 	mobility_helper.SetMobilityModel("ns3::ConstantPositionMobilityModel");
 	mobility_helper.Install(ns3::NodeContainer(ns3::Ptr<ns3::Node>(this, true)));
 }
+
+int EunetMobile::getInt(){
+	return 23456;
+}

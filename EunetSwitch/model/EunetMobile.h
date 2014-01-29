@@ -19,6 +19,7 @@ public:
 	virtual ~EunetMobile();
 	void joinTo(ns3::Ptr<EunetMobile>);
 	void setPosition(ns3::Vector);
+	virtual int getInt();
 DECLARE_DIDDNCC
 };//EunetMobile
 

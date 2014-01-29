@@ -52,6 +52,10 @@ private:
 		auto device2 = node2->getDevice<WifiDevice> (0);
 		NS_ASSERT(device2 != NULL);
 
+		{
+			NS_ASSERT(node1->getInt() == 23456);
+		}
+
 		ns3::Ipv4Address ipv4_address("10.0.0.0");
 		ns3::Ipv4Mask ipv4_mask("255.0.0.0");
 		ns3::Ipv4AddressHelper ipv4_address_helper(ipv4_address, ipv4_mask);

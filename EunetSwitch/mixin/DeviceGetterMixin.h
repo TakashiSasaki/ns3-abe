@@ -15,6 +15,7 @@ public:
 	template<class DeviceT>
 	ns3::Ptr<DeviceT> getDevice(ns3::Ipv4Address ipv4_address);
 	virtual ns3::Ptr<ns3::Node> getNode() = 0;
+	virtual int getInt();
 };
 
 template<class T>
