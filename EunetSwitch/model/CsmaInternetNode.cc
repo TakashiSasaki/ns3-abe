@@ -56,7 +56,7 @@ void CsmaInternetNode::NotifyConstructionCompleted() {
 	NS_ASSERT(this->GetDevice(n_devices_before)->GetObject<ns3::LoopbackNetDevice>(ns3::LoopbackNetDevice::GetTypeId()));
 
 	for (unsigned i = 0; i < this->getNDevices<CsmaDevice> (); ++i) {
-		auto ptr_csma_net_device = getNetDevice<CsmaDevice> (i);
+		auto ptr_csma_net_device = this->getDevice<CsmaDevice> (i);
 		auto ptr_ipv4 = this->GetObject<ns3::Ipv4> ();
 		int32_t i_interface = ptr_ipv4->GetInterfaceForDevice(
 				ptr_csma_net_device);
@@ -200,7 +200,7 @@ ns3::Ipv4InterfaceAddress CsmaInternetNode::getIpv4InterfaceAddress(
 #endif
 
 template ns3::Ipv4InterfaceAddress CsmaInternetNode::getIpv4InterfaceAddress<
-		ns3::CsmaNetDevice>(const unsigned i_port);
+		CsmaDevice>(const unsigned i_port);
 
 void CsmaInternetNode::assignAddress(
 		ns3::Ptr<ns3::NetDevice> ptr_csma_net_device,
@@ -237,9 +237,3 @@ ns3::Ipv4Address CsmaInternetNode::getAddress(
 	return ipv4_address;
 }
 
-ns3::Ptr<CsmaDevice> CsmaInternetNode::getDevice(ns3::Ipv4Address ipv4_address) {
-	auto ipv4 = this->GetObject<ns3::Ipv4> ();
-	int32_t i_interface = ipv4->GetInterfaceForAddress(ipv4_address);
-	auto device = ipv4->GetNetDevice(i_interface);
-	return device->GetObject<CsmaDevice> ();
-}

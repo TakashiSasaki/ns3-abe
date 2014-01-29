@@ -23,7 +23,6 @@ public:
 	//void assignAddress(const unsigned i_device, ns3::Ipv4AddressHelper&);
 	void assignAddress(ns3::Ptr<ns3::NetDevice>, ns3::Ipv4Address ipv4_address,
 			ns3::Ipv4Mask ipv4_mask);
-	ns3::Ptr<CsmaDevice> getDevice(ns3::Ipv4Address);
 private:
 	static const ns3::Ipv4InterfaceAddress dummyAddress;
 	void logAddress(const ns3::Ipv4Address& ipv4_address);
@@ -38,7 +37,7 @@ ns3::Ipv4InterfaceAddress CsmaInternetNode::getIpv4InterfaceAddress(
 	NS_ASSERT_MSG(this->getNDevices<T>()>i_port,
 			"node " << this->GetId() << " has " << this->getNDevices<T>()<< " " << T::GetTypeId() << " devices, while looking for port "<< i_port);
 	ns3::Ptr<ns3::Ipv4> ptr_ipv4 = this->GetObject<ns3::Ipv4> ();
-	auto ptr_net_device = this->getNetDevice<T> (i_port);
+	ns3::Ptr<CsmaDevice> ptr_net_device = this->getDevice<T> (i_port);
 	NS_ASSERT(ptr_net_device->GetInstanceTypeId()==T::GetTypeId());
 	NS_ASSERT(ptr_net_device != 0);
 	NS_ASSERT(ptr_net_device->GetInstanceTypeId().IsChildOf(ns3::NetDevice::GetTypeId()));

@@ -1,19 +1,24 @@
 #ifndef DEVICEGETTERMIXIN_H_
 #define DEVICEGETTERMIXIN_H_
+#define NS3_ASSERT_ENABLE 1
+#include "ns3/assert.h"
 #include "ns3/ptr.h"
 #include "ns3/node.h"
+#include "ns3/ipv4.h"
 
 class DeviceGetterMixin {
 public:
 	DeviceGetterMixin();
 	virtual ~DeviceGetterMixin();
 	template<class T>
-	ns3::Ptr<T> getNetDevice(const unsigned i_port);
+	ns3::Ptr<T> getDevice(const unsigned i_port);
+	template<class DeviceT>
+	ns3::Ptr<DeviceT> getDevice(ns3::Ipv4Address ipv4_address);
 	virtual ns3::Ptr<ns3::Node> getThis() = 0;
 };
 
 template<class T>
-ns3::Ptr<T> DeviceGetterMixin::getNetDevice(const unsigned i_port) {
+ns3::Ptr<T> DeviceGetterMixin::getDevice(const unsigned i_port) {
 	//NS_ASSERT(this->countCsmaNetDevices()==1);
 	unsigned j = 0;
 	bool has_device_T = false;
@@ -33,6 +38,18 @@ ns3::Ptr<T> DeviceGetterMixin::getNetDevice(const unsigned i_port) {
 	}
 	NS_FATAL_ERROR("node " << getThis()->GetId() << " has no " << T::GetTypeId()
 			<< ".");
+}
+
+template<class DeviceT>
+ns3::Ptr<DeviceT> DeviceGetterMixin::getDevice(ns3::Ipv4Address ipv4_address) {
+	auto ipv4 = getThis()->GetObject<ns3::Ipv4> ();
+	NS_ASSERT(ipv4 != NULL);
+	int32_t i_interface = ipv4->GetInterfaceForAddress(ipv4_address);
+	auto device = ipv4->GetNetDevice(i_interface);
+	NS_ASSERT(device != NULL);
+	auto device_t = device->GetObject<DeviceT> ();
+	NS_ASSERT(device_t != NULL);
+	return device_t;
 }
 
 #endif /* DEVICEGETTERMIXIN_H_ */
