@@ -1,3 +1,8 @@
+EunetMobileTestSuite: test-runner
+	echo run --suite=$@ --verbose --test-type=unit > gdbinit
+	$(EXECENV) gdb ./test-runner --command=gdbinit 
+	#$(EXECENV) ./test-runner --suite=$@ --verbose --test-type=performance
+
 EunetSwitchTestSuite: test-runner
 	echo handle SIGUSR1 nostop > gdbinit
 	echo run --suite=$@ --verbose --test-type=unit >> gdbinit
@@ -32,11 +37,6 @@ DceQuaggaOspfdTestSuite: test-runner
 	#$(EXECENV) ./test-runner --suite=$@ --verbose --test-type=performance 
 	$(EXECENV) ./test-runner --suite=$@ --verbose  
 	#$(EXECENV) gdb ./test-runner --command=gdbinit 
-
-EunetMobileTestSuite: test-runner
-	echo run --suite=$@ --verbose > gdbinit
-	#$(EXECENV) gdb ./test-runner --command=gdbinit 
-	$(EXECENV) ./test-runner --suite=$@ --verbose --test-type=performance
 
 EunetTestSuite: test-runner
 	echo run --suite=$@ --verbose > gdbinit
