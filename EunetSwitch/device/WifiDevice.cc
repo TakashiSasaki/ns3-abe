@@ -49,12 +49,14 @@ void WifiDevice::DoInitialize(){
 	ASSERT_DI;
 	ns3::WifiNetDevice::DoInitialize();
 	//TODO
+	NS_LOG_UNCOND("to be implemented");
 }
 
 void WifiDevice::DoDispose(){
 	ASSERT_DD;
 	ns3::WifiNetDevice::DoDispose();
 	//TODO
+	NS_LOG_UNCOND("to be implemented");
 }
 
 void WifiDevice::enablePcap(const bool promiscuous) {
@@ -71,6 +73,21 @@ void WifiDevice::enablePcap(const bool promiscuous) {
 		yans_wifi_phy_helper.EnablePcap(name, this, promiscuous);
 	}
 }//enablePcap
+
+#if 0
+void WifiDevice::enablePcap(const bool promiscuous) {
+	//TODO: to be merged and compromised
+	NS_LOG_UNCOND("");
+	ns3::YansWifiPhyHelper yans_wifi_phy_helper;
+	yans_wifi_phy_helper.SetPcapDataLinkType(
+			ns3::YansWifiPhyHelper::DLT_IEEE802_11_RADIO);
+	auto node = this->GetNode();
+	auto name = ns3::Names::FindName(node);
+	yans_wifi_phy_helper.EnablePcap(name, ns3::Ptr<WifiDevice>(this, true));
+}
+#endif
+
+
 
 int WifiDevice::getInt(const int i) {
 	return i + 234;
@@ -114,15 +131,6 @@ ns3::Ptr<ns3::WifiPhy> WifiDevice::createPhy() {
 	//243 phy->SetMobility (node);
 	//244 phy->SetDevice (device);
 
-}
-
-void WifiDevice::enablePcap() {
-	ns3::YansWifiPhyHelper yans_wifi_phy_helper;
-	yans_wifi_phy_helper.SetPcapDataLinkType(
-			ns3::YansWifiPhyHelper::DLT_IEEE802_11_RADIO);
-	auto node = this->GetNode();
-	auto name = ns3::Names::FindName(node);
-	yans_wifi_phy_helper.EnablePcap(name, ns3::Ptr<WifiDevice>(this, true));
 }
 
 ns3::Ptr<ns3::ErrorRateModel> WifiDevice::createErrorRateModel() {

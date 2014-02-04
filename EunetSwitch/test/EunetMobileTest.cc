@@ -209,17 +209,41 @@ private:
 	}
 };
 
+class ApStaTestCase2: public ns3::TestCase {
+	const bool isVisual;
+public:
+	ApStaTestCase2(const bool is_visual = false) :
+		ns3::TestCase("ApStaTestCase2"), isVisual(is_visual) {
+	}
+	virtual ~ApStaTestCase2() {
+	}
+
+private:
+	virtual void DoRun(void) {
+		if (this->isVisual) {
+			NS_LOG_DEBUG("--SimulatorImplementationType=ns3::VisualSimulatorImpl");
+			ns3::GlobalValue::Bind("SimulatorImplementationType",
+					ns3::StringValue("ns3::VisualSimulatorImpl"));
+		}//if
+
+		ns3::Simulator::Stop(ns3::Seconds(100.1));
+		ns3::Simulator::Run();
+		ns3::Simulator::Destroy();
+	}
+};
+
 class EunetMobileTestSuite: public ns3::TestSuite {
 public:
 	EunetMobileTestSuite(ns3::TestSuite::Type type) :
 		ns3::TestSuite("EunetMobileTestSuite", type) {
 		switch (type) {
 		case UNIT:
-			AddTestCase(new EunetMobileTestCase, ns3::TestCase::QUICK);
-			AddTestCase(new ApStaTestCase, ns3::TestCase::QUICK);
+			//AddTestCase(new EunetMobileTestCase, ns3::TestCase::QUICK);
+			//AddTestCase(new ApStaTestCase, ns3::TestCase::QUICK);
+			AddTestCase(new ApStaTestCase2, ns3::TestCase::QUICK);
 			break;
 		case PERFORMANCE:
-			AddTestCase(new EunetMobileTestCase(true), ns3::TestCase::QUICK);
+			//AddTestCase(new EunetMobileTestCase(true), ns3::TestCase::QUICK);
 			AddTestCase(new ApStaTestCase(true), ns3::TestCase::QUICK);
 			break;
 		default:

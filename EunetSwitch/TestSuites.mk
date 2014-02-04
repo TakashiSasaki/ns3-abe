@@ -2,6 +2,7 @@ EunetMobileTestSuite: test-runner
 	echo run --suite=$@ --verbose --test-type=unit > gdbinit
 	$(EXECENV) gdb ./test-runner --command=gdbinit 
 	#$(EXECENV) ./test-runner --suite=$@ --verbose --test-type=performance
+	#$(EXECENV) ./test-runner --suite=$@ --verbose --test-type=unit
 
 EunetSwitchTestSuite: test-runner
 	echo handle SIGUSR1 nostop > gdbinit

@@ -20,7 +20,6 @@ public:
 	void enablePcap(const bool promiscuous = false);
 	virtual int getInt(const int);
 	virtual ns3::Ptr<ns3::NetDevice> getNetDevice();
-	void enablePcap();
 DECLARE_DIDDNCC
 	;
 };
