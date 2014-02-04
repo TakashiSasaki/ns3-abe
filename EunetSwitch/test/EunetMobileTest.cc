@@ -20,7 +20,6 @@ class EunetMobileTestCase: public ns3::TestCase {
 public:
 	EunetMobileTestCase(const bool is_visual = false) :
 		ns3::TestCase("EunetMobileTestCase"), isVisual(is_visual) {
-		//NS_LOG_UNCOND("constructing a test case");
 	}
 	virtual ~EunetMobileTestCase() {
 	}
@@ -34,6 +33,15 @@ private:
 		}//if
 
 		ns3::PacketMetadata::Enable();
+
+		if (false){
+			ns3::ObjectFactory object_factory;
+			object_factory.SetTypeId(WifiDevice::GetTypeId());
+			auto wd = object_factory.Create<WifiDevice>();
+			auto i = wd->getInt(100);
+			NS_LOG_DEBUG(i);
+			NS_ASSERT(i == 100+234);
+		}
 
 		ns3::ObjectFactory object_factory;
 		object_factory.SetTypeId("EunetMobile");
@@ -49,6 +57,7 @@ private:
 		node2->Initialize();
 		auto device1 = node1->getDevice<WifiDevice> (0);
 		NS_ASSERT(device1 != NULL);
+		NS_ASSERT(device1->getInt(111) == 111+234);
 		auto device2 = node2->getDevice<WifiDevice> (0);
 		NS_ASSERT(device2 != NULL);
 
@@ -60,7 +69,6 @@ private:
 		ns3::Ipv4Mask ipv4_mask("255.0.0.0");
 		ns3::Ipv4AddressHelper ipv4_address_helper(ipv4_address, ipv4_mask);
 
-		NS_LOG_DEBUG("abc");
 		{
 			ns3::Ptr<WifiDevice> device1 = node1->getDevice<WifiDevice> (0);
 			NS_ASSERT(device1 != NULL);
