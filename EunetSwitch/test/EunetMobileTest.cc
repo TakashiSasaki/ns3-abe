@@ -16,6 +16,8 @@ NS_LOG_COMPONENT_DEFINE("EunetMobileTest");
 #include "ns3/constant-position-mobility-model.h"
 #include "ns3/yans-error-rate-model.h"
 #include "ns3/wifi-remote-station-manager.h"
+#include "ns3/propagation-loss-model.h"
+#include "ns3/propagation-delay-model.h"
 #include "EunetMobile.h"
 #include "SimpleAp.h"
 #include "WifiDevice.h"
@@ -269,6 +271,27 @@ private:
 		dev->SetRemoteStationManager(manager);
 		node->AddDevice(dev);
 		return node;
+	}
+
+	static ns3::Ptr<ns3::YansWifiChannel> createChannel(const bool random =
+			false) {
+		ns3::Ptr<ns3::PropagationDelayModel> propDelay;
+		if (random) {
+			ns3::ObjectFactory of;
+			of.SetTypeId("ns3::RandomPropagationDelayModel");
+			of.Create<ns3::PropagationDelayModel> ();
+		} else {
+			ns3::ObjectFactory of;
+			of.SetTypeId("ns3::ConstantSpeedPropagationDelayModel");
+			of.Create<ns3::PropagationDelayModel> ();
+		}//if
+		ns3::Ptr<ns3::YansWifiChannel> channel = ns3::CreateObject<
+				ns3::YansWifiChannel>();
+		ns3::Ptr<ns3::PropagationLossModel> propLoss = ns3::CreateObject<
+				ns3::RandomPropagationLossModel>();
+		channel->SetPropagationDelayModel(propDelay);
+		channel->SetPropagationLossModel(propLoss);
+		return channel;
 	}
 };
 
