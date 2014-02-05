@@ -1,5 +1,5 @@
-vpath %.h container:model:eunet:test:mixin:device
-vpath %.cc container:model:eunet:test:mixin:device
+vpath %.h container:model:eunet:test:mixin:device:example
+vpath %.cc container:model:eunet:test:mixin:device:example
 .PHONY: test visualize build-visualize run-visualize
 include TestSuites.mk
 
@@ -8,7 +8,7 @@ TESTS_COMMON= \
     EunetTerminalsTest.o \
     EunetSwitchesTest.o \
     EunetSwitchTest.o \
-    Sandbox.o Nodes.o
+    Sandbox.o Nodes.o wifi-test.o
 
 TESTS_STD= \
     #EunetMobileTest.o \
@@ -57,6 +57,7 @@ NS_LOG_DCE:=$(NS_LOG_DCE):EunetMobile=info\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):DceQuaggaOspfdTest=info\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):DceManagerHelper=info\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):EunetTest=debug\|prefix_func\|prefix_time
+NS_LOG_DCE:=$(NS_LOG_DCE):wifi-test=debug\|prefix_func\|prefix_time
 #define NS_LOG
 #NS_LOG="NamedRouters=**:EunetRouters=**:EunetRouter=**:SimpleRouter=**:BridgingAp=**:SimpleAp=**:NamedSwitches=**:EunetSwitch=**:EunetSwitches=**:EunetTerminal=**:EunetTerminals=**:CsmaNode=debug:OnOffApplication=info:CsmaChannelNode=debug:CsmaInternetNode=**:PacketSinkNode=debug:OnOffNode=**:SimpleSwitch=**"
 #endef
@@ -327,7 +328,7 @@ clean:
 	-rm -f EunetSwitchTest
 	-rm -f test-so test-runner
 	-rm -f *.pcap *.tr
-	-rm -f container/*.o model/*.o test/*.o *.o
+	-rm -f container/*.o model/*.o test/*.o example/*.o mixin/*.o device/*.o *.o
 	-rm -f *.a
 
 test-runner: $(TEST_RUNNER_$(VER)) $(NS3LIBS_$(VER)) $(TESTS_COMMON) $(TESTS_$(VER)) libeunet.a 

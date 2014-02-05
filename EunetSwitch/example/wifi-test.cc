@@ -1,3 +1,8 @@
+#define NS3_LOG_ENABLE 1
+#include "ns3/log.h"
+NS_LOG_COMPONENT_DEFINE("wifi-test");
+#define NS3_ASSERT_ENABLE 1
+#include "ns3/assert.h"
 /* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /*
  * Copyright (c) 2005,2006 INRIA
@@ -155,6 +160,8 @@ WifiTest::RunOne (void)
 void
 WifiTest::DoRun (void)
 {
+  NS_LOG_UNCOND("WifiTest::DoRun");
+
   m_mac.SetTypeId ("ns3::AdhocWifiMac");
   m_propDelay.SetTypeId ("ns3::ConstantSpeedPropagationDelayModel");
 
@@ -193,6 +200,7 @@ public:
   }
   virtual void DoRun (void)
   {
+	 NS_LOG_UNCOND("QosUtilsIsOldPacketTest::DoRun");
     // startingSeq=0, seqNum=2047
     NS_TEST_EXPECT_MSG_EQ (QosUtilsIsOldPacket (0, 2047), false, "2047 is new in comparison to 0");
     // startingSeq=0, seqNum=2048
@@ -284,6 +292,8 @@ InterferenceHelperSequenceTest::CreateOne (Vector pos, Ptr<YansWifiChannel> chan
 void
 InterferenceHelperSequenceTest::DoRun (void)
 {
+  NS_LOG_UNCOND("InterferenceHelperSequenceTest::DoRun");
+
   m_mac.SetTypeId ("ns3::AdhocWifiMac");
   m_propDelay.SetTypeId ("ns3::ConstantSpeedPropagationDelayModel");
   m_manager.SetTypeId ("ns3::ConstantRateWifiManager");
@@ -409,6 +419,8 @@ Bug555TestCase::SendOnePacket (Ptr<WifiNetDevice> dev)
 void
 Bug555TestCase::DoRun (void)
 {
+  NS_LOG_UNCOND("Bug555TestCase::DoRun");
+
   m_mac.SetTypeId ("ns3::AdhocWifiMac");
   m_propDelay.SetTypeId ("ns3::ConstantSpeedPropagationDelayModel");
   m_manager.SetTypeId ("ns3::ConstantRateWifiManager");
@@ -488,6 +500,7 @@ public:
 WifiTestSuite::WifiTestSuite ()
   : TestSuite ("devices-wifi", UNIT)
 {
+  NS_LOG_UNCOND("WifiTestSuite::WifiTestSuite");
   AddTestCase (new WifiTest, TestCase::QUICK);
   AddTestCase (new QosUtilsIsOldPacketTest, TestCase::QUICK);
   AddTestCase (new InterferenceHelperSequenceTest, TestCase::QUICK); // Bug 991

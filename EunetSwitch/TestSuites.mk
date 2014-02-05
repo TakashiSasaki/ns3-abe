@@ -1,3 +1,7 @@
+devices-wifi: test-runner
+	#$(EXECENV) ./test-runner --suite=$@ --verbose
+	$(EXECENV) ./test-runner --suite=$@ --verbose
+
 EunetMobileTestSuite: test-runner
 	echo run --suite=$@ --verbose --test-type=unit > gdbinit
 	$(EXECENV) gdb ./test-runner --command=gdbinit 
