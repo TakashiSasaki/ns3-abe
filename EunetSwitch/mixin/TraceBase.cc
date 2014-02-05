@@ -22,6 +22,10 @@ TraceBase::TraceBase(ns3::Node* p_node) :
 	ptrNode(p_node, true) {
 }
 
+TraceBase::TraceBase(ns3::Ptr<ns3::Node> node) :
+	ptrNode(node) {
+}
+
 TraceBase::~TraceBase() {
 	// TODO !CodeTemplates.destructorstub.tododesc!
 }

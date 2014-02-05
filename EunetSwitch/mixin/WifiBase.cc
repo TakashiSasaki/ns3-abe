@@ -78,7 +78,6 @@ void WifiBase::DoInitialize() {
 	ptr_wifi_mac->SetSsid(this->ssid);
 
 	WifiMacTrace::DoInitialize();
-	WifiPhyTrace::DoInitialize();
 }
 
 WifiBase::~WifiBase() {

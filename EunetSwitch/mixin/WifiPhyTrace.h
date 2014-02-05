@@ -7,12 +7,8 @@
 
 class WifiPhyTrace: virtual public TraceBase {
 public:
-	WifiPhyTrace(ns3::Node* p_node);
+	WifiPhyTrace(ns3::Ptr<ns3::Node> node);
 	virtual ~WifiPhyTrace();
-public:
-	virtual void DoInitialize();
-	virtual void NotifyConstructionCompleted();
-	virtual void DoDispose();
 private:
 	void tracePhyTxBegin(ns3::Ptr<const ns3::Packet>) const;
 	void tracePhyTxEnd(ns3::Ptr<const ns3::Packet>) const;

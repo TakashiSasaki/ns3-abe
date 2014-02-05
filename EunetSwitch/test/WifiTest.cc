@@ -171,9 +171,6 @@ void WifiTestCase::DoRun() {
 	wifi_mac_trace_1.DoInitialize();
 	wifi_mac_trace_2.DoInitialize();
 	wifi_mac_trace_3.DoInitialize();
-	wifi_phy_trace_1.DoInitialize();
-	wifi_phy_trace_2.DoInitialize();
-	wifi_phy_trace_3.DoInitialize();
 	ns3::Simulator::Schedule(ns3::Seconds(1.0), &WifiTestCase::SendOnePacket,
 			this);
 	ns3::Simulator::Stop(ns3::Seconds(1.001));
@@ -192,14 +189,19 @@ public:
 		NS_LOG_UNCOND("WifiL2TestCase::DoRun");
 		auto n1 = createNode(ns3::Vector3D(0, 0, 0), std::string("channel1"));
 		auto n2 = createNode(ns3::Vector3D(1, 0, 0), std::string("channel1"));
+		auto trace1 = WifiPhyTrace(n1);
+		auto trace2 = WifiPhyTrace(n2);
 		ns3::Simulator::Schedule(ns3::Seconds(1.0),
 				&WifiL2TestCase::SendOnePacket, n1);
+		ns3::Simulator::Stop(ns3::Seconds(10.0));
+		ns3::Simulator::Run();
+		ns3::Simulator::Destroy();
 	}
 
 private:
 
 	static void SendOnePacket(ns3::Ptr<ns3::Node> node) {
-		auto device = node->GetObject<ns3::WifiNetDevice> ();
+		auto device = node->GetDevice(0);
 		NS_ASSERT(device != NULL);
 		ns3::Ptr<ns3::Packet> packet = ns3::Create<ns3::Packet>();
 		device->Send(packet, device->GetBroadcast(), 1);
@@ -214,6 +216,7 @@ private:
 		auto channel = ns3::Names::Find<ns3::YansWifiChannel>(channel_name);
 		if (channel == NULL) {
 			channel = createChannel();
+			ns3::Names::Add(channel_name, channel);
 		}
 		auto phy1 = createPhy(channel);
 		bindDeviceAndPhy(device11, phy1);
