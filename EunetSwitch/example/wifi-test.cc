@@ -109,6 +109,7 @@ WifiTest::SendOnePacket (Ptr<WifiNetDevice> dev)
   dev->Send (p, dev->GetBroadcast (), 1);
 }
 
+// https://docs.google.com/presentation/d/1l8nGC0kK46ME_lxW7W3HgxdT4Adi_YmpmiZsgw0-_AA/edit?usp=sharing
 void
 WifiTest::CreateOne (Vector pos, Ptr<YansWifiChannel> channel)
 {
