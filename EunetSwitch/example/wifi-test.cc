@@ -491,20 +491,19 @@ Bug555TestCase::DoRun (void)
 }
 
 //-----------------------------------------------------------------------------
-class WifiTestSuite : public TestSuite
+class WifiTestSuite_ : public TestSuite
 {
 public:
-  WifiTestSuite ();
+  WifiTestSuite_ ();
 };
 
-WifiTestSuite::WifiTestSuite ()
+WifiTestSuite_::WifiTestSuite_ ()
   : TestSuite ("devices-wifi", UNIT)
 {
-  NS_LOG_UNCOND("WifiTestSuite::WifiTestSuite");
   AddTestCase (new WifiTest, TestCase::QUICK);
   AddTestCase (new QosUtilsIsOldPacketTest, TestCase::QUICK);
   AddTestCase (new InterferenceHelperSequenceTest, TestCase::QUICK); // Bug 991
   AddTestCase (new Bug555TestCase, TestCase::QUICK); // Bug 555
 }
 
-static WifiTestSuite g_wifiTestSuite;
+static WifiTestSuite_ g_wifiTestSuite;

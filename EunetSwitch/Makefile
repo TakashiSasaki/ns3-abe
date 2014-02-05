@@ -48,7 +48,7 @@ NS_LOG_DCE:=$(NS_LOG_DCE):SimpleSwitchTest=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):EunetSwitches=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):EunetRouterTest=debug\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):SimpleRouter=debug\|prefix_func\|prefix_time
-NS_LOG_DCE:=$(NS_LOG_DCE):WifiTest=info\|prefix_func\|prefix_time
+NS_LOG_DCE:=$(NS_LOG_DCE):WifiTest=debug\|prefix_func\|prefix_time
 #NS_LOG_DCE:=$(NS_LOG_DCE):WifiBase=info\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):WifiMacTrace=info\|prefix_func\|prefix_time
 NS_LOG_DCE:=$(NS_LOG_DCE):WifiPhyTrace=info\|prefix_func\|prefix_time
