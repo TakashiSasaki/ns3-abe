@@ -22,6 +22,7 @@ NS_LOG_COMPONENT_DEFINE("WifiTest");
 #include "ns3/propagation-delay-model.h"
 #include "ns3/propagation-loss-model.h"
 #include "ns3/ap-wifi-mac.h"
+#include "ns3/names.h"
 #include "WifiPhyTrace.h"
 #include "WifiMacTrace.h"
 
@@ -189,7 +190,103 @@ public:
 	}
 	virtual void DoRun() {
 		NS_LOG_UNCOND("WifiL2TestCase::DoRun");
+		auto n1 = createNode(ns3::Vector3D(0, 0, 0), std::string("channel1"));
+		auto n2 = createNode(ns3::Vector3D(1, 0, 0), std::string("channel1"));
+		ns3::Simulator::Schedule(ns3::Seconds(1.0),
+				&WifiL2TestCase::SendOnePacket, n1);
 	}
+
+private:
+
+	static void SendOnePacket(ns3::Ptr<ns3::Node> node) {
+		auto device = node->GetObject<ns3::WifiNetDevice> ();
+		NS_ASSERT(device != NULL);
+		ns3::Ptr<ns3::Packet> packet = ns3::Create<ns3::Packet>();
+		device->Send(packet, device->GetBroadcast(), 1);
+	}
+
+	static ns3::Ptr<ns3::Node> createNode(ns3::Vector3D position,
+			const std::string channel_name) {
+		auto mac11 = createMac();
+		auto device11 = createDevice(mac11);
+		auto mobility11 = createMobility(position);
+		auto node11 = createNode(device11, mobility11);
+		auto channel = ns3::Names::Find<ns3::YansWifiChannel>(channel_name);
+		if (channel == NULL) {
+			channel = createChannel();
+		}
+		auto phy1 = createPhy(channel);
+		bindDeviceAndPhy(device11, phy1);
+		return node11;
+	}
+
+	static ns3::Ptr<ns3::YansWifiChannel> createChannel(
+			std::string s_delay_type_id =
+					"ns3::ConstantSpeedPropagationDelayModel") {
+		auto channel = ns3::CreateObject<ns3::YansWifiChannel>();
+		auto of = ns3::ObjectFactory();
+		of.SetTypeId(s_delay_type_id);
+		auto delay = of.Create<ns3::PropagationDelayModel> ();
+		channel->SetPropagationDelayModel(delay);
+		auto loss = ns3::CreateObject<ns3::RandomPropagationLossModel>();
+		channel->SetPropagationLossModel(loss);
+		return channel;
+	}
+
+	static ns3::Ptr<ns3::WifiMac> createMac(
+			const std::string s_type_id = "ns3::AdhocWifiMac") {
+		ns3::ObjectFactory of;
+		of.SetTypeId(s_type_id);
+		ns3::Ptr<ns3::WifiMac> mac = of.Create<ns3::WifiMac> ();
+		mac->ConfigureStandard(ns3::WIFI_PHY_STANDARD_80211a);
+		mac->SetAddress(ns3::Mac48Address::Allocate());
+		return mac;
+	}
+
+	static ns3::Ptr<ns3::MobilityModel> createMobility(ns3::Vector3D vector) {
+		auto mobility = ns3::CreateObject<ns3::ConstantPositionMobilityModel>();
+		mobility->SetPosition(vector);
+		return mobility;
+	}
+
+	static ns3::Ptr<ns3::YansWifiPhy> createPhy(
+			ns3::Ptr<ns3::YansWifiChannel> channel) {
+		auto phy = ns3::CreateObject<ns3::YansWifiPhy>();
+		auto error = ns3::CreateObject<ns3::YansErrorRateModel>();
+		phy->SetErrorRateModel(error);
+		phy->SetChannel(channel);
+		phy->ConfigureStandard(ns3::WIFI_PHY_STANDARD_80211a);
+		return phy;
+	}
+
+	static ns3::Ptr<ns3::WifiNetDevice> createDevice(
+			ns3::Ptr<ns3::WifiMac> mac,
+			std::string s_manager_type_id = "ns3::IdealWifiManager") {
+		auto device = ns3::CreateObject<ns3::WifiNetDevice>();
+		device->SetMac(mac);
+		//device->SetPhy(phy);
+		ns3::ObjectFactory of;
+		of.SetTypeId(s_manager_type_id);
+		auto manager = of.Create<ns3::WifiRemoteStationManager> ();
+		device->SetRemoteStationManager(manager);
+		return device;
+	}
+
+	static ns3::Ptr<ns3::Node> createNode(ns3::Ptr<ns3::WifiNetDevice> device,
+			ns3::Ptr<ns3::MobilityModel> mobility) {
+		auto node = ns3::CreateObject<ns3::Node>();
+		node->AddDevice(device);
+		node->AggregateObject(mobility);
+		return node;
+	}
+
+	static void bindDeviceAndPhy(ns3::Ptr<ns3::WifiNetDevice> device,
+			ns3::Ptr<ns3::YansWifiPhy> phy) {
+		device->SetPhy(phy);
+		phy->SetDevice(device);
+		phy->SetMobility(device->GetNode());
+	}
+
 };
 
 class WifiTestSuite: public ns3::TestSuite {
