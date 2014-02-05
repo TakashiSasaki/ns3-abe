@@ -33,10 +33,6 @@ EunetTerminalsTestSuite: test-runner
 EunetRouterTestSuite: test-runner
 	$(EXECENV) ./test-runner --suite=$@ --verbose 
 
-WifiTestSuite: test-runner
-	#$(EXECENV) ./test-runner --suite=$@ --verbose --test-type=performance 
-	$(EXECENV) ./test-runner --suite=$@ --verbose  
-
 DceQuaggaOspfdTestSuite: test-runner
 	echo run --suite=$@ --verbose > gdbinit
 	#$(EXECENV) ./test-runner --suite=$@ --verbose --test-type=performance 
@@ -61,4 +57,9 @@ SimpleSwitchTestSuite: test-runner
 	$(EXECENV) gdb ./test-runner -q --command=gdbinit 
 	#$(EXECENV) ./test-runner --suite=$@ --verbose
 
+WifiTestSuite: test-runner
+	echo run --suite=$@ --verbose > gdbinit
+	#$(EXECENV) ./test-runner --suite=$@ --verbose --test-type=performance 
+	$(EXECENV) gdb ./test-runner -q --command=gdbinit 
+	#$(EXECENV) ./test-runner --suite=$@ --verbose  
 	

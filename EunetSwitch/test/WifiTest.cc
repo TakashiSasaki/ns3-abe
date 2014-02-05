@@ -1,3 +1,4 @@
+#include <iostream>
 #define NS3_LOG_ENABLE 1
 #include "ns3/log.h"
 NS_LOG_COMPONENT_DEFINE("WifiTest");
@@ -65,8 +66,6 @@ WifiTestCase::WifiTestCase() :
 	this->mac48Address1 = ns3::Mac48Address("01:11:11:11:11:10");
 	this->mac48Address2 = ns3::Mac48Address("02:22:22:22:22:20");
 	this->mac48Address3 = ns3::Mac48Address("03:33:33:33:33:30");
-#if 0
-#endif
 }
 WifiTestCase::~WifiTestCase() {
 }
@@ -181,12 +180,25 @@ void WifiTestCase::DoRun() {
 	ns3::Simulator::Destroy();
 }
 
+class WifiL2TestCase: public ns3::TestCase {
+public:
+	WifiL2TestCase() :
+		ns3::TestCase("WifiL2TestCase") {
+	}
+	virtual ~WifiL2TestCase() {
+	}
+	virtual void DoRun() {
+		NS_LOG_UNCOND("WifiL2TestCase::DoRun");
+	}
+};
+
 class WifiTestSuite: public ns3::TestSuite {
 public:
 	WifiTestSuite() :
 		ns3::TestSuite("WifiTestSuite", UNIT) {
-		//NS_LOG_UNCOND("adding a test case");
+		NS_LOG_DEBUG("constructing WifiTestSuite");
 		AddTestCase(new WifiTestCase, ns3::TestCase::QUICK);
+		AddTestCase(new WifiL2TestCase, ns3::TestCase::QUICK);
 	}
 };
 
