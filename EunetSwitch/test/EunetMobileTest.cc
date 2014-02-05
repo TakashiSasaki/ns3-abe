@@ -11,6 +11,11 @@ NS_LOG_COMPONENT_DEFINE("EunetMobileTest");
 #include "ns3/yans-wifi-helper.h"
 #include "ns3/yans-wifi-phy.h"
 #include "ns3/global-value.h"
+#include "ns3/wifi-mac.h"
+#include "ns3/error-rate-model.h"
+#include "ns3/constant-position-mobility-model.h"
+#include "ns3/yans-error-rate-model.h"
+#include "ns3/wifi-remote-station-manager.h"
 #include "EunetMobile.h"
 #include "SimpleAp.h"
 #include "WifiDevice.h"
@@ -34,10 +39,10 @@ private:
 
 		ns3::PacketMetadata::Enable();
 
-		if (false){
+		if (false) {
 			ns3::ObjectFactory object_factory;
 			object_factory.SetTypeId(WifiDevice::GetTypeId());
-			auto wd = object_factory.Create<WifiDevice>();
+			auto wd = object_factory.Create<WifiDevice> ();
 			auto i = wd->getInt(100);
 			NS_LOG_DEBUG(i);
 			NS_ASSERT(i == 100+234);
@@ -226,9 +231,44 @@ private:
 					ns3::StringValue("ns3::VisualSimulatorImpl"));
 		}//if
 
+
 		ns3::Simulator::Stop(ns3::Seconds(100.1));
 		ns3::Simulator::Run();
 		ns3::Simulator::Destroy();
+	}
+
+	static ns3::Ptr<ns3::Node> createOneNode(ns3::Ptr<ns3::WifiMac> mac,
+			ns3::Ptr<ns3::YansWifiChannel> channel, ns3::Ptr<
+					ns3::WifiRemoteStationManager> manager, ns3::Vector pos) {
+		ns3::Ptr<ns3::Node> node = ns3::CreateObject<ns3::Node>();
+		ns3::Ptr<ns3::WifiNetDevice> dev =
+				ns3::CreateObject<ns3::WifiNetDevice>();
+
+		mac->ConfigureStandard(ns3::WIFI_PHY_STANDARD_80211a);
+		ns3::Ptr<ns3::ConstantPositionMobilityModel> mobility;
+		{
+			mobility = ns3::CreateObject<ns3::ConstantPositionMobilityModel>();
+			mobility->SetPosition(pos);
+		}
+		ns3::Ptr<ns3::YansWifiPhy> phy;
+		{
+			phy = ns3::CreateObject<ns3::YansWifiPhy>();
+			ns3::Ptr<ns3::ErrorRateModel> error = ns3::CreateObject<
+					ns3::YansErrorRateModel>();
+			phy->SetErrorRateModel(error);
+			phy->SetChannel(channel);
+			phy->SetDevice(dev);
+			phy->SetMobility(node);
+			phy->ConfigureStandard(ns3::WIFI_PHY_STANDARD_80211a);
+		}
+
+		node->AggregateObject(mobility);
+		mac->SetAddress(ns3::Mac48Address::Allocate());
+		dev->SetMac(mac);
+		dev->SetPhy(phy);
+		dev->SetRemoteStationManager(manager);
+		node->AddDevice(dev);
+		return node;
 	}
 };
 
